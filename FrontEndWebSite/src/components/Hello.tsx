@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
 
-
 export interface HelloProps { compiler: string; framework: string; }
 
 export class Foo {
