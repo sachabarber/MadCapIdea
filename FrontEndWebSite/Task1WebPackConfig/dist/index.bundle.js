@@ -24,6 +24,7 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(50);
+var _ = __webpack_require__(183);
 var Foo = function () {
     function Foo(num) {
         this._num = num;
@@ -42,10 +43,12 @@ var Hello = function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Hello.prototype.render = function () {
-        var foo = new Foo(12);
+        var foo = new Foo(222);
         var x = foo.getNum();
-        console.log("Foo should be 24");
+        console.log("Foo should be 444");
         console.log(x);
+        console.log("lodash version");
+        console.log(_.VERSION);
         var foo2 = new Foo(20);
         var x2 = foo2.getNum();
         console.log("Foo should be 40");

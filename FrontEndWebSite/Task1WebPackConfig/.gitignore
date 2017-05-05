@@ -1,5 +1,7 @@
 js
 
+dist/*.*
+
 # Logs
 logs
 *.log

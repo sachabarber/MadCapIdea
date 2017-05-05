@@ -3,18 +3,21 @@
 1. Install node : https://nodejs.org/en/download/
 2. Install web pack globally from command line "npm install --g webpack"
 3. Install react through NPM
-	- npm install --save react react-dom @types/react @types/react-dom
+	- npm install --save react react-dom 
+	- npm install --save-dev @types/react @types/react-dom
 4. Install babel through NPM
 	- npm install --save-dev webpack (babel-loader needs this)
 	- npm install --save-dev babel-core
 	- npm install --save-dev babel-loader
 	- npm install --save-dev babel-preset-es2015-native-modules
+	- npm install --save-dev babel-preset-react
 5. Install Lodash (the new underscore-esq library)
 	- npm install --save Lodash
 	- npm install --save-dev @types/lodash
 6. Install webpack-dev-server 
 	- npm install --save webpack-dev-server  -g
-
+7. Install on-build-webpack (to unlink files on build)
+	- npm install --save-dev on-build-webpack
 		
 	
 	

@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as _ from "lodash";
 
 
 export interface HelloProps { compiler: string; framework: string; }
@@ -24,17 +25,18 @@ export class Foo {
 export class Hello extends React.Component<HelloProps, undefined> {
     render() {
 
-        var foo = new Foo(12);
+        var foo = new Foo(222);
         var x = foo.getNum();
-        console.log("Foo should be 24");
+        console.log("Foo should be 444");
         console.log(x);
+
+        console.log("lodash version");
+        console.log(_.VERSION);
 
         var foo2 = new Foo(20);
         var x2 = foo2.getNum();
         console.log("Foo should be 40");
         console.log(x2);
-
-
 
         var foo3 = new Foo(40);
         var x3 = foo3.getNum();

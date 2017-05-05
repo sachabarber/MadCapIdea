@@ -1,9 +1,11 @@
 let _ = require('lodash');
 let webpack = require('webpack');
 let path = require('path');
+const WebpackOnBuildPlugin = require('on-build-webpack');
+let fs = require("fs");
 
 let babelOptions = {
-    "presets": ["es2015"]
+    "presets": ["es2015", "react"]
 };
 
 function isVendor(module) {
@@ -14,13 +16,25 @@ let entries = {
     index: './index.tsx'
 };
 
+let buildDir = path.resolve(__dirname, 'dist');
+
 module.exports = {
+
     context: __dirname + '/src',
+
     entry: entries,
+
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: buildDir
     },
+
+    // these break for node 5.3+ when building WS stuff
+    node: {
+        fs: 'empty'
+    },
+
+    watch: true,
 
     devServer: {
         open: true, // to open the local server in browser
@@ -33,7 +47,6 @@ module.exports = {
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".jsx"],
         modules: [path.resolve(__dirname, "src"), "node_modules"]
-        //modulesDirectories: ['src', 'node_modules'],
     },
 
     plugins: [
@@ -51,7 +64,30 @@ module.exports = {
               // creates a common vendor js file for libraries in node_modules
               return !isVendor(module) && count > 1;
           }
+      }),
+
+    
+
+      //will unlink unused files on a build
+      //http://stackoverflow.com/questions/40370749/how-to-remove-old-files-from-the-build-dir-when-webpack-watch
+      new WebpackOnBuildPlugin(function(stats) {
+          const newlyCreatedAssets = stats.compilation.assets;
+
+          const unlinked = [];
+          fs.readdir(path.resolve(buildDir), (err, files) => {
+              files.forEach(file => {
+                  if (!newlyCreatedAssets[file]) {
+                      fs.unlink(path.resolve(buildDir + file));
+                      unlinked.push(file);
+                  }
+              });
+              if (unlinked.length > 0) {
+                  console.log('Removed old assets: ', unlinked);
+              }
+          })
       })
+
+
     ],
 
     module: {
