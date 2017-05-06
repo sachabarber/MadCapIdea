@@ -19,7 +19,9 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "webpack": "^2.5.0",
+    "webpack-merge": "^4.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.63",
@@ -35,5 +37,9 @@
     "source-map-loader": "^0.2.1",
     "typescript": "^2.3.2",
     "webpack": "^2.4.1"
+  },
+  "scripts": {
+    "build-dev": "webpack --env=develop --progress --profile --colors",
+    "build-prod": "webpack --env=production --progress --profile --colors"
   }
 }

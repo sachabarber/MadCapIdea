@@ -1,12 +1,12 @@
 ﻿DONE
 
-
+3. Get separate configs working in webpack
 4. Get clean up addin working in webpack
 
 TODO
 
 1. Get Less/Sass working in webpack
 2. Get images working in webpack
-3. Get separate configs working in webpack
+
 
 

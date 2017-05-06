@@ -77,7 +77,7 @@ module.exports = {
           fs.readdir(path.resolve(buildDir), (err, files) => {
               files.forEach(file => {
                   if (!newlyCreatedAssets[file]) {
-                      fs.unlink(path.resolve(buildDir + file));
+                      fs.unlink(path.resolve(buildDir + '\\' + file));
                       unlinked.push(file);
                   }
               });

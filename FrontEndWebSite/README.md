@@ -18,13 +18,27 @@
 	- npm install --save webpack-dev-server  -g
 7. Install on-build-webpack (to unlink files on build)
 	- npm install --save-dev on-build-webpack
+8. Install webpack-merge 
+    - npm install webpack-merge -g
 		
 	
 	
 
-# RUNNING
+# RUNNING IT ALL
 
 from command line "webpack" or if you want to minify your final Js bundle "webpack -d"
+
+DEVELOP
+webpack --config webpack.develop.js -d
+
+PROD
+webpack --config webpack.production.js -p
+
+
+
+
+
+
 
 # WHAT DOES IT DEMONSTRATE
 
@@ -38,3 +52,4 @@ from command line "webpack" or if you want to minify your final Js bundle "webpa
 - SourceMap
 - Production webpack vs develop webpack
 - How to get around strip-loader loader issues with WebPack2 to remove things like console.log(..)
+  where we use Uglify to the job instead
