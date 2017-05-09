@@ -1,9 +1,9 @@
-const Merge = require('webpack-merge');
-const CommonConfig = require('./webpack.config.js');
+let commonConfig = require('./webpack.config.js');
 let webpack = require('webpack');
+let Merge = require('webpack-merge');
 
 module.exports = function (env) {
-    return Merge(CommonConfig, {
+    return Merge(commonConfig, {
         plugins: [
           new webpack.LoaderOptionsPlugin({
               minimize: true,

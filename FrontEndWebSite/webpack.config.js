@@ -1,8 +1,9 @@
 let _ = require('lodash');
 let webpack = require('webpack');
 let path = require('path');
-const WebpackOnBuildPlugin = require('on-build-webpack');
 let fs = require("fs");
+let WebpackOnBuildPlugin = require('on-build-webpack');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 let babelOptions = {
     "presets": ["es2015", "react"]
@@ -13,14 +14,16 @@ function isVendor(module) {
 }
 
 let entries = {
-    index: './index.tsx'
+    index: './src/index.tsx',
+    indexCss: './scss/index.scss'
+
 };
 
 let buildDir = path.resolve(__dirname, 'dist');
 
 module.exports = {
 
-    context: __dirname + '/src',
+    context: __dirname,
 
     entry: entries,
 
@@ -50,27 +53,28 @@ module.exports = {
     },
 
     plugins: [
+
+      // creates a common vendor js file for libraries in node_modules
       new webpack.optimize.CommonsChunkPlugin({
           names: ['vendor'],
           minChunks: function (module, count) {
-              // creates a common vendor js file for libraries in node_modules
               return isVendor(module);
           }
       }),
+
+      // creates a common vendor js file for libraries in node_modules
       new webpack.optimize.CommonsChunkPlugin({
           name: "commons",
           chunks: _.keys(entries),
           minChunks: function (module, count) {
-              // creates a common vendor js file for libraries in node_modules
               return !isVendor(module) && count > 1;
           }
       }),
 
     
-
       //will unlink unused files on a build
       //http://stackoverflow.com/questions/40370749/how-to-remove-old-files-from-the-build-dir-when-webpack-watch
-      new WebpackOnBuildPlugin(function(stats) {
+      new WebpackOnBuildPlugin(function (stats) {
           const newlyCreatedAssets = stats.compilation.assets;
 
           const unlinked = [];
@@ -85,7 +89,13 @@ module.exports = {
                   console.log('Removed old assets: ', unlinked);
               }
           })
-      })
+      }),
+
+      //scss/sass files extracted to common css bundle
+      new ExtractTextPlugin({ 
+          filename: '[name].bundle.css',
+          allChunks: true,
+      }),
 
 
     ],
@@ -108,6 +118,20 @@ module.exports = {
                   }
                 ]
             },
+
+
+            // All files with a .css extenson will be handled by 'css-loader'
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract(['css-loader?importLoaders=1']),
+            },
+
+            // All files with a .scss|.sass extenson will be handled by 'sass-loader'
+            { 
+                test: /\.(sass|scss)$/,
+                loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+            },
+
 
             // All files with a '.js' extension will be handled by 'babel-loader'.
             {

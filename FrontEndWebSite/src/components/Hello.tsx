@@ -42,6 +42,6 @@ export class Hello extends React.Component<HelloProps, undefined> {
         console.log("Foo should be 80");
         console.log(x3);
 
-        return <h1>Hello from {this.props.compiler} and {this.props.framework}!</h1>;
+        return <h1 id="helloText">Hello from {this.props.compiler} and {this.props.framework}!</h1>;
     }
 }

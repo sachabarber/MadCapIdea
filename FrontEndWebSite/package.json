@@ -33,13 +33,17 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2015-native-modules": "^6.9.4",
     "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "node-sass": "^4.5.2",
     "on-build-webpack": "^0.1.0",
+    "sass-loader": "^6.0.3",
     "source-map-loader": "^0.2.1",
     "typescript": "^2.3.2",
     "webpack": "^2.4.1"
   },
   "scripts": {
-    "build-dev": "webpack --env=develop --progress --profile --colors",
-    "build-prod": "webpack --env=production --progress --profile --colors"
+    "build-dev": "webpack -d --config webpack.develop.js",
+    "build-prod": "webpack -p --config webpack.production.js"
   }
 }

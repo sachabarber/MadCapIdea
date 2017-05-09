@@ -20,9 +20,15 @@
 	- npm install --save-dev on-build-webpack
 8. Install webpack-merge 
     - npm install webpack-merge -g
-		
-	
-	
+	- npm install webpack-merge --save
+9. Install webpack-merge 
+    - npm install webpack -g
+	- npm install webpack --save		
+10. Install SASS loaders
+    - npm install --save-dev css-loader
+    - npm install --save-dev node-sass	
+    - npm install --save-dev sass-loader	
+	- npm install --save-dev extract-text-webpack-plugin
 
 # RUNNING IT ALL
 
