@@ -32,6 +32,13 @@
 11. Install JQuery
     - npm install --save jquery 
 	- npm install --save-dev @types/jquery 
+12. Install bootstrap
+    - npm install bootstrap --save
+	- npm install react-bootstrap --save
+	- npm install url-loader
+	- npm install file-loader
+	- npm install --save react-bootstrap
+
 
 # RUNNING IT ALL
 

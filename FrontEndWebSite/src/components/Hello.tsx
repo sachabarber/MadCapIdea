@@ -1,7 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
-//import * as jquery from "jquery";
+import { Button } from 'react-bootstrap';
+
+import 'bootstrap/dist/css/bootstrap.css';
 
 export interface HelloProps { compiler: string; framework: string; }
 
@@ -48,6 +50,9 @@ export class Hello extends React.Component<HelloProps, undefined> {
         console.log("Foo should be 80");
         console.log(x3);
 
-        return <h1 id="helloText">Hello from {this.props.compiler} and {this.props.framework}!</h1>;
+        return <div>
+                <Button bsStyle="primary" bsSize="large">Large button</Button>
+                <h1 id="helloText">Hello from {this.props.compiler} and {this.props.framework}!</h1>
+               </div>;
     }
 }

@@ -88,9 +88,11 @@ module.exports = {
             const unlinked = [];
             fs.readdir(path.resolve(buildDir), (err, files) => {
                 files.forEach(file => {
-                    if (!newlyCreatedAssets[file]) {
-                        fs.unlink(path.resolve(buildDir + '\\' + file));
-                        unlinked.push(file);
+                    if (file != "fonts") {
+                        if (!newlyCreatedAssets[file]) {
+                            fs.unlink(path.resolve(buildDir + '\\' + file));
+                            unlinked.push(file);
+                        }
                     }
                 });
                 if (unlinked.length > 0) {
@@ -149,6 +151,40 @@ module.exports = {
                       options: babelOptions
                   }
                 ]
+            },
+
+            { 
+                test: /\.png$/, 
+                loader: "url-loader?limit=100000" 
+            },
+      
+            { 
+                test: /\.jpg$/, 
+                loader: "file-loader" 
+            },
+
+            {
+                test: /\.woff(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/font-woff'
+            },
+
+            {
+                test: /\.woff2(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/font-woff2'
+            },
+
+            {
+                test: /\.ttf(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=application/octet-stream'
+            },
+
+            {
+                test: /\.eot(\?.*)?$/, loader: 'file-loader?prefix=fonts/&name=fonts/[name].[ext]'
+            },
+
+            {
+                test: /\.svg(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&name=fonts/[name].[ext]&limit=10000&mimetype=image/svg+xml'
             },
 
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
