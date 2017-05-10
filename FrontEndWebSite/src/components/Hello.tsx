@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
+import * as jquery from "jquery";
 
 export interface HelloProps { compiler: string; framework: string; }
 
@@ -23,6 +24,10 @@ export class Foo {
 // State is never set so we use the 'undefined' type.
 export class Hello extends React.Component<HelloProps, undefined> {
     render() {
+
+
+        console.log("jquery");
+        console.log(jquery);
 
         var foo = new Foo(222);
         var x = foo.getNum();

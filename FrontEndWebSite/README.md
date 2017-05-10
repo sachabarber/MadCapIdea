@@ -29,6 +29,9 @@
     - npm install --save-dev node-sass	
     - npm install --save-dev sass-loader	
 	- npm install --save-dev extract-text-webpack-plugin
+11. Install JQuery
+    - npm install --save jquery 
+	- npm install --save-dev @types/jquery 
 
 # RUNNING IT ALL
 
