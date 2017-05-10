@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
-import * as jquery from "jquery";
+//import * as jquery from "jquery";
 
 export interface HelloProps { compiler: string; framework: string; }
 
@@ -27,7 +27,8 @@ export class Hello extends React.Component<HelloProps, undefined> {
 
 
         console.log("jquery");
-        console.log(jquery);
+        console.log($);
+        console.log($.fn.jquery);
 
         var foo = new Foo(222);
         var x = foo.getNum();

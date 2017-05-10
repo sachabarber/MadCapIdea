@@ -6,7 +6,8 @@
 
 TODO
 
-2. Get images working in webpack
+2. jquery
+5. bootstrap-react
 
 
 

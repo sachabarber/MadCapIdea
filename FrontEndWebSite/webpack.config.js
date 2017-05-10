@@ -46,7 +46,7 @@ module.exports = {
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
-	
+
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".jsx"],
         modules: [path.resolve(__dirname, "src"), "node_modules"]
@@ -54,50 +54,56 @@ module.exports = {
 
     plugins: [
 
-      // creates a common vendor js file for libraries in node_modules
-      new webpack.optimize.CommonsChunkPlugin({
-          names: ['vendor'],
-          minChunks: function (module, count) {
-              return isVendor(module);
-          }
-      }),
+        //The ProvidePlugin makes a module available as a variable in every other
+        //module required by webpack
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        }),
 
-      // creates a common vendor js file for libraries in node_modules
-      new webpack.optimize.CommonsChunkPlugin({
-          name: "commons",
-          chunks: _.keys(entries),
-          minChunks: function (module, count) {
-              return !isVendor(module) && count > 1;
-          }
-      }),
+        // creates a common vendor js file for libraries in node_modules
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ['vendor'],
+            minChunks: function (module, count) {
+                return isVendor(module);
+            }
+        }),
 
-    
-      //will unlink unused files on a build
-      //http://stackoverflow.com/questions/40370749/how-to-remove-old-files-from-the-build-dir-when-webpack-watch
-      new WebpackOnBuildPlugin(function (stats) {
-          const newlyCreatedAssets = stats.compilation.assets;
-
-          const unlinked = [];
-          fs.readdir(path.resolve(buildDir), (err, files) => {
-              files.forEach(file => {
-                  if (!newlyCreatedAssets[file]) {
-                      fs.unlink(path.resolve(buildDir + '\\' + file));
-                      unlinked.push(file);
-                  }
-              });
-              if (unlinked.length > 0) {
-                  console.log('Removed old assets: ', unlinked);
-              }
-          })
-      }),
-
-      //scss/sass files extracted to common css bundle
-      new ExtractTextPlugin({ 
-          filename: '[name].bundle.css',
-          allChunks: true,
-      }),
+        // creates a common vendor js file for libraries in node_modules
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "commons",
+            chunks: _.keys(entries),
+            minChunks: function (module, count) {
+                return !isVendor(module) && count > 1;
+            }
+        }),
 
 
+        //will unlink unused files on a build
+        //http://stackoverflow.com/questions/40370749/how-to-remove-old-files-from-the-build-dir-when-webpack-watch
+        new WebpackOnBuildPlugin(function (stats) {
+            const newlyCreatedAssets = stats.compilation.assets;
+
+            const unlinked = [];
+            fs.readdir(path.resolve(buildDir), (err, files) => {
+                files.forEach(file => {
+                    if (!newlyCreatedAssets[file]) {
+                        fs.unlink(path.resolve(buildDir + '\\' + file));
+                        unlinked.push(file);
+                    }
+                });
+                if (unlinked.length > 0) {
+                    console.log('Removed old assets: ', unlinked);
+                }
+            })
+        }),
+
+        //scss/sass files extracted to common css bundle
+        new ExtractTextPlugin({
+            filename: '[name].bundle.css',
+            allChunks: true,
+        }),
     ],
 
     module: {
@@ -127,7 +133,7 @@ module.exports = {
             },
 
             // All files with a .scss|.sass extenson will be handled by 'sass-loader'
-            { 
+            {
                 test: /\.(sass|scss)$/,
                 loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
             },
