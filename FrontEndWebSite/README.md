@@ -42,13 +42,13 @@
 
 # RUNNING IT ALL
 
-from command line "webpack" or if you want to minify your final Js bundle "webpack -d"
+from command line "webpack" or if you want specific environment use command lines below
 
 DEVELOP
-webpack --config webpack.develop.js -d
+webpack -d --config webpack.develop.js
 
 PROD
-webpack --config webpack.production.js -p
+webpack --config webpack.production.js
 
 
 

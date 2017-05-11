@@ -48,6 +48,6 @@
   },
   "scripts": {
     "build-dev": "webpack -d --config webpack.develop.js",
-    "build-prod": "webpack -p --config webpack.production.js"
+    "build-prod": "webpack --config webpack.production.js"
   }
 }

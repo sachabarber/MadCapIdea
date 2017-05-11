@@ -9,11 +9,6 @@ module.exports = function (env) {
               minimize: true,
               debug: false
           }),
-          new webpack.DefinePlugin({
-              'process.env': {
-                  'NODE_ENV': JSON.stringify('production')
-              }
-          }),
           new webpack.optimize.UglifyJsPlugin({
               // Eliminate comments
               comments: false,
@@ -31,7 +26,8 @@ module.exports = function (env) {
                   // Drop console statements
                   drop_console: true
               },
-              comments: false
+              comments: false,
+              sourceMap: false
           })
         ]
     })
