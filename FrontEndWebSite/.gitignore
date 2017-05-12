@@ -1,6 +1,9 @@
 js
 
 dist/*.*
+dist/fonts
+dist/fonts/*.*
+
 
 # Logs
 logs
