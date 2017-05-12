@@ -4,6 +4,7 @@ let path = require('path');
 let fs = require("fs");
 let WebpackOnBuildPlugin = require('on-build-webpack');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
 
 let babelOptions = {
     "presets": ["es2015", "react"]
@@ -28,7 +29,7 @@ module.exports = {
     entry: entries,
 
     output: {
-        filename: '[name].bundle.js',
+        filename: '[name].bundle.[hash].js',
         path: buildDir
     },
 
@@ -106,6 +107,11 @@ module.exports = {
             filename: '[name].bundle.css',
             allChunks: true,
         }),
+
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: 'template.html',
+        })
     ],
 
     module: {

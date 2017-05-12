@@ -38,6 +38,9 @@
 	- npm install url-loader
 	- npm install file-loader
 	- npm install --save react-bootstrap
+13. Install html plugin
+    - npm install --save-dev html-webpack-plugin
+
 
 
 # RUNNING IT ALL
@@ -66,6 +69,8 @@ webpack --config webpack.production.js
 - ES6 modules
 - Babel
 - SourceMap
+- JS script hashing for bundles
+- Html plugin to insert CSS/Scripts into template html page
 - Production webpack vs develop webpack
 - How to get around strip-loader loader issues with WebPack2 to remove things like console.log(..)
   where we use Uglify to the job instead
