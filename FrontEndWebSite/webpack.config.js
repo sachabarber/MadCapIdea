@@ -15,8 +15,8 @@ function isVendor(module) {
 }
 
 let entries = {
-    index: './src/index.tsx',
-    indexCss: './scss/index.scss'
+    index: './src/index.tsx'
+    //indexCss: './scss/index.scss'
 
 };
 
@@ -104,7 +104,7 @@ module.exports = {
 
         //scss/sass files extracted to common css bundle
         new ExtractTextPlugin({
-            filename: '[name].bundle.css',
+            filename: '[name].bundle.[hash].css',
             allChunks: true,
         }),
 
