@@ -1,13 +1,27 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Hello, Foo } from "./components/Hello";
+import { Hello, Foo, HelloProps } from "./components/Hello";
 
 let foo = new Foo(12);
+let helloProps = {
+    compiler: "someCompilerXX",
+    framework: "someFramework",
+    foo: foo
+};
+
+let HelloComponent = React.createElement(Hello, helloProps, null)
 
 ReactDOM.render(
-    <div id="div1">
-        <Hello compiler="TypeScript" framework="React" foo={foo} />
-    </div>,
-    document.getElementById("example")
+    //React.createElement(Hello, helloProps, null),
+    HelloComponent,
+    document.getElementById('example')
 );
+
+
+//ReactDOM.render(
+//    <div id="div1">
+//        React.createElement(Hello, helloProps, null)
+//    </div>,
+//    document.getElementById("example")
+//);

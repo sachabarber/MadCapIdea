@@ -74,3 +74,53 @@ webpack --config webpack.production.js
 - Production webpack vs develop webpack
 - How to get around strip-loader loader issues with WebPack2 to remove things like console.log(..)
   where we use Uglify to the job instead
+
+
+  REACT NOTES
+
+  1. creating objects
+
+Attempt 1
+
+	import { Hello, Foo, HelloProps } from "./components/Hello";
+	let foo = new Foo(12);
+	let helloProps = {
+		compiler: "someCompilerXX",
+		framework: "someFramework",
+		foo: foo
+	};
+
+	let HelloComponent = React.createElement(Hello, helloProps, null)
+
+	ReactDOM.render(
+		//React.createElement(Hello, helloProps, null),
+		HelloComponent,
+		document.getElementById('example')
+	);
+
+Attempt 2
+
+	import { Hello, Foo, HelloProps } from "./components/Hello";
+	let foo = new Foo(12);
+	let helloProps = {
+		compiler: "someCompilerXX",
+		framework: "someFramework",
+		foo: foo
+	};
+
+	ReactDOM.render(
+		React.createElement(Hello, helloProps, null),
+		document.getElementById('example')
+	);
+
+Attempt 3
+
+	import { Hello, Foo, HelloProps } from "./components/Hello";
+	let foo = new Foo(12);
+
+	ReactDOM.render(
+		<div id="div1">
+			<Hello compiler="TypeScript" framework="React" foo={foo} />
+		</div>,
+		document.getElementById("example")
+	);

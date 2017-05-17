@@ -34,6 +34,12 @@ export interface HelloProps {
 // 'HelloProps' describes the shape of props.
 // State is never set so we use the 'undefined' type.
 export class Hello extends React.Component<HelloProps, undefined> {
+
+    constructor(props) {
+        super(props);
+        console.log(this.props); // prints out whatever is inside props
+    }
+
     render() {
 
 
