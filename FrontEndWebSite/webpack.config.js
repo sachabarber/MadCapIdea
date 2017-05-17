@@ -15,8 +15,8 @@ function isVendor(module) {
 }
 
 let entries = {
-    index: './src/index.tsx'
-    //indexCss: './scss/index.scss'
+    index: './src/index.tsx',
+    indexCss: './scss/index.scss'
 
 };
 
