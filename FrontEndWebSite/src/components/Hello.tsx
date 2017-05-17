@@ -5,8 +5,6 @@ import { Button } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-export interface HelloProps { compiler: string; framework: string; }
-
 export class Foo {
 
     private _num: number;
@@ -20,6 +18,15 @@ export class Foo {
     }
 
 }
+
+
+export interface HelloProps {
+    compiler: string;
+    framework: string;
+    foo: Foo;
+}
+
+
 
 
 
@@ -54,7 +61,7 @@ export class Hello extends React.Component<HelloProps, undefined> {
 
         return <div>
                 <Button bsStyle="primary" bsSize="large">Large button</Button>
-                <h1 id="helloText">Hello from {this.props.compiler} and {this.props.framework}!</h1>
+                <h1 id="helloText">Hello from {this.props.compiler} and {this.props.framework} fooZZ = {this.props.foo.getNum()}!</h1>
                </div>;
     }
 }
