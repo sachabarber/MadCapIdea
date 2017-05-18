@@ -23,7 +23,7 @@
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.5.4",
-    "webpack": "^2.5.0",
+    "webpack": "^2.5.1",
     "webpack-merge": "^4.1.0"
   },
   "devDependencies": {
@@ -39,12 +39,14 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.1",
     "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
     "html-webpack-plugin": "^2.28.0",
     "node-sass": "^4.5.2",
     "on-build-webpack": "^0.1.0",
     "sass-loader": "^6.0.3",
     "source-map-loader": "^0.2.1",
     "typescript": "^2.3.2",
+    "url-loader": "^0.5.8",
     "webpack": "^2.4.1"
   },
   "scripts": {
