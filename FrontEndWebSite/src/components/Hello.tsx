@@ -1,15 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
+import { injectable, inject } from "inversify";
 import { Button } from 'react-bootstrap';
-
+import { TYPES } from "../types";
 import 'bootstrap/dist/css/bootstrap.css';
 
+@injectable()
 export class Foo {
 
     private _num: number;
 
-    constructor(num: number) {
+    constructor(@inject(TYPES.SomeNumber) num: number) {
         this._num = num;
     }
 

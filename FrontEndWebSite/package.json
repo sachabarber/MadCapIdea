@@ -18,11 +18,13 @@
   "homepage": "https://github.com/sachabarber/MadCapIdea#readme",
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "inversify": "^4.1.0",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.5.4",
+    "reflect-metadata": "^0.1.10",
     "webpack": "^2.5.1",
     "webpack-merge": "^4.1.0"
   },
