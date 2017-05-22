@@ -1,14 +1,12 @@
 import "reflect-metadata";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Container } from "inversify";
-import { Hello, Foo, HelloProps } from "./components/Hello";
+import { Hello, HelloProps } from "./components/Hello";
+import { Foo } from "./domain/Foo";
 import { TYPES } from "./types";
+import { ContainerOperations } from "./ioc/ContainerOperations"; 
 
-const container = new Container();
-container.bind<number>(TYPES.SomeNumber).toConstantValue(12);
-container.bind<Foo>(TYPES.Foo).to(Foo);
-let foo = container.get<Foo>(TYPES.Foo);
+let foo = ContainerOperations.getInstance().container.get<Foo>(TYPES.Foo);
 
 let helloProps = {
     compiler: "someCompilerXX",

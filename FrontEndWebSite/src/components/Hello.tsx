@@ -1,37 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
-import { injectable, inject } from "inversify";
 import { Button } from 'react-bootstrap';
+import { injectable, inject } from "inversify";
 import { TYPES } from "../types";
 import 'bootstrap/dist/css/bootstrap.css';
-
-@injectable()
-export class Foo {
-
-    private _num: number;
-
-    constructor(@inject(TYPES.SomeNumber) num: number) {
-        this._num = num;
-    }
-
-    getNum() {
-        return this._num * 2;
-    }
-
-}
-
+import { Foo } from "../domain/Foo";
 
 export interface HelloProps {
     compiler: string;
     framework: string;
     foo: Foo;
 }
-
-
-
-
-
 
 // 'HelloProps' describes the shape of props.
 // State is never set so we use the 'undefined' type.
