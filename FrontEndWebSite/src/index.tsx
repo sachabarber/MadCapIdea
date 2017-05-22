@@ -17,10 +17,28 @@ let helloProps = {
 };
 
 let HelloComponent = React.createElement(Hello, helloProps, null)
+let HelloComponent2 = React.createElement(Hello, helloProps, null)
+
+
+var HelloHolder = React.createClass({
+    render: function () {
+        return (
+            <div>
+                <Hello compiler="TypeScript" framework="React" foo={foo} />
+                {HelloComponent}
+                {HelloComponent2}
+            </div>
+        )
+    }
+});
+
+
 
 ReactDOM.render(
     //React.createElement(Hello, helloProps, null),
-    HelloComponent,
+    <div>
+        <HelloHolder/>
+    </div>,
     document.getElementById('example')
 );
 
