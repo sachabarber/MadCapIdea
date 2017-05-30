@@ -6,7 +6,7 @@ export class Foo {
 
     private _num: number;
 
-    constructor( @inject(TYPES.SomeNumber) num: number) {
+    constructor(@inject(TYPES.SomeNumber) num: number) {
         this._num = num;
     }
 
