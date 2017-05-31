@@ -7,15 +7,5 @@
     <div>
         <h1 id="clock"></h1>
         <iframe id="comet" src="@routes.ScalaCometController.streamClock.unique"></iframe>
-        <script type="text/javascript" charset="utf-8">
-                // Called for each Comet message
-                var clockChanged = function(incomingJsonPayload) {
-                    console.log("from clock1" + incomingJsonPayload);
-                    console.log(incomingJsonPayload);
-                    $('#clock').html( '<span>' + JSON.stringify(incomingJsonPayload) + '</span>')
-                }
-                </script>
-        @content
     </div>
-
 }

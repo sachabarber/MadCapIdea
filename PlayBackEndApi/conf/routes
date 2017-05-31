@@ -6,7 +6,6 @@
 
 GET        /                                   controllers.HomeController.index()
 
-GET        /scala/comet                        controllers.ScalaCometController.index()
 GET        /scala/comet/liveClock              controllers.ScalaCometController.streamClock()
 GET        /scala/comet/kick                   controllers.ScalaCometController.kickRandomTime()
 
