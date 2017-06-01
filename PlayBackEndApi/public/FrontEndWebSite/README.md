@@ -40,6 +40,9 @@
 	- npm install --save react-bootstrap
 13. Install html plugin
     - npm install --save-dev html-webpack-plugin
+14. Install RxJs
+	- npm install --save rx
+	- npm install --save-dev @types/rx
 
 
 

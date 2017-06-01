@@ -25,6 +25,7 @@
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.5.4",
     "reflect-metadata": "^0.1.10",
+    "rx": "^4.1.0",
     "webpack": "^2.5.1",
     "webpack-merge": "^4.1.0"
   },

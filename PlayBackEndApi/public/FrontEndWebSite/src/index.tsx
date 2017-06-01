@@ -5,6 +5,41 @@ import { Hello, HelloProps } from "./components/Hello";
 import { Foo } from "./domain/Foo";
 import { TYPES } from "./types";
 import { ContainerOperations } from "./ioc/ContainerOperations"; 
+import Rx from 'rx';  
+
+
+(function () {
+
+
+    var evt;
+
+    console.log("xxxxxxxxxxxxx inside self executing function");
+
+
+    window['clockChanged'] = function (incomingJsonPayload) {
+        evt = new CustomEvent('onClockChanged', { detail: incomingJsonPayload });
+        $('#clock').html('<span>' + JSON.stringify(incomingJsonPayload) + '</span>')
+        window.dispatchEvent(evt);
+    }
+
+    var source = Rx.Observable.fromEvent(window, 'onClockChanged');
+
+    var subscription = source.subscribe(
+        function (x) {
+            console.log('RX saw onClockChanged');
+            console.log('RX x = ', x.detail);
+        },
+        function (err) {
+            console.log('Error: %s', err);
+        },
+        function () {
+            console.log('Completed');
+        });
+
+} ());
+
+
+
 
 let foo = ContainerOperations.getInstance().container.get<Foo>(TYPES.Foo);
 
