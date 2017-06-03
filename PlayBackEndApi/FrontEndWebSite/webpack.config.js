@@ -20,7 +20,8 @@ let entries = {
 
 };
 
-let buildDir = path.resolve(__dirname, 'dist');
+//build it to the Play Framework public folder, which is services by the assets controller
+let buildDir = path.resolve(__dirname, '../public/dist');
 
 module.exports = {
 
@@ -30,7 +31,10 @@ module.exports = {
 
     output: {
         filename: '[name].bundle.[hash].js',
-        path: buildDir
+        path: buildDir,
+		//this is to make it play nice with the Play Framework Assets controllers
+		//that deals with static data
+		publicPath: '/assets/dist'
     },
 
     // these break for node 5.3+ when building WS stuff
