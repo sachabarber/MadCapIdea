@@ -10,15 +10,10 @@ import Rx from 'rx';
 
 (function () {
 
-
     var evt;
-
-    console.log("xxxxxxxxxxxxx inside self executing function");
-
 
     window['clockChanged'] = function (incomingJsonPayload) {
         evt = new CustomEvent('onClockChanged', { detail: incomingJsonPayload });
-        $('#clock').html('<span>' + JSON.stringify(incomingJsonPayload) + '</span>')
         window.dispatchEvent(evt);
     }
 
