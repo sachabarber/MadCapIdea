@@ -15,6 +15,7 @@ class MainNav extends React.Component<undefined, undefined> {
              <NavItem eventKey={1} href='#/'>Home</NavItem>
              <NavItem eventKey={2} href='#/contact'>Contact</NavItem>
              <NavItem eventKey={2} href='#/about'>About</NavItem>
+             <NavItem eventKey={2} href='#/redirecter'>Redirect</NavItem>
          </Nav>
      </Navbar>
     )
@@ -34,6 +35,22 @@ class App extends React.Component<undefined, undefined> {
     )
   }
 }
+
+
+class ReDirecter extends React.Component<undefined, undefined> {
+
+    handleClick = () => {
+        hashHistory.push('/contact');
+    };
+
+    render() {
+        return (
+             <button onClick={this.handleClick} type="button">go to contact</button>
+
+        )
+    }
+}
+
 
 
 const Home = () => (
@@ -63,6 +80,7 @@ ReactDOM.render((
                 <Route path="/" component={Home}/>
                 <Route path="/contact" component={Contact}/>
                 <Route path="/about" component={About}/>
+                <Route path="/redirecter" component={ReDirecter}/>
             </Route>
         </Router>
 ), document.getElementById('root'));

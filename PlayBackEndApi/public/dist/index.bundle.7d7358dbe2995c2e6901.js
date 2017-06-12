@@ -45,7 +45,7 @@ var MainNav = function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MainNav.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Navbar, { brand: 'React-Bootstrap' }, React.createElement(_reactBootstrap.Nav, null, React.createElement(_reactBootstrap.NavItem, { eventKey: 1, href: '#/' }, "Home"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/contact' }, "Contact"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/about' }, "About")));
+        return React.createElement(_reactBootstrap.Navbar, { brand: 'React-Bootstrap' }, React.createElement(_reactBootstrap.Nav, null, React.createElement(_reactBootstrap.NavItem, { eventKey: 1, href: '#/' }, "Home"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/contact' }, "Contact"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/about' }, "About"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/redirecter' }, "Redirect")));
     };
     return MainNav;
 }(React.Component);
@@ -59,6 +59,20 @@ var App = function (_super) {
     };
     return App;
 }(React.Component);
+var ReDirecter = function (_super) {
+    __extends(ReDirecter, _super);
+    function ReDirecter() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.handleClick = function () {
+            _reactRouter.hashHistory.push('/contact');
+        };
+        return _this;
+    }
+    ReDirecter.prototype.render = function () {
+        return React.createElement("button", { onClick: this.handleClick, type: "button" }, "go to contact");
+    };
+    return ReDirecter;
+}(React.Component);
 var Home = function Home() {
     return React.createElement("div", null, React.createElement("h2", null, "Home"));
 };
@@ -68,7 +82,7 @@ var Contact = function Contact() {
 var About = function About() {
     return React.createElement("div", null, React.createElement("h2", null, "About"));
 };
-ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: Home }), React.createElement(_reactRouter.Route, { path: "/contact", component: Contact }), React.createElement(_reactRouter.Route, { path: "/about", component: About }))), document.getElementById('root'));
+ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: Home }), React.createElement(_reactRouter.Route, { path: "/contact", component: Contact }), React.createElement(_reactRouter.Route, { path: "/about", component: About }), React.createElement(_reactRouter.Route, { path: "/redirecter", component: ReDirecter }))), document.getElementById('root'));
 //ReactDOM.render(
 //    <MainNav/>,
 //    document.getElementById('root')
@@ -77,4 +91,4 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 /***/ })
 
 },[232]);
-//# sourceMappingURL=index.bundle.a3395fbfe7aa0e324e69.js.map
+//# sourceMappingURL=index.bundle.7d7358dbe2995c2e6901.js.map
