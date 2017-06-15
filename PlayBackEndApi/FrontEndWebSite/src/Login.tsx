@@ -109,7 +109,6 @@ export class Login extends React.Component<undefined, undefined> {
   _onSubmit() {
     alert("Form may be submitted");
   }
-
-
-
 }
+
+
