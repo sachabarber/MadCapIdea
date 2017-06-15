@@ -1,0 +1,24 @@
+#helloText {
+  background-color: coral; }
+
+body {
+  background-color: #ffffff;
+  font-size: 12px; }
+
+.form-control {
+  height: 30px;
+  font-size: small; }
+
+.outer-well {
+  margin: 20px; }
+
+.submitable-form {
+  margin: 10px; }
+
+#div1 {
+  background-color: deeppink; }
+
+#comet {
+  display: none; }
+
+/*# sourceMappingURL=indexCss.bundle.26bcadac4826638ff4c2.css.map*/

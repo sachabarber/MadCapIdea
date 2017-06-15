@@ -1,8 +1,28 @@
 ﻿@import './hello/hello.scss';
 
+
+$body-background: #ffffff;
+
 body {
-    background-color: aqua;
+    background-color: $body-background;
+    font-size:12px;
 }
+
+
+.form-control {
+    height:30px;
+    font-size:small;
+}
+
+.outer-well {
+    margin : 20px;
+}
+
+.submitable-form {
+    margin : 10px;
+}
+
+
 
 #div1 {
     background-color: deeppink;
@@ -10,7 +30,7 @@ body {
 
 
 #comet {
-
-display: none;
-
+    display: none;
 }
+
+
