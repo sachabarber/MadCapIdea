@@ -18,6 +18,13 @@ import revalidator from 'revalidator';
 
 let schema = {
     properties: {
+        fullname: {
+            type: 'string',
+            minLength: 8,
+            maxLength: 12,
+            required: true,
+            allowEmpty: false
+        },
         email: {
             type: 'string',
             maxLength: 255,
@@ -37,11 +44,10 @@ let schema = {
 
 
 
-export class Login extends React.Component<undefined, undefined> {
+export class PassengerRegistration extends React.Component<undefined, undefined> {
   render() {
     return (
-        <Well className="outer-well">
-          <Form
+      <Form className="submittable-form-inner"
                 // Supply callbacks to both valid and invalid
                 // submit attempts
                 validateAll={this._validateForm}
@@ -50,43 +56,48 @@ export class Login extends React.Component<undefined, undefined> {
             <Grid>
                 <Row className="show-grid">
                     <Col xs={10} md={6}>
-                        <h4>ENTER YOUR LOGIN DETAILS</h4>
+                        <h4>Passenger details</h4>
                     </Col>
                 </Row>
                 <Row className="show-grid">
                     <Col xs={10} md={6}>
                        <ValidatedInput type='text'
-                                              label='Email'
-                                              name='email'
-                                              errorHelp='Email address is invalid'/>
+                          label='FullName'
+                          name='fullname'
+                          errorHelp='FullName is invalid'/>
 
                     </Col>
                 </Row>
                 <Row className="show-grid">
                     <Col xs={10} md={6}>
-                         <ValidatedInput type='password'
-                                               name='password'
-                                               label='Password'
-                                               errorHelp='Password is invalid'/>
-
+                       <ValidatedInput type='text'
+                          label='Email'
+                          name='email'
+                          errorHelp='Email address is invalid'/>
+                    </Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={10} md={6}>
+                        <ValidatedInput type='password'
+                           label='Password'
+                           name='password'
+                           errorHelp='Password is invalid'/>
                     </Col>
                 </Row>
                 <Row className="show-grid">
                     <Col xs={10} md={6}>
                         <ButtonInput
-                            id="loginBtn"
+                            id="registerBtn"
                             type='submit'
                             bsSize='small'
                             bsStyle='primary'
-                            value='Register'>Login</ButtonInput>
+                            value='Register'>Register</ButtonInput>
                     </Col>
                 </Row>
             </Grid>
-            </Form>
-        </Well>
+        </Form>
     )
   }
-
 
   _validateForm = (values) => {
       let res = revalidator.validate(values, schema);

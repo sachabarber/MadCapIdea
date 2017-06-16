@@ -1,4 +1,5 @@
 ﻿TODO
 
-
+1. react validation example using state
+   https://stackoverflow.com/questions/32228905/react-bootstrap-validation-use-validated-input-in-sub-component
 

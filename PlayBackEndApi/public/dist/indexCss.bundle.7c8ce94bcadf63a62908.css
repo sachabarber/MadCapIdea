@@ -12,8 +12,11 @@ body {
 .outer-well {
   margin: 20px; }
 
-.submitable-form {
-  margin: 10px; }
+.submittable-form-inner {
+  margin-left: -15px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px; }
 
 #div1 {
   background-color: deeppink; }
@@ -21,4 +24,4 @@ body {
 #comet {
   display: none; }
 
-/*# sourceMappingURL=indexCss.bundle.73a664c3d1cba7c1db79.css.map*/
+/*# sourceMappingURL=indexCss.bundle.7c8ce94bcadf63a62908.css.map*/
