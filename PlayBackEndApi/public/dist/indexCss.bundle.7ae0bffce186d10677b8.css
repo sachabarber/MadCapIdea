@@ -18,10 +18,13 @@ body {
   margin-right: 10px;
   margin-bottom: 10px; }
 
+#createJobBtn {
+  margin-left: 15px; }
+
 #div1 {
   background-color: deeppink; }
 
 #comet {
   display: none; }
 
-/*# sourceMappingURL=indexCss.bundle.7c8ce94bcadf63a62908.css.map*/
+/*# sourceMappingURL=indexCss.bundle.7ae0bffce186d10677b8.css.map*/

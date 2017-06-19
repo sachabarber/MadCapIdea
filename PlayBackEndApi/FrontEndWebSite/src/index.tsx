@@ -8,35 +8,35 @@ import { Router, Route, hashHistory  } from 'react-router'
 
 import { Login } from "./Login";
 import { Register } from "./Register";
-
+import { CreateJob } from "./CreateJob";
 
 class MainNav extends React.Component<undefined, undefined> {
-  render() {
-    return (
-     <Navbar>
-         <Nav>
-             <NavItem eventKey={1} href='#/'>Login</NavItem>
-             <NavItem eventKey={2} href='#/register'>Register</NavItem>
-             <NavItem eventKey={2} href='#/about'>About</NavItem>
-             <NavItem eventKey={2} href='#/redirecter'>Redirect</NavItem>
-         </Nav>
-     </Navbar>
-    )
-  }
+    render() {
+        return (
+            <Navbar>
+                <Nav>
+                    <NavItem eventKey={1} href='#/'>Login</NavItem>
+                    <NavItem eventKey={2} href='#/register'>Register</NavItem>
+                    <NavItem eventKey={2} href='#/createjob'>CreateJob</NavItem>
+                    <NavItem eventKey={2} href='#/redirecter'>Redirect</NavItem>
+                </Nav>
+            </Navbar>
+        )
+    }
 }
 
 
 
 class App extends React.Component<undefined, undefined> {
-  render() {
-    return (
+    render() {
+        return (
 
-        <div>
-            <MainNav/>
-            {this.props.children}
-        </div>
-    )
-  }
+            <div>
+                <MainNav/>
+                {this.props.children}
+            </div>
+        )
+    }
 }
 
 
@@ -48,7 +48,7 @@ class ReDirecter extends React.Component<undefined, undefined> {
 
     render() {
         return (
-          <Button bsStyle="primary" bsSize="large" onClick={this.handleClick}>Go to Login</Button>
+            <Button bsStyle="primary" bsSize="large" onClick={this.handleClick}>Go to Login</Button>
         )
     }
 }
@@ -57,22 +57,22 @@ class ReDirecter extends React.Component<undefined, undefined> {
 
 
 const About = () => (
-  <div>
-    <h2>About</h2>
-  </div>
+    <div>
+        <h2>About</h2>
+    </div>
 )
 
 
 
 ReactDOM.render((
     <Router history={hashHistory}>
-            <Route component={App}>
-                <Route path="/" component={Login}/>
-                <Route path="/register" component={Register}/>
-                <Route path="/about" component={About}/>
-                <Route path="/redirecter" component={ReDirecter}/>
-            </Route>
-        </Router>
+        <Route component={App}>
+            <Route path="/" component={Login}/>
+            <Route path="/register" component={Register}/>
+            <Route path="/createjob" component={CreateJob}/>
+            <Route path="/redirecter" component={ReDirecter}/>
+        </Route>
+    </Router>
 ), document.getElementById('root'));
 
 

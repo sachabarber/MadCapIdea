@@ -18,6 +18,13 @@ import revalidator from 'revalidator';
 
 let schema = {
     properties: {
+        fullname: {
+            type: 'string',
+            minLength: 8,
+            maxLength: 12,
+            required: true,
+            allowEmpty: false
+        },
         email: {
             type: 'string',
             maxLength: 255,
@@ -31,6 +38,20 @@ let schema = {
             maxLength: 60,
             required: true,
             allowEmpty: false
+        },
+        vehicleDescription: {
+            type: 'string',
+            minLength: 6,
+            maxLength: 60,
+            required: true,
+            allowEmpty: false
+        },
+        vehicleRegistrationNumber: {
+            type: 'string',
+            minLength: 6,
+            maxLength: 30,
+            required: true,
+            allowEmpty: false
         }
     }
 };
@@ -38,85 +59,115 @@ let schema = {
 
 
 export class DriverRegistration extends React.Component<undefined, undefined> {
-  render() {
-    return (
-      <Form className="submittable-form-inner"
+    render() {
+        return (
+            <Form className="submittable-form-inner"
                 // Supply callbacks to both valid and invalid
                 // submit attempts
                 validateAll={this._validateForm}
                 onInvalidSubmit={this._handleInvalidSubmit}
                 onValidSubmit={this._handleValidSubmit}>
-            <Grid>
-                <Row className="show-grid">
-                    <Col xs={10} md={6}>
-                        <h4>Driver details</h4>
-                    </Col>
-                </Row>
-                <Row className="show-grid">
-                    <Col xs={10} md={6}>
-                       <ValidatedInput type='text'
-                                              label='Email'
-                                              name='email'
-                                              errorHelp='Email address is invalid'/>
+                <Grid>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <h4>Driver details</h4>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <ValidatedInput type='text'
+                                label='FullName'
+                                name='fullname'
+                                errorHelp='FullName is invalid'/>
 
-                    </Col>
-                </Row>
-                <Row className="show-grid">
-                    <Col xs={10} md={6}>
-                         <ValidatedInput type='password'
-                                               name='password'
-                                               label='Password'
-                                               errorHelp='Password is invalid'/>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <ValidatedInput type='text'
+                                label='Email'
+                                name='email'
+                                errorHelp='Email address is invalid'/>
 
-                    </Col>
-                </Row>
-                <Row className="show-grid">
-                    <Col xs={10} md={6}>
-                        <ButtonInput
-                            id="registerBtn"
-                            type='submit'
-                            bsSize='small'
-                            bsStyle='primary'
-                            value='Register'>Register</ButtonInput>
-                    </Col>
-                </Row>
-            </Grid>
-        </Form>
-    )
-  }
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <ValidatedInput type='password'
+                                name='password'
+                                label='Password'
+                                errorHelp='Password is invalid'/>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <h4>Vehicle details</h4>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <ValidatedInput type='text'
+                                label='Vehicle Description'
+                                name='vehicleDescription'
+                                errorHelp='Vehicle description is invalid'/>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <ValidatedInput type='text'
+                                label='Vehicle Registration Number'
+                                name='vehicleRegistrationNumber'
+                                errorHelp='Vehicle registration number is invalid'/>
+                        </Col>
+                    </Row>
+
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <ButtonInput
+                                id="registerBtn"
+                                type='submit'
+                                bsSize='small'
+                                bsStyle='primary'
+                                value='Register'>Register</ButtonInput>
+                        </Col>
+                    </Row>
+                </Grid>
+            </Form>
+        )
+    }
 
 
-   _validateForm = (values) => {
-       let res = revalidator.validate(values, schema);
+    _validateForm = (values) => {
+        let res = revalidator.validate(values, schema);
 
-       // If the values passed validation, we return true
-       if (res.valid) {
-           return true;
-       }
+        // If the values passed validation, we return true
+        if (res.valid) {
+            return true;
+        }
 
-       // Otherwise we should return an object containing errors
-       // e.g. { email: true, password: true }
-       return res.errors.reduce((errors, error) => {
-           // Set each property to either true or
-           // a string error description
-           errors[error.property] = true;
+        // Otherwise we should return an object containing errors
+        // e.g. { email: true, password: true }
+        return res.errors.reduce((errors, error) => {
+            // Set each property to either true or
+            // a string error description
+            errors[error.property] = true;
 
-           return errors;
-       }, {});
-   }
+            return errors;
+        }, {});
+    }
 
-   _handleInvalidSubmit = (errors, values) => {
-       // Errors is an array containing input names
-       // that failed to validate
-       alert("Form has errors and may not be submitted");
-   }
+    _handleInvalidSubmit = (errors, values) => {
+        // Errors is an array containing input names
+        // that failed to validate
+        alert("Form has errors and may not be submitted");
+    }
 
-   _handleValidSubmit = (values) => {
-       // Values is an object containing all values
-       // from the inputs
-       console.log("Form may be submitted");
-       console.log(values);
-   }
+    _handleValidSubmit = (values) => {
+        // Values is an object containing all values
+        // from the inputs
+        console.log("Form may be submitted");
+        console.log(values);
+    }
 
 }
 

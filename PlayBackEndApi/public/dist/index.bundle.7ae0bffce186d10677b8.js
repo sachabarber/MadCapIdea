@@ -1,6 +1,115 @@
 webpackJsonp([1],{
 
-/***/ 261:
+/***/ 385:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.CreateJob = undefined;
+
+var _react = __webpack_require__(1);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(66);
+
+var _reactBootstrap = __webpack_require__(50);
+
+var _reactGoogleMaps = __webpack_require__(814);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+//const GettingStartedGoogleMap = withGoogleMap(props => (
+//    <GoogleMap
+//        ref={props.onMapLoad}
+//        defaultZoom={16}
+//        defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}
+//        onClick={props.onMapClick}
+//        >
+//        <Marker position={props.currentPosition}/>
+//    </GoogleMap>
+//));
+//https://github.com/tomchentw/react-google-maps/pull/501
+//https://github.com/tomchentw/react-google-maps/issues/373
+var GettingStartedGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
+    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, React.createElement(_reactGoogleMaps.Marker, { position: props.currentPosition, icon: '/assets/images/man.png' }));
+});
+var CreateJob = function (_super) {
+    __extends(CreateJob, _super);
+    function CreateJob(props) {
+        var _this = _super.call(this, props) || this;
+        _this._handleMapLoad = function (map) {
+            if (map) {
+                console.log(map.getZoom());
+            }
+        };
+        _this._handleMapClick = function (event) {
+            _this.setState({
+                currentPosition: event.latLng
+            });
+        };
+        _this.state = {
+            currentPosition: { lat: 50.8202949, lng: -0.1406958 }
+        };
+        return _this;
+    }
+    CreateJob.prototype.render = function () {
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "SET YOUR CURRENT LOCATION"), React.createElement("h6", null, "Click the map to set your current location"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(GettingStartedGoogleMap, { containerElement: React.createElement("div", { style: {
+                    position: 'relative',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: 600,
+                    height: 600,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    marginTop: 20,
+                    marginLeft: 0,
+                    marginRight: 0,
+                    marginBottom: 20
+                } }), mapElement: React.createElement("div", { style: {
+                    position: 'relative',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: 600,
+                    height: 600,
+                    marginTop: 20,
+                    marginLeft: 0,
+                    marginRight: 0,
+                    marginBottom: 20
+                } }), onMapLoad: this._handleMapLoad, onMapClick: this._handleMapClick, currentPosition: this.state.currentPosition }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.ButtonInput, { id: "createJobBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Create Job"))));
+    };
+    return CreateJob;
+}(React.Component);
+exports.CreateJob = CreateJob;
+
+/***/ }),
+
+/***/ 386:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15,13 +124,13 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(58);
+__webpack_require__(66);
 
-var _reactBootstrap = __webpack_require__(48);
+var _reactBootstrap = __webpack_require__(50);
 
-var _reactBootstrapValidation = __webpack_require__(114);
+var _reactBootstrapValidation = __webpack_require__(187);
 
-var _revalidator = __webpack_require__(147);
+var _revalidator = __webpack_require__(220);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -111,7 +220,7 @@ exports.Login = Login;
 
 /***/ }),
 
-/***/ 262:
+/***/ 387:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -126,13 +235,13 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(58);
+__webpack_require__(66);
 
-var _reactBootstrap = __webpack_require__(48);
+var _reactBootstrap = __webpack_require__(50);
 
-var _PassengerRegistration = __webpack_require__(265);
+var _PassengerRegistration = __webpack_require__(390);
 
-var _DriverRegistration = __webpack_require__(264);
+var _DriverRegistration = __webpack_require__(389);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -161,7 +270,7 @@ var Register = function (_super) {
         return _this;
     }
     Register.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "PLEASE ENTER YOUR REGISTRATION DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h5", null, "Choose your registration type"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonGroup, null, React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'passenger'), active: this.state.option === 'passenger' }, "Passenger"), React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'driver'), active: this.state.option === 'driver' }, "Driver")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, this.state.option === 'passenger' ? React.createElement("div", null, React.createElement(_PassengerRegistration.PassengerRegistration, null)) : React.createElement("div", null, React.createElement(_DriverRegistration.DriverRegistration, null))))));
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "PLEASE ENTER YOUR REGISTRATION DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h5", null, "Choose your registration type "))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonGroup, null, React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'passenger'), active: this.state.option === 'passenger' }, "Passenger"), React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'driver'), active: this.state.option === 'driver' }, "Driver")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, this.state.option === 'passenger' ? React.createElement("div", null, React.createElement(_PassengerRegistration.PassengerRegistration, null)) : React.createElement("div", null, React.createElement(_DriverRegistration.DriverRegistration, null))))));
     };
     Register.prototype._onOptionChange = function (option) {
         this.setState({
@@ -174,7 +283,7 @@ exports.Register = Register;
 
 /***/ }),
 
-/***/ 264:
+/***/ 389:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -189,13 +298,13 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(58);
+__webpack_require__(66);
 
-var _reactBootstrap = __webpack_require__(48);
+var _reactBootstrap = __webpack_require__(50);
 
-var _reactBootstrapValidation = __webpack_require__(114);
+var _reactBootstrapValidation = __webpack_require__(187);
 
-var _revalidator = __webpack_require__(147);
+var _revalidator = __webpack_require__(220);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -222,6 +331,13 @@ var __extends = undefined && undefined.__extends || function () {
 
 var schema = {
     properties: {
+        fullname: {
+            type: 'string',
+            minLength: 8,
+            maxLength: 12,
+            required: true,
+            allowEmpty: false
+        },
         email: {
             type: 'string',
             maxLength: 255,
@@ -233,6 +349,20 @@ var schema = {
             type: 'string',
             minLength: 8,
             maxLength: 60,
+            required: true,
+            allowEmpty: false
+        },
+        vehicleDescription: {
+            type: 'string',
+            minLength: 6,
+            maxLength: 60,
+            required: true,
+            allowEmpty: false
+        },
+        vehicleRegistrationNumber: {
+            type: 'string',
+            minLength: 6,
+            maxLength: 30,
             required: true,
             allowEmpty: false
         }
@@ -274,7 +404,7 @@ var DriverRegistration = function (_super) {
         return React.createElement(_reactBootstrapValidation.Form, { className: "submittable-form-inner",
             // Supply callbacks to both valid and invalid
             // submit attempts
-            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Driver details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register")))));
+            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Driver details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullname', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Vehicle details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Description', name: 'vehicleDescription', errorHelp: 'Vehicle description is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Registration Number', name: 'vehicleRegistrationNumber', errorHelp: 'Vehicle registration number is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register")))));
     };
     return DriverRegistration;
 }(React.Component);
@@ -282,7 +412,7 @@ exports.DriverRegistration = DriverRegistration;
 
 /***/ }),
 
-/***/ 265:
+/***/ 390:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -297,13 +427,13 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(58);
+__webpack_require__(66);
 
-var _reactBootstrap = __webpack_require__(48);
+var _reactBootstrap = __webpack_require__(50);
 
-var _reactBootstrapValidation = __webpack_require__(114);
+var _reactBootstrapValidation = __webpack_require__(187);
 
-var _revalidator = __webpack_require__(147);
+var _revalidator = __webpack_require__(220);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -397,7 +527,7 @@ exports.PassengerRegistration = PassengerRegistration;
 
 /***/ }),
 
-/***/ 266:
+/***/ 391:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -407,19 +537,21 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactDom = __webpack_require__(17);
+var _reactDom = __webpack_require__(19);
 
 var ReactDOM = _interopRequireWildcard(_reactDom);
 
-__webpack_require__(58);
+__webpack_require__(66);
 
-var _reactBootstrap = __webpack_require__(48);
+var _reactBootstrap = __webpack_require__(50);
 
-var _reactRouter = __webpack_require__(263);
+var _reactRouter = __webpack_require__(388);
 
-var _Login = __webpack_require__(261);
+var _Login = __webpack_require__(386);
 
-var _Register = __webpack_require__(262);
+var _Register = __webpack_require__(387);
+
+var _CreateJob = __webpack_require__(385);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -446,7 +578,7 @@ var MainNav = function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MainNav.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Navbar, null, React.createElement(_reactBootstrap.Nav, null, React.createElement(_reactBootstrap.NavItem, { eventKey: 1, href: '#/' }, "Login"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/register' }, "Register"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/about' }, "About"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/redirecter' }, "Redirect")));
+        return React.createElement(_reactBootstrap.Navbar, null, React.createElement(_reactBootstrap.Nav, null, React.createElement(_reactBootstrap.NavItem, { eventKey: 1, href: '#/' }, "Login"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/register' }, "Register"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/createjob' }, "CreateJob"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/redirecter' }, "Redirect")));
     };
     return MainNav;
 }(React.Component);
@@ -477,9 +609,9 @@ var ReDirecter = function (_super) {
 var About = function About() {
     return React.createElement("div", null, React.createElement("h2", null, "About"));
 };
-ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register }), React.createElement(_reactRouter.Route, { path: "/about", component: About }), React.createElement(_reactRouter.Route, { path: "/redirecter", component: ReDirecter }))), document.getElementById('root'));
+ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob }), React.createElement(_reactRouter.Route, { path: "/redirecter", component: ReDirecter }))), document.getElementById('root'));
 
 /***/ })
 
-},[266]);
-//# sourceMappingURL=index.bundle.7c8ce94bcadf63a62908.js.map
+},[391]);
+//# sourceMappingURL=index.bundle.7ae0bffce186d10677b8.js.map

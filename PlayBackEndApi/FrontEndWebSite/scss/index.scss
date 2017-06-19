@@ -2,6 +2,7 @@
 
 
 $body-background: #ffffff;
+$standard-margin-left: 15px;
 
 body {
     background-color: $body-background;
@@ -25,6 +26,9 @@ body {
     margin-bottom : 10px;
 }
 
+#createJobBtn {
+    margin-left : $standard-margin-left;
+}
 
 
 #div1 {
