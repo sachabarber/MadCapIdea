@@ -328,6 +328,24 @@ var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
             }, value: 'Accept' }, "Accept")));
     }));
 });
+var ModalExample = React.createClass({
+    displayName: "ModalExample",
+
+    getInitialState: function getInitialState() {
+        return { showModal: false };
+    },
+    close: function close() {
+        this.setState({ showModal: false });
+    },
+    open: function open() {
+        this.setState({ showModal: true });
+    },
+    render: function render() {
+        var popover = React.createElement(_reactBootstrap.Popover, { id: "modal-popover", title: "popover" }, "very popover.such engagement");
+        var tooltip = React.createElement(_reactBootstrap.Tooltip, { id: "modal-tooltip" }, "wow.");
+        return React.createElement("div", null, React.createElement(_reactBootstrap.Button, { bsStyle: "primary", bsSize: "large", onClick: this.open }, "Launch demo modal"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, "Modal heading")), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Text in a modal"), React.createElement("p", null, "Duis mollis, est non commodo luctus, nisi erat porttitor ligula."), React.createElement("h4", null, "Popover in a modal"), React.createElement("p", null, "there is a ", React.createElement(_reactBootstrap.OverlayTrigger, { overlay: popover }, React.createElement("a", { href: "#" }, "popover")), " here"), React.createElement("h4", null, "Tooltips in a modal"), React.createElement("p", null, "there is a ", React.createElement(_reactBootstrap.OverlayTrigger, { overlay: tooltip }, React.createElement("a", { href: "#" }, "tooltip")), " here"), React.createElement("hr", null), React.createElement("h4", null, "Overflowing text to show scroll behavior"), React.createElement("p", null, "Cras mattis consectetur purus sit amet fermentum.Cras justo odio, dapibus ac facilisis in, egestas eget quam.Morbi leo risus, porta ac consectetur ac, vestibulum at eros."), React.createElement("p", null, "Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."), React.createElement("p", null, "Aenean lacinia bibendum nulla sed consectetur.Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Donec sed odio dui.Donec ullamcorper nulla non metus auctor fringilla."), React.createElement("p", null, "Cras mattis consectetur purus sit amet fermentum.Cras justo odio, dapibus ac facilisis in, egestas eget quam.Morbi leo risus, porta ac consectetur ac, vestibulum at eros."), React.createElement("p", null, "Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."), React.createElement("p", null, "Aenean lacinia bibendum nulla sed consectetur.Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Donec sed odio dui.Donec ullamcorper nulla non metus auctor fringilla."), React.createElement("p", null, "Cras mattis consectetur purus sit amet fermentum.Cras justo odio, dapibus ac facilisis in, egestas eget quam.Morbi leo risus, porta ac consectetur ac, vestibulum at eros."), React.createElement("p", null, "Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."), React.createElement("p", null, "Aenean lacinia bibendum nulla sed consectetur.Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Donec sed odio dui.Donec ullamcorper nulla non metus auctor fringilla.")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { onClick: this.close }, "Close"))));
+    }
+});
 var ViewJob = function (_super) {
     __extends(ViewJob, _super);
     function ViewJob(props) {
@@ -381,7 +399,7 @@ var ViewJob = function (_super) {
                     marginLeft: 0,
                     marginRight: 0,
                     marginBottom: 20
-                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_reactBootstrap.Button, { id: "viewJobCompleteBtn", type: 'button', bsSize: 'small', bsStyle: 'primary', value: 'Complete' }, "Complete Job"), React.createElement(_reactBootstrap.Button, { id: "viewJobCancelBtn", type: 'button', bsSize: 'small', bsStyle: 'primary', value: 'Cancel' }, "Cancel Job")))));
+                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_reactBootstrap.Button, { id: "viewJobCompleteBtn", type: 'button', bsSize: 'small', bsStyle: 'primary', value: 'Complete' }, "Complete Job"), React.createElement(_reactBootstrap.Button, { id: "viewJobCancelBtn", type: 'button', bsSize: 'small', bsStyle: 'primary', value: 'Cancel' }, "Cancel Job"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(ModalExample, null))));
     };
     return ViewJob;
 }(React.Component);
@@ -722,4 +740,4 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 /***/ })
 
 },[393]);
-//# sourceMappingURL=index.bundle.00bad9fccf926238acca.js.map
+//# sourceMappingURL=index.bundle.763d6c3bcac07c826ce9.js.map
