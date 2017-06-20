@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 385:
+/***/ 386:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15,11 +15,11 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(66);
+__webpack_require__(51);
 
-var _reactBootstrap = __webpack_require__(50);
+var _reactBootstrap = __webpack_require__(41);
 
-var _reactGoogleMaps = __webpack_require__(814);
+var _reactGoogleMaps = __webpack_require__(365);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -40,20 +40,8 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 
-//const GettingStartedGoogleMap = withGoogleMap(props => (
-//    <GoogleMap
-//        ref={props.onMapLoad}
-//        defaultZoom={16}
-//        defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}
-//        onClick={props.onMapClick}
-//        >
-//        <Marker position={props.currentPosition}/>
-//    </GoogleMap>
-//));
-//https://github.com/tomchentw/react-google-maps/pull/501
-//https://github.com/tomchentw/react-google-maps/issues/373
-var GettingStartedGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
-    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, React.createElement(_reactGoogleMaps.Marker, { position: props.currentPosition, icon: '/assets/images/man.png' }));
+var CreateJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
+    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, React.createElement(_reactGoogleMaps.Marker, { position: props.currentPosition, icon: '/assets/images/passenger.png' }));
 });
 var CreateJob = function (_super) {
     __extends(CreateJob, _super);
@@ -75,7 +63,7 @@ var CreateJob = function (_super) {
         return _this;
     }
     CreateJob.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "SET YOUR CURRENT LOCATION"), React.createElement("h6", null, "Click the map to set your current location"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(GettingStartedGoogleMap, { containerElement: React.createElement("div", { style: {
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "SET YOUR CURRENT LOCATION"), React.createElement("h6", null, "Click the map to set your current location"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(CreateJobGoogleMap, { containerElement: React.createElement("div", { style: {
                     position: 'relative',
                     top: 0,
                     left: 0,
@@ -109,7 +97,7 @@ exports.CreateJob = CreateJob;
 
 /***/ }),
 
-/***/ 386:
+/***/ 387:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -124,9 +112,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(66);
+__webpack_require__(51);
 
-var _reactBootstrap = __webpack_require__(50);
+var _reactBootstrap = __webpack_require__(41);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -220,7 +208,7 @@ exports.Login = Login;
 
 /***/ }),
 
-/***/ 387:
+/***/ 388:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -235,13 +223,13 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(66);
+__webpack_require__(51);
 
-var _reactBootstrap = __webpack_require__(50);
+var _reactBootstrap = __webpack_require__(41);
 
-var _PassengerRegistration = __webpack_require__(390);
+var _PassengerRegistration = __webpack_require__(392);
 
-var _DriverRegistration = __webpack_require__(389);
+var _DriverRegistration = __webpack_require__(391);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -292,15 +280,133 @@ exports.Register = Register;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.ViewJob = undefined;
+
+var _react = __webpack_require__(1);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(51);
+
+var _reactBootstrap = __webpack_require__(41);
+
+var _reactGoogleMaps = __webpack_require__(365);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var STYLES = {
+    overlayView: {
+        background: "white",
+        border: "1px solid #ccc",
+        padding: 15
+    }
+};
+var GetPixelPositionOffset = function GetPixelPositionOffset(width, height) {
+    return { x: -(width / 2), y: -(height / 2) };
+};
+var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
+    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 14, defaultCenter: { lat: 50.8202949, lng: -0.1406958 } }, props.markers.map(function (marker, index) {
+        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: function onClick() {
+                return props.onMarkerClick(marker);
+            }, value: 'Accept' }, "Accept")));
+    }));
+});
+var ViewJob = function (_super) {
+    __extends(ViewJob, _super);
+    function ViewJob(props) {
+        var _this = _super.call(this, props) || this;
+        _this._handleClick = function (targetMarker) {
+            console.log('button on overlay clicked:' + targetMarker.key);
+        };
+        _this.state = {
+            markers: [{
+                position: {
+                    lat: 50.8202949,
+                    lng: -0.1406958
+                },
+                key: 'driver_1',
+                icon: '/assets/images/driver.png'
+            }, {
+                position: {
+                    lat: 50.8128187,
+                    lng: -0.1361418
+                },
+                key: 'driver_2',
+                icon: '/assets/images/driver.png'
+            }]
+        };
+        return _this;
+    }
+    ViewJob.prototype.render = function () {
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "CURRENT JOB"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(ViewJobGoogleMap, { containerElement: React.createElement("div", { style: {
+                    position: 'relative',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: 600,
+                    height: 600,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    marginTop: 20,
+                    marginLeft: 0,
+                    marginRight: 0,
+                    marginBottom: 20
+                } }), mapElement: React.createElement("div", { style: {
+                    position: 'relative',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: 600,
+                    height: 600,
+                    marginTop: 20,
+                    marginLeft: 0,
+                    marginRight: 0,
+                    marginBottom: 20
+                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_reactBootstrap.Button, { id: "viewJobCompleteBtn", type: 'button', bsSize: 'small', bsStyle: 'primary', value: 'Complete' }, "Complete Job"), React.createElement(_reactBootstrap.Button, { id: "viewJobCancelBtn", type: 'button', bsSize: 'small', bsStyle: 'primary', value: 'Cancel' }, "Cancel Job")))));
+    };
+    return ViewJob;
+}(React.Component);
+exports.ViewJob = ViewJob;
+
+/***/ }),
+
+/***/ 391:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.DriverRegistration = undefined;
 
 var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(66);
+__webpack_require__(51);
 
-var _reactBootstrap = __webpack_require__(50);
+var _reactBootstrap = __webpack_require__(41);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -412,7 +518,7 @@ exports.DriverRegistration = DriverRegistration;
 
 /***/ }),
 
-/***/ 390:
+/***/ 392:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -427,9 +533,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(66);
+__webpack_require__(51);
 
-var _reactBootstrap = __webpack_require__(50);
+var _reactBootstrap = __webpack_require__(41);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -527,7 +633,7 @@ exports.PassengerRegistration = PassengerRegistration;
 
 /***/ }),
 
-/***/ 391:
+/***/ 393:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -541,17 +647,19 @@ var _reactDom = __webpack_require__(19);
 
 var ReactDOM = _interopRequireWildcard(_reactDom);
 
-__webpack_require__(66);
+__webpack_require__(51);
 
-var _reactBootstrap = __webpack_require__(50);
+var _reactBootstrap = __webpack_require__(41);
 
-var _reactRouter = __webpack_require__(388);
+var _reactRouter = __webpack_require__(390);
 
-var _Login = __webpack_require__(386);
+var _Login = __webpack_require__(387);
 
-var _Register = __webpack_require__(387);
+var _Register = __webpack_require__(388);
 
-var _CreateJob = __webpack_require__(385);
+var _CreateJob = __webpack_require__(386);
+
+var _ViewJob = __webpack_require__(389);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -578,7 +686,7 @@ var MainNav = function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MainNav.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Navbar, null, React.createElement(_reactBootstrap.Nav, null, React.createElement(_reactBootstrap.NavItem, { eventKey: 1, href: '#/' }, "Login"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/register' }, "Register"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/createjob' }, "CreateJob"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/redirecter' }, "Redirect")));
+        return React.createElement(_reactBootstrap.Navbar, null, React.createElement(_reactBootstrap.Nav, null, React.createElement(_reactBootstrap.NavItem, { eventKey: 1, href: '#/' }, "Login"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/register' }, "Register"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/createjob' }, "CreateJob"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/viewJob' }, "ViewJob"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/redirecter' }, "Redirect")));
     };
     return MainNav;
 }(React.Component);
@@ -609,9 +717,9 @@ var ReDirecter = function (_super) {
 var About = function About() {
     return React.createElement("div", null, React.createElement("h2", null, "About"));
 };
-ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob }), React.createElement(_reactRouter.Route, { path: "/redirecter", component: ReDirecter }))), document.getElementById('root'));
+ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob }), React.createElement(_reactRouter.Route, { path: "/redirecter", component: ReDirecter }))), document.getElementById('root'));
 
 /***/ })
 
-},[391]);
-//# sourceMappingURL=index.bundle.7ae0bffce186d10677b8.js.map
+},[393]);
+//# sourceMappingURL=index.bundle.00bad9fccf926238acca.js.map

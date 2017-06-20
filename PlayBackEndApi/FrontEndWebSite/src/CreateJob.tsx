@@ -16,25 +16,7 @@ import
 
 import { withGoogleMap, GoogleMap, Marker, InfoBox } from "react-google-maps";
 
-//const GettingStartedGoogleMap = withGoogleMap(props => (
-//    <GoogleMap
-//        ref={props.onMapLoad}
-//        defaultZoom={16}
-//        defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}
-//        onClick={props.onMapClick}
-//        >
-//        <Marker position={props.currentPosition}/>
-//    </GoogleMap>
-//));
-
-
-//https://github.com/tomchentw/react-google-maps/pull/501
-//https://github.com/tomchentw/react-google-maps/issues/373
-
-
-
-
-const GettingStartedGoogleMap = withGoogleMap(props => (
+const CreateJobGoogleMap = withGoogleMap(props => (
     <GoogleMap
         ref={props.onMapLoad}
         defaultZoom={16}
@@ -42,28 +24,11 @@ const GettingStartedGoogleMap = withGoogleMap(props => (
         onClick={props.onMapClick}>
         <Marker
             position={props.currentPosition}
-            icon='/assets/images/man.png'>
+            icon='/assets/images/passenger.png'>
         </Marker>
     </GoogleMap>
 ));
 
-
-
-
-//TODO : make this correct
-//https://github.com/tomchentw/react-google-maps/issues/382
-//see https://tomchentw.github.io/react-google-maps/
-//
-//state = {
-//    markers: [{
-//      position: {
-//        lat: 25.0112183,
-//        lng: 121.52067570000001,
-//      },
-//      key: `Taiwan`,
-//      defaultAnimation: 2,
-//    }],
-//  };
 
 export interface CreateJobState {
     currentPosition: any;
@@ -91,7 +56,7 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                     </Row>
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
-                            <GettingStartedGoogleMap
+                            <CreateJobGoogleMap
                                 containerElement={
                                     <div style={{
                                         position: 'relative',

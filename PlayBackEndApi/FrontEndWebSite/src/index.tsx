@@ -9,6 +9,8 @@ import { Router, Route, hashHistory  } from 'react-router'
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { CreateJob } from "./CreateJob";
+import { ViewJob } from "./ViewJob";
+
 
 class MainNav extends React.Component<undefined, undefined> {
     render() {
@@ -18,6 +20,7 @@ class MainNav extends React.Component<undefined, undefined> {
                     <NavItem eventKey={1} href='#/'>Login</NavItem>
                     <NavItem eventKey={2} href='#/register'>Register</NavItem>
                     <NavItem eventKey={2} href='#/createjob'>CreateJob</NavItem>
+                    <NavItem eventKey={2} href='#/viewJob'>ViewJob</NavItem>
                     <NavItem eventKey={2} href='#/redirecter'>Redirect</NavItem>
                 </Nav>
             </Navbar>
@@ -70,6 +73,7 @@ ReactDOM.render((
             <Route path="/" component={Login}/>
             <Route path="/register" component={Register}/>
             <Route path="/createjob" component={CreateJob}/>
+            <Route path="/viewjob" component={ViewJob}/>
             <Route path="/redirecter" component={ReDirecter}/>
         </Route>
     </Router>
