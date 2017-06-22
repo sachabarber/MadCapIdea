@@ -15,9 +15,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(51);
+__webpack_require__(39);
 
-var _reactBootstrap = __webpack_require__(41);
+var _reactBootstrap = __webpack_require__(34);
 
 var _reactGoogleMaps = __webpack_require__(365);
 
@@ -112,9 +112,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(51);
+__webpack_require__(39);
 
-var _reactBootstrap = __webpack_require__(41);
+var _reactBootstrap = __webpack_require__(34);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -223,9 +223,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(51);
+__webpack_require__(39);
 
-var _reactBootstrap = __webpack_require__(41);
+var _reactBootstrap = __webpack_require__(34);
 
 var _PassengerRegistration = __webpack_require__(392);
 
@@ -286,9 +286,13 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(51);
+var _RatingDialog = __webpack_require__(393);
 
-var _reactBootstrap = __webpack_require__(41);
+var _YesNoDialog = __webpack_require__(394);
+
+__webpack_require__(39);
+
+var _reactBootstrap = __webpack_require__(34);
 
 var _reactGoogleMaps = __webpack_require__(365);
 
@@ -323,28 +327,10 @@ var GetPixelPositionOffset = function GetPixelPositionOffset(width, height) {
 };
 var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
     return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 14, defaultCenter: { lat: 50.8202949, lng: -0.1406958 } }, props.markers.map(function (marker, index) {
-        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: function onClick() {
+        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
                 return props.onMarkerClick(marker);
             }, value: 'Accept' }, "Accept")));
     }));
-});
-var ModalExample = React.createClass({
-    displayName: "ModalExample",
-
-    getInitialState: function getInitialState() {
-        return { showModal: false };
-    },
-    close: function close() {
-        this.setState({ showModal: false });
-    },
-    open: function open() {
-        this.setState({ showModal: true });
-    },
-    render: function render() {
-        var popover = React.createElement(_reactBootstrap.Popover, { id: "modal-popover", title: "popover" }, "very popover.such engagement");
-        var tooltip = React.createElement(_reactBootstrap.Tooltip, { id: "modal-tooltip" }, "wow.");
-        return React.createElement("div", null, React.createElement(_reactBootstrap.Button, { bsStyle: "primary", bsSize: "large", onClick: this.open }, "Launch demo modal"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, "Modal heading")), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Text in a modal"), React.createElement("p", null, "Duis mollis, est non commodo luctus, nisi erat porttitor ligula."), React.createElement("h4", null, "Popover in a modal"), React.createElement("p", null, "there is a ", React.createElement(_reactBootstrap.OverlayTrigger, { overlay: popover }, React.createElement("a", { href: "#" }, "popover")), " here"), React.createElement("h4", null, "Tooltips in a modal"), React.createElement("p", null, "there is a ", React.createElement(_reactBootstrap.OverlayTrigger, { overlay: tooltip }, React.createElement("a", { href: "#" }, "tooltip")), " here"), React.createElement("hr", null), React.createElement("h4", null, "Overflowing text to show scroll behavior"), React.createElement("p", null, "Cras mattis consectetur purus sit amet fermentum.Cras justo odio, dapibus ac facilisis in, egestas eget quam.Morbi leo risus, porta ac consectetur ac, vestibulum at eros."), React.createElement("p", null, "Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."), React.createElement("p", null, "Aenean lacinia bibendum nulla sed consectetur.Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Donec sed odio dui.Donec ullamcorper nulla non metus auctor fringilla."), React.createElement("p", null, "Cras mattis consectetur purus sit amet fermentum.Cras justo odio, dapibus ac facilisis in, egestas eget quam.Morbi leo risus, porta ac consectetur ac, vestibulum at eros."), React.createElement("p", null, "Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."), React.createElement("p", null, "Aenean lacinia bibendum nulla sed consectetur.Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Donec sed odio dui.Donec ullamcorper nulla non metus auctor fringilla."), React.createElement("p", null, "Cras mattis consectetur purus sit amet fermentum.Cras justo odio, dapibus ac facilisis in, egestas eget quam.Morbi leo risus, porta ac consectetur ac, vestibulum at eros."), React.createElement("p", null, "Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."), React.createElement("p", null, "Aenean lacinia bibendum nulla sed consectetur.Praesent commodo cursus magna, vel scelerisque nisl consectetur et.Donec sed odio dui.Donec ullamcorper nulla non metus auctor fringilla.")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { onClick: this.close }, "Close"))));
-    }
 });
 var ViewJob = function (_super) {
     __extends(ViewJob, _super);
@@ -399,7 +385,7 @@ var ViewJob = function (_super) {
                     marginLeft: 0,
                     marginRight: 0,
                     marginBottom: 20
-                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_reactBootstrap.Button, { id: "viewJobCompleteBtn", type: 'button', bsSize: 'small', bsStyle: 'primary', value: 'Complete' }, "Complete Job"), React.createElement(_reactBootstrap.Button, { id: "viewJobCancelBtn", type: 'button', bsSize: 'small', bsStyle: 'primary', value: 'Cancel' }, "Cancel Job"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(ModalExample, null))));
+                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger" }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", headerText: "Cancel the job" })))));
     };
     return ViewJob;
 }(React.Component);
@@ -422,9 +408,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(51);
+__webpack_require__(39);
 
-var _reactBootstrap = __webpack_require__(41);
+var _reactBootstrap = __webpack_require__(34);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -551,9 +537,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(51);
+__webpack_require__(39);
 
-var _reactBootstrap = __webpack_require__(41);
+var _reactBootstrap = __webpack_require__(34);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -657,6 +643,134 @@ exports.PassengerRegistration = PassengerRegistration;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.RatingDialog = undefined;
+
+var _react = __webpack_require__(1);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(39);
+
+var _reactBootstrap = __webpack_require__(34);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var RatingDialog = function (_super) {
+    __extends(RatingDialog, _super);
+    function RatingDialog(props) {
+        var _this = _super.call(this, props) || this;
+        _this._close = function () {
+            _this.setState({ showModal: false });
+        };
+        _this._open = function () {
+            _this.setState({ showModal: true });
+        };
+        console.log(_this.props);
+        //set initial state
+        _this.state = {
+            showModal: false
+        };
+        return _this;
+    }
+    RatingDialog.prototype.render = function () {
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Rating control TODO")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._close }, "Ok"))));
+    };
+    return RatingDialog;
+}(React.Component);
+exports.RatingDialog = RatingDialog;
+
+/***/ }),
+
+/***/ 394:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.YesNoDialog = undefined;
+
+var _react = __webpack_require__(1);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(39);
+
+var _reactBootstrap = __webpack_require__(34);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var YesNoDialog = function (_super) {
+    __extends(YesNoDialog, _super);
+    function YesNoDialog(props) {
+        var _this = _super.call(this, props) || this;
+        _this._close = function () {
+            _this.setState({ showModal: false });
+        };
+        _this._open = function () {
+            _this.setState({ showModal: true });
+        };
+        console.log(_this.props);
+        //set initial state
+        _this.state = {
+            showModal: false
+        };
+        return _this;
+    }
+    YesNoDialog.prototype.render = function () {
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, this.props.launchButtonText), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Are you sure?")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._close }, "Yes"), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'danger', onClick: this._close }, "Cancel"))));
+    };
+    return YesNoDialog;
+}(React.Component);
+exports.YesNoDialog = YesNoDialog;
+
+/***/ }),
+
+/***/ 395:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
@@ -665,9 +779,9 @@ var _reactDom = __webpack_require__(19);
 
 var ReactDOM = _interopRequireWildcard(_reactDom);
 
-__webpack_require__(51);
+__webpack_require__(39);
 
-var _reactBootstrap = __webpack_require__(41);
+var _reactBootstrap = __webpack_require__(34);
 
 var _reactRouter = __webpack_require__(390);
 
@@ -739,5 +853,5 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ })
 
-},[393]);
-//# sourceMappingURL=index.bundle.763d6c3bcac07c826ce9.js.map
+},[395]);
+//# sourceMappingURL=index.bundle.d6ba515e3e741e92facb.js.map

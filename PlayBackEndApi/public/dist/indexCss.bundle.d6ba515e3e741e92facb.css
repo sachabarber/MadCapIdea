@@ -21,10 +21,13 @@ body {
 #createJobBtn, #viewJobCompleteBtn, #viewJobCancelBtn {
   margin-left: 15px; }
 
+.leftFloat {
+  float: left; }
+
 #div1 {
   background-color: deeppink; }
 
 #comet {
   display: none; }
 
-/*# sourceMappingURL=indexCss.bundle.763d6c3bcac07c826ce9.css.map*/
+/*# sourceMappingURL=indexCss.bundle.d6ba515e3e741e92facb.css.map*/
