@@ -90,7 +90,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + chunkId + ".bundle." + "d6ba515e3e741e92facb" + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + chunkId + ".bundle." + "a7266333a0613fb6e524" + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -5856,16 +5856,16 @@ function _resetWarned() {
 
 var _assign = __webpack_require__(11);
 
-var ReactChildren = __webpack_require__(849);
+var ReactChildren = __webpack_require__(850);
 var ReactComponent = __webpack_require__(218);
-var ReactPureComponent = __webpack_require__(854);
-var ReactClass = __webpack_require__(850);
-var ReactDOMFactories = __webpack_require__(851);
+var ReactPureComponent = __webpack_require__(855);
+var ReactClass = __webpack_require__(851);
+var ReactDOMFactories = __webpack_require__(852);
 var ReactElement = __webpack_require__(65);
-var ReactPropTypes = __webpack_require__(852);
-var ReactVersion = __webpack_require__(855);
+var ReactPropTypes = __webpack_require__(853);
+var ReactVersion = __webpack_require__(856);
 
-var onlyChild = __webpack_require__(858);
+var onlyChild = __webpack_require__(859);
 var warning = __webpack_require__(6);
 
 var createElement = ReactElement.createElement;
@@ -19094,7 +19094,7 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _validator = __webpack_require__(863);
+var _validator = __webpack_require__(864);
 
 /**
  * Returns true if the value is not empty
@@ -22782,7 +22782,7 @@ var ReactCompositeComponent = __webpack_require__(748);
 var ReactEmptyComponent = __webpack_require__(349);
 var ReactHostComponent = __webpack_require__(351);
 
-var getNextDebugID = __webpack_require__(857);
+var getNextDebugID = __webpack_require__(858);
 var invariant = __webpack_require__(5);
 var warning = __webpack_require__(6);
 
@@ -24793,7 +24793,7 @@ var ReactCurrentOwner = __webpack_require__(38);
 var ReactComponentTreeHook = __webpack_require__(28);
 var ReactElement = __webpack_require__(65);
 
-var checkReactTypeSpec = __webpack_require__(856);
+var checkReactTypeSpec = __webpack_require__(857);
 
 var canDefineProperty = __webpack_require__(133);
 var getIteratorFn = __webpack_require__(384);
@@ -25110,7 +25110,7 @@ module.exports = getIteratorFn;
 
 exports.__esModule = true;
 
-var _createUncontrollable = __webpack_require__(861);
+var _createUncontrollable = __webpack_require__(862);
 
 var _createUncontrollable2 = _interopRequireDefault(_createUncontrollable);
 
@@ -35302,7 +35302,7 @@ module.exports = function() {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(860);
+var strictUriEncode = __webpack_require__(861);
 var objectAssign = __webpack_require__(11);
 
 function encoderForArrayFormat(opts) {
@@ -56408,6 +56408,287 @@ function withRouter(WrappedComponent, options) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var parentStyles = {
+  overflow: 'hidden',
+  position: 'relative'
+};
+
+var defaultStyles = {
+  position: 'relative',
+  overflow: 'hidden',
+  cursor: 'pointer',
+  display: 'block',
+  float: 'left'
+};
+
+var getHalfStarStyles = function getHalfStarStyles(color, uniqueness) {
+  return '\n    .react-stars-' + uniqueness + ':before {\n      position: absolute;\n      overflow: hidden;\n      display: block;\n      z-index: 1;\n      top: 0; left: 0;\n      width: 50%;\n      content: attr(data-forhalf);\n      color: ' + color + ';\n  }';
+};
+
+var ReactStars = function (_Component) {
+  _inherits(ReactStars, _Component);
+
+  function ReactStars(props) {
+    _classCallCheck(this, ReactStars);
+
+    // set defaults
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReactStars).call(this, props));
+
+    props = Object.assign({}, props);
+
+    if (typeof props.edit === 'undefined') {
+      props.edit = true;
+    } else {
+      props.edit = false;
+    }
+
+    if (typeof props.half === 'undefined') {
+      props.half = true;
+    } else {
+      props.half = false;
+    }
+
+    _this.state = {
+      uniqueness: (Math.random() + '').replace('.', ''),
+      value: props.value || 0,
+      stars: [],
+      halfStar: {
+        at: Math.floor(props.value),
+        hidden: props.half && props.value % 1 < 0.5
+      }
+    };
+
+    _this.state.config = {
+      count: props.count || 5,
+      size: props.size || 15,
+      char: props.char || '★',
+      // default color of inactive star
+      color1: props.color1 || 'gray',
+      // color of an active star
+      color2: props.color2 || '#ffd700',
+      half: props.half,
+      edit: props.edit
+    };
+
+    return _this;
+  }
+
+  _createClass(ReactStars, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.setState({
+        stars: this.getStars(this.state.value)
+      });
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      this.setState({
+        stars: this.getStars(props.value),
+        value: props.value,
+        halfStar: {
+          at: Math.floor(props.value),
+          hidden: this.state.config.half && props.value % 1 < 0.5
+        }
+      });
+    }
+  }, {
+    key: 'isDecimal',
+    value: function isDecimal(value) {
+      return value % 1 !== 0;
+    }
+  }, {
+    key: 'getRate',
+    value: function getRate() {
+      var stars = void 0;
+      if (this.state.config.half) {
+        stars = Math.floor(this.state.value);
+      } else {
+        stars = Math.round(this.state.value);
+      }
+      return stars;
+    }
+  }, {
+    key: 'getStars',
+    value: function getStars(activeCount) {
+      if (typeof activeCount === 'undefined') {
+        activeCount = this.getRate();
+      }
+      var stars = [];
+      for (var i = 0; i < this.state.config.count; i++) {
+        stars.push({
+          active: i <= activeCount - 1
+        });
+      }
+      return stars;
+    }
+  }, {
+    key: 'mouseOver',
+    value: function mouseOver(event) {
+      var _state = this.state;
+      var config = _state.config;
+      var halfStar = _state.halfStar;
+
+      if (!config.edit) return;
+      var index = Number(event.target.getAttribute('data-index'));
+      if (config.half) {
+        var isAtHalf = this.moreThanHalf(event, config.size);
+        halfStar.hidden = isAtHalf;
+        if (isAtHalf) index = index + 1;
+        halfStar.at = index;
+      } else {
+        index = index + 1;
+      }
+      this.setState({
+        stars: this.getStars(index)
+      });
+    }
+  }, {
+    key: 'moreThanHalf',
+    value: function moreThanHalf(event, size) {
+      var target = event.target;
+
+      var mouseAt = event.clientX - target.getBoundingClientRect().left;
+      mouseAt = Math.round(Math.abs(mouseAt));
+      return mouseAt > size / 2;
+    }
+  }, {
+    key: 'mouseLeave',
+    value: function mouseLeave() {
+      var _state2 = this.state;
+      var value = _state2.value;
+      var halfStar = _state2.halfStar;
+      var config = _state2.config;
+
+      if (!config.edit) return;
+      if (config.half) {
+        halfStar.hidden = !this.isDecimal(value);
+        halfStar.at = Math.floor(this.state.value);
+      }
+      this.setState({
+        stars: this.getStars()
+      });
+    }
+  }, {
+    key: 'clicked',
+    value: function clicked(event) {
+      var _state3 = this.state;
+      var config = _state3.config;
+      var halfStar = _state3.halfStar;
+
+      if (!config.edit) return;
+      var index = Number(event.target.getAttribute('data-index'));
+      var value = void 0;
+      if (config.half) {
+        var isAtHalf = this.moreThanHalf(event, config.size);
+        halfStar.hidden = isAtHalf;
+        if (isAtHalf) index = index + 1;
+        value = isAtHalf ? index : index + .5;
+        halfStar.at = index;
+      } else {
+        value = index = index + 1;
+      }
+      this.setState({
+        value: value,
+        stars: this.getStars(index)
+      });
+      this.props.onChange(value);
+    }
+  }, {
+    key: 'renderHalfStarStyleElement',
+    value: function renderHalfStarStyleElement() {
+      var _state4 = this.state;
+      var config = _state4.config;
+      var uniqueness = _state4.uniqueness;
+
+      return _react2.default.createElement('style', { dangerouslySetInnerHTML: {
+          __html: getHalfStarStyles(config.color2, uniqueness)
+        } });
+    }
+  }, {
+    key: 'renderStars',
+    value: function renderStars() {
+      var _this2 = this;
+
+      var _state5 = this.state;
+      var halfStar = _state5.halfStar;
+      var stars = _state5.stars;
+      var uniqueness = _state5.uniqueness;
+      var _state$config = this.state.config;
+      var color1 = _state$config.color1;
+      var color2 = _state$config.color2;
+      var size = _state$config.size;
+      var char = _state$config.char;
+      var half = _state$config.half;
+
+      return stars.map(function (star, i) {
+        var starClass = '';
+        if (half && !halfStar.hidden && halfStar.at === i) {
+          starClass = 'react-stars-' + uniqueness;
+        }
+        var style = Object.assign({}, defaultStyles, {
+          color: star.active ? color2 : color1,
+          fontSize: size + 'px'
+        });
+        return _react2.default.createElement(
+          'span',
+          {
+            className: starClass,
+            style: style,
+            key: i,
+            'data-index': i,
+            'data-forhalf': char,
+            onMouseOver: _this2.mouseOver.bind(_this2),
+            onMouseMove: _this2.mouseOver.bind(_this2),
+            onMouseLeave: _this2.mouseLeave.bind(_this2),
+            onClick: _this2.clicked.bind(_this2) },
+          char
+        );
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { style: parentStyles },
+        this.state.config.half ? this.renderHalfStarStyleElement() : '',
+        this.renderStars()
+      );
+    }
+  }]);
+
+  return ReactStars;
+}(_react.Component);
+
+exports.default = ReactStars;
+
+/***/ }),
+/* 848 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -56468,7 +56749,7 @@ var KeyEscapeUtils = {
 module.exports = KeyEscapeUtils;
 
 /***/ }),
-/* 848 */
+/* 849 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56586,7 +56867,7 @@ module.exports = PooledClass;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 849 */
+/* 850 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56602,11 +56883,11 @@ module.exports = PooledClass;
 
 
 
-var PooledClass = __webpack_require__(848);
+var PooledClass = __webpack_require__(849);
 var ReactElement = __webpack_require__(65);
 
 var emptyFunction = __webpack_require__(29);
-var traverseAllChildren = __webpack_require__(859);
+var traverseAllChildren = __webpack_require__(860);
 
 var twoArgumentPooler = PooledClass.twoArgumentPooler;
 var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -56782,7 +57063,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 /***/ }),
-/* 850 */
+/* 851 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57511,7 +57792,7 @@ module.exports = ReactClass;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 851 */
+/* 852 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57687,7 +57968,7 @@ module.exports = ReactDOMFactories;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 852 */
+/* 853 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57711,7 +57992,7 @@ var factory = __webpack_require__(315);
 module.exports = factory(isValidElement);
 
 /***/ }),
-/* 853 */
+/* 854 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57733,7 +58014,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 854 */
+/* 855 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57780,7 +58061,7 @@ ReactPureComponent.prototype.isPureReactComponent = true;
 module.exports = ReactPureComponent;
 
 /***/ }),
-/* 855 */
+/* 856 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57799,7 +58080,7 @@ module.exports = ReactPureComponent;
 module.exports = '15.5.4';
 
 /***/ }),
-/* 856 */
+/* 857 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57818,7 +58099,7 @@ module.exports = '15.5.4';
 var _prodInvariant = __webpack_require__(66);
 
 var ReactPropTypeLocationNames = __webpack_require__(383);
-var ReactPropTypesSecret = __webpack_require__(853);
+var ReactPropTypesSecret = __webpack_require__(854);
 
 var invariant = __webpack_require__(5);
 var warning = __webpack_require__(6);
@@ -57892,7 +58173,7 @@ module.exports = checkReactTypeSpec;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 857 */
+/* 858 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57918,7 +58199,7 @@ function getNextDebugID() {
 module.exports = getNextDebugID;
 
 /***/ }),
-/* 858 */
+/* 859 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57962,7 +58243,7 @@ module.exports = onlyChild;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 859 */
+/* 860 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57985,7 +58266,7 @@ var REACT_ELEMENT_TYPE = __webpack_require__(381);
 
 var getIteratorFn = __webpack_require__(384);
 var invariant = __webpack_require__(5);
-var KeyEscapeUtils = __webpack_require__(847);
+var KeyEscapeUtils = __webpack_require__(848);
 var warning = __webpack_require__(6);
 
 var SEPARATOR = '.';
@@ -58144,7 +58425,7 @@ module.exports = traverseAllChildren;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 860 */
+/* 861 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58157,7 +58438,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 861 */
+/* 862 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58177,7 +58458,7 @@ var _invariant = __webpack_require__(15);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _utils = __webpack_require__(862);
+var _utils = __webpack_require__(863);
 
 var utils = _interopRequireWildcard(_utils);
 
@@ -58314,7 +58595,7 @@ function createUncontrollable(mixins, set) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 862 */
+/* 863 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58446,7 +58727,7 @@ function has(o, k) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 863 */
+/* 864 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -59210,4 +59491,4 @@ function has(o, k) {
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=vendor.bundle.d6ba515e3e741e92facb.js.map
+//# sourceMappingURL=vendor.bundle.a7266333a0613fb6e524.js.map

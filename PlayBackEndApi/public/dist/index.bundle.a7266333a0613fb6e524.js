@@ -339,6 +339,12 @@ var ViewJob = function (_super) {
         _this._handleClick = function (targetMarker) {
             console.log('button on overlay clicked:' + targetMarker.key);
         };
+        _this._yesCallback = function () {
+            console.log('YES CLICKED');
+        };
+        _this._noCallback = function () {
+            console.log('NO CLICKED');
+        };
         _this.state = {
             markers: [{
                 position: {
@@ -385,7 +391,7 @@ var ViewJob = function (_super) {
                     marginLeft: 0,
                     marginRight: 0,
                     marginBottom: 20
-                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger" }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", headerText: "Cancel the job" })))));
+                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger" }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this._yesCallback, noCallBack: this._noCallback, headerText: "Cancel the job" })))));
     };
     return ViewJob;
 }(React.Component);
@@ -656,6 +662,12 @@ __webpack_require__(39);
 
 var _reactBootstrap = __webpack_require__(34);
 
+var _reactStars = __webpack_require__(847);
+
+var _reactStars2 = _interopRequireDefault(_reactStars);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var __extends = undefined && undefined.__extends || function () {
@@ -685,6 +697,9 @@ var RatingDialog = function (_super) {
         _this._open = function () {
             _this.setState({ showModal: true });
         };
+        _this._ratingChanged = function (newRating) {
+            console.log(newRating);
+        };
         console.log(_this.props);
         //set initial state
         _this.state = {
@@ -693,7 +708,7 @@ var RatingDialog = function (_super) {
         return _this;
     }
     RatingDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Rating control TODO")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._close }, "Ok"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement(_reactStars2.default, { count: 5, onChange: this._ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this._close }, "Ok"))));
     };
     return RatingDialog;
 }(React.Component);
@@ -743,6 +758,14 @@ var YesNoDialog = function (_super) {
     __extends(YesNoDialog, _super);
     function YesNoDialog(props) {
         var _this = _super.call(this, props) || this;
+        _this._yesClicked = function () {
+            _this.setState({ showModal: false });
+            _this.props.yesCallBack();
+        };
+        _this._noClicked = function () {
+            _this.setState({ showModal: false });
+            _this.props.noCallBack();
+        };
         _this._close = function () {
             _this.setState({ showModal: false });
         };
@@ -757,7 +780,7 @@ var YesNoDialog = function (_super) {
         return _this;
     }
     YesNoDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, this.props.launchButtonText), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Are you sure?")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._close }, "Yes"), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'danger', onClick: this._close }, "Cancel"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, this.props.launchButtonText), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Are you sure?")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._yesClicked }, "Yes"), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'danger', onClick: this._noClicked }, "Cancel"))));
     };
     return YesNoDialog;
 }(React.Component);
@@ -854,4 +877,4 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 /***/ })
 
 },[395]);
-//# sourceMappingURL=index.bundle.d6ba515e3e741e92facb.js.map
+//# sourceMappingURL=index.bundle.a7266333a0613fb6e524.js.map

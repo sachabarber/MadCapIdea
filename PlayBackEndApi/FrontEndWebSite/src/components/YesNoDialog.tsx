@@ -10,11 +10,13 @@ import
 } from "react-bootstrap";
 
 
-
+//TODO : Fix this
 export interface YesNoDialogProps {
     headerText: string;
     theId: string;
     launchButtonText: string;
+    yesCallBack: any;
+    noCallBack: any;
 }
 
 export interface YesNoDialogState {
@@ -31,6 +33,16 @@ export class YesNoDialog extends React.Component<YesNoDialogProps, YesNoDialogSt
         this.state = {
             showModal: false
         };
+    }
+
+    _yesClicked = () => {
+        this.setState({ showModal: false });
+        this.props.yesCallBack();
+    }
+
+    _noClicked = () => {
+        this.setState({ showModal: false });
+        this.props.noCallBack();
     }
 
     _close = () => {
@@ -64,12 +76,12 @@ export class YesNoDialog extends React.Component<YesNoDialogProps, YesNoDialogSt
                             type='button'
                             bsSize='small'
                             bsStyle='primary'
-                            onClick={this._close}>Yes</Button>
+                            onClick={this._yesClicked}>Yes</Button>
                         <Button
                             type='button'
                             bsSize='small'
                             bsStyle='danger'
-                            onClick={this._close}>Cancel</Button>
+                            onClick={this._noClicked}>Cancel</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

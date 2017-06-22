@@ -10,6 +10,8 @@ import
 } from "react-bootstrap";
 
 
+import ReactStars from 'react-stars';
+
 
 export interface RatingDialogProps {
     headerText: string;
@@ -40,6 +42,10 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
         this.setState({ showModal: true });
     }
 
+    _ratingChanged = (newRating) => {
+        console.log(newRating)
+    }
+
     render() {
         return (
             <div className="leftFloat">
@@ -56,11 +62,15 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
                         <Modal.Title>{ this.props.headerText }</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h4>Rating control TODO</h4>
+                        <h4>Give your rating between 1-5</h4>
+                        <ReactStars count={5}
+                                    onChange={this._ratingChanged}
+                                    size={24}
+                                    color2={'#ffd700'} />
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
-                            type='button'
+                            type='submit'
                             bsSize='small'
                             bsStyle='primary'
                             onClick={this._close}>Ok</Button>

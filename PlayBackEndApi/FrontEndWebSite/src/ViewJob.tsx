@@ -166,6 +166,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                             <YesNoDialog
                                 theId="viewJobCancelBtn"
                                 launchButtonText="Cancel"
+                                yesCallBack={this._yesCallback}
+                                noCallBack={this._noCallback}
                                 headerText="Cancel the job"/>
                         </span>
                     </Row>
@@ -178,5 +180,13 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     _handleClick = (targetMarker) => {
         console.log('button on overlay clicked:' + targetMarker.key);
+    }
+
+    _yesCallback = () => {
+        console.log('YES CLICKED');
+    }
+
+    _noCallback = () => {
+        console.log('NO CLICKED');
     }
 }
