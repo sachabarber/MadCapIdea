@@ -4,6 +4,8 @@ import * as _ from "lodash";
 
 import { RatingDialog } from "./components/RatingDialog";
 import { YesNoDialog } from "./components/YesNoDialog";
+import { OkDialog } from "./components/OkDialog";
+
 
 import 'bootstrap/dist/css/bootstrap.css';
 import
@@ -81,6 +83,10 @@ const ViewJobGoogleMap = withGoogleMap(props => (
 
 export interface ViewJobState {
     markers: any;
+    okDialogOpen: boolean;
+    okDialogKey: any;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
 }
 
 export class ViewJob extends React.Component<undefined, ViewJobState> {
@@ -104,7 +110,11 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                     key: 'driver_2',
                     icon: '/assets/images/driver.png'
                 }
-            ]
+            ],
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey:0
         };
     }
 
@@ -161,14 +171,22 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                         <span>
                             <RatingDialog
                                 theId="viewJobCompleteBtn"
-                                headerText="Rate your driver/passenger"/>
+                                headerText="Rate your driver/passenger"
+                                okCallBack= {this._ratingsDialogOkCallBack}/>
 
                             <YesNoDialog
                                 theId="viewJobCancelBtn"
                                 launchButtonText="Cancel"
-                                yesCallBack={this._yesCallback}
-                                noCallBack={this._noCallback}
+                                yesCallBack={this._jobCancelledCallBack}
+                                noCallBack={this._jobNotCancelledCallBack}
                                 headerText="Cancel the job"/>
+
+                            <OkDialog
+                                open= {this.state.okDialogOpen}
+                                okCallBack= {this._okDialogCallBack}
+                                headerText={this.state.okDialogHeaderText}
+                                bodyText={this.state.okDialogBodyText}
+                                key={this.state.okDialogKey}/>
                         </span>
                     </Row>
                 </Grid>
@@ -182,11 +200,48 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         console.log('button on overlay clicked:' + targetMarker.key);
     }
 
-    _yesCallback = () => {
-        console.log('YES CLICKED');
+
+    
+
+    _ratingsDialogOkCallBack = () => {
+        console.log('RATINGS OK CLICKED');
+        this.setState(
+            {
+                okDialogHeaderText: 'Ratings',
+                okDialogBodyText: 'Rating successfully recorded',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
     }
 
-    _noCallback = () => {
+
+    _jobCancelledCallBack = () => {
+        console.log('YES CLICKED');
+        this.setState(
+            {
+                okDialogHeaderText: 'Job Cancellaton',
+                okDialogBodyText: 'Job successfully cancelled',
+                okDialogOpen: true,
+                okDialogKey: Math.random() 
+            });
+    }
+
+    _jobNotCancelledCallBack = () => {
         console.log('NO CLICKED');
+        this.setState(
+            {
+                okDialogHeaderText: 'Job Cancellaton',
+                okDialogBodyText: 'Job remains open',
+                okDialogOpen: true,
+                okDialogKey: Math.random() 
+            });
+    }
+
+    _okDialogCallBack = () => {
+        console.log('OK on OkDialog CLICKED');
+        this.setState(
+            {
+                okDialogOpen: false
+            });
     }
 }

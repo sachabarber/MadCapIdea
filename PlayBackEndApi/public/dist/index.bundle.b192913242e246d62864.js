@@ -15,9 +15,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(39);
+__webpack_require__(35);
 
-var _reactBootstrap = __webpack_require__(34);
+var _reactBootstrap = __webpack_require__(33);
 
 var _reactGoogleMaps = __webpack_require__(365);
 
@@ -112,9 +112,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(39);
+__webpack_require__(35);
 
-var _reactBootstrap = __webpack_require__(34);
+var _reactBootstrap = __webpack_require__(33);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -223,9 +223,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(39);
+__webpack_require__(35);
 
-var _reactBootstrap = __webpack_require__(34);
+var _reactBootstrap = __webpack_require__(33);
 
 var _PassengerRegistration = __webpack_require__(392);
 
@@ -286,13 +286,15 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _RatingDialog = __webpack_require__(393);
+var _RatingDialog = __webpack_require__(394);
 
-var _YesNoDialog = __webpack_require__(394);
+var _YesNoDialog = __webpack_require__(395);
 
-__webpack_require__(39);
+var _OkDialog = __webpack_require__(393);
 
-var _reactBootstrap = __webpack_require__(34);
+__webpack_require__(35);
+
+var _reactBootstrap = __webpack_require__(33);
 
 var _reactGoogleMaps = __webpack_require__(365);
 
@@ -339,11 +341,38 @@ var ViewJob = function (_super) {
         _this._handleClick = function (targetMarker) {
             console.log('button on overlay clicked:' + targetMarker.key);
         };
-        _this._yesCallback = function () {
-            console.log('YES CLICKED');
+        _this._ratingsDialogOkCallBack = function () {
+            console.log('RATINGS OK CLICKED');
+            _this.setState({
+                okDialogHeaderText: 'Ratings',
+                okDialogBodyText: 'Rating successfully recorded',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
         };
-        _this._noCallback = function () {
+        _this._jobCancelledCallBack = function () {
+            console.log('YES CLICKED');
+            _this.setState({
+                okDialogHeaderText: 'Job Cancellaton',
+                okDialogBodyText: 'Job successfully cancelled',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
+        };
+        _this._jobNotCancelledCallBack = function () {
             console.log('NO CLICKED');
+            _this.setState({
+                okDialogHeaderText: 'Job Cancellaton',
+                okDialogBodyText: 'Job remains open',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
+        };
+        _this._okDialogCallBack = function () {
+            console.log('OK on OkDialog CLICKED');
+            _this.setState({
+                okDialogOpen: false
+            });
         };
         _this.state = {
             markers: [{
@@ -360,7 +389,11 @@ var ViewJob = function (_super) {
                 },
                 key: 'driver_2',
                 icon: '/assets/images/driver.png'
-            }]
+            }],
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0
         };
         return _this;
     }
@@ -391,7 +424,7 @@ var ViewJob = function (_super) {
                     marginLeft: 0,
                     marginRight: 0,
                     marginBottom: 20
-                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger" }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this._yesCallback, noCallBack: this._noCallback, headerText: "Cancel the job" })))));
+                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this._ratingsDialogOkCallBack }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this._jobCancelledCallBack, noCallBack: this._jobNotCancelledCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return ViewJob;
 }(React.Component);
@@ -414,9 +447,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(39);
+__webpack_require__(35);
 
-var _reactBootstrap = __webpack_require__(34);
+var _reactBootstrap = __webpack_require__(33);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -543,9 +576,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(39);
+__webpack_require__(35);
 
-var _reactBootstrap = __webpack_require__(34);
+var _reactBootstrap = __webpack_require__(33);
 
 var _reactBootstrapValidation = __webpack_require__(187);
 
@@ -652,17 +685,91 @@ exports.PassengerRegistration = PassengerRegistration;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.OkDialog = undefined;
+
+var _react = __webpack_require__(1);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(35);
+
+var _reactBootstrap = __webpack_require__(33);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var OkDialog = function (_super) {
+    __extends(OkDialog, _super);
+    function OkDialog(props) {
+        var _this = _super.call(this, props) || this;
+        _this._okClicked = function () {
+            _this.setState({ showModal: false });
+            _this.props.okCallBack();
+        };
+        _this._close = function () {
+            _this.setState({ showModal: false });
+            _this.props.okCallBack();
+        };
+        _this._open = function () {
+            _this.setState({ showModal: true });
+        };
+        console.log(_this.props);
+        //set initial state
+        _this.state = {
+            showModal: false
+        };
+        return _this;
+    }
+    OkDialog.prototype.componentDidMount = function () {
+        if (this.props.open === true) {
+            this.setState({ showModal: true });
+        }
+    };
+    OkDialog.prototype.render = function () {
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, this.props.bodyText)), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
+    };
+    return OkDialog;
+}(React.Component);
+exports.OkDialog = OkDialog;
+
+/***/ }),
+
+/***/ 394:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.RatingDialog = undefined;
 
 var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(39);
+__webpack_require__(35);
 
-var _reactBootstrap = __webpack_require__(34);
+var _reactBootstrap = __webpack_require__(33);
 
-var _reactStars = __webpack_require__(847);
+var _reactStars = __webpack_require__(848);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -692,23 +799,37 @@ var RatingDialog = function (_super) {
     function RatingDialog(props) {
         var _this = _super.call(this, props) || this;
         _this._close = function () {
-            _this.setState({ showModal: false });
+            _this.setState({
+                showModal: false,
+                rating: 0
+            });
         };
         _this._open = function () {
-            _this.setState({ showModal: true });
+            _this.setState({
+                showModal: true,
+                rating: 0
+            });
         };
         _this._ratingChanged = function (newRating) {
             console.log(newRating);
+            _this.setState({
+                rating: newRating
+            });
+        };
+        _this._okClicked = function () {
+            _this._close();
+            _this.props.okCallBack();
         };
         console.log(_this.props);
         //set initial state
         _this.state = {
-            showModal: false
+            showModal: false,
+            rating: 0
         };
         return _this;
     }
     RatingDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement(_reactStars2.default, { count: 5, onChange: this._ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this._close }, "Ok"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement(_reactStars2.default, { count: 5, onChange: this._ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
     };
     return RatingDialog;
 }(React.Component);
@@ -716,7 +837,7 @@ exports.RatingDialog = RatingDialog;
 
 /***/ }),
 
-/***/ 394:
+/***/ 395:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -731,9 +852,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(39);
+__webpack_require__(35);
 
-var _reactBootstrap = __webpack_require__(34);
+var _reactBootstrap = __webpack_require__(33);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -788,7 +909,7 @@ exports.YesNoDialog = YesNoDialog;
 
 /***/ }),
 
-/***/ 395:
+/***/ 396:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -802,9 +923,9 @@ var _reactDom = __webpack_require__(19);
 
 var ReactDOM = _interopRequireWildcard(_reactDom);
 
-__webpack_require__(39);
+__webpack_require__(35);
 
-var _reactBootstrap = __webpack_require__(34);
+var _reactBootstrap = __webpack_require__(33);
 
 var _reactRouter = __webpack_require__(390);
 
@@ -876,5 +997,5 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ })
 
-},[395]);
-//# sourceMappingURL=index.bundle.a7266333a0613fb6e524.js.map
+},[396]);
+//# sourceMappingURL=index.bundle.b192913242e246d62864.js.map
