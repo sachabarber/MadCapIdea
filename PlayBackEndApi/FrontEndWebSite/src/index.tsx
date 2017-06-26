@@ -10,6 +10,7 @@ import { Login } from "./Login";
 import { Register } from "./Register";
 import { CreateJob } from "./CreateJob";
 import { ViewJob } from "./ViewJob";
+import { ViewRating } from "./ViewRating";
 
 
 class MainNav extends React.Component<undefined, undefined> {
@@ -19,9 +20,9 @@ class MainNav extends React.Component<undefined, undefined> {
                 <Nav>
                     <NavItem eventKey={1} href='#/'>Login</NavItem>
                     <NavItem eventKey={2} href='#/register'>Register</NavItem>
-                    <NavItem eventKey={2} href='#/createjob'>CreateJob</NavItem>
-                    <NavItem eventKey={2} href='#/viewJob'>ViewJob</NavItem>
-                    <NavItem eventKey={2} href='#/redirecter'>Redirect</NavItem>
+                    <NavItem eventKey={2} href='#/createjob'>Create Job</NavItem>
+                    <NavItem eventKey={2} href='#/viewjob'>View Job</NavItem>
+                    <NavItem eventKey={2} href='#/viewrating'>View Rating</NavItem>
                 </Nav>
             </Navbar>
         )
@@ -43,30 +44,6 @@ class App extends React.Component<undefined, undefined> {
 }
 
 
-class ReDirecter extends React.Component<undefined, undefined> {
-
-    handleClick = () => {
-        hashHistory.push('/');
-    };
-
-    render() {
-        return (
-            <Button bsStyle="primary" bsSize="large" onClick={this.handleClick}>Go to Login</Button>
-        )
-    }
-}
-
-
-
-
-const About = () => (
-    <div>
-        <h2>About</h2>
-    </div>
-)
-
-
-
 ReactDOM.render((
     <Router history={hashHistory}>
         <Route component={App}>
@@ -74,7 +51,7 @@ ReactDOM.render((
             <Route path="/register" component={Register}/>
             <Route path="/createjob" component={CreateJob}/>
             <Route path="/viewjob" component={ViewJob}/>
-            <Route path="/redirecter" component={ReDirecter}/>
+            <Route path="/viewrating" component={ViewRating}/>
         </Route>
     </Router>
 ), document.getElementById('root'));

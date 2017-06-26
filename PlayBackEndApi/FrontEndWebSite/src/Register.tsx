@@ -40,7 +40,7 @@ export class Register extends React.Component<any, RegisterState> {
                     </Row>
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
-                            <h5>Choose your registration type </h5>
+                            <h6>Choose your registration type </h6>
                         </Col>
                     </Row>
                     <Row className="show-grid">

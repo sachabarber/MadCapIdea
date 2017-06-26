@@ -24,10 +24,13 @@ body {
 .leftFloat {
   float: left; }
 
+.factTable {
+  margin-top: 30px; }
+
 #div1 {
   background-color: deeppink; }
 
 #comet {
   display: none; }
 
-/*# sourceMappingURL=indexCss.bundle.b192913242e246d62864.css.map*/
+/*# sourceMappingURL=indexCss.bundle.c6d0bf1db466a39c9a98.css.map*/
