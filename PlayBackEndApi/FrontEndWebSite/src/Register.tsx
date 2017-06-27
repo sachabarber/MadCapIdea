@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
 import 'bootstrap/dist/css/bootstrap.css';
 import
 {
@@ -12,7 +11,6 @@ import
     ButtonGroup,
     Button
 } from "react-bootstrap";
-
 import { PassengerRegistration } from "./PassengerRegistration";
 import { DriverRegistration } from "./DriverRegistration";
 
@@ -21,12 +19,13 @@ export interface RegisterState {
     option: string;
 }
 
-
 export class Register extends React.Component<any, RegisterState> {
 
     constructor(props: any) {
         super(props);
-        this.state = { option: "passenger" };
+        this.state = {
+            option: 'passenger'
+        };
     }
 
     render() {

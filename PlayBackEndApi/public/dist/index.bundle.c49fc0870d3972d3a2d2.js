@@ -1,6 +1,80 @@
 webpackJsonp([1],{
 
-/***/ 386:
+/***/ 102:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.OkDialog = undefined;
+
+var _react = __webpack_require__(0);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(34);
+
+var _reactBootstrap = __webpack_require__(29);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var OkDialog = function (_super) {
+    __extends(OkDialog, _super);
+    function OkDialog(props) {
+        var _this = _super.call(this, props) || this;
+        _this._okClicked = function () {
+            _this.setState({ showModal: false });
+            _this.props.okCallBack();
+        };
+        _this._close = function () {
+            _this.setState({ showModal: false });
+            _this.props.okCallBack();
+        };
+        _this._open = function () {
+            _this.setState({ showModal: true });
+        };
+        console.log(_this.props);
+        //set initial state
+        _this.state = {
+            showModal: false
+        };
+        return _this;
+    }
+    OkDialog.prototype.componentDidMount = function () {
+        if (this.props.open === true) {
+            this.setState({ showModal: true });
+        }
+    };
+    OkDialog.prototype.render = function () {
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, this.props.bodyText)), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
+    };
+    return OkDialog;
+}(React.Component);
+exports.OkDialog = OkDialog;
+
+/***/ }),
+
+/***/ 387:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19,7 +93,7 @@ __webpack_require__(34);
 
 var _reactBootstrap = __webpack_require__(29);
 
-var _reactGoogleMaps = __webpack_require__(365);
+var _reactGoogleMaps = __webpack_require__(366);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -97,7 +171,7 @@ exports.CreateJob = CreateJob;
 
 /***/ }),
 
-/***/ 387:
+/***/ 388:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -112,13 +186,15 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
+var _OkDialog = __webpack_require__(102);
+
 __webpack_require__(34);
 
 var _reactBootstrap = __webpack_require__(29);
 
-var _reactBootstrapValidation = __webpack_require__(187);
+var _reactBootstrapValidation = __webpack_require__(188);
 
-var _revalidator = __webpack_require__(220);
+var _revalidator = __webpack_require__(221);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -163,8 +239,8 @@ var schema = {
 };
 var Login = function (_super) {
     __extends(Login, _super);
-    function Login() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function Login(props) {
+        var _this = _super.call(this, props) || this;
         _this._validateForm = function (values) {
             var res = _revalidator2.default.validate(values, schema);
             // If the values passed validation, we return true
@@ -183,13 +259,30 @@ var Login = function (_super) {
         _this._handleInvalidSubmit = function (errors, values) {
             // Errors is an array containing input names
             // that failed to validate
-            alert("Form has errors and may not be submitted");
+            _this.setState({
+                okDialogHeaderText: 'Validation Error',
+                okDialogBodyText: 'Form has errors and may not be submitted',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
         };
         _this._handleValidSubmit = function (values) {
             // Values is an object containing all values
             // from the inputs
             console.log("Form may be submitted");
             console.log(values);
+        };
+        _this._okDialogCallBack = function () {
+            console.log('OK on OkDialog CLICKED');
+            _this.setState({
+                okDialogOpen: false
+            });
+        };
+        _this.state = {
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0
         };
         return _this;
     }
@@ -200,7 +293,7 @@ var Login = function (_super) {
         , {
             // Supply callbacks to both valid and invalid
             // submit attempts
-            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "ENTER YOUR LOGIN DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "loginBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Login"))))));
+            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "ENTER YOUR LOGIN DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "loginBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Login"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))))));
     };
     return Login;
 }(React.Component);
@@ -208,7 +301,7 @@ exports.Login = Login;
 
 /***/ }),
 
-/***/ 388:
+/***/ 389:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -227,9 +320,9 @@ __webpack_require__(34);
 
 var _reactBootstrap = __webpack_require__(29);
 
-var _PassengerRegistration = __webpack_require__(393);
+var _PassengerRegistration = __webpack_require__(394);
 
-var _DriverRegistration = __webpack_require__(392);
+var _DriverRegistration = __webpack_require__(393);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -254,7 +347,9 @@ var Register = function (_super) {
     __extends(Register, _super);
     function Register(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = { option: "passenger" };
+        _this.state = {
+            option: 'passenger'
+        };
         return _this;
     }
     Register.prototype.render = function () {
@@ -271,7 +366,7 @@ exports.Register = Register;
 
 /***/ }),
 
-/***/ 389:
+/***/ 390:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -290,13 +385,13 @@ var _RatingDialog = __webpack_require__(395);
 
 var _YesNoDialog = __webpack_require__(396);
 
-var _OkDialog = __webpack_require__(394);
+var _OkDialog = __webpack_require__(102);
 
 __webpack_require__(34);
 
 var _reactBootstrap = __webpack_require__(29);
 
-var _reactGoogleMaps = __webpack_require__(365);
+var _reactGoogleMaps = __webpack_require__(366);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -432,7 +527,7 @@ exports.ViewJob = ViewJob;
 
 /***/ }),
 
-/***/ 390:
+/***/ 391:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -484,7 +579,7 @@ exports.ViewRating = ViewRating;
 
 /***/ }),
 
-/***/ 392:
+/***/ 393:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -499,13 +594,15 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
+var _OkDialog = __webpack_require__(102);
+
 __webpack_require__(34);
 
 var _reactBootstrap = __webpack_require__(29);
 
-var _reactBootstrapValidation = __webpack_require__(187);
+var _reactBootstrapValidation = __webpack_require__(188);
 
-var _revalidator = __webpack_require__(220);
+var _revalidator = __webpack_require__(221);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -571,8 +668,8 @@ var schema = {
 };
 var DriverRegistration = function (_super) {
     __extends(DriverRegistration, _super);
-    function DriverRegistration() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function DriverRegistration(props) {
+        var _this = _super.call(this, props) || this;
         _this._validateForm = function (values) {
             var res = _revalidator2.default.validate(values, schema);
             // If the values passed validation, we return true
@@ -591,7 +688,12 @@ var DriverRegistration = function (_super) {
         _this._handleInvalidSubmit = function (errors, values) {
             // Errors is an array containing input names
             // that failed to validate
-            alert("Form has errors and may not be submitted");
+            _this.setState({
+                okDialogHeaderText: 'Validation Error',
+                okDialogBodyText: 'Form has errors and may not be submitted',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
         };
         _this._handleValidSubmit = function (values) {
             // Values is an object containing all values
@@ -599,13 +701,25 @@ var DriverRegistration = function (_super) {
             console.log("Form may be submitted");
             console.log(values);
         };
+        _this._okDialogCallBack = function () {
+            console.log('OK on OkDialog CLICKED');
+            _this.setState({
+                okDialogOpen: false
+            });
+        };
+        _this.state = {
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0
+        };
         return _this;
     }
     DriverRegistration.prototype.render = function () {
         return React.createElement(_reactBootstrapValidation.Form, { className: "submittable-form-inner",
             // Supply callbacks to both valid and invalid
             // submit attempts
-            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Driver details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullname', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Vehicle details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Description', name: 'vehicleDescription', errorHelp: 'Vehicle description is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Registration Number', name: 'vehicleRegistrationNumber', errorHelp: 'Vehicle registration number is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register")))));
+            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Driver details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullname', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Vehicle details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Description', name: 'vehicleDescription', errorHelp: 'Vehicle description is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Registration Number', name: 'vehicleRegistrationNumber', errorHelp: 'Vehicle registration number is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return DriverRegistration;
 }(React.Component);
@@ -613,7 +727,7 @@ exports.DriverRegistration = DriverRegistration;
 
 /***/ }),
 
-/***/ 393:
+/***/ 394:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -628,13 +742,15 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
+var _OkDialog = __webpack_require__(102);
+
 __webpack_require__(34);
 
 var _reactBootstrap = __webpack_require__(29);
 
-var _reactBootstrapValidation = __webpack_require__(187);
+var _reactBootstrapValidation = __webpack_require__(188);
 
-var _revalidator = __webpack_require__(220);
+var _revalidator = __webpack_require__(221);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -686,8 +802,8 @@ var schema = {
 };
 var PassengerRegistration = function (_super) {
     __extends(PassengerRegistration, _super);
-    function PassengerRegistration() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function PassengerRegistration(props) {
+        var _this = _super.call(this, props) || this;
         _this._validateForm = function (values) {
             var res = _revalidator2.default.validate(values, schema);
             // If the values passed validation, we return true
@@ -706,7 +822,12 @@ var PassengerRegistration = function (_super) {
         _this._handleInvalidSubmit = function (errors, values) {
             // Errors is an array containing input names
             // that failed to validate
-            alert("Form has errors and may not be submitted");
+            _this.setState({
+                okDialogHeaderText: 'Validation Error',
+                okDialogBodyText: 'Form has errors and may not be submitted',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
         };
         _this._handleValidSubmit = function (values) {
             // Values is an object containing all values
@@ -714,91 +835,29 @@ var PassengerRegistration = function (_super) {
             console.log("Form may be submitted");
             console.log(values);
         };
+        _this._okDialogCallBack = function () {
+            console.log('OK on OkDialog CLICKED');
+            _this.setState({
+                okDialogOpen: false
+            });
+        };
+        _this.state = {
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0
+        };
         return _this;
     }
     PassengerRegistration.prototype.render = function () {
         return React.createElement(_reactBootstrapValidation.Form, { className: "submittable-form-inner",
             // Supply callbacks to both valid and invalid
             // submit attempts
-            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Passenger details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullname', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', label: 'Password', name: 'password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register")))));
+            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Passenger details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullname', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', label: 'Password', name: 'password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return PassengerRegistration;
 }(React.Component);
 exports.PassengerRegistration = PassengerRegistration;
-
-/***/ }),
-
-/***/ 394:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.OkDialog = undefined;
-
-var _react = __webpack_require__(0);
-
-var React = _interopRequireWildcard(_react);
-
-__webpack_require__(34);
-
-var _reactBootstrap = __webpack_require__(29);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-
-var OkDialog = function (_super) {
-    __extends(OkDialog, _super);
-    function OkDialog(props) {
-        var _this = _super.call(this, props) || this;
-        _this._okClicked = function () {
-            _this.setState({ showModal: false });
-            _this.props.okCallBack();
-        };
-        _this._close = function () {
-            _this.setState({ showModal: false });
-            _this.props.okCallBack();
-        };
-        _this._open = function () {
-            _this.setState({ showModal: true });
-        };
-        console.log(_this.props);
-        //set initial state
-        _this.state = {
-            showModal: false
-        };
-        return _this;
-    }
-    OkDialog.prototype.componentDidMount = function () {
-        if (this.props.open === true) {
-            this.setState({ showModal: true });
-        }
-    };
-    OkDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, this.props.bodyText)), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
-    };
-    return OkDialog;
-}(React.Component);
-exports.OkDialog = OkDialog;
 
 /***/ }),
 
@@ -979,17 +1038,17 @@ __webpack_require__(34);
 
 var _reactBootstrap = __webpack_require__(29);
 
-var _reactRouter = __webpack_require__(391);
+var _reactRouter = __webpack_require__(392);
 
-var _Login = __webpack_require__(387);
+var _Login = __webpack_require__(388);
 
-var _Register = __webpack_require__(388);
+var _Register = __webpack_require__(389);
 
-var _CreateJob = __webpack_require__(386);
+var _CreateJob = __webpack_require__(387);
 
-var _ViewJob = __webpack_require__(389);
+var _ViewJob = __webpack_require__(390);
 
-var _ViewRating = __webpack_require__(390);
+var _ViewRating = __webpack_require__(391);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1035,4 +1094,4 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 /***/ })
 
 },[397]);
-//# sourceMappingURL=index.bundle.c6d0bf1db466a39c9a98.js.map
+//# sourceMappingURL=index.bundle.c49fc0870d3972d3a2d2.js.map

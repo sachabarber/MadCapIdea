@@ -194,14 +194,9 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         );
     }
 
-
-
     _handleClick = (targetMarker) => {
         console.log('button on overlay clicked:' + targetMarker.key);
     }
-
-
-    
 
     _ratingsDialogOkCallBack = () => {
         console.log('RATINGS OK CLICKED');
@@ -213,7 +208,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 okDialogKey: Math.random()
             });
     }
-
 
     _jobCancelledCallBack = () => {
         console.log('YES CLICKED');

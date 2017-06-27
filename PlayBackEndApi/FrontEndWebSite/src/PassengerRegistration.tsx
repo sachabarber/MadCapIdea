@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
+import { OkDialog } from "./components/OkDialog";
 import 'bootstrap/dist/css/bootstrap.css';
 import
 {
@@ -10,9 +10,7 @@ import
     Col,
     ButtonInput
 } from "react-bootstrap";
-
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
-
 import revalidator from 'revalidator';
 
 
@@ -42,9 +40,25 @@ let schema = {
     }
 };
 
+export interface PassengerRegistrationState {
+    okDialogOpen: boolean;
+    okDialogKey: any;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+}
 
+export class PassengerRegistration extends React.Component<undefined, PassengerRegistrationState> {
 
-export class PassengerRegistration extends React.Component<undefined, undefined> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0
+        };
+    }
+
     render() {
         return (
             <Form className="submittable-form-inner"
@@ -94,6 +108,16 @@ export class PassengerRegistration extends React.Component<undefined, undefined>
                                 value='Register'>Register</ButtonInput>
                         </Col>
                     </Row>
+                    <Row className="show-grid">
+                        <span>
+                            <OkDialog
+                                open= {this.state.okDialogOpen}
+                                okCallBack= {this._okDialogCallBack}
+                                headerText={this.state.okDialogHeaderText}
+                                bodyText={this.state.okDialogBodyText}
+                                key={this.state.okDialogKey}/>
+                        </span>
+                    </Row>
                 </Grid>
             </Form>
         )
@@ -121,7 +145,13 @@ export class PassengerRegistration extends React.Component<undefined, undefined>
     _handleInvalidSubmit = (errors, values) => {
         // Errors is an array containing input names
         // that failed to validate
-        alert("Form has errors and may not be submitted");
+        this.setState(
+            {
+                okDialogHeaderText: 'Validation Error',
+                okDialogBodyText: 'Form has errors and may not be submitted',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
     }
 
     _handleValidSubmit = (values) => {
@@ -129,6 +159,14 @@ export class PassengerRegistration extends React.Component<undefined, undefined>
         // from the inputs
         console.log("Form may be submitted");
         console.log(values);
+    }
+
+    _okDialogCallBack = () => {
+        console.log('OK on OkDialog CLICKED');
+        this.setState(
+            {
+                okDialogOpen: false
+            });
     }
 }
 

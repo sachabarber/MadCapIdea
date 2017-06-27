@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
+import { OkDialog } from "./components/OkDialog";
 import 'bootstrap/dist/css/bootstrap.css';
 import
 {
@@ -12,7 +12,6 @@ import
 } from "react-bootstrap";
 
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
-
 import revalidator from 'revalidator';
 
 
@@ -35,9 +34,26 @@ let schema = {
     }
 };
 
+export interface LoginState {
+    okDialogOpen: boolean;
+    okDialogKey: any;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+}
 
 
-export class Login extends React.Component<undefined, undefined> {
+export class Login extends React.Component<undefined, LoginState> {
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0
+        };
+    }
+
     render() {
         return (
             <Well className="outer-well">
@@ -81,6 +97,16 @@ export class Login extends React.Component<undefined, undefined> {
                                     value='Register'>Login</ButtonInput>
                             </Col>
                         </Row>
+                        <Row className="show-grid">
+                            <span>
+                                <OkDialog
+                                    open= {this.state.okDialogOpen}
+                                    okCallBack= {this._okDialogCallBack}
+                                    headerText={this.state.okDialogHeaderText}
+                                    bodyText={this.state.okDialogBodyText}
+                                    key={this.state.okDialogKey}/>
+                            </span>
+                        </Row>
                     </Grid>
                 </Form>
             </Well>
@@ -110,7 +136,13 @@ export class Login extends React.Component<undefined, undefined> {
     _handleInvalidSubmit = (errors, values) => {
         // Errors is an array containing input names
         // that failed to validate
-        alert("Form has errors and may not be submitted");
+        this.setState(
+            {
+                okDialogHeaderText: 'Validation Error',
+                okDialogBodyText: 'Form has errors and may not be submitted',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
     }
 
     _handleValidSubmit = (values) => {
@@ -118,6 +150,14 @@ export class Login extends React.Component<undefined, undefined> {
         // from the inputs
         console.log("Form may be submitted");
         console.log(values);
+    }
+
+    _okDialogCallBack = () => {
+        console.log('OK on OkDialog CLICKED');
+        this.setState(
+            {
+                okDialogOpen: false
+            });
     }
 }
 
