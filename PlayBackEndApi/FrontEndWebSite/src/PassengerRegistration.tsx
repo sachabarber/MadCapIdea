@@ -42,7 +42,7 @@ let schema = {
 
 export interface PassengerRegistrationState {
     okDialogOpen: boolean;
-    okDialogKey: any;
+    okDialogKey: number;
     okDialogHeaderText: string;
     okDialogBodyText: string;
 }
@@ -155,14 +155,37 @@ export class PassengerRegistration extends React.Component<undefined, PassengerR
     }
 
     _handleValidSubmit = (values) => {
-        // Values is an object containing all values
-        // from the inputs
-        console.log("Form may be submitted");
-        console.log(values);
+        var passenger = values;
+        var self = this;
+
+        $.ajax({
+            type: 'POST',
+            url: 'registration/save/passenger',
+            data: JSON.stringify(passenger),
+            contentType: "application/json; charset=utf-8",
+            success: function () {
+                self.setState(
+                    {
+                        okDialogHeaderText: 'Registration Successful',
+                        okDialogBodyText: 'You are now registered',
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+            },
+            dataType: 'json'
+        })
+        .fail(function () {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: 'An error occurred trying to register',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
     }
 
     _okDialogCallBack = () => {
-        console.log('OK on OkDialog CLICKED');
         this.setState(
             {
                 okDialogOpen: false

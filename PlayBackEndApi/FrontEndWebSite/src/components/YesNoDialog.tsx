@@ -10,13 +10,12 @@ import
 } from "react-bootstrap";
 
 
-//TODO : Fix this
 export interface YesNoDialogProps {
     headerText: string;
     theId: string;
     launchButtonText: string;
-    yesCallBack: any;
-    noCallBack: any;
+    yesCallBack(): void;
+    noCallBack(): void;
 }
 
 export interface YesNoDialogState {

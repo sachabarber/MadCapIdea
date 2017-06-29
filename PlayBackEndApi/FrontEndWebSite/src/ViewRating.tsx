@@ -61,6 +61,6 @@ export class ViewRating extends React.Component<undefined, undefined> {
             </Well>
         )
     }
-    }
+}
 
 

@@ -36,7 +36,7 @@ let schema = {
 
 export interface LoginState {
     okDialogOpen: boolean;
-    okDialogKey: any;
+    okDialogKey: number;
     okDialogHeaderText: string;
     okDialogBodyText: string;
 }

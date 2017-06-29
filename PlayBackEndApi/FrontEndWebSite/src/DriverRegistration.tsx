@@ -56,7 +56,7 @@ let schema = {
 
 export interface DriverRegistrationState {
     okDialogOpen: boolean;
-    okDialogKey: any;
+    okDialogKey: number;
     okDialogHeaderText: string;
     okDialogBodyText: string;
 }

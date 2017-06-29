@@ -10,12 +10,11 @@ import
 } from "react-bootstrap";
 
 
-//TODO : Fix this
 export interface OkDialogProps {
     headerText: string;
-    bodyText: string;
+    bodyText: string; 
     open: boolean;
-    okCallBack: any;
+    okCallBack() : void;
 }
 
 export interface OkDialogState {

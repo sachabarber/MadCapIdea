@@ -731,7 +731,7 @@ exports.DriverRegistration = DriverRegistration;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function($) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -830,13 +830,32 @@ var PassengerRegistration = function (_super) {
             });
         };
         _this._handleValidSubmit = function (values) {
-            // Values is an object containing all values
-            // from the inputs
-            console.log("Form may be submitted");
-            console.log(values);
+            var passenger = values;
+            var self = _this;
+            $.ajax({
+                type: 'POST',
+                url: 'registration/save/passenger',
+                data: JSON.stringify(passenger),
+                contentType: "application/json; charset=utf-8",
+                success: function success() {
+                    self.setState({
+                        okDialogHeaderText: 'Registration Successful',
+                        okDialogBodyText: 'You are now registered',
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+                },
+                dataType: 'json'
+            }).fail(function () {
+                self.setState({
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: 'An error occurred trying to register',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+            });
         };
         _this._okDialogCallBack = function () {
-            console.log('OK on OkDialog CLICKED');
             _this.setState({
                 okDialogOpen: false
             });
@@ -858,6 +877,7 @@ var PassengerRegistration = function (_super) {
     return PassengerRegistration;
 }(React.Component);
 exports.PassengerRegistration = PassengerRegistration;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(519)))
 
 /***/ }),
 
@@ -880,7 +900,7 @@ __webpack_require__(34);
 
 var _reactBootstrap = __webpack_require__(29);
 
-var _reactStars = __webpack_require__(849);
+var _reactStars = __webpack_require__(850);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -912,19 +932,22 @@ var RatingDialog = function (_super) {
         _this._close = function () {
             _this.setState({
                 showModal: false,
-                rating: 0
+                rating: 0,
+                ratingText: ''
             });
         };
         _this._open = function () {
             _this.setState({
                 showModal: true,
-                rating: 0
+                rating: 0,
+                ratingText: 'Current rating 0'
             });
         };
         _this._ratingChanged = function (newRating) {
             console.log(newRating);
             _this.setState({
-                rating: newRating
+                rating: newRating,
+                ratingText: 'Current rating ' + newRating
             });
         };
         _this._okClicked = function () {
@@ -935,12 +958,13 @@ var RatingDialog = function (_super) {
         //set initial state
         _this.state = {
             showModal: false,
-            rating: 0
+            rating: 0,
+            ratingText: ''
         };
         return _this;
     }
     RatingDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement(_reactStars2.default, { count: 5, onChange: this._ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement("h5", null, this.state.ratingText), React.createElement(_reactStars2.default, { count: 5, onChange: this._ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
     };
     return RatingDialog;
 }(React.Component);
@@ -1094,4 +1118,4 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 /***/ })
 
 },[397]);
-//# sourceMappingURL=index.bundle.c49fc0870d3972d3a2d2.js.map
+//# sourceMappingURL=index.bundle.ab87b1ce9a219fe5b152.js.map

@@ -69,22 +69,19 @@ const ViewJobGoogleMap = withGoogleMap(props => (
     </GoogleMap>
 ));
 
-//TODO : make this correct
-//see https://tomchentw.github.io/react-google-maps/
-//
-//state = {
-//    overlays: [{
-//      position: {
-//        lat: 25.0112183,
-//        lng: 121.52067570000001,
-//      }
-//    }],
-//  };
-
 export interface ViewJobState {
-    markers: any;
+    markers: [
+        {
+            position: {
+                lat: number,
+                lng: number
+            },
+            key: string,
+            icon:string
+        }
+    ];
     okDialogOpen: boolean;
-    okDialogKey: any;
+    okDialogKey: number;
     okDialogHeaderText: string;
     okDialogBodyText: string;
 }

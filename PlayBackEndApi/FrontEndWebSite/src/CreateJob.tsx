@@ -31,7 +31,10 @@ const CreateJobGoogleMap = withGoogleMap(props => (
 
 
 export interface CreateJobState {
-    currentPosition: any;
+    currentPosition: {
+        lat: number,
+        lng: number
+    };
 }
 
 export class CreateJob extends React.Component<undefined, CreateJobState> {

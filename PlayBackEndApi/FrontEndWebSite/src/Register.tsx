@@ -19,7 +19,7 @@ export interface RegisterState {
     option: string;
 }
 
-export class Register extends React.Component<any, RegisterState> {
+export class Register extends React.Component<undefined, RegisterState> {
 
     constructor(props: any) {
         super(props);
