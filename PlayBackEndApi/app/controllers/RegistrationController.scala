@@ -47,12 +47,13 @@ class RegistrationController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
     }
     existingRegFuture.map(regs =>
       if(regs.length == 0) {
-        passRegistrationFuture.map(
-          _.insert(incomingRegistration).map(writeResult => {
-            Logger.debug(s"Successfully inserted with writeResult: $writeResult")
-            Ok("Saved passenger registration")
-          })
-        )
+        for {
+          passRegistration <- passRegistrationFuture
+          writeResult <- passRegistration.insert(incomingRegistration)
+        } yield {
+          Logger.debug(s"Successfully inserted with LastError: $writeResult")
+          Ok("Saved passenger registration")
+        }
       }
       else {
         BadRequest("Registration already exists")
