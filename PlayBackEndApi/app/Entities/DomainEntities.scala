@@ -10,6 +10,12 @@ case class Location(lat: Double, long: Double)
 case class Resident(name: String, age: Int, role: Option[String])
 
 
+object PassengerRegistration {
+  implicit val formatter = Json.format[PassengerRegistration]
+}
+
+
+
 object JsonFormatters {
 
   implicit val passengerRegistrationWrites = new Writes[PassengerRegistration] {
