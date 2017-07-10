@@ -2,17 +2,20 @@ package controllers
 
 import javax.inject.Inject
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc.{Action, Controller, Result}
 import Entities._
 import Entities.JsonFormatters._
 
 import scala.concurrent.{ExecutionContext, Future}
 import play.modules.reactivemongo._
-import reactivemongo.play.json.collection._
 import play.api.Logger
-import reactivemongo.api.ReadPreference
 import utils.Errors
+import play.api.libs.json._
+import reactivemongo.api.ReadPreference
+import reactivemongo.play.json._
+import collection._
+
+import scala.util.{Failure, Success}
 
 class RegistrationController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
   (implicit ec: ExecutionContext)
@@ -24,14 +27,20 @@ class RegistrationController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
   def savePassengerRegistration = Action.async(parse.json) { request =>
     Json.fromJson[PassengerRegistration](request.body) match {
       case JsSuccess(newPassRegistration, _) =>
-        dealWithRegistration(newPassRegistration)
-//        for {
-//          passRegs <- passRegistrationFuture
-//          lastError <- passRegs.insert(newPassRegistration)
-//        } yield {
-//          Logger.debug(s"Successfully inserted with LastError: $lastError")
-//          Ok("Saved passenger registration")
-//        }
+
+        //Future(Ok("All cool"))
+
+        //this is not waiting to complete the future
+        //but if I need to wait for it why use future at all???
+        //dealWithRegistration(newPassRegistration)
+
+        for {
+          res <-  dealWithRegistration(newPassRegistration)
+        } yield {
+          Logger.debug(s"Successfully registered")
+          try { res }
+          catch { case e: Exception => BadRequest("Oh no") }
+        }
       case JsError(errors) =>
         Future.successful(BadRequest("Could not build a PassengerRegistration from the json provided. " +
           Errors.show(errors)))
@@ -39,25 +48,30 @@ class RegistrationController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
   }
 
   def dealWithRegistration(incomingRegistration : PassengerRegistration) : Future[Result] = {
-    val jsObj = Json.toJson(incomingRegistration)
+
+    val query = Json.obj("email" -> Json.obj("$eq" -> incomingRegistration.email))
+
     val existingRegFuture : Future[List[PassengerRegistration]] = passRegistrationFuture.flatMap {
-      _.find(jsObj).
-        cursor[PassengerRegistration](ReadPreference.primary).
-        collect[List]()
+        //_.find(Json.obj())
+        _.find(query)
+        .cursor[PassengerRegistration](ReadPreference.primary)
+        .collect[List]()
     }
-    existingRegFuture.map(regs =>
-      if(regs.length == 0) {
+
+    existingRegFuture.flatMap(theList=>
+    {
+      if (theList.length == 0) {
         for {
           passRegistration <- passRegistrationFuture
           writeResult <- passRegistration.insert(incomingRegistration)
         } yield {
           Logger.debug(s"Successfully inserted with LastError: $writeResult")
-          Ok("Saved passenger registration")
+          Future(Ok("Saved passenger registration"))
         }
       }
       else {
-        BadRequest("Registration already exists")
+        Future(BadRequest("Registration already exists"))
       }
-    ).map(_.asInstanceOf[Result])
+    }).map(_.asInstanceOf[Result])
   }
 }
