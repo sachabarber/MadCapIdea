@@ -53,7 +53,6 @@ var OkDialog = function (_super) {
         _this._open = function () {
             _this.setState({ showModal: true });
         };
-        console.log(_this.props);
         //set initial state
         _this.state = {
             showModal: false
@@ -837,19 +836,27 @@ var PassengerRegistration = function (_super) {
                 url: 'registration/save/passenger',
                 data: JSON.stringify(passenger),
                 contentType: "application/json; charset=utf-8",
-                success: function success() {
-                    self.setState({
-                        okDialogHeaderText: 'Registration Successful',
-                        okDialogBodyText: 'You are now registered',
-                        okDialogOpen: true,
-                        okDialogKey: Math.random()
-                    });
-                },
+                //success: function () {
+                //    self.setState(
+                //        {
+                //            okDialogHeaderText: 'Registration Successful',
+                //            okDialogBodyText: 'You are now registered',
+                //            okDialogOpen: true,
+                //            okDialogKey: Math.random()
+                //        });
+                //},
                 dataType: 'json'
-            }).fail(function () {
+            }).done(function (jdata, textStatus, jqXHR) {
+                self.setState({
+                    okDialogHeaderText: 'Registration Successful',
+                    okDialogBodyText: 'You are now registered',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+            }).fail(function (jqXHR, textStatus, errorThrown) {
                 self.setState({
                     okDialogHeaderText: 'Error',
-                    okDialogBodyText: 'An error occurred trying to register',
+                    okDialogBodyText: jqXHR.responseText,
                     okDialogOpen: true,
                     okDialogKey: Math.random()
                 });
@@ -1118,4 +1125,4 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 /***/ })
 
 },[397]);
-//# sourceMappingURL=index.bundle.7fdc9ddd15ebccf4364b.js.map
+//# sourceMappingURL=index.bundle.3283b997edfa237ce004.js.map

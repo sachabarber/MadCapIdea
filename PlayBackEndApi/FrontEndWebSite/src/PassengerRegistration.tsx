@@ -157,28 +157,28 @@ export class PassengerRegistration extends React.Component<undefined, PassengerR
     _handleValidSubmit = (values) => {
         var passenger = values;
         var self = this;
-
+               
         $.ajax({
             type: 'POST',
             url: 'registration/save/passenger',
             data: JSON.stringify(passenger),
             contentType: "application/json; charset=utf-8",
-            success: function () {
-                self.setState(
-                    {
-                        okDialogHeaderText: 'Registration Successful',
-                        okDialogBodyText: 'You are now registered',
-                        okDialogOpen: true,
-                        okDialogKey: Math.random()
-                    });
-            },
             dataType: 'json'
         })
-        .fail(function () {
+        .done(function (jdata, textStatus, jqXHR) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Registration Successful',
+                    okDialogBodyText: 'You are now registered',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
             self.setState(
                 {
                     okDialogHeaderText: 'Error',
-                    okDialogBodyText: 'An error occurred trying to register',
+                    okDialogBodyText: jqXHR.responseText,
                     okDialogOpen: true,
                     okDialogKey: Math.random()
                 });

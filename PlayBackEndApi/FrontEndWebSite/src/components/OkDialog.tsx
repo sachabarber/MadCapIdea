@@ -26,7 +26,6 @@ export class OkDialog extends React.Component<OkDialogProps, OkDialogState> {
 
     constructor(props) {
         super(props);
-        console.log(this.props);
         //set initial state
         this.state = {
             showModal: false
