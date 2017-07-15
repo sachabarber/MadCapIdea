@@ -193,14 +193,37 @@ export class DriverRegistration extends React.Component<undefined, DriverRegistr
     }
 
     _handleValidSubmit = (values) => {
-        // Values is an object containing all values
-        // from the inputs
-        console.log("Form may be submitted");
-        console.log(values);
+        var driver = values;
+        var self = this;
+
+        $.ajax({
+            type: 'POST',
+            url: 'registration/save/driver',
+            data: JSON.stringify(driver),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Registration Successful',
+                    okDialogBodyText: 'You are now registered',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
     }
 
     _okDialogCallBack = () => {
-        console.log('OK on OkDialog CLICKED');
         this.setState(
             {
                 okDialogOpen: false

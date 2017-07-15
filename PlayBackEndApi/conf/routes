@@ -13,6 +13,12 @@ GET        /scala/comet/kick                   controllers.ScalaCometController.
 # Registration page
 
 POST  /registration/save/passenger             controllers.RegistrationController.savePassengerRegistration()
+POST  /registration/save/driver                controllers.RegistrationController.saveDriverRegistration()
+
+# Login page
+
+
+POST  /login/validate                          controllers.LoginController.validateLogin()
 
 
 

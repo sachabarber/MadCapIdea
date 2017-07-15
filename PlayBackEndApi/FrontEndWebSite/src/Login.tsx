@@ -41,7 +41,6 @@ export interface LoginState {
     okDialogBodyText: string;
 }
 
-
 export class Login extends React.Component<undefined, LoginState> {
 
     constructor(props: any) {
@@ -89,6 +88,15 @@ export class Login extends React.Component<undefined, LoginState> {
                         </Row>
                         <Row className="show-grid">
                             <Col xs={10} md={6}>
+                                <ValidatedInput
+                                    type='checkbox'
+                                    name='isDriver'
+                                    label='Are you a driver?'
+                                    />
+                            </Col>
+                        </Row>
+                        <Row className="show-grid">
+                            <Col xs={10} md={6}>
                                 <ButtonInput
                                     id="loginBtn"
                                     type='submit'
@@ -113,7 +121,6 @@ export class Login extends React.Component<undefined, LoginState> {
         )
     }
 
-
     _validateForm = (values) => {
         let res = revalidator.validate(values, schema);
 
@@ -134,6 +141,9 @@ export class Login extends React.Component<undefined, LoginState> {
     }
 
     _handleInvalidSubmit = (errors, values) => {
+
+        console.log(values);
+
         // Errors is an array containing input names
         // that failed to validate
         this.setState(
@@ -146,14 +156,37 @@ export class Login extends React.Component<undefined, LoginState> {
     }
 
     _handleValidSubmit = (values) => {
-        // Values is an object containing all values
-        // from the inputs
-        console.log("Form may be submitted");
-        console.log(values);
+        var logindetails = values;
+        var self = this;
+
+        $.ajax({
+            type: 'POST',
+            url: 'login/validate',
+            data: JSON.stringify(logindetails),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Login Successful',
+                    okDialogBodyText: 'You are now logged in',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
     }
 
     _okDialogCallBack = () => {
-        console.log('OK on OkDialog CLICKED');
         this.setState(
             {
                 okDialogOpen: false
