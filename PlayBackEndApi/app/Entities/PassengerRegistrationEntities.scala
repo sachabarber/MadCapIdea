@@ -3,7 +3,10 @@ package Entities
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
-case class PassengerRegistration(fullName: String, email: String, password: String)
+case class PassengerRegistration(
+  fullName: String,
+  email: String,
+  password: String)
 
 object PassengerRegistration {
   implicit val formatter = Json.format[PassengerRegistration]

@@ -167,6 +167,10 @@ export class Login extends React.Component<undefined, LoginState> {
             dataType: 'json'
         })
         .done(function (jdata, textStatus, jqXHR) {
+
+            console.log("result of login")
+            console.log(jqXHR.responseText)
+
             self.setState(
                 {
                     okDialogHeaderText: 'Login Successful',

@@ -4,8 +4,12 @@ package Entities
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
-case class DriverRegistration(fullName: String, email: String, password: String,
-                              vehicleDescription: String, vehicleRegistrationNumber: String)
+case class DriverRegistration(
+   fullName: String,
+   email: String,
+   password: String,
+   vehicleDescription: String,
+   vehicleRegistrationNumber: String)
 
 object DriverRegistration {
   implicit val formatter = Json.format[DriverRegistration]

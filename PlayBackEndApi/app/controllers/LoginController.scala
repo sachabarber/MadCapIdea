@@ -14,6 +14,7 @@ import reactivemongo.play.json._
 import reactivemongo.play.json.collection._
 import utils.Errors
 
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class LoginController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
@@ -26,57 +27,40 @@ class LoginController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
 
   def validateLogin = Action.async(parse.json) { request =>
 
-    Future.successful(BadRequest("NOT DONE YET"))
-
-//    Json.fromJson[Login](request.body) match {
-//      case JsSuccess(newLoginDetails, _) =>
-//
-//        //https://github.com/ReactiveMongo/ReactiveMongo-Extensions/blob/0.10.x/guide/dsl.md
-//        val query = Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))
-//
-//        newLoginDetails.isDriver match {
-//          case false => {
-//            fetchExistsingRegistration[PassengerRegistration](
-//              newLoginDetails,
-//              passRegistrationFuture,
-//              query,
-//              PassengerRegistration.formatter)
-//          }
-//          case true => {
-//            fetchExistsingRegistration[DriverRegistration](
-//              newLoginDetails,
-//              driverRegistrationFuture,
-//              query,
-//              DriverRegistration.formatter)
-//          }
-//        }
-//
-//
-//
-//      case JsError(errors) =>
-//        Future.successful(BadRequest("Could not build a Login from the json provided. " +
-//          Errors.show(errors)))
-//    }
+    Json.fromJson[Login](request.body) match {
+      case JsSuccess(newLoginDetails, _) =>
+        newLoginDetails.isDriver match {
+          case false => {
+            val passengerQuery = Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))
+            extractExistingRegistration(passRegistrationFuture.flatMap {
+              _.find(Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))).
+                cursor[JsObject](ReadPreference.primary).
+                collect[List]()
+            })
+          }
+          case true => {
+            val driverQuery = Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))
+            extractExistingRegistration(driverRegistrationFuture.flatMap {
+              _.find(Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))).
+                cursor[JsObject](ReadPreference.primary).
+                collect[List]()
+            })
+          }
+        }
+      case JsError(errors) =>
+        Future.successful(BadRequest("Could not build a Login from the json provided. " +
+          Errors.show(errors)))
+    }
   }
 
-
-//  def fetchExistsingRegistration[T](
-//          incomingLogin: Login,
-//          jsonCollectionFuture: Future[JSONCollection],
-//          query: JsObject,
-//          formatter: OFormat[T])
-//          (implicit ec: ExecutionContext): Future[Result] = {
-//
-//    def hasExistingRegistrationFuture = jsonCollectionFuture.flatMap {
-//        //http://reactivemongo.org/releases/0.11/documentation/advanced-topics/collection-api.html
-//        _.find(query)
-//        .cursor[JsObject](ReadPreference.primary)
-//        .collect[List]()
-//      }
-//    )
-//
-//    hasExistingRegistrationFuture.flatMap(existingRegs => {
-//
-//    })
-//  }
+  def extractExistingRegistration[T](
+          incomingRegistrations: Future[List[T]])
+          (implicit writes: Writes[T], ec: ExecutionContext): Future[Result] = {
+    incomingRegistrations.map(matchedRegistrations =>
+      matchedRegistrations.length match {
+        case 0 => BadRequest("Registration already exists")
+        case _ => Ok(Json.toJson(matchedRegistrations(0)))
+      }
+    )
+  }
 }

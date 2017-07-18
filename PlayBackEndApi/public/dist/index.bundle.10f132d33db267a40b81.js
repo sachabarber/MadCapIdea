@@ -276,6 +276,8 @@ var Login = function (_super) {
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json'
             }).done(function (jdata, textStatus, jqXHR) {
+                console.log("result of login");
+                console.log(jqXHR.responseText);
                 self.setState({
                     okDialogHeaderText: 'Login Successful',
                     okDialogBodyText: 'You are now logged in',
@@ -1155,4 +1157,4 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 /***/ })
 
 },[398]);
-//# sourceMappingURL=index.bundle.5535bd4f02c4ceec5793.js.map
+//# sourceMappingURL=index.bundle.10f132d33db267a40b81.js.map
