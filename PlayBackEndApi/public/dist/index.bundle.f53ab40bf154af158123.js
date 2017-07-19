@@ -1,78 +1,5 @@
 webpackJsonp([1],{
 
-/***/ 102:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.OkDialog = undefined;
-
-var _react = __webpack_require__(0);
-
-var React = _interopRequireWildcard(_react);
-
-__webpack_require__(34);
-
-var _reactBootstrap = __webpack_require__(29);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-
-var OkDialog = function (_super) {
-    __extends(OkDialog, _super);
-    function OkDialog(props) {
-        var _this = _super.call(this, props) || this;
-        _this._okClicked = function () {
-            _this.setState({ showModal: false });
-            _this.props.okCallBack();
-        };
-        _this._close = function () {
-            _this.setState({ showModal: false });
-            _this.props.okCallBack();
-        };
-        _this._open = function () {
-            _this.setState({ showModal: true });
-        };
-        //set initial state
-        _this.state = {
-            showModal: false
-        };
-        return _this;
-    }
-    OkDialog.prototype.componentDidMount = function () {
-        if (this.props.open === true) {
-            this.setState({ showModal: true });
-        }
-    };
-    OkDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, this.props.bodyText)), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
-    };
-    return OkDialog;
-}(React.Component);
-exports.OkDialog = OkDialog;
-
-/***/ }),
-
 /***/ 388:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -88,9 +15,9 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
 var _reactGoogleMaps = __webpack_require__(367);
 
@@ -185,11 +112,11 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(102);
+var _OkDialog = __webpack_require__(81);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
 var _reactBootstrapValidation = __webpack_require__(189);
 
@@ -313,7 +240,7 @@ var Login = function (_super) {
         , {
             // Supply callbacks to both valid and invalid
             // submit attempts
-            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "ENTER YOUR LOGIN DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'checkbox', name: 'isDriver', label: 'Are you a driver?' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "loginBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Login"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))))));
+            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "ENTER YOUR LOGIN DETAILS"), React.createElement("span", null, React.createElement("h6", null, "Or click ", React.createElement("a", { href: "#/register" }, "here"), " to register")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'checkbox', name: 'isDriver', label: 'Are you a driver?' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "loginBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Login"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))))));
     };
     return Login;
 }(React.Component);
@@ -331,19 +258,102 @@ exports.Login = Login;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Logout = undefined;
+
+var _react = __webpack_require__(0);
+
+var React = _interopRequireWildcard(_react);
+
+var _OkDialog = __webpack_require__(81);
+
+var _YesNoDialog = __webpack_require__(398);
+
+__webpack_require__(30);
+
+var _reactBootstrap = __webpack_require__(23);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var Logout = function (_super) {
+    __extends(Logout, _super);
+    function Logout(props) {
+        var _this = _super.call(this, props) || this;
+        _this._okDialogCallBack = function () {
+            _this.setState({
+                okDialogOpen: false
+            });
+            //TODO : 
+            //1. This should log user out
+            //2. This should push out on an RSJS code
+        };
+        _this._logoutYesCallBack = function () {
+            console.log('YES CLICKED');
+            _this.setState({
+                okDialogHeaderText: 'Logout',
+                okDialogBodyText: 'You have been logged out',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
+        };
+        _this._logoutNoCallBack = function () {
+            console.log('NO CLICKED');
+        };
+        _this.state = {
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0
+        };
+        return _this;
+    }
+    Logout.prototype.render = function () {
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, React.createElement("span", null, "YOU ARE CURRENTLY LOGGED IN AS [John Bishop]")), React.createElement("span", null, React.createElement("h6", null, "Click the button to logout")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_YesNoDialog.YesNoDialog, { theId: "logoutBtn", launchButtonText: "Logout", yesCallBack: this._logoutYesCallBack, noCallBack: this._logoutNoCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+    };
+    return Logout;
+}(React.Component);
+exports.Logout = Logout;
+
+/***/ }),
+
+/***/ 391:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.Register = undefined;
 
 var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
-var _PassengerRegistration = __webpack_require__(395);
+var _PassengerRegistration = __webpack_require__(396);
 
-var _DriverRegistration = __webpack_require__(394);
+var _DriverRegistration = __webpack_require__(395);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -387,7 +397,7 @@ exports.Register = Register;
 
 /***/ }),
 
-/***/ 391:
+/***/ 392:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -402,15 +412,15 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-var _RatingDialog = __webpack_require__(396);
+var _RatingDialog = __webpack_require__(397);
 
-var _YesNoDialog = __webpack_require__(397);
+var _YesNoDialog = __webpack_require__(398);
 
-var _OkDialog = __webpack_require__(102);
+var _OkDialog = __webpack_require__(81);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
 var _reactGoogleMaps = __webpack_require__(367);
 
@@ -548,7 +558,7 @@ exports.ViewJob = ViewJob;
 
 /***/ }),
 
-/***/ 392:
+/***/ 393:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -563,9 +573,9 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -600,7 +610,7 @@ exports.ViewRating = ViewRating;
 
 /***/ }),
 
-/***/ 394:
+/***/ 395:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -615,11 +625,11 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(102);
+var _OkDialog = __webpack_require__(81);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
 var _reactBootstrapValidation = __webpack_require__(189);
 
@@ -767,7 +777,7 @@ exports.DriverRegistration = DriverRegistration;
 
 /***/ }),
 
-/***/ 395:
+/***/ 396:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -782,11 +792,11 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(102);
+var _OkDialog = __webpack_require__(81);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
 var _reactBootstrapValidation = __webpack_require__(189);
 
@@ -920,7 +930,7 @@ exports.PassengerRegistration = PassengerRegistration;
 
 /***/ }),
 
-/***/ 396:
+/***/ 397:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -935,11 +945,11 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
-var _reactStars = __webpack_require__(850);
+var _reactStars = __webpack_require__(851);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -1011,7 +1021,7 @@ exports.RatingDialog = RatingDialog;
 
 /***/ }),
 
-/***/ 397:
+/***/ 398:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1026,9 +1036,9 @@ var _react = __webpack_require__(0);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1083,7 +1093,7 @@ exports.YesNoDialog = YesNoDialog;
 
 /***/ }),
 
-/***/ 398:
+/***/ 399:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1097,21 +1107,23 @@ var _reactDom = __webpack_require__(19);
 
 var ReactDOM = _interopRequireWildcard(_reactDom);
 
-__webpack_require__(34);
+__webpack_require__(30);
 
-var _reactBootstrap = __webpack_require__(29);
+var _reactBootstrap = __webpack_require__(23);
 
-var _reactRouter = __webpack_require__(393);
+var _reactRouter = __webpack_require__(394);
 
 var _Login = __webpack_require__(389);
 
-var _Register = __webpack_require__(390);
+var _Logout = __webpack_require__(390);
+
+var _Register = __webpack_require__(391);
 
 var _CreateJob = __webpack_require__(388);
 
-var _ViewJob = __webpack_require__(391);
+var _ViewJob = __webpack_require__(392);
 
-var _ViewRating = __webpack_require__(392);
+var _ViewRating = __webpack_require__(393);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1134,11 +1146,15 @@ var __extends = undefined && undefined.__extends || function () {
 
 var MainNav = function (_super) {
     __extends(MainNav, _super);
-    function MainNav() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function MainNav(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            isLoggedIn: true
+        };
+        return _this;
     }
     MainNav.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Navbar, null, React.createElement(_reactBootstrap.Nav, null, React.createElement(_reactBootstrap.NavItem, { eventKey: 1, href: '#/' }, "Login"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/register' }, "Register"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/createjob' }, "Create Job"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/viewjob' }, "View Job"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/viewrating' }, "View Rating")));
+        return this.state.isLoggedIn ? React.createElement(_reactBootstrap.Navbar, { collapseOnSelect: true }, React.createElement(_reactBootstrap.Navbar.Header, null, React.createElement(_reactBootstrap.Navbar.Brand, null, React.createElement("span", null, "Simple Kafka-Uber")), React.createElement(_reactBootstrap.Navbar.Toggle, null)), React.createElement(_reactBootstrap.Navbar.Collapse, null, React.createElement(_reactBootstrap.Nav, { pullRight: true }, React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/logout' }, "Logout"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/createjob' }, "Create Job"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/viewjob' }, "View Job"), React.createElement(_reactBootstrap.NavItem, { eventKey: 2, href: '#/viewrating' }, "View Rating")))) : React.createElement(_reactBootstrap.Navbar, { pullRight: true, collapseOnSelect: true }, React.createElement(_reactBootstrap.Navbar.Header, null, React.createElement(_reactBootstrap.Navbar.Brand, null, React.createElement("span", null, "Simple Kafka-Uber")), React.createElement(_reactBootstrap.Navbar.Toggle, null)), React.createElement(_reactBootstrap.Navbar.Collapse, null));
     };
     return MainNav;
 }(React.Component);
@@ -1148,13 +1164,86 @@ var App = function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return React.createElement("div", null, React.createElement(MainNav, null), this.props.children);
+        return React.createElement("div", null, React.createElement("div", null, React.createElement(MainNav, null), this.props.children));
     };
     return App;
 }(React.Component);
-ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating }))), document.getElementById('root'));
+ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating }))), document.getElementById('root'));
+
+/***/ }),
+
+/***/ 81:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.OkDialog = undefined;
+
+var _react = __webpack_require__(0);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(30);
+
+var _reactBootstrap = __webpack_require__(23);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var OkDialog = function (_super) {
+    __extends(OkDialog, _super);
+    function OkDialog(props) {
+        var _this = _super.call(this, props) || this;
+        _this._okClicked = function () {
+            _this.setState({ showModal: false });
+            _this.props.okCallBack();
+        };
+        _this._close = function () {
+            _this.setState({ showModal: false });
+            _this.props.okCallBack();
+        };
+        _this._open = function () {
+            _this.setState({ showModal: true });
+        };
+        //set initial state
+        _this.state = {
+            showModal: false
+        };
+        return _this;
+    }
+    OkDialog.prototype.componentDidMount = function () {
+        if (this.props.open === true) {
+            this.setState({ showModal: true });
+        }
+    };
+    OkDialog.prototype.render = function () {
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, this.props.bodyText)), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
+    };
+    return OkDialog;
+}(React.Component);
+exports.OkDialog = OkDialog;
 
 /***/ })
 
-},[398]);
-//# sourceMappingURL=index.bundle.10f132d33db267a40b81.js.map
+},[399]);
+//# sourceMappingURL=index.bundle.f53ab40bf154af158123.js.map

@@ -66,6 +66,7 @@ export class Login extends React.Component<undefined, LoginState> {
                         <Row className="show-grid">
                             <Col xs={10} md={6}>
                                 <h4>ENTER YOUR LOGIN DETAILS</h4>
+                                <span><h6>Or click <a href="#/register">here</a> to register</h6></span>
                             </Col>
                         </Row>
                         <Row className="show-grid">
