@@ -1,8 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
+import { hashHistory  } from 'react-router'
 import { OkDialog } from "./components/OkDialog";
 import { YesNoDialog } from "./components/YesNoDialog";
+import { AuthService } from "./services/AuthService";
 
 import 'bootstrap/dist/css/bootstrap.css';
 import
@@ -14,8 +15,6 @@ import
     ButtonInput
 } from "react-bootstrap";
 
-
-
 export interface LogoutState {
     okDialogOpen: boolean;
     okDialogKey: number;
@@ -25,8 +24,16 @@ export interface LogoutState {
 
 export class Logout extends React.Component<undefined, LogoutState> {
 
+    private _authService: AuthService;
+
     constructor(props: any) {
         super(props);
+        console.log(props);
+        this._authService = props.route.authService;
+        if (!this._authService.isAuthenticated()) {
+            hashHistory.push('/');
+        }
+
         this.state = {
             okDialogHeaderText: '',
             okDialogBodyText: '',
@@ -41,7 +48,7 @@ export class Logout extends React.Component<undefined, LogoutState> {
                 <Grid>
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
-                            <h4><span>YOU ARE CURRENTLY LOGGED IN AS [John Bishop]</span></h4>
+                            <h4><span>YOU ARE CURRENTLY LOGGED IN AS [{this._authService.userName()}]</span></h4>
                             <span><h6>Click the button to logout</h6></span>
                         </Col>
                     </Row>
@@ -72,14 +79,10 @@ export class Logout extends React.Component<undefined, LogoutState> {
             {
                 okDialogOpen: false
             });
-
-        //TODO : 
-        //1. This should log user out
-        //2. This should push out on an RSJS code
     }
 
      _logoutYesCallBack = () => {
-         console.log('YES CLICKED');
+         this._authService.clearUser();
          this.setState(
              {
                  okDialogHeaderText: 'Logout',
@@ -90,7 +93,6 @@ export class Logout extends React.Component<undefined, LogoutState> {
      }
 
      _logoutNoCallBack = () => {
-         console.log('NO CLICKED');
      }
 }
 

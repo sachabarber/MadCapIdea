@@ -1,4 +1,6 @@
 export const TYPES = {
     Foo: Symbol("Foo"),
-    SomeNumber: Symbol("SomeNumber")
+    SomeNumber: Symbol("SomeNumber"),
+
+    AuthService: Symbol("AuthService")
 };

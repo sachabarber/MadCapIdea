@@ -19,19 +19,50 @@ import { CreateJob } from "./CreateJob";
 import { ViewJob } from "./ViewJob";
 import { ViewRating } from "./ViewRating";
 
+import { ContainerOperations } from "./ioc/ContainerOperations"; 
+import { AuthService } from "./services/AuthService";
+import { TYPES } from "./types";
+
+
+let authService = ContainerOperations.getInstance().container.get<AuthService>(TYPES.AuthService);
+
+export interface MainNavProps {
+    authService: AuthService;
+}
 
 export interface MainNavState {
     isLoggedIn: boolean;
 }
 
+class MainNav extends React.Component<MainNavProps, MainNavState> {
 
-class MainNav extends React.Component<undefined, MainNavState> {
+    private _subscription: any;
+
 
     constructor(props: any) {
         super(props);
+        console.log(props);
         this.state = {
-            isLoggedIn: true
+            isLoggedIn: false
         };
+    }
+
+    componentWillMount() {
+        this._subscription = this.props.authService.getAuthenticationStream().subscribe(isAuthenticated => {
+            this.state = {
+                isLoggedIn: isAuthenticated
+            };
+            if (this.state.isLoggedIn) {
+                hashHistory.push('/createjob');
+            }
+            else {
+                hashHistory.push('/');
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this._subscription.dispose();
     }
 
     render() {
@@ -72,7 +103,7 @@ class App extends React.Component<undefined, undefined> {
         return (
             <div>
                 <div>
-                    <MainNav/>
+                    <MainNav authService={authService}/>
                     {this.props.children}
                 </div>
             </div>
@@ -81,12 +112,13 @@ class App extends React.Component<undefined, undefined> {
 }
 
 
+
 ReactDOM.render((
     <Router history={hashHistory}>
         <Route component={App}>
-            <Route path="/" component={Login}/>
+            <Route path="/" component={Login} authService={authService}/>
             <Route path="/register" component={Register}/>
-            <Route path="/logout" component={Logout}/>
+            <Route path="/logout" component={Logout} authService={authService}/>
             <Route path="/createjob" component={CreateJob}/>
             <Route path="/viewjob" component={ViewJob}/>
             <Route path="/viewrating" component={ViewRating}/>

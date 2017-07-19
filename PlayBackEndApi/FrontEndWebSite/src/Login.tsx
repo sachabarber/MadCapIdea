@@ -13,7 +13,7 @@ import
 
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
 import revalidator from 'revalidator';
-
+import { AuthService } from "./services/AuthService";
 
 let schema = {
     properties: {
@@ -43,8 +43,12 @@ export interface LoginState {
 
 export class Login extends React.Component<undefined, LoginState> {
 
+    private _authService: AuthService;
+
     constructor(props: any) {
         super(props);
+        console.log(props);
+        this._authService = props.route.authService;
         this.state = {
             okDialogHeaderText: '',
             okDialogBodyText: '',
@@ -169,8 +173,10 @@ export class Login extends React.Component<undefined, LoginState> {
         })
         .done(function (jdata, textStatus, jqXHR) {
 
-            console.log("result of login")
-            console.log(jqXHR.responseText)
+            console.log("result of login");
+            console.log(jqXHR.responseText);
+            let currentUser = jqXHR.responseText;
+            self._authService.storeUser(currentUser);
 
             self.setState(
                 {

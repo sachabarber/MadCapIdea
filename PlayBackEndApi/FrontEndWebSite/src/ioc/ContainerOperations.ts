@@ -2,6 +2,8 @@
 import { Container } from "inversify";
 import { TYPES } from "../types";
 import { Foo } from "../domain/Foo";
+import { AuthService } from "../services/AuthService";
+
 
 export class ContainerOperations {
     private static instance: ContainerOperations;
@@ -22,6 +24,7 @@ export class ContainerOperations {
     private createInversifyContainer() {
         this.container.bind<number>(TYPES.SomeNumber).toConstantValue(22);
         this.container.bind<Foo>(TYPES.Foo).to(Foo);
+        this.container.bind<AuthService>(TYPES.AuthService).to(AuthService);
     }
 
     public get container(): Container {
