@@ -58,7 +58,7 @@ class RegistrationController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
     }
   }
 
-  def dealWithRegistration[T](
+  private def dealWithRegistration[T](
           incomingRegistration: T,
           jsonCollectionFuture: Future[JSONCollection],
           query: JsObject,
@@ -83,7 +83,7 @@ class RegistrationController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
           writeResult <- registrations.insert(incomingRegistration)(formatter,ec)
         } yield {
           Logger.debug(s"Successfully inserted with LastError: $writeResult")
-          Ok("Saved registration")
+          Ok(Json.obj())
         }
       }
       case true => Future(BadRequest("Registration already exists"))

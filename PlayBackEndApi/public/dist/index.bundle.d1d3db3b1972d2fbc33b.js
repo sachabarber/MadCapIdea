@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 144:
+/***/ 145:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108,6 +108,8 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
+var _reactRouter = __webpack_require__(73);
+
 var _reactGoogleMaps = __webpack_require__(384);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -146,6 +148,10 @@ var CreateJob = function (_super) {
                 currentPosition: event.latLng
             });
         };
+        _this._authService = props.route.authService;
+        if (!_this._authService.isAuthenticated()) {
+            _reactRouter.hashHistory.push('/');
+        }
         _this.state = {
             currentPosition: { lat: 50.8202949, lng: -0.1406958 }
         };
@@ -201,15 +207,15 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(87);
+var _OkDialog = __webpack_require__(88);
 
 __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactBootstrapValidation = __webpack_require__(202);
+var _reactBootstrapValidation = __webpack_require__(203);
 
-var _revalidator = __webpack_require__(235);
+var _revalidator = __webpack_require__(236);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -338,7 +344,7 @@ var Login = function (_super) {
     return Login;
 }(React.Component);
 exports.Login = Login;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(175)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(176)))
 
 /***/ }),
 
@@ -357,9 +363,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactRouter = __webpack_require__(236);
+var _reactRouter = __webpack_require__(73);
 
-var _OkDialog = __webpack_require__(87);
+var _OkDialog = __webpack_require__(88);
 
 var _YesNoDialog = __webpack_require__(237);
 
@@ -473,13 +479,14 @@ var Register = function (_super) {
     __extends(Register, _super);
     function Register(props) {
         var _this = _super.call(this, props) || this;
+        _this._authService = props.route.authService;
         _this.state = {
             option: 'passenger'
         };
         return _this;
     }
     Register.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "PLEASE ENTER YOUR REGISTRATION DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h6", null, "Choose your registration type "))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonGroup, null, React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'passenger'), active: this.state.option === 'passenger' }, "Passenger"), React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'driver'), active: this.state.option === 'driver' }, "Driver")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, this.state.option === 'passenger' ? React.createElement("div", null, React.createElement(_PassengerRegistration.PassengerRegistration, null)) : React.createElement("div", null, React.createElement(_DriverRegistration.DriverRegistration, null))))));
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "PLEASE ENTER YOUR REGISTRATION DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h6", null, "Choose your registration type "))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonGroup, null, React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'passenger'), active: this.state.option === 'passenger' }, "Passenger"), React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'driver'), active: this.state.option === 'driver' }, "Driver")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, this.state.option === 'passenger' ? React.createElement("div", null, React.createElement(_PassengerRegistration.PassengerRegistration, { authService: this._authService })) : React.createElement("div", null, React.createElement(_DriverRegistration.DriverRegistration, null))))));
     };
     Register.prototype._onOptionChange = function (option) {
         this.setState({
@@ -511,11 +518,13 @@ var _RatingDialog = __webpack_require__(414);
 
 var _YesNoDialog = __webpack_require__(237);
 
-var _OkDialog = __webpack_require__(87);
+var _OkDialog = __webpack_require__(88);
 
 __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
+
+var _reactRouter = __webpack_require__(73);
 
 var _reactGoogleMaps = __webpack_require__(384);
 
@@ -595,6 +604,10 @@ var ViewJob = function (_super) {
                 okDialogOpen: false
             });
         };
+        _this._authService = props.route.authService;
+        if (!_this._authService.isAuthenticated()) {
+            _reactRouter.hashHistory.push('/');
+        }
         _this.state = {
             markers: [{
                 position: {
@@ -672,6 +685,8 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
+var _reactRouter = __webpack_require__(73);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var __extends = undefined && undefined.__extends || function () {
@@ -693,8 +708,13 @@ var __extends = undefined && undefined.__extends || function () {
 
 var ViewRating = function (_super) {
     __extends(ViewRating, _super);
-    function ViewRating() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function ViewRating(props) {
+        var _this = _super.call(this, props) || this;
+        _this._authService = props.route.authService;
+        if (!_this._authService.isAuthenticated()) {
+            _reactRouter.hashHistory.push('/');
+        }
+        return _this;
     }
     ViewRating.prototype.render = function () {
         return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 6, md: 6 }, React.createElement("div", null, React.createElement("h4", null, "YOUR RANKING ", React.createElement(_reactBootstrap.Label, null, "4.2"))))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h6", null, "The finer details of your ranking are shown below"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("div", { className: "table-responsive" }, React.createElement("table", { className: "table table-striped table-bordered table-condensed factTable" }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "Ranked By"), React.createElement("th", null, "Rank Given"))), React.createElement("tbody", null, React.createElement("tr", null, React.createElement("td", null, "John Doe"), React.createElement("td", null, "4.2")), React.createElement("tr", null, React.createElement("td", null, "Mary Moe"), React.createElement("td", null, "4.7")), React.createElement("tr", null, React.createElement("td", null, "July Dooley"), React.createElement("td", null, "4.5")))))))));
@@ -718,9 +738,9 @@ exports.ContainerOperations = undefined;
 
 __webpack_require__(908);
 
-var _inversify = __webpack_require__(172);
+var _inversify = __webpack_require__(173);
 
-var _types = __webpack_require__(144);
+var _types = __webpack_require__(145);
 
 var _Foo = __webpack_require__(415);
 
@@ -770,15 +790,15 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(87);
+var _OkDialog = __webpack_require__(88);
 
 __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactBootstrapValidation = __webpack_require__(202);
+var _reactBootstrapValidation = __webpack_require__(203);
 
-var _revalidator = __webpack_require__(235);
+var _revalidator = __webpack_require__(236);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -808,7 +828,7 @@ var schema = {
         fullname: {
             type: 'string',
             minLength: 8,
-            maxLength: 12,
+            maxLength: 60,
             required: true,
             allowEmpty: false
         },
@@ -918,7 +938,7 @@ var DriverRegistration = function (_super) {
     return DriverRegistration;
 }(React.Component);
 exports.DriverRegistration = DriverRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(175)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(176)))
 
 /***/ }),
 
@@ -937,15 +957,17 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(87);
+var _OkDialog = __webpack_require__(88);
 
 __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactBootstrapValidation = __webpack_require__(202);
+var _reactRouter = __webpack_require__(73);
 
-var _revalidator = __webpack_require__(235);
+var _reactBootstrapValidation = __webpack_require__(203);
+
+var _revalidator = __webpack_require__(236);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -975,7 +997,7 @@ var schema = {
         fullname: {
             type: 'string',
             minLength: 8,
-            maxLength: 12,
+            maxLength: 60,
             required: true,
             allowEmpty: false
         },
@@ -1034,7 +1056,15 @@ var PassengerRegistration = function (_super) {
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json'
             }).done(function (jdata, textStatus, jqXHR) {
+                var redactedPassenger = passenger;
+                redactedPassenger.password = "";
+                console.log("redacted ${redactedPassenger}");
+                console.log(redactedPassenger);
+                console.log("Auth Service");
+                console.log(self.props.authService);
+                self.props.authService.storeUser(redactedPassenger);
                 self.setState({
+                    wasSuccessful: true,
                     okDialogHeaderText: 'Registration Successful',
                     okDialogBodyText: 'You are now registered',
                     okDialogOpen: true,
@@ -1053,12 +1083,16 @@ var PassengerRegistration = function (_super) {
             _this.setState({
                 okDialogOpen: false
             });
+            if (_this.state.wasSuccessful) {
+                _reactRouter.hashHistory.push('/');
+            }
         };
         _this.state = {
             okDialogHeaderText: '',
             okDialogBodyText: '',
             okDialogOpen: false,
-            okDialogKey: 0
+            okDialogKey: 0,
+            wasSuccessful: false
         };
         return _this;
     }
@@ -1071,7 +1105,7 @@ var PassengerRegistration = function (_super) {
     return PassengerRegistration;
 }(React.Component);
 exports.PassengerRegistration = PassengerRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(175)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(176)))
 
 /***/ }),
 
@@ -1179,9 +1213,9 @@ exports.Foo = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(172);
+var _inversify = __webpack_require__(173);
 
-var _types = __webpack_require__(144);
+var _types = __webpack_require__(145);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1232,7 +1266,7 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactRouter = __webpack_require__(236);
+var _reactRouter = __webpack_require__(73);
 
 var _Login = __webpack_require__(406);
 
@@ -1248,7 +1282,7 @@ var _ViewRating = __webpack_require__(410);
 
 var _ContainerOperations = __webpack_require__(411);
 
-var _types = __webpack_require__(144);
+var _types = __webpack_require__(145);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1311,7 +1345,7 @@ var App = function (_super) {
     };
     return App;
 }(React.Component);
-ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login, authService: authService }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout, authService: authService }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating }))), document.getElementById('root'));
+ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login, authService: authService }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register, authService: authService }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout, authService: authService }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating }))), document.getElementById('root'));
 
 /***/ }),
 
@@ -1328,7 +1362,7 @@ exports.AuthService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(172);
+var _inversify = __webpack_require__(173);
 
 var _rx = __webpack_require__(909);
 
@@ -1380,7 +1414,7 @@ exports.AuthService = AuthService;
 
 /***/ }),
 
-/***/ 87:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1454,4 +1488,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[416]);
-//# sourceMappingURL=index.bundle.427e901e659367205e7f.js.map
+//# sourceMappingURL=index.bundle.d1d3db3b1972d2fbc33b.js.map

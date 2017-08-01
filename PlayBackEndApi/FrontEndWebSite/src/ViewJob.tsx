@@ -23,6 +23,10 @@ import
     OverlayTrigger
 } from "react-bootstrap";
 
+import { AuthService } from "./services/AuthService";
+
+import { hashHistory  } from 'react-router';
+
 import { withGoogleMap, GoogleMap, Marker, OverlayView } from "react-google-maps";
 
 const STYLES = {
@@ -88,8 +92,14 @@ export interface ViewJobState {
 
 export class ViewJob extends React.Component<undefined, ViewJobState> {
 
+    private _authService: AuthService;
+
     constructor(props: any) {
         super(props);
+        this._authService = props.route.authService;
+        if (!this._authService.isAuthenticated()) {
+            hashHistory.push('/');
+        }
         this.state = {
             markers: [{
                     position: {

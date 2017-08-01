@@ -117,7 +117,7 @@ ReactDOM.render((
     <Router history={hashHistory}>
         <Route component={App}>
             <Route path="/" component={Login} authService={authService}/>
-            <Route path="/register" component={Register}/>
+            <Route path="/register" component={Register} authService={authService}/>
             <Route path="/logout" component={Logout} authService={authService}/>
             <Route path="/createjob" component={CreateJob}/>
             <Route path="/viewjob" component={ViewJob}/>

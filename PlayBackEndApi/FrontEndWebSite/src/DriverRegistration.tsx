@@ -10,6 +10,11 @@ import
     Col,
     ButtonInput
 } from "react-bootstrap";
+
+import { AuthService } from "./services/AuthService";
+
+import { hashHistory  } from 'react-router';
+
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
 import revalidator from 'revalidator';
 
@@ -19,7 +24,7 @@ let schema = {
         fullname: {
             type: 'string',
             minLength: 8,
-            maxLength: 12,
+            maxLength: 60,
             required: true,
             allowEmpty: false
         },
@@ -54,14 +59,19 @@ let schema = {
     }
 };
 
+export interface DriverRegistrationProps {
+    authService: AuthService;
+}
+
 export interface DriverRegistrationState {
     okDialogOpen: boolean;
     okDialogKey: number;
     okDialogHeaderText: string;
     okDialogBodyText: string;
+    wasSuccessful: boolean;
 }
 
-export class DriverRegistration extends React.Component<undefined, DriverRegistrationState> {
+export class DriverRegistration extends React.Component<DriverRegistrationProps, DriverRegistrationState> {
 
     constructor(props: any) {
         super(props);
@@ -69,7 +79,8 @@ export class DriverRegistration extends React.Component<undefined, DriverRegistr
             okDialogHeaderText: '',
             okDialogBodyText: '',
             okDialogOpen: false,
-            okDialogKey: 0
+            okDialogKey: 0,
+            wasSuccessful: false
         };
     }
 
@@ -204,6 +215,13 @@ export class DriverRegistration extends React.Component<undefined, DriverRegistr
             dataType: 'json'
         })
         .done(function (jdata, textStatus, jqXHR) {
+            var redactedDriver = driver;
+            redactedDriver.password = "";
+            console.log("redacted ${redactedDriver}");
+            console.log(redactedDriver);
+            console.log("Auth Service");
+            console.log(self.props.authService);
+            self.props.authService.storeUser(redactedDriver);
             self.setState(
                 {
                     okDialogHeaderText: 'Registration Successful',
@@ -228,6 +246,9 @@ export class DriverRegistration extends React.Component<undefined, DriverRegistr
             {
                 okDialogOpen: false
             });
+        if (this.state.wasSuccessful) {
+            hashHistory.push('/');
+        }
     }
 
 }

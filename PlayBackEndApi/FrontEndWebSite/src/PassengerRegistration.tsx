@@ -10,6 +10,12 @@ import
     Col,
     ButtonInput
 } from "react-bootstrap";
+
+
+import { AuthService } from "./services/AuthService";
+
+import { hashHistory  } from 'react-router';
+
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
 import revalidator from 'revalidator';
 
@@ -19,7 +25,7 @@ let schema = {
         fullname: {
             type: 'string',
             minLength: 8,
-            maxLength: 12,
+            maxLength: 60,
             required: true,
             allowEmpty: false
         },
@@ -40,14 +46,21 @@ let schema = {
     }
 };
 
+
+export interface PassengerRegistrationProps {
+    authService: AuthService;
+}
+
+
 export interface PassengerRegistrationState {
     okDialogOpen: boolean;
     okDialogKey: number;
     okDialogHeaderText: string;
     okDialogBodyText: string;
+    wasSuccessful: boolean;
 }
 
-export class PassengerRegistration extends React.Component<undefined, PassengerRegistrationState> {
+export class PassengerRegistration extends React.Component<PassengerRegistrationProps, PassengerRegistrationState> {
 
     constructor(props: any) {
         super(props);
@@ -55,7 +68,8 @@ export class PassengerRegistration extends React.Component<undefined, PassengerR
             okDialogHeaderText: '',
             okDialogBodyText: '',
             okDialogOpen: false,
-            okDialogKey: 0
+            okDialogKey: 0,
+            wasSuccessful: false
         };
     }
 
@@ -166,8 +180,17 @@ export class PassengerRegistration extends React.Component<undefined, PassengerR
             dataType: 'json'
         })
         .done(function (jdata, textStatus, jqXHR) {
+            var redactedPassenger = passenger;
+            redactedPassenger.password = "";
+            console.log("redacted ${redactedPassenger}");
+            console.log(redactedPassenger);
+            console.log("Auth Service");
+            console.log(self.props.authService);
+            self.props.authService.storeUser(redactedPassenger);
+
             self.setState(
                 {
+                    wasSuccessful : true,
                     okDialogHeaderText: 'Registration Successful',
                     okDialogBodyText: 'You are now registered',
                     okDialogOpen: true,
@@ -190,6 +213,10 @@ export class PassengerRegistration extends React.Component<undefined, PassengerR
             {
                 okDialogOpen: false
             });
+
+        if (this.state.wasSuccessful) {
+            hashHistory.push('/');
+        }
     }
 }
 

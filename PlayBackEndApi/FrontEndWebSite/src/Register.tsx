@@ -11,6 +11,11 @@ import
     ButtonGroup,
     Button
 } from "react-bootstrap";
+
+import { AuthService } from "./services/AuthService";
+
+import { hashHistory  } from 'react-router';
+
 import { PassengerRegistration } from "./PassengerRegistration";
 import { DriverRegistration } from "./DriverRegistration";
 
@@ -21,8 +26,11 @@ export interface RegisterState {
 
 export class Register extends React.Component<undefined, RegisterState> {
 
+    private _authService: AuthService;
+
     constructor(props: any) {
         super(props);
+        this._authService = props.route.authService;
         this.state = {
             option: 'passenger'
         };
@@ -53,8 +61,8 @@ export class Register extends React.Component<undefined, RegisterState> {
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
                             {this.state.option === 'passenger' ?
-                                <div><PassengerRegistration/></div> :
-                                <div><DriverRegistration/></div>
+                                <div><PassengerRegistration authService={this._authService}/></div> :
+                                <div><DriverRegistration authService={this._authService}/></div>
                             }
                         </Col>
                     </Row>

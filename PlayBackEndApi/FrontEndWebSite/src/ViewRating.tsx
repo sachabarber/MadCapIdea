@@ -11,8 +11,23 @@ import
     Label
 } from "react-bootstrap";
 
+import { AuthService } from "./services/AuthService";
+
+import { hashHistory  } from 'react-router';
+
 
 export class ViewRating extends React.Component<undefined, undefined> {
+
+    private _authService: AuthService;
+
+    constructor(props: any) {
+        super(props);
+        this._authService = props.route.authService;
+        if (!this._authService.isAuthenticated()) {
+            hashHistory.push('/');
+        }
+    }
+
     render() {
         return (
             <Well className="outer-well">

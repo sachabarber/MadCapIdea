@@ -26,25 +26,33 @@ class LoginController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
 
 
   def validateLogin = Action.async(parse.json) { request =>
-
     Json.fromJson[Login](request.body) match {
       case JsSuccess(newLoginDetails, _) =>
         newLoginDetails.isDriver match {
           case false => {
-            val passengerQuery = Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))
-            extractExistingRegistration(passRegistrationFuture.flatMap {
-              _.find(Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))).
-                cursor[JsObject](ReadPreference.primary).
-                collect[List]()
-            })
+            val maybePassengerReg = extractExistingRegistration(
+              passRegistrationFuture.flatMap {
+                _.find(Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))).
+                  cursor[JsObject](ReadPreference.primary).
+                  collect[List]()
+              })
+            returnRedactedRegistration[PassengerRegistration](
+              maybePassengerReg,
+              (reg: PassengerRegistration) => Ok(Json.toJson(reg.copy(password = "")))
+            )
+
           }
           case true => {
-            val driverQuery = Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))
-            extractExistingRegistration(driverRegistrationFuture.flatMap {
-              _.find(Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))).
-                cursor[JsObject](ReadPreference.primary).
-                collect[List]()
-            })
+            val maybeDriverReg = extractExistingRegistration(
+              driverRegistrationFuture.flatMap {
+                _.find(Json.obj("email" -> Json.obj("$eq" -> newLoginDetails.email))).
+                  cursor[JsObject](ReadPreference.primary).
+                  collect[List]()
+              })
+            returnRedactedRegistration[DriverRegistration](
+              maybeDriverReg,
+              (reg: DriverRegistration) => Ok(Json.toJson(reg.copy(password = "")))
+            )
           }
         }
       case JsError(errors) =>
@@ -53,13 +61,32 @@ class LoginController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
     }
   }
 
-  def extractExistingRegistration[T](
-          incomingRegistrations: Future[List[T]])
-          (implicit writes: Writes[T], ec: ExecutionContext): Future[Result] = {
+  private def returnRedactedRegistration[T]
+  (
+    maybeDriverRegFuture: Future[Option[JsObject]],
+    redactor : T => Result
+  )(implicit reads: Reads[T]): Future[Result] = {
+    maybeDriverRegFuture.map {
+      case Some(json) => {
+        val reg = Json.fromJson[T](json)
+        reg match {
+          case JsSuccess(reg, _) => {
+            redactor(reg)
+          }
+          case _ => BadRequest("Registration already exists")
+        }
+      }
+      case None => BadRequest("Could not find registration")
+    }
+  }
+
+  private def extractExistingRegistration[T]
+  (incomingRegistrations: Future[List[T]])
+  (implicit writes: Writes[T], ec: ExecutionContext): Future[Option[T]] = {
     incomingRegistrations.map(matchedRegistrations =>
       matchedRegistrations.length match {
-        case 0 => BadRequest("Registration already exists")
-        case _ => Ok(Json.toJson(matchedRegistrations(0)))
+        case 0 => None
+        case _ => Some(matchedRegistrations(0))
       }
     )
   }

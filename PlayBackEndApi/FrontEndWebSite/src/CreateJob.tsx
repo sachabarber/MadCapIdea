@@ -14,6 +14,10 @@ import
     Button
 } from "react-bootstrap";
 
+import { AuthService } from "./services/AuthService";
+
+import { hashHistory  } from 'react-router';
+
 import { withGoogleMap, GoogleMap, Marker, InfoBox } from "react-google-maps";
 
 const CreateJobGoogleMap = withGoogleMap(props => (
@@ -39,13 +43,18 @@ export interface CreateJobState {
 
 export class CreateJob extends React.Component<undefined, CreateJobState> {
 
+    private _authService: AuthService;
+
     constructor(props: any) {
         super(props);
+        this._authService = props.route.authService;
+        if (!this._authService.isAuthenticated()) {
+            hashHistory.push('/');
+        }
         this.state = {
             currentPosition: { lat: 50.8202949, lng: -0.1406958 }
           };
     }
-
 
     render() {
         return (
