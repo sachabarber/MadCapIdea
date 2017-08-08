@@ -81,3 +81,18 @@ I will maintain a list of stories and their sub tasks using Trello here : https:
 - Create a way to use Active Queries for allowing clients/drivers to query their rankings
 
 
+#### Depdendencies
+
+- MongoDB : https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.6-signed.msi/download
+- Confluence Platform 3.3.0 Open Source : http://packages.confluent.io/archive/3.3/confluent-oss-3.3.0-2.11.zip
+
+
+
+#### How To Run It
+
+You can run the following powershell script to get all the pre-requistites up and running (assuming you have downloaded them all)
+
+- Download the dependencies above
+- Replace the official confluent-3.3.0\bin\windows BAT files with the ones found here : https://github.com/renukaradhya/confluentplatform/tree/master/bin/windows
+- Modify the confluent-3.3.0\etc\kafka\zookeeper.properties file to change the *dataDir* to something like *dataDir=c:/temp/zookeeper* 
+- *PowerShellProject\PowerShellProject\StartPipeline.ps1*

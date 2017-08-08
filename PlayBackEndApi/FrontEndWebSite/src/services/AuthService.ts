@@ -9,6 +9,7 @@ export class AuthService {
     private _authenticatedSubject = new Rx.Subject<boolean>();
 
     constructor() {
+
     }
 
     clearUser = () => {
