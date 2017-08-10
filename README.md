@@ -95,4 +95,31 @@ You can run the following powershell script to get all the pre-requistites up an
 - Download the dependencies above
 - Replace the official confluent-3.3.0\bin\windows BAT files with the ones found here : https://github.com/renukaradhya/confluentplatform/tree/master/bin/windows
 - Modify the confluent-3.3.0\etc\kafka\zookeeper.properties file to change the *dataDir* to something like *dataDir=c:/temp/zookeeper* 
+- Modify the confluent-3.3.0\etc\kafka\server.properties file to uncomment the line *delete.topic.enable=true* 
 - *PowerShellProject\PowerShellProject\StartPipeline.ps1*
+
+
+OR ID WANTING TO RUN MANUALLY
+
+
+cd C:\Apache\confluent-3.3.0\bin\windows
+zookeeper-server-start.bat ..\..\etc\kafka\zookeeper.properties
+
+
+cd C:\Apache\confluent-3.3.0\bin\windows
+kafka-server-start.bat ..\..\etc\kafka\server.properties
+
+
+cd C:\Apache\confluent-3.3.0\bin\windows
+kafka-topics.bat --list --zookeeper localhost:2181
+
+
+cd C:\Apache\confluent-3.3.0\bin\windows
+kafka-console-producer.bat --broker-list localhost:9092 --topic test
+
+cd C:\Apache\confluent-3.3.0\bin\windows
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning
+ 
+ 
+
+

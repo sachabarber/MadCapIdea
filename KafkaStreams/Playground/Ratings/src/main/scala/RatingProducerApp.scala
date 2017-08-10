@@ -1,8 +1,5 @@
 import java.util.Properties
 
-import RatingStreamProcessingApp.{args, run}
-import RatingsProducerApp.args
-import org.apache.kafka.clients.producer.ProducerConfig
 
 import scala.util.Random
 import org.apache.kafka.clients.producer.ProducerRecord
@@ -12,27 +9,11 @@ import org.apache.kafka.streams.StreamsConfig
 
 object RatingsProducerApp extends App {
 
-
-
-
-
-
   val config = createConfig(args)
   val schemaRegistryUrl = if (args.length > 1) args(1)
   else "http://localhost:8081"
 
   run()
-
-  private def createConfig(args:Array[String]) : Properties = {
-    val config: Properties = {
-      val p = new Properties()
-      val bootstrapServers = if (args.length > 0) args(0) else "localhost:9092"
-      p.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
-      p
-    }
-    config
-  }
-
 
   private def run() : Unit = {
 
@@ -51,6 +32,17 @@ object RatingsProducerApp extends App {
       Thread.sleep(100)
     }
   }
+
+  private def createConfig(args:Array[String]) : Properties = {
+    val config: Properties = {
+      val p = new Properties()
+      val bootstrapServers = if (args.length > 0) args(0) else "localhost:9092"
+      p.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
+      p
+    }
+    config
+  }
+
 }
 
 

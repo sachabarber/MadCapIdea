@@ -5,6 +5,7 @@ import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams._
 import org.apache.kafka.streams.kstream.{KStreamBuilder, KTable}
 import java.util
+import scala.collection.JavaConverters.asJavaIterableConverter
 
 
 object RatingStreamProcessingApp extends App {
@@ -23,9 +24,9 @@ object RatingStreamProcessingApp extends App {
       p.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass)
       // Records should be flushed every 10 seconds. This is less than the default
       // in order to keep this example interactive.
-      p.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 10 * 1000)
+      p.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 10000.asInstanceOf[Object])
       // For illustrative purposes we disable record caches
-      p.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0)
+      p.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0.asInstanceOf[Object])
       p
     }
     config
@@ -37,11 +38,19 @@ object RatingStreamProcessingApp extends App {
     val longSerde = Serdes.Long
     val builder: KStreamBuilder = new KStreamBuilder
     val textLines = builder.stream(stringSerde, stringSerde, RatingsTopics.RATING_SUBMIT_TOPIC)
-    val wordCounts : KTable[String, Long] =
-      textLines.flatMapValues(value => util.Arrays.asList(value.toLowerCase.split("\\W+")))
-      .groupBy((_, word) => word)
-      .count("Counts")
-    wordCounts.to(stringSerde,longSerde,RatingsTopics.RATING_OUTPUT_TOPIC)
+    val wordCounts: KTable[String, Long] = textLines
+        .flatMapValues(textLine => textLine.toLowerCase.split("\\W+").toIterable.asJava)
+        .groupBy((_, word) => word)
+        .count("Counts")
+
+    //To test this with Console-Consumer, can do something like
+    //kafka-console-consumer.bat --zookeeper localhost:2181 --topic rating-output-topic
+    // --from-beginning --formatter kafka.tools.DefaultMessageFormatter
+    // --property print.key=true
+    // --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+    // --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+    wordCounts.to(stringSerde, longSerde ,RatingsTopics.RATING_OUTPUT_TOPIC)
+
     val streams: KafkaStreams = new KafkaStreams(builder, config)
     streams.start()
 
