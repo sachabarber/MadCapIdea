@@ -3,17 +3,19 @@ import java.util.concurrent.TimeUnit
 import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams._
 import org.apache.kafka.streams.kstream._
+import java.lang.{Double => JavaDouble}
 
-class RankingByEmailInitializer extends Initializer[Double] {
-  override def apply(): Double = 0f
+
+
+class RankingByEmailInitializer extends Initializer[JavaDouble] {
+  override def apply(): JavaDouble = 0.0
 }
 
-class RankingByEmailAggregator extends Aggregator[String, Double, Double] {
-  override def apply(aggKey: String, value: Double, aggregate: Double) = {
+class RankingByEmailAggregator extends Aggregator[String, JavaDouble,JavaDouble] {
+  override def apply(aggKey: String, value: JavaDouble, aggregate: JavaDouble) = {
     aggregate + value
   }
 }
-
 
 object RatingStreamProcessingApp extends App {
 
@@ -46,26 +48,26 @@ object RatingStreamProcessingApp extends App {
     val rankingSerde = new JSONSerde[Ranking]
     val builder: KStreamBuilder = new KStreamBuilder
     val rankings = builder.stream(stringSerde, rankingSerde, RatingsTopics.RATING_SUBMIT_TOPIC)
-//    val wordCounts: KTable[String, Long] = rankings
-//        .mapValues[(String,Integer)](ranking => (ranking.email, ranking.score))
-//        .groupBy((email, _) => email)
-//        .count("Counts")
-
-
-
-
-
     val mappedRankings = rankings
-      .map[String, Double]((k,v) => new KeyValue[String, Double](k,v.score))
+      .map[String, JavaDouble]((k,v) => new KeyValue[String, JavaDouble](k,v.score))
 
-    val wordCounts = mappedRankings.groupByKey().aggregate(
+    //Alternative to this would be
+    //
+    //    class RankingByEmailReducer extends Reducer[JavaDouble] {
+    //      override def apply(value1: JavaDouble, value2: JavaDouble): JavaDouble = {
+    //        value1 + value2
+    //      }
+    //    }
+    //
+    //    val wordCounts = mappedRankings.groupByKey(stringSerde, doubleSerde).reduce(new RankingByEmailReducer)
+    //
+    val wordCounts = mappedRankings.groupByKey(stringSerde, doubleSerde).aggregate(
       new RankingByEmailInitializer(),
       new RankingByEmailAggregator(),
       doubleSerde
     )
 
-
-
+    wordCounts.toStream.print()
 
     //To test this with Console-Consumer, can do something like
     //kafka-console-consumer.bat --zookeeper localhost:2181 --topic rating-output-topic

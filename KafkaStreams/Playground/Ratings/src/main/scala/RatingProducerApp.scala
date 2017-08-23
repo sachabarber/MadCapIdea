@@ -23,7 +23,7 @@ object RatingsProducerApp extends App {
       Ranking("sacha@here.com",1.5),
       Ranking("david@here.com",3.5),
       Ranking("sam@here.com",2.5),
-      Ranking("danial@here.com",1))
+      Ranking("danial@here.com",1.5))
     val random = new Random
 
     // send a random string from List event every 100 milliseconds
