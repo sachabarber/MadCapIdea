@@ -125,7 +125,7 @@ kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from
 kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic  rating-output-topic --from-beginning 
  
  
-kafka-console-consumer.bat --zookeeper localhost:2181 --topic rating-output-topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer 
+kafka-console-consumer.bat --zookeeper localhost:2181 --topic rating-output-topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer 
 
 
  

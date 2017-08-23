@@ -4,7 +4,7 @@
 		module="ratingsapp_2.12"
 		revision="1.0"
 		status="integration"
-		publication="20170803215104"
+		publication="20170821185149"
 	>
 		<description>
 		RatingsApp
@@ -38,6 +38,6 @@
 		<dependency org="org.apache.kafka" name="kafka-clients" rev="0.11.0.0" conf="compile->default(compile)"/>
 		<dependency org="org.rocksdb" name="rocksdbjni" rev="5.6.1" conf="compile->default(compile)"/>
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.6" conf="compile->default(compile)"/>
-		<dependency org="com.google.code.gson" name="gson" rev="2.8.1" conf="compile->default(compile)"/>
+		<dependency org="org.skinny-framework.com.fasterxml.jackson.module" name="jackson-module-scala_2.12" rev="2.8.4" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

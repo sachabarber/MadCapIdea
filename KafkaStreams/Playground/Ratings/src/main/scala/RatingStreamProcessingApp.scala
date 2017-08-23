@@ -1,11 +1,18 @@
-import java.lang.Long
 import java.util.Properties
 import java.util.concurrent.TimeUnit
 import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams._
-import org.apache.kafka.streams.kstream.{KStreamBuilder, KTable}
-import java.util
-import scala.collection.JavaConverters.asJavaIterableConverter
+import org.apache.kafka.streams.kstream._
+
+class RankingByEmailInitializer extends Initializer[Double] {
+  override def apply(): Double = 0f
+}
+
+class RankingByEmailAggregator extends Aggregator[String, Double, Double] {
+  override def apply(aggKey: String, value: Double, aggregate: Double) = {
+    aggregate + value
+  }
+}
 
 
 object RatingStreamProcessingApp extends App {
@@ -35,21 +42,38 @@ object RatingStreamProcessingApp extends App {
 
   private def run() : Unit = {
     val stringSerde = Serdes.String
-    val longSerde = Serdes.Long
+    val doubleSerde = Serdes.Double
+    val rankingSerde = new JSONSerde[Ranking]
     val builder: KStreamBuilder = new KStreamBuilder
-    val textLines = builder.stream(stringSerde, stringSerde, RatingsTopics.RATING_SUBMIT_TOPIC)
-    val wordCounts: KTable[String, Long] = textLines
-        .flatMapValues(textLine => textLine.toLowerCase.split("\\W+").toIterable.asJava)
-        .groupBy((_, word) => word)
-        .count("Counts")
+    val rankings = builder.stream(stringSerde, rankingSerde, RatingsTopics.RATING_SUBMIT_TOPIC)
+//    val wordCounts: KTable[String, Long] = rankings
+//        .mapValues[(String,Integer)](ranking => (ranking.email, ranking.score))
+//        .groupBy((email, _) => email)
+//        .count("Counts")
+
+
+
+
+
+    val mappedRankings = rankings
+      .map[String, Double]((k,v) => new KeyValue[String, Double](k,v.score))
+
+    val wordCounts = mappedRankings.groupByKey().aggregate(
+      new RankingByEmailInitializer(),
+      new RankingByEmailAggregator(),
+      doubleSerde
+    )
+
+
+
 
     //To test this with Console-Consumer, can do something like
     //kafka-console-consumer.bat --zookeeper localhost:2181 --topic rating-output-topic
     // --from-beginning --formatter kafka.tools.DefaultMessageFormatter
     // --property print.key=true
     // --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
-    // --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
-    wordCounts.to(stringSerde, longSerde ,RatingsTopics.RATING_OUTPUT_TOPIC)
+    // --property value.deserializer=org.apache.kafka.common.serialization.DoubleDeserializer
+    wordCounts.to(stringSerde, doubleSerde ,RatingsTopics.RATING_OUTPUT_TOPIC)
 
     val streams: KafkaStreams = new KafkaStreams(builder, config)
     streams.start()

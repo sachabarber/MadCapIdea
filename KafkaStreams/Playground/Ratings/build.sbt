@@ -12,5 +12,5 @@ libraryDependencies ++= Seq(
   "org.apache.kafka" % "kafka-clients" % kafkaStreamsVersion,
   "org.rocksdb" % "rocksdbjni" % "5.6.1",
   "org.apache.commons" % "commons-lang3" % "3.6",
-  "com.google.code.gson" % "gson" % "2.8.1"
+  "org.skinny-framework.com.fasterxml.jackson.module" % "jackson-module-scala_2.12" % "2.8.4"
 )
