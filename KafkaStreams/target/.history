@@ -1,0 +1,6 @@
+clean
+compile#
+compile
+inspect scalaSource
+clean
+compile

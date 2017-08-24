@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: org.rocksdb:rocksdbjni:5.6.1:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/org.rocksdb/rocksdbjni/jars/rocksdbjni-5.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
