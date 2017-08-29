@@ -1,5 +1,5 @@
 package Entities {
 
-  case class Ranking(val email: String, val score: java.lang.Double)
+  case class Ranking(val fromEmail: String, val toEmail: String, val score: java.lang.Double)
 
 }

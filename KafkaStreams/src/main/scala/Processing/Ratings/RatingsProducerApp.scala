@@ -24,10 +24,10 @@ package Processing.Ratings {
       val random = new Random
       val producerProps = Settings.createBasicProducerProperties
       val rankingList = List(
-        Ranking("sacha@here.com", 1.5),
-        Ranking("david@here.com", 3.5),
-        Ranking("sam@here.com", 2.5),
-        Ranking("danial@here.com", 1.5))
+        Ranking("jarden@here.com","sacha@here.com", 1.5),
+        Ranking("anne@here.com","david@here.com", 3.5),
+        Ranking("frank@here.com","sam@here.com", 2.5),
+        Ranking("morgan@here.com","danial@here.com", 1.5))
 
       producerProps.put(ProducerConfig.ACKS_CONFIG, "all")
 
@@ -41,7 +41,7 @@ package Processing.Ratings {
         val ranking = rankingList(random.nextInt(rankingList.size))
         val rankingBytes = jSONSerde.serializer().serialize("", ranking)
         System.out.println(s"Writing ranking ${ranking} to input topic ${RatingsTopics.RATING_SUBMIT_TOPIC}")
-        rankingProducer.send(new ProducerRecord[String, Array[Byte]](RatingsTopics.RATING_SUBMIT_TOPIC, ranking.email, rankingBytes))
+        rankingProducer.send(new ProducerRecord[String, Array[Byte]](RatingsTopics.RATING_SUBMIT_TOPIC, ranking.toEmail, rankingBytes))
         Thread.sleep(100)
       }
 
