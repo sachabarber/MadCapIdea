@@ -11,7 +11,8 @@ package Utils {
 
   object Settings {
 
-    val config = ConfigFactory.load("application.conf")
+    val config = ConfigFactory.load("streamsApplication.conf")
+
     val kafkaConfig = config.getConfig("kafka")
     val zooKeepers = kafkaConfig.getString("zooKeepers")
     val bootStrapServers = kafkaConfig.getString("bootStrapServers")

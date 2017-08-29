@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kafkastreams.iml" filepath="$PROJECT_DIR$/.idea/modules/kafkastreams.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kafkastreams-build.iml" filepath="$PROJECT_DIR$/.idea/modules/kafkastreams-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/streamprocesing.iml" filepath="$PROJECT_DIR$/.idea/modules/streamprocesing.iml" />
     </modules>
   </component>
 </project>

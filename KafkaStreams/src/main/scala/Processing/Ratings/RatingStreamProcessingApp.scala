@@ -10,10 +10,22 @@ import Utils.Settings
 
 package Processing.Ratings {
 
+  import Stores.StateStores
+
 
   class DummyRankingReducer extends Reducer[Ranking] {
     override def apply(value1: Ranking, value2: Ranking): Ranking = {
       value2
+    }
+  }
+
+  class RankingByEmailInitializer extends Initializer[List[Ranking]] {
+    override def apply(): List[Ranking] = List[Ranking]()
+  }
+
+  class RankingByEmailAggregator extends Aggregator[String, Ranking,List[Ranking]] {
+    override def apply(aggKey: String, value: Ranking, aggregate: List[Ranking]) = {
+      value :: aggregate
     }
   }
 
@@ -27,11 +39,22 @@ package Processing.Ratings {
       val stringSerde = Serdes.String
       val doubleSerde = Serdes.Double
       val rankingSerde = new JSONSerde[Ranking]
+      val listRankingSerde = new JSONSerde[List[Ranking]]
       val builder: KStreamBuilder = new KStreamBuilder
       val rankings = builder.stream(stringSerde, rankingSerde, RatingsTopics.RATING_SUBMIT_TOPIC)
 
-      val rankingTable = rankings.groupByKey(stringSerde,rankingSerde).reduce(new DummyRankingReducer)
-      //rankingTable.toStream.print()
+//      val rankingTable = rankings.groupByKey(stringSerde,rankingSerde)
+//        .reduce(new DummyRankingReducer)
+
+      val rankingTable = rankings.groupByKey(stringSerde,rankingSerde)
+        .aggregate(
+          new RankingByEmailInitializer(),
+          new RankingByEmailAggregator(),
+          listRankingSerde,
+          StateStores.RANKINGS_BY_EMAIL_STORE
+        )
+
+      rankingTable.toStream.print()
 
       val streams: KafkaStreams = new KafkaStreams(builder, Settings.createRatingStreamsProperties)
       streams.start()

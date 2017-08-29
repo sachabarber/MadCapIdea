@@ -19,7 +19,16 @@ name hashing:
 1 items
 0 -> true
 products:
-8 items
+21 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Entities\Ranking$.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Entities\Ranking.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingsProducerApp$.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingsProducerApp$delayedInit$body.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingsProducerApp.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\DummyRankingReducer.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingStreamProcessingApp$.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingStreamProcessingApp$delayedInit$body.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingStreamProcessingApp.class
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONDeserializer.class
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONSerde.class
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONSerializer.class
@@ -28,8 +37,21 @@ C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\Json
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$.class
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$ByteArray$.class
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Topics\RatingsTopics$.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Topics\RatingsTopics.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Utils\Settings$.class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Utils\Settings.class
 binary dependencies:
-7 items
+22 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> C:\Program Files\Java\jdk1.8.0_51\jre\lib\rt.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> C:\Users\sacha\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.0.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Program Files\Java\jdk1.8.0_51\jre\lib\rt.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-clients\jars\kafka-clients-0.11.0.0.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.0.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Program Files\Java\jdk1.8.0_51\jre\lib\rt.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-clients\jars\kafka-clients-0.11.0.0.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-streams\jars\kafka-streams-0.11.0.0.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.0.jar
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Program Files\Java\jdk1.8.0_51\jre\lib\rt.jar
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-annotations\bundles\jackson-annotations-2.8.4.jar
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-core\bundles\jackson-core-2.8.5.jar
@@ -37,6 +59,12 @@ C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\Json
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-clients\jars\kafka-clients-0.11.0.0.jar
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.0.jar
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> C:\Users\sacha\.ivy2\cache\org.skinny-framework.com.fasterxml.jackson.module\jackson-module-scala_2.12\bundles\jackson-module-scala_2.12-2.8.4.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> C:\Program Files\Java\jdk1.8.0_51\jre\lib\rt.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> C:\Program Files\Java\jdk1.8.0_51\jre\lib\rt.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> C:\Users\sacha\.ivy2\cache\com.typesafe\config\bundles\config-1.0.1.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-clients\jars\kafka-clients-0.11.0.0.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-streams\jars\kafka-streams-0.11.0.0.jar
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> C:\Users\sacha\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.0.jar
 direct source dependencies:
 0 items
 direct external dependencies:
@@ -46,7 +74,15 @@ public inherited source dependencies:
 public inherited external dependencies:
 0 items
 member reference internal dependencies:
-0 items
+8 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala
 member reference external dependencies:
 0 items
 inheritance internal dependencies:
@@ -54,7 +90,16 @@ inheritance internal dependencies:
 inheritance external dependencies:
 0 items
 class names:
-8 items
+21 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Entities.Ranking
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Entities.Ranking$
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Processing.Ratings.RatingsProducerApp
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Processing.Ratings.RatingsProducerApp$
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Processing.Ratings.RatingsProducerApp$delayedInit$body
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Processing.Ratings.DummyRankingReducer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Processing.Ratings.RatingStreamProcessingApp
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Processing.Ratings.RatingStreamProcessingApp$
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Processing.Ratings.RatingStreamProcessingApp$delayedInit$body
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> Serialization.JSONDeserializer
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> Serialization.JSONSerde
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> Serialization.JSONSerializer
@@ -63,8 +108,230 @@ C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\Json
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> Serialization.Json$$anon$1
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> Serialization.Json$$anon$2
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> Serialization.Json$ByteArray$
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> Topics.RatingsTopics
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> Topics.RatingsTopics$
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Utils.Settings
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Utils.Settings$
 used names:
-92 items
+366 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> &&
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> <init>
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> ==
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> A
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> AbstractFunction3
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Any
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> AnyRef
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Boolean
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Double
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Entities
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> IndexOutOfBoundsException
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Int
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Iterator
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> None
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Nothing
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Object
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Option
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Predef
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Product
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Ranking
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> ScalaRunTime
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Serializable
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Some
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> String
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> T
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> T0
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> T1
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> T2
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> T3
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> Tuple3
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> _hashCode
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> _root_
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> _toString
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> asInstanceOf
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> eq
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> fromEmail
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> isInstanceOf
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> java
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> lang
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> package
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> runtime
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> score
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> toEmail
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> toString
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> typedProductIterator
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> ||
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> +
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> <init>
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> <repeated>
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> A
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Any
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> App
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Array
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Byte
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> ByteArray
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Double
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Entities
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Function1
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Future
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Int
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> JSONSerde
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> KafkaProducer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> List
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Long
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Manifest
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> ManifestFactory
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Nothing
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Object
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Predef
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> PrintStream
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Processing
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> ProducerConfig
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> ProducerRecord
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Properties
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> RATING_SUBMIT_TOPIC
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Random
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Range
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Ranking
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Ratings
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> RatingsProducerApp
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> RatingsTopics
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> RecordMetadata
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> RichInt
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Runnable
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Runtime
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Serde
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Serdes
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Serialization
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Serializer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Settings
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> String
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> StringContext
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> System
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> T
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Thread
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> TimeUnit
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Topics
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> U
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Unit
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> Utils
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> addShutdownHook
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> apache
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> apply
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> classType
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> clients
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> close
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> collection
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> common
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> concurrent
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> createBasicProducerProperties
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> double2Double
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> foreach
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> getProperty
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> getRuntime
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> immutable
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> intWrapper
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> jSONSerde
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> java
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> kafka
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> lang
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> nextInt
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> org
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> out
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> println
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> producer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> producerProps
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> put
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> random
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> ranking
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> rankingBytes
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> rankingList
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> rankingProducer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> reflect
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> run
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> s
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> send
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> serialization
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> serialize
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> serializer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> size
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> sleep
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> toEmail
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> until
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> util
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> <init>
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> <repeated...>
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Any
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> App
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Boolean
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Double
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> DummyRankingReducer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Entities
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> JSONSerde
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> K
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> KGroupedStream
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> KStream
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> KStreamBuilder
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> KTable
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> KafkaStreams
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Long
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Manifest
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> ManifestFactory
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Nothing
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Object
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Predef
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Processing
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Properties
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> RATING_SUBMIT_TOPIC
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Ranking
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> RatingStreamProcessingApp
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Ratings
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> RatingsTopics
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Reducer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Runnable
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Runtime
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Serde
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Serdes
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Serialization
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Settings
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> String
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> T
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Thread
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> TimeUnit
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Topics
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> TopologyBuilder
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Unit
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> Utils
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> V
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> addShutdownHook
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> apache
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> builder
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> classType
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> close
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> common
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> concurrent
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> createRatingStreamsProperties
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> getRuntime
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> groupByKey
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> java
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> kafka
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> kstream
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> lang
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> org
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> rankingSerde
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> rankings
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> reduce
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> reflect
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> run
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> serialization
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> start
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> stream
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> streams
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> stringSerde
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> util
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> value2
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> $anon
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> <init>
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> ==
@@ -157,47 +424,147 @@ C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\Json
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> util
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> value
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> writeValueAsBytes
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> <init>
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> AnyRef
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> Object
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> RATING_OUTPUT_TOPIC
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> RATING_SUBMIT_TOPIC
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> RatingsTopics
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> String
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> Topics
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> <init>
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> ?0
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Any
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> AnyRef
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Class
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Config
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> ConfigFactory
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Int
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Nothing
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Object
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> ProducerConfig
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Properties
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Serde
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Serdes
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Settings
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> StreamsConfig
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> String
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> T0
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> Utils
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> apache
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> asInstanceOf
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> bootStrapServers
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> clients
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> com
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> common
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> config
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> createBasicStreamProperties
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> getClass
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> getConfig
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> getInt
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> getString
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> java
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> kafka
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> kafkaConfig
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> lang
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> load
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> org
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> partition
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> producer
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> props
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> put
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> scala
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> serialization
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> streams
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> typesafe
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> util
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> zooKeepers
 product stamps:
-8 items
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$$anon$1.class -> lastModified(1503556331084)
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$$anon$2.class -> lastModified(1503556331087)
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$.class -> lastModified(1503556331046)
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$ByteArray$.class -> lastModified(1503556331081)
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json.class -> lastModified(1503556331044)
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONDeserializer.class -> lastModified(1503556331067)
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONSerde.class -> lastModified(1503556331078)
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONSerializer.class -> lastModified(1503556331055)
+21 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Entities\Ranking$.class -> lastModified(1504026459230)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Entities\Ranking.class -> lastModified(1504026459228)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\DummyRankingReducer.class -> lastModified(1504026459235)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingsProducerApp$.class -> lastModified(1504026459247)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingsProducerApp$delayedInit$body.class -> lastModified(1504026459249)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingsProducerApp.class -> lastModified(1504026459244)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingStreamProcessingApp$.class -> lastModified(1504026459240)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingStreamProcessingApp$delayedInit$body.class -> lastModified(1504026459242)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Processing\Ratings\RatingStreamProcessingApp.class -> lastModified(1504026459237)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$$anon$1.class -> lastModified(1504026459263)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$$anon$2.class -> lastModified(1504026459265)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$.class -> lastModified(1504026459254)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json$ByteArray$.class -> lastModified(1504026459261)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\Json.class -> lastModified(1504026459251)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONDeserializer.class -> lastModified(1504026459258)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONSerde.class -> lastModified(1504026459260)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Serialization\JSONSerializer.class -> lastModified(1504026459256)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Topics\RatingsTopics$.class -> lastModified(1504026459270)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Topics\RatingsTopics.class -> lastModified(1504026459268)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Utils\Settings$.class -> lastModified(1504026459275)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\target\scala-2.12\classes\Utils\Settings.class -> lastModified(1504026459273)
 source stamps:
-1 items
-C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> hash(7d8e352778bd6ad4c7cc6a3b1ad661d74c9fc42f)
+6 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> hash(dd365649cd53211c25e4c39d8d306a2d702a70dd)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> hash(2d074fada81fcd98f125f9bb0a281d94b945d0e2)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> hash(642c62dd88cf2df14920335abd8793102d50d323)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> hash(3f1aa45f3c3dff7e7c721f718c7cb81668a9a61c)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> hash(7ba7a664ab89b2c0cfd3fdbc2d9c6b0d42374374)
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> hash(337909d77eccaf3cf5ac2e7d5c7655e7b02a229f)
 binary stamps:
-7 items
+9 items
 C:\Program Files\Java\jdk1.8.0_51\jre\lib\rt.jar -> lastModified(1438721531365)
 C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-annotations\bundles\jackson-annotations-2.8.4.jar -> lastModified(1476416759000)
 C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-core\bundles\jackson-core-2.8.5.jar -> lastModified(1479103672000)
 C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-databind\bundles\jackson-databind-2.8.5.jar -> lastModified(1479104077000)
+C:\Users\sacha\.ivy2\cache\com.typesafe\config\bundles\config-1.0.1.jar -> lastModified(1369010410000)
 C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-clients\jars\kafka-clients-0.11.0.0.jar -> lastModified(1498170226000)
+C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-streams\jars\kafka-streams-0.11.0.0.jar -> lastModified(1498170299000)
 C:\Users\sacha\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.0.jar -> lastModified(1477696052000)
 C:\Users\sacha\.ivy2\cache\org.skinny-framework.com.fasterxml.jackson.module\jackson-module-scala_2.12\bundles\jackson-module-scala_2.12-2.8.4.jar -> lastModified(1478152660000)
 class names:
-7 items
+9 items
 C:\Program Files\Java\jdk1.8.0_51\jre\lib\rt.jar -> java.lang.Object
 C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-annotations\bundles\jackson-annotations-2.8.4.jar -> com.fasterxml.jackson.annotation.JsonInclude
 C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-core\bundles\jackson-core-2.8.5.jar -> com.fasterxml.jackson.core.type.TypeReference
-C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-databind\bundles\jackson-databind-2.8.5.jar -> com.fasterxml.jackson.databind.Module
-C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-clients\jars\kafka-clients-0.11.0.0.jar -> org.apache.kafka.common.serialization.Serializer
-C:\Users\sacha\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.0.jar -> scala.reflect.Manifest
-C:\Users\sacha\.ivy2\cache\org.skinny-framework.com.fasterxml.jackson.module\jackson-module-scala_2.12\bundles\jackson-module-scala_2.12-2.8.4.jar -> com.fasterxml.jackson.module.scala.DefaultScalaModule
+C:\Users\sacha\.ivy2\cache\com.fasterxml.jackson.core\jackson-databind\bundles\jackson-databind-2.8.5.jar -> com.fasterxml.jackson.databind.ObjectMapper
+C:\Users\sacha\.ivy2\cache\com.typesafe\config\bundles\config-1.0.1.jar -> com.typesafe.config.Config
+C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-clients\jars\kafka-clients-0.11.0.0.jar -> org.apache.kafka.common.serialization.Serde
+C:\Users\sacha\.ivy2\cache\org.apache.kafka\kafka-streams\jars\kafka-streams-0.11.0.0.jar -> org.apache.kafka.streams.StreamsConfig
+C:\Users\sacha\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.0.jar -> scala.Int
+C:\Users\sacha\.ivy2\cache\org.skinny-framework.com.fasterxml.jackson.module\jackson-module-scala_2.12\bundles\jackson-module-scala_2.12-2.8.4.jar -> com.fasterxml.jackson.module.scala.DefaultScalaModule$
 internal apis:
-1 items
+6 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlSjH5SdlLSkQCAAdJAAdhcGlIYXNoWgAIaGFzTWFjcm9aABBoYXNQYWNrYWdlT2JqZWN0TAAYX2ludGVybmFsT25seV9uYW1lSGFzaGVzdAAkTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoZXM7TAADYXBpdAAVTHhzYnRpL2FwaS9Tb3VyY2VBUEk7TAALY29tcGlsYXRpb250ABdMeHNidGkvYXBpL0NvbXBpbGF0aW9uO1sABGhhc2h0AAJbQnhwDxlsGAAAc3IAInhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoZXNU2r6Z+tTsTAIAAlsAD2ltcGxpY2l0TWVtYmVyc3QAI1tMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2g7WwAOcmVndWxhck1lbWJlcnNxAH4AB3hwdXIAI1tMeHNidGkuYXBpLl9pbnRlcm5hbE9ubHlfTmFtZUhhc2g7SVqAtt2Wi/QCAAB4cAAAAAB1cQB+AAkAAAAic3IAIHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoWw71InY4V88CAAJJAARoYXNoTAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwiGUSJnQABm5vdGlmeXNxAH4ADEN6/nR0AAR3YWl0c3EAfgAMIgtr83QADmNvcHkkZGVmYXVsdCQyc3EAfgAMGbihO3QADSRhc0luc3RhbmNlT2ZzcQB+AAw0g/T0dAAMcHJvZHVjdEFyaXR5c3EAfgAM0KrqknQABmVxdWFsc3NxAH4ADP2klMZ0AAxhc0luc3RhbmNlT2ZzcQB+AAyoxeFhdAAMc3luY2hyb25pemVkc3EAfgAM4pvkAHQABXNjb3Jlc3EAfgAMgcgUE3QADSRpc0luc3RhbmNlT2ZzcQB+AAwHlqPCdAAIY2FuRXF1YWxzcQB+AAzt5pxHdAANcHJvZHVjdFByZWZpeHNxAH4ADDOdmTl0AAlub3RpZnlBbGxzcQB+AAyw41jndAAHdG9FbWFpbHNxAH4ADHCxncp0AAxpc0luc3RhbmNlT2ZzcQB+AAxBAaRjdAAGPGluaXQ+c3EAfgAMOcHpvnQAAj09c3EAfgAMvBJOUHQABWNsb25lc3EAfgAMVj+fW3QABiRpbml0JHNxAH4ADDrn8xN0AA5jb3B5JGRlZmF1bHQkM3NxAH4ADIVhAJ50AARjb3B5c3EAfgAMMhrV5nQACHRvU3RyaW5nc3EAfgAMiBC2mXQAAiE9c3EAfgAMxqozznQAB1JhbmtpbmdzcQB+AAxJEcHMdAAJZnJvbUVtYWlsc3EAfgAMwMFkJnQACGdldENsYXNzc3EAfgAM5bh/x3QADmNvcHkkZGVmYXVsdCQxc3EAfgAM/7D+33QAAm5lc3EAfgAMgO+ennQAAmVxc3EAfgAMOqZXmnQAD3Byb2R1Y3RJdGVyYXRvcnNxAH4ADAuzTe50AAIjI3NxAH4ADMoxDu50AAhmaW5hbGl6ZXNxAH4ADHqJhXt0AA5wcm9kdWN0RWxlbWVudHNxAH4ADGlxTXx0AAhoYXNoQ29kZXNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAFzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+AFt4cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXEAfgANeHBzcgAQeHNidGkuYXBpLlB1YmxpY7pYPa5sLWBCAgAAeHIAEHhzYnRpLmFwaS5BY2Nlc3PdYpr4HWMxSAIAAHhwdXIAF1tMeHNidGkuYXBpLkFubm90YXRpb24765frGRD2jUgCAAB4cAAAAABzcgATeHNidGkuYXBpLk1vZGlmaWVyc5fnYdwTJnuzAgABQgAFZmxhZ3N4cAB0ABBFbnRpdGllcy5SYW5raW5ndXIAGltMeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXI72W0mDyid8rYCAAB4cAAAAAB+cgAYeHNidGkuYXBpLkRlZmluaXRpb25UeXBlAAAAAAAAAAASAAB4cgAOamF2YS5sYW5nLkVudW0AAAAAAAAAABIAAHhwdAAIQ2xhc3NEZWZ1cgATW0xqYXZhLmxhbmcuU3RyaW5nO63SVufpHXtHAgAAeHAAAAAAc3IAIXhzYnRpLmFwaS5BYnN0cmFjdExhenkkU3RyaWN0TGF6eQ1mHGspFiq4AgABTAAFdmFsdWV0ABJMamF2YS9sYW5nL09iamVjdDt4cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+AHNzcgATeHNidGkuYXBpLlN0cnVjdHVyZamq+YCTb9gAAgADTAAIZGVjbGFyZWRxAH4AW0wACWluaGVyaXRlZHEAfgBbTAAHcGFyZW50c3EAfgBbeHEAfgB4c3EAfgBzdXEAfgBWAAAAAHNxAH4Ac3VxAH4AVgAAAABzcQB+AHN1cgARW0x4c2J0aS5hcGkuVHlwZTt0/6Vae/npQQIAAHhwAAAABnNyABR4c2J0aS5hcGkuUHJvamVjdGlvbvPSjVTpRaQtAgACTAACaWRxAH4ADUwABnByZWZpeHQAFkx4c2J0aS9hcGkvU2ltcGxlVHlwZTt4cQB+AHd0AAxTZXJpYWxpemFibGVzcgATeHNidGkuYXBpLlNpbmdsZXRvbvynX/jPVuRGAgABTAAEcGF0aHQAEEx4c2J0aS9hcGkvUGF0aDt4cQB+AHdzcgAOeHNidGkuYXBpLlBhdGibPVwIzqUnhAIAAVsACmNvbXBvbmVudHN0ABpbTHhzYnRpL2FwaS9QYXRoQ29tcG9uZW50O3hwdXIAGltMeHNidGkuYXBpLlBhdGhDb21wb25lbnQ7Q9oJdC1nFnQCAAB4cAAAAAJzcgAMeHNidGkuYXBpLklkmDJsizdTxEACAAFMAAJpZHEAfgANeHIAF3hzYnRpLmFwaS5QYXRoQ29tcG9uZW50X5oiWy6Gn7wCAAB4cHQABXNjYWxhc3IADnhzYnRpLmFwaS5UaGlz2wntpsxaQFwCAAB4cQB+AJFzcQB+AIRxAH4Ah3NxAH4AiHNxAH4Ai3VxAH4AjgAAAANzcQB+AJB0AARqYXZhc3EAfgCQdAACaW9xAH4AlXNxAH4AhHQAB1Byb2R1Y3RxAH4AinNxAH4AhHQABkVxdWFsc3EAfgCKc3EAfgCEdAAGT2JqZWN0c3EAfgCIc3EAfgCLdXEAfgCOAAAAA3NxAH4AkHEAfgCbc3EAfgCQdAAEbGFuZ3EAfgCVc3EAfgCEdAADQW55cQB+AIp1cgAUW0x4c2J0aS5hcGkuUGFja2FnZTtbExk3cKcnoQIAAHhwAAAAAXNyABF4c2J0aS5hcGkuUGFja2FnZX5Zj/auzjlYAgABTAAEbmFtZXEAfgANeHB0AAhFbnRpdGllc3NyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABXi72XRJ1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5cQB+AA1MAA9zb3VyY2VEaXJlY3RvcnlxAH4ADXhwdABIQzpcVXNlcnNcc2FjaGFcRGVza3RvcFxNYWRDYXBJZGVhXEthZmthU3RyZWFtc1x0YXJnZXRcc2NhbGEtMi4xMlxjbGFzc2VzdAABL3VyAAJbQqzzF/gGCFTgAgAAeHAAAAAU3TZWSc1TIRwl5MOdjTBqLXAqcN0=
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlSjH5SdlLSkQCAAdJAAdhcGlIYXNoWgAIaGFzTWFjcm9aABBoYXNQYWNrYWdlT2JqZWN0TAAYX2ludGVybmFsT25seV9uYW1lSGFzaGVzdAAkTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoZXM7TAADYXBpdAAVTHhzYnRpL2FwaS9Tb3VyY2VBUEk7TAALY29tcGlsYXRpb250ABdMeHNidGkvYXBpL0NvbXBpbGF0aW9uO1sABGhhc2h0AAJbQnhwli/+ZgAAc3IAInhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoZXNU2r6Z+tTsTAIAAlsAD2ltcGxpY2l0TWVtYmVyc3QAI1tMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2g7WwAOcmVndWxhck1lbWJlcnNxAH4AB3hwdXIAI1tMeHNidGkuYXBpLl9pbnRlcm5hbE9ubHlfTmFtZUhhc2g7SVqAtt2Wi/QCAAB4cAAAAAB1cQB+AAkAAAAZc3IAIHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoWw71InY4V88CAAJJAARoYXNoTAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdF3RaHQABm5vdGlmeXNxAH4ADCQ9nPd0AAR3YWl0c3EAfgAMLwcEmXQADSRhc0luc3RhbmNlT2ZzcQB+AAw9iGNVdAAGZXF1YWxzc3EAfgAMkfDU/3QADGFzSW5zdGFuY2VPZnNxAH4ADEStKkZ0AA5leGVjdXRpb25TdGFydHNxAH4ADAw3eZV0AAxzeW5jaHJvbml6ZWRzcQB+AAw+WIYadAANJGlzSW5zdGFuY2VPZnNxAH4ADK6thkt0AARtYWluc3EAfgAMzDYdvXQACW5vdGlmeUFsbHNxAH4ADAbmtj10AAxpc0luc3RhbmNlT2ZzcQB+AAxGnLIHdAACPT1zcQB+AAyTt6SgdAAFY2xvbmVzcQB+AAwfYOAKdAAGJGluaXQkc3EAfgAMhFgjT3QACHRvU3RyaW5nc3EAfgAMPF3ge3QABGFyZ3NzcQB+AAyXRuBqdAASUmF0aW5nc1Byb2R1Y2VyQXBwc3EAfgAMgPAn9HQAAiE9c3EAfgAMRoPXFHQACGdldENsYXNzc3EAfgAMkv6tuHQAAm5lc3EAfgAM4S2zLHQAAmVxc3EAfgAMeQcEcHQAC2RlbGF5ZWRJbml0c3EAfgAMKX9iAnQAAiMjc3EAfgAMgD6JfHQACGZpbmFsaXplc3EAfgAMl9cg5HQACGhhc2hDb2Rlc3IAE3hzYnRpLmFwaS5Tb3VyY2VBUEm5Xqf5KSM4pAIAAlsAC2RlZmluaXRpb25zdAAXW0x4c2J0aS9hcGkvRGVmaW5pdGlvbjtbAAhwYWNrYWdlc3QAFFtMeHNidGkvYXBpL1BhY2thZ2U7eHB1cgAXW0x4c2J0aS5hcGkuRGVmaW5pdGlvbjuIyVzntONeDgIAAHhwAAAAAXNyABN4c2J0aS5hcGkuQ2xhc3NMaWtlgzQcod+wl2wCAARMAA5kZWZpbml0aW9uVHlwZXQAGkx4c2J0aS9hcGkvRGVmaW5pdGlvblR5cGU7WwAQc2F2ZWRBbm5vdGF0aW9uc3QAE1tMamF2YS9sYW5nL1N0cmluZztMAAhzZWxmVHlwZXQAEEx4c2J0aS9hcGkvTGF6eTtMAAlzdHJ1Y3R1cmVxAH4ASXhyACF4c2J0aS5hcGkuUGFyYW1ldGVyaXplZERlZmluaXRpb275EW6x1VA84gIAAVsADnR5cGVQYXJhbWV0ZXJzdAAaW0x4c2J0aS9hcGkvVHlwZVBhcmFtZXRlcjt4cgAUeHNidGkuYXBpLkRlZmluaXRpb26HKhvocULjRgIABEwABmFjY2Vzc3QAEkx4c2J0aS9hcGkvQWNjZXNzO1sAC2Fubm90YXRpb25zdAAXW0x4c2J0aS9hcGkvQW5ub3RhdGlvbjtMAAltb2RpZmllcnN0ABVMeHNidGkvYXBpL01vZGlmaWVycztMAARuYW1lcQB+AA14cHNyABB4c2J0aS5hcGkuUHVibGljulg9rmwtYEICAAB4cgAQeHNidGkuYXBpLkFjY2Vzc91imvgdYzFIAgAAeHB1cgAXW0x4c2J0aS5hcGkuQW5ub3RhdGlvbjvrl+sZEPaNSAIAAHhwAAAAAHNyABN4c2J0aS5hcGkuTW9kaWZpZXJzl+dh3BMme7MCAAFCAAVmbGFnc3hwAHQAJVByb2Nlc3NpbmcuUmF0aW5ncy5SYXRpbmdzUHJvZHVjZXJBcHB1cgAaW0x4c2J0aS5hcGkuVHlwZVBhcmFtZXRlcjvZbSYPKJ3ytgIAAHhwAAAAAH5yABh4c2J0aS5hcGkuRGVmaW5pdGlvblR5cGUAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAZNb2R1bGV1cgATW0xqYXZhLmxhbmcuU3RyaW5nO63SVufpHXtHAgAAeHAAAAACdAAac2NhbGEuZGVwcmVjYXRlZE92ZXJyaWRpbmd0ABBzY2FsYS5kZXByZWNhdGVkc3IAIXhzYnRpLmFwaS5BYnN0cmFjdExhenkkU3RyaWN0TGF6eQ1mHGspFiq4AgABTAAFdmFsdWV0ABJMamF2YS9sYW5nL09iamVjdDt4cHNyABN4c2J0aS5hcGkuRW1wdHlUeXBlvP2eRkk7iSQCAAB4cgAUeHNidGkuYXBpLlNpbXBsZVR5cGVyeGKIISO/QAIAAHhyAA54c2J0aS5hcGkuVHlwZT9q2SEWSarKAgAAeHBzcQB+AGNzcgATeHNidGkuYXBpLlN0cnVjdHVyZamq+YCTb9gAAgADTAAIZGVjbGFyZWRxAH4ASUwACWluaGVyaXRlZHEAfgBJTAAHcGFyZW50c3EAfgBJeHEAfgBoc3EAfgBjdXEAfgBEAAAAAHNxAH4AY3VxAH4ARAAAAAFzcgANeHNidGkuYXBpLkRlZlK+n+J8tDZpAgACTAAKcmV0dXJuVHlwZXQAEEx4c2J0aS9hcGkvVHlwZTtbAA92YWx1ZVBhcmFtZXRlcnN0ABpbTHhzYnRpL2FwaS9QYXJhbWV0ZXJMaXN0O3hxAH4ASnEAfgBTdXEAfgBUAAAAAXNyABR4c2J0aS5hcGkuQW5ub3RhdGlvbt4OgaL2XAqyAgACWwAJYXJndW1lbnRzdAAfW0x4c2J0aS9hcGkvQW5ub3RhdGlvbkFyZ3VtZW50O0wABGJhc2VxAH4AcnhwdXIAH1tMeHNidGkuYXBpLkFubm90YXRpb25Bcmd1bWVudDtRnaaPOCUPeAIAAHhwAAAAAXNyABx4c2J0aS5hcGkuQW5ub3RhdGlvbkFyZ3VtZW501kWx2AMbF3wCAAJMAARuYW1lcQB+AA1MAAV2YWx1ZXEAfgANeHB0AAB0ACooIm1haW4gc2hvdWxkIG5vdCBiZSBvdmVycmlkZGVuIiwiMi4xMS4wIilzcgAUeHNidGkuYXBpLlByb2plY3Rpb27z0o1U6UWkLQIAAkwAAmlkcQB+AA1MAAZwcmVmaXh0ABZMeHNidGkvYXBpL1NpbXBsZVR5cGU7eHEAfgBndAAUZGVwcmVjYXRlZE92ZXJyaWRpbmdzcgATeHNidGkuYXBpLlNpbmdsZXRvbvynX/jPVuRGAgABTAAEcGF0aHQAEEx4c2J0aS9hcGkvUGF0aDt4cQB+AGdzcgAOeHNidGkuYXBpLlBhdGibPVwIzqUnhAIAAVsACmNvbXBvbmVudHN0ABpbTHhzYnRpL2FwaS9QYXRoQ29tcG9uZW50O3hwdXIAGltMeHNidGkuYXBpLlBhdGhDb21wb25lbnQ7Q9oJdC1nFnQCAAB4cAAAAAJzcgAMeHNidGkuYXBpLklkmDJsizdTxEACAAFMAAJpZHEAfgANeHIAF3hzYnRpLmFwaS5QYXRoQ29tcG9uZW50X5oiWy6Gn7wCAAB4cHQABXNjYWxhc3IADnhzYnRpLmFwaS5UaGlz2wntpsxaQFwCAAB4cQB+AIxzcQB+AFYAcQB+AB91cQB+AFkAAAAAc3EAfgB/dAAEVW5pdHEAfgCFdXIAGltMeHNidGkuYXBpLlBhcmFtZXRlckxpc3Q79dM6HfKzcO4CAAB4cAAAAAFzcgAXeHNidGkuYXBpLlBhcmFtZXRlckxpc3TWxbwcZEl04wIAAloACmlzSW1wbGljaXRbAApwYXJhbWV0ZXJzdAAcW0x4c2J0aS9hcGkvTWV0aG9kUGFyYW1ldGVyO3hwAHVyABxbTHhzYnRpLmFwaS5NZXRob2RQYXJhbWV0ZXI7z7jFXaXdtW0CAAB4cAAAAAFzcgAZeHNidGkuYXBpLk1ldGhvZFBhcmFtZXRlch9FrhfTSbDqAgAEWgAKaGFzRGVmYXVsdEwACG1vZGlmaWVydAAdTHhzYnRpL2FwaS9QYXJhbWV0ZXJNb2RpZmllcjtMAARuYW1lcQB+AA1MAAN0cGVxAH4AcnhwAH5yABt4c2J0aS5hcGkuUGFyYW1ldGVyTW9kaWZpZXIAAAAAAAAAABIAAHhxAH4AXHQABVBsYWlucQB+AC1zcgAXeHNidGkuYXBpLlBhcmFtZXRlcml6ZWQWbO5pA8m7fwIAAkwACGJhc2VUeXBlcQB+AIBbAA10eXBlQXJndW1lbnRzdAARW0x4c2J0aS9hcGkvVHlwZTt4cQB+AGdzcQB+AH90AAVBcnJheXEAfgCFdXIAEVtMeHNidGkuYXBpLlR5cGU7dP+lWnv56UECAAB4cAAAAAFzcQB+AH90AAZTdHJpbmdzcQB+AINzcQB+AIZ1cQB+AIkAAAADc3EAfgCLdAAEamF2YXNxAH4Ai3QABGxhbmdxAH4AkHNxAH4AY3VxAH4ApwAAAARzcQB+AH90AANBcHBxAH4AhXNxAH4Af3QAC0RlbGF5ZWRJbml0cQB+AIVzcQB+AH90AAZPYmplY3RxAH4Aq3NxAH4Af3QAA0FueXEAfgCFdXIAFFtMeHNidGkuYXBpLlBhY2thZ2U7WxMZN3CnJ6ECAAB4cAAAAAJzcgAReHNidGkuYXBpLlBhY2thZ2V+WY/2rs45WAIAAUwABG5hbWVxAH4ADXhwdAASUHJvY2Vzc2luZy5SYXRpbmdzc3EAfgC+dAAKUHJvY2Vzc2luZ3NyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABXi72XRJ1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5cQB+AA1MAA9zb3VyY2VEaXJlY3RvcnlxAH4ADXhwdABIQzpcVXNlcnNcc2FjaGFcRGVza3RvcFxNYWRDYXBJZGVhXEthZmthU3RyZWFtc1x0YXJnZXRcc2NhbGEtMi4xMlxjbGFzc2VzdAABL3VyAAJbQqzzF/gGCFTgAgAAeHAAAAAULQdPragfzZjxJfm7CigdlLlF0OI=
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlSjH5SdlLSkQCAAdJAAdhcGlIYXNoWgAIaGFzTWFjcm9aABBoYXNQYWNrYWdlT2JqZWN0TAAYX2ludGVybmFsT25seV9uYW1lSGFzaGVzdAAkTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoZXM7TAADYXBpdAAVTHhzYnRpL2FwaS9Tb3VyY2VBUEk7TAALY29tcGlsYXRpb250ABdMeHNidGkvYXBpL0NvbXBpbGF0aW9uO1sABGhhc2h0AAJbQnhwQd6O+wAAc3IAInhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoZXNU2r6Z+tTsTAIAAlsAD2ltcGxpY2l0TWVtYmVyc3QAI1tMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2g7WwAOcmVndWxhck1lbWJlcnNxAH4AB3hwdXIAI1tMeHNidGkuYXBpLl9pbnRlcm5hbE9ubHlfTmFtZUhhc2g7SVqAtt2Wi/QCAAB4cAAAAAB1cQB+AAkAAAAcc3IAIHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoWw71InY4V88CAAJJAARoYXNoTAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwZvgvInQABm5vdGlmeXNxAH4ADCUSGAJ0ABlSYXRpbmdTdHJlYW1Qcm9jZXNzaW5nQXBwc3EAfgAMmIaX7nQABHdhaXRzcQB+AAzrDUCMdAANJGFzSW5zdGFuY2VPZnNxAH4ADG7iDfp0ABNEdW1teVJhbmtpbmdSZWR1Y2Vyc3EAfgAMvgIosnQABmVxdWFsc3NxAH4ADEA2wKt0AAxhc0luc3RhbmNlT2ZzcQB+AAwg12gLdAAOZXhlY3V0aW9uU3RhcnRzcQB+AAx4+/MDdAAMc3luY2hyb25pemVkc3EAfgAM6bs6d3QADSRpc0luc3RhbmNlT2ZzcQB+AAyTMhlidAAEbWFpbnNxAH4ADK6xo8B0AAlub3RpZnlBbGxzcQB+AAwoA09/dAAMaXNJbnN0YW5jZU9mc3EAfgAM9ZO3pnQABjxpbml0PnNxAH4ADPxmzRR0AAVhcHBseXNxAH4ADJG0ly50AAI9PXNxAH4ADNzFjxV0AAVjbG9uZXNxAH4ADF//97Z0AAYkaW5pdCRzcQB+AAwKs6KhdAAIdG9TdHJpbmdzcQB+AAzEhqbvdAAEYXJnc3NxAH4ADGBfBad0AAIhPXNxAH4ADLA3bEB0AAhnZXRDbGFzc3NxAH4ADPwXHrd0AAJuZXNxAH4ADA2e0Bd0AAJlcXNxAH4ADPmFYNZ0AAtkZWxheWVkSW5pdHNxAH4ADHr7zMV0AAIjI3NxAH4ADHUhJb50AAhmaW5hbGl6ZXNxAH4ADDDtrtp0AAhoYXNoQ29kZXNyABN4c2J0aS5hcGkuU291cmNlQVBJuV6n+SkjOKQCAAJbAAtkZWZpbml0aW9uc3QAF1tMeHNidGkvYXBpL0RlZmluaXRpb247WwAIcGFja2FnZXN0ABRbTHhzYnRpL2FwaS9QYWNrYWdlO3hwdXIAF1tMeHNidGkuYXBpLkRlZmluaXRpb247iMlc57TjXg4CAAB4cAAAAAJzcgATeHNidGkuYXBpLkNsYXNzTGlrZYM0HKHfsJdsAgAETAAOZGVmaW5pdGlvblR5cGV0ABpMeHNidGkvYXBpL0RlZmluaXRpb25UeXBlO1sAEHNhdmVkQW5ub3RhdGlvbnN0ABNbTGphdmEvbGFuZy9TdHJpbmc7TAAIc2VsZlR5cGV0ABBMeHNidGkvYXBpL0xhenk7TAAJc3RydWN0dXJlcQB+AE94cgAheHNidGkuYXBpLlBhcmFtZXRlcml6ZWREZWZpbml0aW9u+RFusdVQPOICAAFbAA50eXBlUGFyYW1ldGVyc3QAGltMeHNidGkvYXBpL1R5cGVQYXJhbWV0ZXI7eHIAFHhzYnRpLmFwaS5EZWZpbml0aW9uhyob6HFC40YCAARMAAZhY2Nlc3N0ABJMeHNidGkvYXBpL0FjY2VzcztbAAthbm5vdGF0aW9uc3QAF1tMeHNidGkvYXBpL0Fubm90YXRpb247TAAJbW9kaWZpZXJzdAAVTHhzYnRpL2FwaS9Nb2RpZmllcnM7TAAEbmFtZXEAfgANeHBzcgAQeHNidGkuYXBpLlB1YmxpY7pYPa5sLWBCAgAAeHIAEHhzYnRpLmFwaS5BY2Nlc3PdYpr4HWMxSAIAAHhwdXIAF1tMeHNidGkuYXBpLkFubm90YXRpb24765frGRD2jUgCAAB4cAAAAABzcgATeHNidGkuYXBpLk1vZGlmaWVyc5fnYdwTJnuzAgABQgAFZmxhZ3N4cAB0ACZQcm9jZXNzaW5nLlJhdGluZ3MuRHVtbXlSYW5raW5nUmVkdWNlcnVyABpbTHhzYnRpLmFwaS5UeXBlUGFyYW1ldGVyO9ltJg8onfK2AgAAeHAAAAAAfnIAGHhzYnRpLmFwaS5EZWZpbml0aW9uVHlwZQAAAAAAAAAAEgAAeHIADmphdmEubGFuZy5FbnVtAAAAAAAAAAASAAB4cHQACENsYXNzRGVmdXIAE1tMamF2YS5sYW5nLlN0cmluZzut0lbn6R17RwIAAHhwAAAAAHNyACF4c2J0aS5hcGkuQWJzdHJhY3RMYXp5JFN0cmljdExhenkNZhxrKRYquAIAAUwABXZhbHVldAASTGphdmEvbGFuZy9PYmplY3Q7eHBzcgATeHNidGkuYXBpLkVtcHR5VHlwZbz9nkZJO4kkAgAAeHIAFHhzYnRpLmFwaS5TaW1wbGVUeXBlcnhiiCEjv0ACAAB4cgAOeHNidGkuYXBpLlR5cGU/atkhFkmqygIAAHhwc3EAfgBnc3IAE3hzYnRpLmFwaS5TdHJ1Y3R1cmWpqvmAk2/YAAIAA0wACGRlY2xhcmVkcQB+AE9MAAlpbmhlcml0ZWRxAH4AT0wAB3BhcmVudHNxAH4AT3hxAH4AbHNxAH4AZ3VxAH4ASgAAAABzcQB+AGd1cQB+AEoAAAAAc3EAfgBndXIAEVtMeHNidGkuYXBpLlR5cGU7dP+lWnv56UECAAB4cAAAAANzcgAXeHNidGkuYXBpLlBhcmFtZXRlcml6ZWQWbO5pA8m7fwIAAkwACGJhc2VUeXBldAAWTHhzYnRpL2FwaS9TaW1wbGVUeXBlO1sADXR5cGVBcmd1bWVudHN0ABFbTHhzYnRpL2FwaS9UeXBlO3hxAH4Aa3NyABR4c2J0aS5hcGkuUHJvamVjdGlvbvPSjVTpRaQtAgACTAACaWRxAH4ADUwABnByZWZpeHEAfgB5eHEAfgBrdAAHUmVkdWNlcnNyABN4c2J0aS5hcGkuU2luZ2xldG9u/Kdf+M9W5EYCAAFMAARwYXRodAAQTHhzYnRpL2FwaS9QYXRoO3hxAH4Aa3NyAA54c2J0aS5hcGkuUGF0aJs9XAjOpSeEAgABWwAKY29tcG9uZW50c3QAGltMeHNidGkvYXBpL1BhdGhDb21wb25lbnQ7eHB1cgAaW0x4c2J0aS5hcGkuUGF0aENvbXBvbmVudDtD2gl0LWcWdAIAAHhwAAAABnNyAAx4c2J0aS5hcGkuSWSYMmyLN1PEQAIAAUwAAmlkcQB+AA14cgAXeHNidGkuYXBpLlBhdGhDb21wb25lbnRfmiJbLoafvAIAAHhwdAADb3Jnc3EAfgCHdAAGYXBhY2hlc3EAfgCHdAAFa2Fma2FzcQB+AId0AAdzdHJlYW1zc3EAfgCHdAAHa3N0cmVhbXNyAA54c2J0aS5hcGkuVGhpc9sJ7abMWkBcAgAAeHEAfgCIdXEAfgB2AAAAAXNxAH4AfHQAB1JhbmtpbmdzcQB+AH9zcQB+AIJ1cQB+AIUAAAACc3EAfgCHdAAIRW50aXRpZXNxAH4AlHNxAH4AfHQABk9iamVjdHNxAH4Af3NxAH4AgnVxAH4AhQAAAANzcQB+AId0AARqYXZhc3EAfgCHdAAEbGFuZ3EAfgCUc3EAfgB8dAADQW55c3EAfgB/c3EAfgCCdXEAfgCFAAAAAnNxAH4Ah3QABXNjYWxhcQB+AJRzcQB+AExxAH4AWXVxAH4AWgAAAABzcQB+AFwAdAAsUHJvY2Vzc2luZy5SYXRpbmdzLlJhdGluZ1N0cmVhbVByb2Nlc3NpbmdBcHB1cQB+AF8AAAAAfnEAfgBhdAAGTW9kdWxldXEAfgBlAAAAAnQAGnNjYWxhLmRlcHJlY2F0ZWRPdmVycmlkaW5ndAAQc2NhbGEuZGVwcmVjYXRlZHNxAH4AZ3EAfgBtc3EAfgBnc3EAfgBvc3EAfgBndXEAfgBKAAAAAHNxAH4AZ3VxAH4ASgAAAAFzcgANeHNidGkuYXBpLkRlZlK+n+J8tDZpAgACTAAKcmV0dXJuVHlwZXQAEEx4c2J0aS9hcGkvVHlwZTtbAA92YWx1ZVBhcmFtZXRlcnN0ABpbTHhzYnRpL2FwaS9QYXJhbWV0ZXJMaXN0O3hxAH4AUHEAfgBZdXEAfgBaAAAAAXNyABR4c2J0aS5hcGkuQW5ub3RhdGlvbt4OgaL2XAqyAgACWwAJYXJndW1lbnRzdAAfW0x4c2J0aS9hcGkvQW5ub3RhdGlvbkFyZ3VtZW50O0wABGJhc2VxAH4Av3hwdXIAH1tMeHNidGkuYXBpLkFubm90YXRpb25Bcmd1bWVudDtRnaaPOCUPeAIAAHhwAAAAAXNyABx4c2J0aS5hcGkuQW5ub3RhdGlvbkFyZ3VtZW501kWx2AMbF3wCAAJMAARuYW1lcQB+AA1MAAV2YWx1ZXEAfgANeHB0AAB0ACooIm1haW4gc2hvdWxkIG5vdCBiZSBvdmVycmlkZGVuIiwiMi4xMS4wIilzcQB+AHx0ABRkZXByZWNhdGVkT3ZlcnJpZGluZ3NxAH4Af3NxAH4AgnVxAH4AhQAAAAJzcQB+AIdxAH4ArHEAfgCUc3EAfgBcAHEAfgAjdXEAfgBfAAAAAHNxAH4AfHQABFVuaXRxAH4AznVyABpbTHhzYnRpLmFwaS5QYXJhbWV0ZXJMaXN0O/XTOh3ys3DuAgAAeHAAAAABc3IAF3hzYnRpLmFwaS5QYXJhbWV0ZXJMaXN01sW8HGRJdOMCAAJaAAppc0ltcGxpY2l0WwAKcGFyYW1ldGVyc3QAHFtMeHNidGkvYXBpL01ldGhvZFBhcmFtZXRlcjt4cAB1cgAcW0x4c2J0aS5hcGkuTWV0aG9kUGFyYW1ldGVyO8+4xV2l3bVtAgAAeHAAAAABc3IAGXhzYnRpLmFwaS5NZXRob2RQYXJhbWV0ZXIfRa4X00mw6gIABFoACmhhc0RlZmF1bHRMAAhtb2RpZmllcnQAHUx4c2J0aS9hcGkvUGFyYW1ldGVyTW9kaWZpZXI7TAAEbmFtZXEAfgANTAADdHBlcQB+AL94cAB+cgAbeHNidGkuYXBpLlBhcmFtZXRlck1vZGlmaWVyAAAAAAAAAAASAAB4cQB+AGJ0AAVQbGFpbnEAfgA1c3EAfgB4c3EAfgB8dAAFQXJyYXlxAH4AznVxAH4AdgAAAAFzcQB+AHx0AAZTdHJpbmdzcQB+AH9zcQB+AIJ1cQB+AIUAAAADc3EAfgCHcQB+AKNzcQB+AIdxAH4ApXEAfgCUc3EAfgBndXEAfgB2AAAABHNxAH4AfHQAA0FwcHEAfgDOc3EAfgB8dAALRGVsYXllZEluaXRxAH4AznNxAH4AfHEAfgCecQB+AOlzcQB+AHxxAH4Ap3EAfgDOdXIAFFtMeHNidGkuYXBpLlBhY2thZ2U7WxMZN3CnJ6ECAAB4cAAAAAJzcgAReHNidGkuYXBpLlBhY2thZ2V+WY/2rs45WAIAAUwABG5hbWVxAH4ADXhwdAASUHJvY2Vzc2luZy5SYXRpbmdzc3EAfgD4dAAKUHJvY2Vzc2luZ3NyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABXi72XRJ1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5cQB+AA1MAA9zb3VyY2VEaXJlY3RvcnlxAH4ADXhwdABIQzpcVXNlcnNcc2FjaGFcRGVza3RvcFxNYWRDYXBJZGVhXEthZmthU3RyZWFtc1x0YXJnZXRcc2NhbGEtMi4xMlxjbGFzc2VzdAABL3VyAAJbQqzzF/gGCFTgAgAAeHAAAAAUZCxi3YjPLfFJIDNavYeTEC1Q0yM=
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> 
-rO0ABXNyABB4c2J0aS5hcGkuU291cmNlSjH5SdlLSkQCAAdJAAdhcGlIYXNoWgAIaGFzTWFjcm9aABBoYXNQYWNrYWdlT2JqZWN0TAAYX2ludGVybmFsT25seV9uYW1lSGFzaGVzdAAkTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoZXM7TAADYXBpdAAVTHhzYnRpL2FwaS9Tb3VyY2VBUEk7TAALY29tcGlsYXRpb250ABdMeHNidGkvYXBpL0NvbXBpbGF0aW9uO1sABGhhc2h0AAJbQnhwgj4xPQAAc3IAInhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoZXNU2r6Z+tTsTAIAAlsAD2ltcGxpY2l0TWVtYmVyc3QAI1tMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2g7WwAOcmVndWxhck1lbWJlcnNxAH4AB3hwdXIAI1tMeHNidGkuYXBpLl9pbnRlcm5hbE9ubHlfTmFtZUhhc2g7SVqAtt2Wi/QCAAB4cAAAAAB1cQB+AAkAAAAjc3IAIHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoWw71InY4V88CAAJJAARoYXNoTAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hw9r7PLHQABm5vdGlmeXNxAH4ADFqP4uF0AAZlbmNvZGVzcQB+AAy4XzFbdAAEd2FpdHNxAH4ADCS7fep0AA0kYXNJbnN0YW5jZU9mc3EAfgAM1V4venQABmVxdWFsc3NxAH4ADHbVWKR0AAxhc0luc3RhbmNlT2ZzcQB+AAwe34m4dAAdVW5yZWNvZ25pemVkUHJvcGVydHlFeGNlcHRpb25zcQB+AAw5hsBNdAAMc3luY2hyb25pemVkc3EAfgAMX9rXnnQADSRpc0luc3RhbmNlT2ZzcQB+AAxQalhedAAJY29uZmlndXJlc3EAfgAM43Fb3XQAC2Rlc2VyaWFsaXplc3EAfgAMYK1D7nQABmRlY29kZXNxAH4ADNHykgd0ABBKU09ORGVzZXJpYWxpemVyc3EAfgAM3Ll6z3QADkpTT05TZXJpYWxpemVyc3EAfgAMwY4S93QACW5vdGlmeUFsbHNxAH4ADOKHc9t0AAxpc0luc3RhbmNlT2ZzcQB+AAx6rZModAAGPGluaXQ+c3EAfgAMrw2sCnQADGRlc2VyaWFsaXplcnNxAH4ADByKFId0AApzZXJpYWxpemVyc3EAfgAMxxN+G3QAAj09c3EAfgAMo/MZDXQADlBhcnNlRXhjZXB0aW9uc3EAfgAMh23Y8HQABWNsb25lc3EAfgAM8tTgknQACHRvU3RyaW5nc3EAfgAMYB22N3QAAiE9c3EAfgAM6FJtMXQACGdldENsYXNzc3EAfgAMk/49enQABWNsb3Nlc3EAfgAMDsouQ3QAAm5lc3EAfgAMx11YJ3QACXNlcmlhbGl6ZXNxAH4ADDIKTI10AAlCeXRlQXJyYXlzcQB+AAwRLbbqdAAJSlNPTlNlcmRlc3EAfgAMeBUYd3QABEpzb25zcQB+AAwZiZWZdAACZXFzcQB+AAzBveIddAACIyNzcQB+AAzxuSJZdAAIZmluYWxpemVzcQB+AAxKurRpdAAIaGFzaENvZGVzcgATeHNidGkuYXBpLlNvdXJjZUFQSblep/kpIzikAgACWwALZGVmaW5pdGlvbnN0ABdbTHhzYnRpL2FwaS9EZWZpbml0aW9uO1sACHBhY2thZ2VzdAAUW0x4c2J0aS9hcGkvUGFja2FnZTt4cHVyABdbTHhzYnRpLmFwaS5EZWZpbml0aW9uO4jJXOe0414OAgAAeHAAAAAEc3IAE3hzYnRpLmFwaS5DbGFzc0xpa2WDNByh37CXbAIABEwADmRlZmluaXRpb25UeXBldAAaTHhzYnRpL2FwaS9EZWZpbml0aW9uVHlwZTtbABBzYXZlZEFubm90YXRpb25zdAATW0xqYXZhL2xhbmcvU3RyaW5nO0wACHNlbGZUeXBldAAQTHhzYnRpL2FwaS9MYXp5O0wACXN0cnVjdHVyZXEAfgBdeHIAIXhzYnRpLmFwaS5QYXJhbWV0ZXJpemVkRGVmaW5pdGlvbvkRbrHVUDziAgABWwAOdHlwZVBhcmFtZXRlcnN0ABpbTHhzYnRpL2FwaS9UeXBlUGFyYW1ldGVyO3hyABR4c2J0aS5hcGkuRGVmaW5pdGlvbocqG+hxQuNGAgAETAAGYWNjZXNzdAASTHhzYnRpL2FwaS9BY2Nlc3M7WwALYW5ub3RhdGlvbnN0ABdbTHhzYnRpL2FwaS9Bbm5vdGF0aW9uO0wACW1vZGlmaWVyc3QAFUx4c2J0aS9hcGkvTW9kaWZpZXJzO0wABG5hbWVxAH4ADXhwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnOX52HcEyZ7swIAAUIABWZsYWdzeHAAdAASU2VyaWFsaXphdGlvbi5Kc29udXIAGltMeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXI72W0mDyid8rYCAAB4cAAAAAB+cgAYeHNidGkuYXBpLkRlZmluaXRpb25UeXBlAAAAAAAAAAASAAB4cgAOamF2YS5sYW5nLkVudW0AAAAAAAAAABIAAHhwdAAGTW9kdWxldXIAE1tMamF2YS5sYW5nLlN0cmluZzut0lbn6R17RwIAAHhwAAAAAHNyACF4c2J0aS5hcGkuQWJzdHJhY3RMYXp5JFN0cmljdExhenkNZhxrKRYquAIAAUwABXZhbHVldAASTGphdmEvbGFuZy9PYmplY3Q7eHBzcgATeHNidGkuYXBpLkVtcHR5VHlwZbz9nkZJO4kkAgAAeHIAFHhzYnRpLmFwaS5TaW1wbGVUeXBlcnhiiCEjv0ACAAB4cgAOeHNidGkuYXBpLlR5cGU/atkhFkmqygIAAHhwc3EAfgB1c3IAE3hzYnRpLmFwaS5TdHJ1Y3R1cmWpqvmAk2/YAAIAA0wACGRlY2xhcmVkcQB+AF1MAAlpbmhlcml0ZWRxAH4AXUwAB3BhcmVudHNxAH4AXXhxAH4AenNxAH4AdXVxAH4AWAAAAABzcQB+AHV1cQB+AFgAAAAAc3EAfgB1dXIAEVtMeHNidGkuYXBpLlR5cGU7dP+lWnv56UECAAB4cAAAAAJzcgAUeHNidGkuYXBpLlByb2plY3Rpb27z0o1U6UWkLQIAAkwAAmlkcQB+AA1MAAZwcmVmaXh0ABZMeHNidGkvYXBpL1NpbXBsZVR5cGU7eHEAfgB5dAAGT2JqZWN0c3IAE3hzYnRpLmFwaS5TaW5nbGV0b278p1/4z1bkRgIAAUwABHBhdGh0ABBMeHNidGkvYXBpL1BhdGg7eHEAfgB5c3IADnhzYnRpLmFwaS5QYXRomz1cCM6lJ4QCAAFbAApjb21wb25lbnRzdAAaW0x4c2J0aS9hcGkvUGF0aENvbXBvbmVudDt4cHVyABpbTHhzYnRpLmFwaS5QYXRoQ29tcG9uZW50O0PaCXQtZxZ0AgAAeHAAAAADc3IADHhzYnRpLmFwaS5JZJgybIs3U8RAAgABTAACaWRxAH4ADXhyABd4c2J0aS5hcGkuUGF0aENvbXBvbmVudF+aIlsuhp+8AgAAeHB0AARqYXZhc3EAfgCSdAAEbGFuZ3NyAA54c2J0aS5hcGkuVGhpc9sJ7abMWkBcAgAAeHEAfgCTc3EAfgCGdAADQW55c3EAfgCKc3EAfgCNdXEAfgCQAAAAAnNxAH4AknQABXNjYWxhcQB+AJlzcQB+AFpxAH4AZ3VxAH4AaAAAAABzcQB+AGoAdAAcU2VyaWFsaXphdGlvbi5KU09OU2VyaWFsaXplcnVxAH4AbQAAAAFzcgAXeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXJnaVXb43KQawIABlsAC2Fubm90YXRpb25zcQB+AGJMAAJpZHEAfgANTAAKbG93ZXJCb3VuZHQAEEx4c2J0aS9hcGkvVHlwZTtbAA50eXBlUGFyYW1ldGVyc3EAfgBfTAAKdXBwZXJCb3VuZHEAfgCnTAAIdmFyaWFuY2V0ABRMeHNidGkvYXBpL1ZhcmlhbmNlO3hwdXEAfgBoAAAAAHQAHlNlcmlhbGl6YXRpb24uSlNPTlNlcmlhbGl6ZXIuVHNxAH4AhnQAB05vdGhpbmdzcQB+AIpzcQB+AI11cQB+AJAAAAACc3EAfgCScQB+AKBxAH4AmXVxAH4AbQAAAABzcQB+AIZxAH4Am3EAfgCufnIAEnhzYnRpLmFwaS5WYXJpYW5jZQAAAAAAAAAAEgAAeHEAfgBwdAAJSW52YXJpYW50fnEAfgBvdAAIQ2xhc3NEZWZ1cQB+AHMAAAAAc3EAfgB1cQB+AHtzcQB+AHVzcQB+AH1zcQB+AHV1cQB+AFgAAAAAc3EAfgB1dXEAfgBYAAAAAHNxAH4AdXVxAH4AhAAAAAVzcgAXeHNidGkuYXBpLlBhcmFtZXRlcml6ZWQWbO5pA8m7fwIAAkwACGJhc2VUeXBlcQB+AIdbAA10eXBlQXJndW1lbnRzdAARW0x4c2J0aS9hcGkvVHlwZTt4cQB+AHlzcQB+AIZ0AApTZXJpYWxpemVyc3EAfgCKc3EAfgCNdXEAfgCQAAAABnNxAH4AknQAA29yZ3NxAH4AknQABmFwYWNoZXNxAH4AknQABWthZmthc3EAfgCSdAAGY29tbW9uc3EAfgCSdAANc2VyaWFsaXphdGlvbnEAfgCZdXEAfgCEAAAAAXNyABZ4c2J0aS5hcGkuUGFyYW1ldGVyUmVmP9jjOQAsc7ACAAFMAAJpZHEAfgANeHEAfgB5dAAeU2VyaWFsaXphdGlvbi5KU09OU2VyaWFsaXplci5Uc3EAfgCGdAAJQ2xvc2VhYmxlc3EAfgCKc3EAfgCNdXEAfgCQAAAAA3NxAH4AknEAfgCVc3EAfgCSdAACaW9xAH4AmXNxAH4AhnQADUF1dG9DbG9zZWFibGVzcQB+AIpzcQB+AI11cQB+AJAAAAADc3EAfgCScQB+AJVzcQB+AJJxAH4Al3EAfgCZc3EAfgCGcQB+AIlxAH4A43NxAH4AhnEAfgCbc3EAfgCKc3EAfgCNdXEAfgCQAAAAAnNxAH4AknEAfgCgcQB+AJlzcQB+AFpxAH4AZ3VxAH4AaAAAAABzcQB+AGoAdAAeU2VyaWFsaXphdGlvbi5KU09ORGVzZXJpYWxpemVydXEAfgBtAAAAAXNxAH4ApnVxAH4AaAAAAAB0ACBTZXJpYWxpemF0aW9uLkpTT05EZXNlcmlhbGl6ZXIuVHNxAH4AhnQABE51bGxxAH4ArnVxAH4AbQAAAABxAH4As3EAfgC1cQB+ALd1cQB+AHMAAAAAc3EAfgB1cQB+AHtzcQB+AHVzcQB+AH1zcQB+AHV1cQB+AFgAAAAAc3EAfgB1dXEAfgBYAAAAAHNxAH4AdXVxAH4AhAAAAAVzcQB+AMNzcQB+AIZ0AAxEZXNlcmlhbGl6ZXJzcQB+AIpzcQB+AI11cQB+AJAAAAAGc3EAfgCSdAADb3Jnc3EAfgCSdAAGYXBhY2hlc3EAfgCSdAAFa2Fma2FzcQB+AJJ0AAZjb21tb25zcQB+AJJ0AA1zZXJpYWxpemF0aW9ucQB+AJl1cQB+AIQAAAABc3EAfgDWdAAgU2VyaWFsaXphdGlvbi5KU09ORGVzZXJpYWxpemVyLlRzcQB+AIZ0AAlDbG9zZWFibGVzcQB+AIpzcQB+AI11cQB+AJAAAAADc3EAfgCScQB+AJVzcQB+AJJ0AAJpb3EAfgCZc3EAfgCGdAANQXV0b0Nsb3NlYWJsZXNxAH4AinNxAH4AjXVxAH4AkAAAAANzcQB+AJJxAH4AlXNxAH4AknEAfgCXcQB+AJlzcQB+AIZxAH4AiXEAfgEgc3EAfgCGcQB+AJtzcQB+AIpzcQB+AI11cQB+AJAAAAACc3EAfgCScQB+AKBxAH4AmXNxAH4AWnEAfgBndXEAfgBoAAAAAHNxAH4AagB0ABdTZXJpYWxpemF0aW9uLkpTT05TZXJkZXVxAH4AbQAAAAFzcQB+AKZ1cQB+AGgAAAAAdAAZU2VyaWFsaXphdGlvbi5KU09OU2VyZGUuVHEAfgD2dXEAfgBtAAAAAHEAfgCzcQB+ALVxAH4At3VxAH4AcwAAAABzcQB+AHVxAH4Ae3NxAH4AdXNxAH4AfXNxAH4AdXVxAH4AWAAAAABzcQB+AHV1cQB+AFgAAAAAc3EAfgB1dXEAfgCEAAAABXNxAH4Aw3NxAH4AhnQABVNlcmRlc3EAfgCKc3EAfgCNdXEAfgCQAAAABnNxAH4AknQAA29yZ3NxAH4AknQABmFwYWNoZXNxAH4AknQABWthZmthc3EAfgCSdAAGY29tbW9uc3EAfgCSdAANc2VyaWFsaXphdGlvbnEAfgCZdXEAfgCEAAAAAXNxAH4A1nQAGVNlcmlhbGl6YXRpb24uSlNPTlNlcmRlLlRzcQB+AIZ0AAlDbG9zZWFibGVzcQB+AIpzcQB+AI11cQB+AJAAAAADc3EAfgCScQB+AJVzcQB+AJJ0AAJpb3EAfgCZc3EAfgCGdAANQXV0b0Nsb3NlYWJsZXNxAH4AinNxAH4AjXVxAH4AkAAAAANzcQB+AJJxAH4AlXNxAH4AknEAfgCXcQB+AJlzcQB+AIZxAH4AiXEAfgFbc3EAfgCGcQB+AJtzcQB+AIpzcQB+AI11cQB+AJAAAAACc3EAfgCScQB+AKBxAH4AmXVyABRbTHhzYnRpLmFwaS5QYWNrYWdlO1sTGTdwpyehAgAAeHAAAAABc3IAEXhzYnRpLmFwaS5QYWNrYWdlflmP9q7OOVgCAAFMAARuYW1lcQB+AA14cHQADVNlcmlhbGl6YXRpb25zcgAVeHNidGkuYXBpLkNvbXBpbGF0aW9u7frgw2rooEICAAJKAAlzdGFydFRpbWVbAAdvdXRwdXRzdAAaW0x4c2J0aS9hcGkvT3V0cHV0U2V0dGluZzt4cAAAAV4S8HSGdXIAGltMeHNidGkuYXBpLk91dHB1dFNldHRpbmc7f2rC86eHpUICAAB4cAAAAAFzcgAXeHNidGkuYXBpLk91dHB1dFNldHRpbmd62ZpHdPsdewIAAkwAD291dHB1dERpcmVjdG9yeXEAfgANTAAPc291cmNlRGlyZWN0b3J5cQB+AA14cHQASEM6XFVzZXJzXHNhY2hhXERlc2t0b3BcTWFkQ2FwSWRlYVxLYWZrYVN0cmVhbXNcdGFyZ2V0XHNjYWxhLTIuMTJcY2xhc3Nlc3QAAS91cgACW0Ks8xf4BghU4AIAAHhwAAAAFH2ONSd4vWrUx8xqOxrWYddMn8Qv
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlSjH5SdlLSkQCAAdJAAdhcGlIYXNoWgAIaGFzTWFjcm9aABBoYXNQYWNrYWdlT2JqZWN0TAAYX2ludGVybmFsT25seV9uYW1lSGFzaGVzdAAkTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoZXM7TAADYXBpdAAVTHhzYnRpL2FwaS9Tb3VyY2VBUEk7TAALY29tcGlsYXRpb250ABdMeHNidGkvYXBpL0NvbXBpbGF0aW9uO1sABGhhc2h0AAJbQnhwgj4xPQAAc3IAInhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoZXNU2r6Z+tTsTAIAAlsAD2ltcGxpY2l0TWVtYmVyc3QAI1tMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2g7WwAOcmVndWxhck1lbWJlcnNxAH4AB3hwdXIAI1tMeHNidGkuYXBpLl9pbnRlcm5hbE9ubHlfTmFtZUhhc2g7SVqAtt2Wi/QCAAB4cAAAAAB1cQB+AAkAAAAjc3IAIHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoWw71InY4V88CAAJJAARoYXNoTAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hw9r7PLHQABm5vdGlmeXNxAH4ADFqP4uF0AAZlbmNvZGVzcQB+AAy4XzFbdAAEd2FpdHNxAH4ADCS7fep0AA0kYXNJbnN0YW5jZU9mc3EAfgAM1V4venQABmVxdWFsc3NxAH4ADHbVWKR0AAxhc0luc3RhbmNlT2ZzcQB+AAwe34m4dAAdVW5yZWNvZ25pemVkUHJvcGVydHlFeGNlcHRpb25zcQB+AAw5hsBNdAAMc3luY2hyb25pemVkc3EAfgAMX9rXnnQADSRpc0luc3RhbmNlT2ZzcQB+AAxQalhedAAJY29uZmlndXJlc3EAfgAM43Fb3XQAC2Rlc2VyaWFsaXplc3EAfgAMYK1D7nQABmRlY29kZXNxAH4ADNHykgd0ABBKU09ORGVzZXJpYWxpemVyc3EAfgAM3Ll6z3QADkpTT05TZXJpYWxpemVyc3EAfgAMwY4S93QACW5vdGlmeUFsbHNxAH4ADOKHc9t0AAxpc0luc3RhbmNlT2ZzcQB+AAx6rZModAAGPGluaXQ+c3EAfgAMrw2sCnQADGRlc2VyaWFsaXplcnNxAH4ADByKFId0AApzZXJpYWxpemVyc3EAfgAMxxN+G3QAAj09c3EAfgAMo/MZDXQADlBhcnNlRXhjZXB0aW9uc3EAfgAMh23Y8HQABWNsb25lc3EAfgAM8tTgknQACHRvU3RyaW5nc3EAfgAMYB22N3QAAiE9c3EAfgAM6FJtMXQACGdldENsYXNzc3EAfgAMk/49enQABWNsb3Nlc3EAfgAMDsouQ3QAAm5lc3EAfgAMx11YJ3QACXNlcmlhbGl6ZXNxAH4ADDIKTI10AAlCeXRlQXJyYXlzcQB+AAwRLbbqdAAJSlNPTlNlcmRlc3EAfgAMeBUYd3QABEpzb25zcQB+AAwZiZWZdAACZXFzcQB+AAzBveIddAACIyNzcQB+AAzxuSJZdAAIZmluYWxpemVzcQB+AAxKurRpdAAIaGFzaENvZGVzcgATeHNidGkuYXBpLlNvdXJjZUFQSblep/kpIzikAgACWwALZGVmaW5pdGlvbnN0ABdbTHhzYnRpL2FwaS9EZWZpbml0aW9uO1sACHBhY2thZ2VzdAAUW0x4c2J0aS9hcGkvUGFja2FnZTt4cHVyABdbTHhzYnRpLmFwaS5EZWZpbml0aW9uO4jJXOe0414OAgAAeHAAAAAEc3IAE3hzYnRpLmFwaS5DbGFzc0xpa2WDNByh37CXbAIABEwADmRlZmluaXRpb25UeXBldAAaTHhzYnRpL2FwaS9EZWZpbml0aW9uVHlwZTtbABBzYXZlZEFubm90YXRpb25zdAATW0xqYXZhL2xhbmcvU3RyaW5nO0wACHNlbGZUeXBldAAQTHhzYnRpL2FwaS9MYXp5O0wACXN0cnVjdHVyZXEAfgBdeHIAIXhzYnRpLmFwaS5QYXJhbWV0ZXJpemVkRGVmaW5pdGlvbvkRbrHVUDziAgABWwAOdHlwZVBhcmFtZXRlcnN0ABpbTHhzYnRpL2FwaS9UeXBlUGFyYW1ldGVyO3hyABR4c2J0aS5hcGkuRGVmaW5pdGlvbocqG+hxQuNGAgAETAAGYWNjZXNzdAASTHhzYnRpL2FwaS9BY2Nlc3M7WwALYW5ub3RhdGlvbnN0ABdbTHhzYnRpL2FwaS9Bbm5vdGF0aW9uO0wACW1vZGlmaWVyc3QAFUx4c2J0aS9hcGkvTW9kaWZpZXJzO0wABG5hbWVxAH4ADXhwc3IAEHhzYnRpLmFwaS5QdWJsaWO6WD2ubC1gQgIAAHhyABB4c2J0aS5hcGkuQWNjZXNz3WKa+B1jMUgCAAB4cHVyABdbTHhzYnRpLmFwaS5Bbm5vdGF0aW9uO+uX6xkQ9o1IAgAAeHAAAAAAc3IAE3hzYnRpLmFwaS5Nb2RpZmllcnOX52HcEyZ7swIAAUIABWZsYWdzeHAAdAASU2VyaWFsaXphdGlvbi5Kc29udXIAGltMeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXI72W0mDyid8rYCAAB4cAAAAAB+cgAYeHNidGkuYXBpLkRlZmluaXRpb25UeXBlAAAAAAAAAAASAAB4cgAOamF2YS5sYW5nLkVudW0AAAAAAAAAABIAAHhwdAAGTW9kdWxldXIAE1tMamF2YS5sYW5nLlN0cmluZzut0lbn6R17RwIAAHhwAAAAAHNyACF4c2J0aS5hcGkuQWJzdHJhY3RMYXp5JFN0cmljdExhenkNZhxrKRYquAIAAUwABXZhbHVldAASTGphdmEvbGFuZy9PYmplY3Q7eHBzcgATeHNidGkuYXBpLkVtcHR5VHlwZbz9nkZJO4kkAgAAeHIAFHhzYnRpLmFwaS5TaW1wbGVUeXBlcnhiiCEjv0ACAAB4cgAOeHNidGkuYXBpLlR5cGU/atkhFkmqygIAAHhwc3EAfgB1c3IAE3hzYnRpLmFwaS5TdHJ1Y3R1cmWpqvmAk2/YAAIAA0wACGRlY2xhcmVkcQB+AF1MAAlpbmhlcml0ZWRxAH4AXUwAB3BhcmVudHNxAH4AXXhxAH4AenNxAH4AdXVxAH4AWAAAAABzcQB+AHV1cQB+AFgAAAAAc3EAfgB1dXIAEVtMeHNidGkuYXBpLlR5cGU7dP+lWnv56UECAAB4cAAAAAJzcgAUeHNidGkuYXBpLlByb2plY3Rpb27z0o1U6UWkLQIAAkwAAmlkcQB+AA1MAAZwcmVmaXh0ABZMeHNidGkvYXBpL1NpbXBsZVR5cGU7eHEAfgB5dAAGT2JqZWN0c3IAE3hzYnRpLmFwaS5TaW5nbGV0b278p1/4z1bkRgIAAUwABHBhdGh0ABBMeHNidGkvYXBpL1BhdGg7eHEAfgB5c3IADnhzYnRpLmFwaS5QYXRomz1cCM6lJ4QCAAFbAApjb21wb25lbnRzdAAaW0x4c2J0aS9hcGkvUGF0aENvbXBvbmVudDt4cHVyABpbTHhzYnRpLmFwaS5QYXRoQ29tcG9uZW50O0PaCXQtZxZ0AgAAeHAAAAADc3IADHhzYnRpLmFwaS5JZJgybIs3U8RAAgABTAACaWRxAH4ADXhyABd4c2J0aS5hcGkuUGF0aENvbXBvbmVudF+aIlsuhp+8AgAAeHB0AARqYXZhc3EAfgCSdAAEbGFuZ3NyAA54c2J0aS5hcGkuVGhpc9sJ7abMWkBcAgAAeHEAfgCTc3EAfgCGdAADQW55c3EAfgCKc3EAfgCNdXEAfgCQAAAAAnNxAH4AknQABXNjYWxhcQB+AJlzcQB+AFpxAH4AZ3VxAH4AaAAAAABzcQB+AGoAdAAcU2VyaWFsaXphdGlvbi5KU09OU2VyaWFsaXplcnVxAH4AbQAAAAFzcgAXeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXJnaVXb43KQawIABlsAC2Fubm90YXRpb25zcQB+AGJMAAJpZHEAfgANTAAKbG93ZXJCb3VuZHQAEEx4c2J0aS9hcGkvVHlwZTtbAA50eXBlUGFyYW1ldGVyc3EAfgBfTAAKdXBwZXJCb3VuZHEAfgCnTAAIdmFyaWFuY2V0ABRMeHNidGkvYXBpL1ZhcmlhbmNlO3hwdXEAfgBoAAAAAHQAHlNlcmlhbGl6YXRpb24uSlNPTlNlcmlhbGl6ZXIuVHNxAH4AhnQAB05vdGhpbmdzcQB+AIpzcQB+AI11cQB+AJAAAAACc3EAfgCScQB+AKBxAH4AmXVxAH4AbQAAAABzcQB+AIZxAH4Am3EAfgCufnIAEnhzYnRpLmFwaS5WYXJpYW5jZQAAAAAAAAAAEgAAeHEAfgBwdAAJSW52YXJpYW50fnEAfgBvdAAIQ2xhc3NEZWZ1cQB+AHMAAAAAc3EAfgB1cQB+AHtzcQB+AHVzcQB+AH1zcQB+AHV1cQB+AFgAAAAAc3EAfgB1dXEAfgBYAAAAAHNxAH4AdXVxAH4AhAAAAAVzcgAXeHNidGkuYXBpLlBhcmFtZXRlcml6ZWQWbO5pA8m7fwIAAkwACGJhc2VUeXBlcQB+AIdbAA10eXBlQXJndW1lbnRzdAARW0x4c2J0aS9hcGkvVHlwZTt4cQB+AHlzcQB+AIZ0AApTZXJpYWxpemVyc3EAfgCKc3EAfgCNdXEAfgCQAAAABnNxAH4AknQAA29yZ3NxAH4AknQABmFwYWNoZXNxAH4AknQABWthZmthc3EAfgCSdAAGY29tbW9uc3EAfgCSdAANc2VyaWFsaXphdGlvbnEAfgCZdXEAfgCEAAAAAXNyABZ4c2J0aS5hcGkuUGFyYW1ldGVyUmVmP9jjOQAsc7ACAAFMAAJpZHEAfgANeHEAfgB5dAAeU2VyaWFsaXphdGlvbi5KU09OU2VyaWFsaXplci5Uc3EAfgCGdAAJQ2xvc2VhYmxlc3EAfgCKc3EAfgCNdXEAfgCQAAAAA3NxAH4AknEAfgCVc3EAfgCSdAACaW9xAH4AmXNxAH4AhnQADUF1dG9DbG9zZWFibGVzcQB+AIpzcQB+AI11cQB+AJAAAAADc3EAfgCScQB+AJVzcQB+AJJxAH4Al3EAfgCZc3EAfgCGcQB+AIlxAH4A43NxAH4AhnEAfgCbc3EAfgCKc3EAfgCNdXEAfgCQAAAAAnNxAH4AknEAfgCgcQB+AJlzcQB+AFpxAH4AZ3VxAH4AaAAAAABzcQB+AGoAdAAeU2VyaWFsaXphdGlvbi5KU09ORGVzZXJpYWxpemVydXEAfgBtAAAAAXNxAH4ApnVxAH4AaAAAAAB0ACBTZXJpYWxpemF0aW9uLkpTT05EZXNlcmlhbGl6ZXIuVHNxAH4AhnQABE51bGxxAH4ArnVxAH4AbQAAAABxAH4As3EAfgC1cQB+ALd1cQB+AHMAAAAAc3EAfgB1cQB+AHtzcQB+AHVzcQB+AH1zcQB+AHV1cQB+AFgAAAAAc3EAfgB1dXEAfgBYAAAAAHNxAH4AdXVxAH4AhAAAAAVzcQB+AMNzcQB+AIZ0AAxEZXNlcmlhbGl6ZXJzcQB+AIpzcQB+AI11cQB+AJAAAAAGc3EAfgCSdAADb3Jnc3EAfgCSdAAGYXBhY2hlc3EAfgCSdAAFa2Fma2FzcQB+AJJ0AAZjb21tb25zcQB+AJJ0AA1zZXJpYWxpemF0aW9ucQB+AJl1cQB+AIQAAAABc3EAfgDWdAAgU2VyaWFsaXphdGlvbi5KU09ORGVzZXJpYWxpemVyLlRzcQB+AIZ0AAlDbG9zZWFibGVzcQB+AIpzcQB+AI11cQB+AJAAAAADc3EAfgCScQB+AJVzcQB+AJJ0AAJpb3EAfgCZc3EAfgCGdAANQXV0b0Nsb3NlYWJsZXNxAH4AinNxAH4AjXVxAH4AkAAAAANzcQB+AJJxAH4AlXNxAH4AknEAfgCXcQB+AJlzcQB+AIZxAH4AiXEAfgEgc3EAfgCGcQB+AJtzcQB+AIpzcQB+AI11cQB+AJAAAAACc3EAfgCScQB+AKBxAH4AmXNxAH4AWnEAfgBndXEAfgBoAAAAAHNxAH4AagB0ABdTZXJpYWxpemF0aW9uLkpTT05TZXJkZXVxAH4AbQAAAAFzcQB+AKZ1cQB+AGgAAAAAdAAZU2VyaWFsaXphdGlvbi5KU09OU2VyZGUuVHEAfgD2dXEAfgBtAAAAAHEAfgCzcQB+ALVxAH4At3VxAH4AcwAAAABzcQB+AHVxAH4Ae3NxAH4AdXNxAH4AfXNxAH4AdXVxAH4AWAAAAABzcQB+AHV1cQB+AFgAAAAAc3EAfgB1dXEAfgCEAAAABXNxAH4Aw3NxAH4AhnQABVNlcmRlc3EAfgCKc3EAfgCNdXEAfgCQAAAABnNxAH4AknQAA29yZ3NxAH4AknQABmFwYWNoZXNxAH4AknQABWthZmthc3EAfgCSdAAGY29tbW9uc3EAfgCSdAANc2VyaWFsaXphdGlvbnEAfgCZdXEAfgCEAAAAAXNxAH4A1nQAGVNlcmlhbGl6YXRpb24uSlNPTlNlcmRlLlRzcQB+AIZ0AAlDbG9zZWFibGVzcQB+AIpzcQB+AI11cQB+AJAAAAADc3EAfgCScQB+AJVzcQB+AJJ0AAJpb3EAfgCZc3EAfgCGdAANQXV0b0Nsb3NlYWJsZXNxAH4AinNxAH4AjXVxAH4AkAAAAANzcQB+AJJxAH4AlXNxAH4AknEAfgCXcQB+AJlzcQB+AIZxAH4AiXEAfgFbc3EAfgCGcQB+AJtzcQB+AIpzcQB+AI11cQB+AJAAAAACc3EAfgCScQB+AKBxAH4AmXVyABRbTHhzYnRpLmFwaS5QYWNrYWdlO1sTGTdwpyehAgAAeHAAAAABc3IAEXhzYnRpLmFwaS5QYWNrYWdlflmP9q7OOVgCAAFMAARuYW1lcQB+AA14cHQADVNlcmlhbGl6YXRpb25zcgAVeHNidGkuYXBpLkNvbXBpbGF0aW9u7frgw2rooEICAAJKAAlzdGFydFRpbWVbAAdvdXRwdXRzdAAaW0x4c2J0aS9hcGkvT3V0cHV0U2V0dGluZzt4cAAAAV4u9l0SdXIAGltMeHNidGkuYXBpLk91dHB1dFNldHRpbmc7f2rC86eHpUICAAB4cAAAAAFzcgAXeHNidGkuYXBpLk91dHB1dFNldHRpbmd62ZpHdPsdewIAAkwAD291dHB1dERpcmVjdG9yeXEAfgANTAAPc291cmNlRGlyZWN0b3J5cQB+AA14cHQASEM6XFVzZXJzXHNhY2hhXERlc2t0b3BcTWFkQ2FwSWRlYVxLYWZrYVN0cmVhbXNcdGFyZ2V0XHNjYWxhLTIuMTJcY2xhc3Nlc3QAAS91cgACW0Ks8xf4BghU4AIAAHhwAAAAFD8apF88Pf9+fHIfcYx8uBZoqaYc
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlSjH5SdlLSkQCAAdJAAdhcGlIYXNoWgAIaGFzTWFjcm9aABBoYXNQYWNrYWdlT2JqZWN0TAAYX2ludGVybmFsT25seV9uYW1lSGFzaGVzdAAkTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoZXM7TAADYXBpdAAVTHhzYnRpL2FwaS9Tb3VyY2VBUEk7TAALY29tcGlsYXRpb250ABdMeHNidGkvYXBpL0NvbXBpbGF0aW9uO1sABGhhc2h0AAJbQnhwCPCUiwAAc3IAInhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoZXNU2r6Z+tTsTAIAAlsAD2ltcGxpY2l0TWVtYmVyc3QAI1tMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2g7WwAOcmVndWxhck1lbWJlcnNxAH4AB3hwdXIAI1tMeHNidGkuYXBpLl9pbnRlcm5hbE9ubHlfTmFtZUhhc2g7SVqAtt2Wi/QCAAB4cAAAAAB1cQB+AAkAAAAWc3IAIHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoWw71InY4V88CAAJJAARoYXNoTAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwLzwcwHQABm5vdGlmeXNxAH4ADGn/EBV0AAR3YWl0c3EAfgAMW0bWP3QADSRhc0luc3RhbmNlT2ZzcQB+AAyIWajsdAANUmF0aW5nc1RvcGljc3NxAH4ADAtLs650AAZlcXVhbHNzcQB+AAx2JpsrdAATUkFUSU5HX09VVFBVVF9UT1BJQ3NxAH4ADIVYD9h0AAxhc0luc3RhbmNlT2ZzcQB+AAzt7xZodAAMc3luY2hyb25pemVkc3EAfgAMNNygqXQADSRpc0luc3RhbmNlT2ZzcQB+AAxhdMr0dAATUkFUSU5HX1NVQk1JVF9UT1BJQ3NxAH4ADAAXOV50AAlub3RpZnlBbGxzcQB+AAxMeAvVdAAMaXNJbnN0YW5jZU9mc3EAfgAMnnHMJXQAAj09c3EAfgAMew3dpnQABWNsb25lc3EAfgAMW7P6nXQACHRvU3RyaW5nc3EAfgAMY9Q+LHQAAiE9c3EAfgAMCzEh/HQACGdldENsYXNzc3EAfgAM2vQepnQAAm5lc3EAfgAM042bDHQAAmVxc3EAfgAMsIaLmHQAAiMjc3EAfgAMnSKuvnQACGZpbmFsaXplc3EAfgAM9Vrl7nQACGhhc2hDb2Rlc3IAE3hzYnRpLmFwaS5Tb3VyY2VBUEm5Xqf5KSM4pAIAAlsAC2RlZmluaXRpb25zdAAXW0x4c2J0aS9hcGkvRGVmaW5pdGlvbjtbAAhwYWNrYWdlc3QAFFtMeHNidGkvYXBpL1BhY2thZ2U7eHB1cgAXW0x4c2J0aS5hcGkuRGVmaW5pdGlvbjuIyVzntONeDgIAAHhwAAAAAXNyABN4c2J0aS5hcGkuQ2xhc3NMaWtlgzQcod+wl2wCAARMAA5kZWZpbml0aW9uVHlwZXQAGkx4c2J0aS9hcGkvRGVmaW5pdGlvblR5cGU7WwAQc2F2ZWRBbm5vdGF0aW9uc3QAE1tMamF2YS9sYW5nL1N0cmluZztMAAhzZWxmVHlwZXQAEEx4c2J0aS9hcGkvTGF6eTtMAAlzdHJ1Y3R1cmVxAH4AQ3hyACF4c2J0aS5hcGkuUGFyYW1ldGVyaXplZERlZmluaXRpb275EW6x1VA84gIAAVsADnR5cGVQYXJhbWV0ZXJzdAAaW0x4c2J0aS9hcGkvVHlwZVBhcmFtZXRlcjt4cgAUeHNidGkuYXBpLkRlZmluaXRpb26HKhvocULjRgIABEwABmFjY2Vzc3QAEkx4c2J0aS9hcGkvQWNjZXNzO1sAC2Fubm90YXRpb25zdAAXW0x4c2J0aS9hcGkvQW5ub3RhdGlvbjtMAAltb2RpZmllcnN0ABVMeHNidGkvYXBpL01vZGlmaWVycztMAARuYW1lcQB+AA14cHNyABB4c2J0aS5hcGkuUHVibGljulg9rmwtYEICAAB4cgAQeHNidGkuYXBpLkFjY2Vzc91imvgdYzFIAgAAeHB1cgAXW0x4c2J0aS5hcGkuQW5ub3RhdGlvbjvrl+sZEPaNSAIAAHhwAAAAAHNyABN4c2J0aS5hcGkuTW9kaWZpZXJzl+dh3BMme7MCAAFCAAVmbGFnc3hwAHQAFFRvcGljcy5SYXRpbmdzVG9waWNzdXIAGltMeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXI72W0mDyid8rYCAAB4cAAAAAB+cgAYeHNidGkuYXBpLkRlZmluaXRpb25UeXBlAAAAAAAAAAASAAB4cgAOamF2YS5sYW5nLkVudW0AAAAAAAAAABIAAHhwdAAGTW9kdWxldXIAE1tMamF2YS5sYW5nLlN0cmluZzut0lbn6R17RwIAAHhwAAAAAHNyACF4c2J0aS5hcGkuQWJzdHJhY3RMYXp5JFN0cmljdExhenkNZhxrKRYquAIAAUwABXZhbHVldAASTGphdmEvbGFuZy9PYmplY3Q7eHBzcgATeHNidGkuYXBpLkVtcHR5VHlwZbz9nkZJO4kkAgAAeHIAFHhzYnRpLmFwaS5TaW1wbGVUeXBlcnhiiCEjv0ACAAB4cgAOeHNidGkuYXBpLlR5cGU/atkhFkmqygIAAHhwc3EAfgBbc3IAE3hzYnRpLmFwaS5TdHJ1Y3R1cmWpqvmAk2/YAAIAA0wACGRlY2xhcmVkcQB+AENMAAlpbmhlcml0ZWRxAH4AQ0wAB3BhcmVudHNxAH4AQ3hxAH4AYHNxAH4AW3VxAH4APgAAAABzcQB+AFt1cQB+AD4AAAAAc3EAfgBbdXIAEVtMeHNidGkuYXBpLlR5cGU7dP+lWnv56UECAAB4cAAAAAJzcgAUeHNidGkuYXBpLlByb2plY3Rpb27z0o1U6UWkLQIAAkwAAmlkcQB+AA1MAAZwcmVmaXh0ABZMeHNidGkvYXBpL1NpbXBsZVR5cGU7eHEAfgBfdAAGT2JqZWN0c3IAE3hzYnRpLmFwaS5TaW5nbGV0b278p1/4z1bkRgIAAUwABHBhdGh0ABBMeHNidGkvYXBpL1BhdGg7eHEAfgBfc3IADnhzYnRpLmFwaS5QYXRomz1cCM6lJ4QCAAFbAApjb21wb25lbnRzdAAaW0x4c2J0aS9hcGkvUGF0aENvbXBvbmVudDt4cHVyABpbTHhzYnRpLmFwaS5QYXRoQ29tcG9uZW50O0PaCXQtZxZ0AgAAeHAAAAADc3IADHhzYnRpLmFwaS5JZJgybIs3U8RAAgABTAACaWRxAH4ADXhyABd4c2J0aS5hcGkuUGF0aENvbXBvbmVudF+aIlsuhp+8AgAAeHB0AARqYXZhc3EAfgB4dAAEbGFuZ3NyAA54c2J0aS5hcGkuVGhpc9sJ7abMWkBcAgAAeHEAfgB5c3EAfgBsdAADQW55c3EAfgBwc3EAfgBzdXEAfgB2AAAAAnNxAH4AeHQABXNjYWxhcQB+AH91cgAUW0x4c2J0aS5hcGkuUGFja2FnZTtbExk3cKcnoQIAAHhwAAAAAXNyABF4c2J0aS5hcGkuUGFja2FnZX5Zj/auzjlYAgABTAAEbmFtZXEAfgANeHB0AAZUb3BpY3NzcgAVeHNidGkuYXBpLkNvbXBpbGF0aW9u7frgw2rooEICAAJKAAlzdGFydFRpbWVbAAdvdXRwdXRzdAAaW0x4c2J0aS9hcGkvT3V0cHV0U2V0dGluZzt4cAAAAV4u9l0SdXIAGltMeHNidGkuYXBpLk91dHB1dFNldHRpbmc7f2rC86eHpUICAAB4cAAAAAFzcgAXeHNidGkuYXBpLk91dHB1dFNldHRpbmd62ZpHdPsdewIAAkwAD291dHB1dERpcmVjdG9yeXEAfgANTAAPc291cmNlRGlyZWN0b3J5cQB+AA14cHQASEM6XFVzZXJzXHNhY2hhXERlc2t0b3BcTWFkQ2FwSWRlYVxLYWZrYVN0cmVhbXNcdGFyZ2V0XHNjYWxhLTIuMTJcY2xhc3Nlc3QAAS91cgACW0Ks8xf4BghU4AIAAHhwAAAAFHunpmSribLAz9P9vC2caw1CN0N0
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> 
+rO0ABXNyABB4c2J0aS5hcGkuU291cmNlSjH5SdlLSkQCAAdJAAdhcGlIYXNoWgAIaGFzTWFjcm9aABBoYXNQYWNrYWdlT2JqZWN0TAAYX2ludGVybmFsT25seV9uYW1lSGFzaGVzdAAkTHhzYnRpL2FwaS9faW50ZXJuYWxPbmx5X05hbWVIYXNoZXM7TAADYXBpdAAVTHhzYnRpL2FwaS9Tb3VyY2VBUEk7TAALY29tcGlsYXRpb250ABdMeHNidGkvYXBpL0NvbXBpbGF0aW9uO1sABGhhc2h0AAJbQnhwnVkKAQAAc3IAInhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoZXNU2r6Z+tTsTAIAAlsAD2ltcGxpY2l0TWVtYmVyc3QAI1tMeHNidGkvYXBpL19pbnRlcm5hbE9ubHlfTmFtZUhhc2g7WwAOcmVndWxhck1lbWJlcnNxAH4AB3hwdXIAI1tMeHNidGkuYXBpLl9pbnRlcm5hbE9ubHlfTmFtZUhhc2g7SVqAtt2Wi/QCAAB4cAAAAAB1cQB+AAkAAAAbc3IAIHhzYnRpLmFwaS5faW50ZXJuYWxPbmx5X05hbWVIYXNoWw71InY4V88CAAJJAARoYXNoTAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwkk3M33QABm5vdGlmeXNxAH4ADHdLB550ABBib290U3RyYXBTZXJ2ZXJzc3EAfgAMzI60fHQACFNldHRpbmdzc3EAfgAMzIG+jXQABHdhaXRzcQB+AAzWIR5/dAANJGFzSW5zdGFuY2VPZnNxAH4ADAJr8W90AAZlcXVhbHNzcQB+AAzFTyV9dAAMYXNJbnN0YW5jZU9mc3EAfgAMys7JknQADHN5bmNocm9uaXplZHNxAH4ADK0NZF50AAlwYXJ0aXRpb25zcQB+AAzmUBx1dAANJGlzSW5zdGFuY2VPZnNxAH4ADJsgR1h0AAZjb25maWdzcQB+AAwm1LoadAALa2Fma2FDb25maWdzcQB+AAy3cWuwdAAJbm90aWZ5QWxsc3EAfgAMF2OOD3QADGlzSW5zdGFuY2VPZnNxAH4ADMtMlER0AB1jcmVhdGVCYXNpY1Byb2R1Y2VyUHJvcGVydGllc3NxAH4ADPvncI10AAI9PXNxAH4ADKX5s8V0AAVjbG9uZXNxAH4ADBI4XwB0AAh0b1N0cmluZ3NxAH4ADISf3rt0AAIhPXNxAH4ADHX1Jvp0AAhnZXRDbGFzc3NxAH4ADIEeFS50AAJuZXNxAH4ADK25Xu50AAp6b29LZWVwZXJzc3EAfgAMou9bGXQAAmVxc3EAfgAM9u0zA3QAHWNyZWF0ZVJhdGluZ1N0cmVhbXNQcm9wZXJ0aWVzc3EAfgAMKEt5o3QAAiMjc3EAfgAMEm5/cXQACGZpbmFsaXplc3EAfgAM3Ezjm3QACGhhc2hDb2Rlc3IAE3hzYnRpLmFwaS5Tb3VyY2VBUEm5Xqf5KSM4pAIAAlsAC2RlZmluaXRpb25zdAAXW0x4c2J0aS9hcGkvRGVmaW5pdGlvbjtbAAhwYWNrYWdlc3QAFFtMeHNidGkvYXBpL1BhY2thZ2U7eHB1cgAXW0x4c2J0aS5hcGkuRGVmaW5pdGlvbjuIyVzntONeDgIAAHhwAAAAAXNyABN4c2J0aS5hcGkuQ2xhc3NMaWtlgzQcod+wl2wCAARMAA5kZWZpbml0aW9uVHlwZXQAGkx4c2J0aS9hcGkvRGVmaW5pdGlvblR5cGU7WwAQc2F2ZWRBbm5vdGF0aW9uc3QAE1tMamF2YS9sYW5nL1N0cmluZztMAAhzZWxmVHlwZXQAEEx4c2J0aS9hcGkvTGF6eTtMAAlzdHJ1Y3R1cmVxAH4ATXhyACF4c2J0aS5hcGkuUGFyYW1ldGVyaXplZERlZmluaXRpb275EW6x1VA84gIAAVsADnR5cGVQYXJhbWV0ZXJzdAAaW0x4c2J0aS9hcGkvVHlwZVBhcmFtZXRlcjt4cgAUeHNidGkuYXBpLkRlZmluaXRpb26HKhvocULjRgIABEwABmFjY2Vzc3QAEkx4c2J0aS9hcGkvQWNjZXNzO1sAC2Fubm90YXRpb25zdAAXW0x4c2J0aS9hcGkvQW5ub3RhdGlvbjtMAAltb2RpZmllcnN0ABVMeHNidGkvYXBpL01vZGlmaWVycztMAARuYW1lcQB+AA14cHNyABB4c2J0aS5hcGkuUHVibGljulg9rmwtYEICAAB4cgAQeHNidGkuYXBpLkFjY2Vzc91imvgdYzFIAgAAeHB1cgAXW0x4c2J0aS5hcGkuQW5ub3RhdGlvbjvrl+sZEPaNSAIAAHhwAAAAAHNyABN4c2J0aS5hcGkuTW9kaWZpZXJzl+dh3BMme7MCAAFCAAVmbGFnc3hwAHQADlV0aWxzLlNldHRpbmdzdXIAGltMeHNidGkuYXBpLlR5cGVQYXJhbWV0ZXI72W0mDyid8rYCAAB4cAAAAAB+cgAYeHNidGkuYXBpLkRlZmluaXRpb25UeXBlAAAAAAAAAAASAAB4cgAOamF2YS5sYW5nLkVudW0AAAAAAAAAABIAAHhwdAAGTW9kdWxldXIAE1tMamF2YS5sYW5nLlN0cmluZzut0lbn6R17RwIAAHhwAAAAAHNyACF4c2J0aS5hcGkuQWJzdHJhY3RMYXp5JFN0cmljdExhenkNZhxrKRYquAIAAUwABXZhbHVldAASTGphdmEvbGFuZy9PYmplY3Q7eHBzcgATeHNidGkuYXBpLkVtcHR5VHlwZbz9nkZJO4kkAgAAeHIAFHhzYnRpLmFwaS5TaW1wbGVUeXBlcnhiiCEjv0ACAAB4cgAOeHNidGkuYXBpLlR5cGU/atkhFkmqygIAAHhwc3EAfgBlc3IAE3hzYnRpLmFwaS5TdHJ1Y3R1cmWpqvmAk2/YAAIAA0wACGRlY2xhcmVkcQB+AE1MAAlpbmhlcml0ZWRxAH4ATUwAB3BhcmVudHNxAH4ATXhxAH4AanNxAH4AZXVxAH4ASAAAAABzcQB+AGV1cQB+AEgAAAAAc3EAfgBldXIAEVtMeHNidGkuYXBpLlR5cGU7dP+lWnv56UECAAB4cAAAAAJzcgAUeHNidGkuYXBpLlByb2plY3Rpb27z0o1U6UWkLQIAAkwAAmlkcQB+AA1MAAZwcmVmaXh0ABZMeHNidGkvYXBpL1NpbXBsZVR5cGU7eHEAfgBpdAAGT2JqZWN0c3IAE3hzYnRpLmFwaS5TaW5nbGV0b278p1/4z1bkRgIAAUwABHBhdGh0ABBMeHNidGkvYXBpL1BhdGg7eHEAfgBpc3IADnhzYnRpLmFwaS5QYXRomz1cCM6lJ4QCAAFbAApjb21wb25lbnRzdAAaW0x4c2J0aS9hcGkvUGF0aENvbXBvbmVudDt4cHVyABpbTHhzYnRpLmFwaS5QYXRoQ29tcG9uZW50O0PaCXQtZxZ0AgAAeHAAAAADc3IADHhzYnRpLmFwaS5JZJgybIs3U8RAAgABTAACaWRxAH4ADXhyABd4c2J0aS5hcGkuUGF0aENvbXBvbmVudF+aIlsuhp+8AgAAeHB0AARqYXZhc3EAfgCCdAAEbGFuZ3NyAA54c2J0aS5hcGkuVGhpc9sJ7abMWkBcAgAAeHEAfgCDc3EAfgB2dAADQW55c3EAfgB6c3EAfgB9dXEAfgCAAAAAAnNxAH4AgnQABXNjYWxhcQB+AIl1cgAUW0x4c2J0aS5hcGkuUGFja2FnZTtbExk3cKcnoQIAAHhwAAAAAXNyABF4c2J0aS5hcGkuUGFja2FnZX5Zj/auzjlYAgABTAAEbmFtZXEAfgANeHB0AAVVdGlsc3NyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABXi72XRJ1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5cQB+AA1MAA9zb3VyY2VEaXJlY3RvcnlxAH4ADXhwdABIQzpcVXNlcnNcc2FjaGFcRGVza3RvcFxNYWRDYXBJZGVhXEthZmthU3RyZWFtc1x0YXJnZXRcc2NhbGEtMi4xMlxjbGFzc2VzdAABL3VyAAJbQqzzF/gGCFTgAgAAeHAAAAAUM3kJ137Mrzz1rC59XHZV57AqIp8=
 external apis:
 0 items
 source infos:
-1 items
+6 items
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Entities\Ranking.scala -> 
+AAAAAAAAAAA=
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingsProducerApp.scala -> 
+AAAAAAAAAAA=
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Processing\Ratings\RatingStreamProcessingApp.scala -> 
+AAAAAAAAAAA=
 C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Serialization\JsonSerdes.scala -> 
 AAAAAAAAAAA=
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Topics\ProcessingTopics.scala -> 
+AAAAAAAAAAA=
+C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\src\main\scala\Utils\Settings.scala -> 
+AAAAAAAAAAA=
 compilations:
-1 items
-0 -> rO0ABXNyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABXhLwdIZ1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5dAASTGphdmEvbGFuZy9TdHJpbmc7TAAPc291cmNlRGlyZWN0b3J5cQB+AAZ4cHQASEM6XFVzZXJzXHNhY2hhXERlc2t0b3BcTWFkQ2FwSWRlYVxLYWZrYVN0cmVhbXNcdGFyZ2V0XHNjYWxhLTIuMTJcY2xhc3Nlc3QAAS8=
+3 items
+0 -> rO0ABXNyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABXi7uKUF1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5dAASTGphdmEvbGFuZy9TdHJpbmc7TAAPc291cmNlRGlyZWN0b3J5cQB+AAZ4cHQASEM6XFVzZXJzXHNhY2hhXERlc2t0b3BcTWFkQ2FwSWRlYVxLYWZrYVN0cmVhbXNcdGFyZ2V0XHNjYWxhLTIuMTJcY2xhc3Nlc3QAAS8=
+1 -> rO0ABXNyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABXi7yyUN1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5dAASTGphdmEvbGFuZy9TdHJpbmc7TAAPc291cmNlRGlyZWN0b3J5cQB+AAZ4cHQASEM6XFVzZXJzXHNhY2hhXERlc2t0b3BcTWFkQ2FwSWRlYVxLYWZrYVN0cmVhbXNcdGFyZ2V0XHNjYWxhLTIuMTJcY2xhc3Nlc3QAAS8=
+2 -> rO0ABXNyABV4c2J0aS5hcGkuQ29tcGlsYXRpb27t+uDDauigQgIAAkoACXN0YXJ0VGltZVsAB291dHB1dHN0ABpbTHhzYnRpL2FwaS9PdXRwdXRTZXR0aW5nO3hwAAABXi72XRJ1cgAaW0x4c2J0aS5hcGkuT3V0cHV0U2V0dGluZzt/asLzp4elQgIAAHhwAAAAAXNyABd4c2J0aS5hcGkuT3V0cHV0U2V0dGluZ3rZmkd0+x17AgACTAAPb3V0cHV0RGlyZWN0b3J5dAASTGphdmEvbGFuZy9TdHJpbmc7TAAPc291cmNlRGlyZWN0b3J5cQB+AAZ4cHQASEM6XFVzZXJzXHNhY2hhXERlc2t0b3BcTWFkQ2FwSWRlYVxLYWZrYVN0cmVhbXNcdGFyZ2V0XHNjYWxhLTIuMTJcY2xhc3Nlc3QAAS8=

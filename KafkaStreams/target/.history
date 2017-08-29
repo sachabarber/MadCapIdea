@@ -4,3 +4,9 @@ compile
 inspect scalaSource
 clean
 compile
+clean
+compile
+clean
+compile
+sbt compile
+compile
