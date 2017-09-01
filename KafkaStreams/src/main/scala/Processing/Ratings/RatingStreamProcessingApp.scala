@@ -43,9 +43,6 @@ package Processing.Ratings {
       val builder: KStreamBuilder = new KStreamBuilder
       val rankings = builder.stream(stringSerde, rankingSerde, RatingsTopics.RATING_SUBMIT_TOPIC)
 
-//      val rankingTable = rankings.groupByKey(stringSerde,rankingSerde)
-//        .reduce(new DummyRankingReducer)
-
       val rankingTable = rankings.groupByKey(stringSerde,rankingSerde)
         .aggregate(
           new RankingByEmailInitializer(),
