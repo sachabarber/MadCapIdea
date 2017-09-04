@@ -44,6 +44,6 @@ object RestServer extends App {
         .onComplete(_ => system.terminate()) // and shutdown when done
     }))
 
-    StdIn.readLine() // let it run until user presses return
+    //StdIn.readLine() // let it run until user presses return
   }
 }

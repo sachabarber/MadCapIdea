@@ -17,6 +17,9 @@ package Utils {
     val zooKeepers = kafkaConfig.getString("zooKeepers")
     val bootStrapServers = kafkaConfig.getString("bootStrapServers")
     val partition = kafkaConfig.getInt("partition")
+    val restApiDefaultHostName = kafkaConfig.getString("restApiDefaultHostName")
+    val restApiDefaultPort = kafkaConfig.getInt("restApiDefaultPort")
+
 
     def createBasicProducerProperties(): Properties = {
       val props = new Properties()

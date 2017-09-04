@@ -1,5 +1,12 @@
-package Entities {
+package Entities
 
-  case class Ranking(val fromEmail: String, val toEmail: String, val score: java.lang.Double)
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import spray.json.DefaultJsonProtocol._
 
+case class Ranking(fromEmail: String, toEmail: String, score: Float)
+
+object AkkaHttpEntitiesJsonFormats {
+  implicit val RankingFormat = jsonFormat3(Ranking)
 }
+
+
