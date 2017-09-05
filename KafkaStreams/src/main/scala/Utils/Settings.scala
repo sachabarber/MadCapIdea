@@ -34,6 +34,7 @@ package Utils {
       props.put(StreamsConfig.CLIENT_ID_CONFIG, "ratings-application-client")
       props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass)
       props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass)
+      props.put(StreamsConfig.APPLICATION_SERVER_CONFIG,  s"${restApiDefaultHostName}:${restApiDefaultPort}")
       props
     }
 

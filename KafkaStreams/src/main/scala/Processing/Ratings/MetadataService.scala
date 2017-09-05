@@ -3,8 +3,11 @@ package Processing.Ratings
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.state.StreamsMetadata
 import java.util.stream.Collectors
+import Entities.HostStoreInfo
 import org.apache.kafka.common.serialization.Serializer
 import org.apache.kafka.connect.errors.NotFoundException
+import scala.collection.JavaConverters._
+
 
 /**
   * Looks up StreamsMetadata from KafkaStreams
@@ -56,7 +59,7 @@ class MetadataService(val streams: KafkaStreams) {
       throw new NotFoundException(
         s"No metadata could be found for store : ${store}, and key type : ${key.getClass.getName}")
 
-    return new HostStoreInfo(metadata.host, metadata.port, metadata.stateStoreNames)
+    return new HostStoreInfo(metadata.host, metadata.port, metadata.stateStoreNames.asScala.toList)
   }
 
 
@@ -82,12 +85,11 @@ class MetadataService(val streams: KafkaStreams) {
 
   def mapInstancesToHostStoreInfo(metadatas : java.util.Collection[StreamsMetadata]) : List[HostStoreInfo] = {
 
-    import scala.collection.JavaConverters._
-
-
-    metadatas.stream().map[HostStoreInfo](metadata => HostStoreInfo(metadata.host(),
-      metadata.port(),
-      metadata.stateStoreNames()))
+    metadatas.stream.map[HostStoreInfo](metadata =>
+      HostStoreInfo(
+        metadata.host(),
+        metadata.port,
+        metadata.stateStoreNames.asScala.toList))
       .collect(Collectors.toList())
       .asScala.toList
   }

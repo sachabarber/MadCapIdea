@@ -25,6 +25,7 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
 
   val metadataService = new MetadataService(streams)
   var bindingFuture: Future[Http.ServerBinding] = null
+
   implicit val system = ActorSystem("rating-system")
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
@@ -40,12 +41,19 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
 
           //TODO : This would come from Kafka store, either local or remote
 
-          complete(List[Ranking](
+          complete(ToResponseMarshallable.apply(List[Ranking](
             Ranking("fred@here.com", "sacha@there.com", 4.0f),
-            Ranking("sam@here.com", "sacha@there.com", 2.0f))
+            Ranking("sam@here.com", "sacha@there.com", 2.0f)))
           )
         }
+      } ~
+      path("instances") {
+        get {
+          val x = metadataService.streamsMetadata
+          complete(ToResponseMarshallable.apply(metadataService.streamsMetadata))
+        }
       }
+
 
     bindingFuture = Http().bindAndHandle(route, hostInfo.host, hostInfo.port)
     println(s"Server online at http://${hostInfo.host}:${hostInfo.port}/\n")
@@ -62,5 +70,10 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
     bindingFuture
       .flatMap(_.unbind()) // trigger unbinding from the port
       .onComplete(_ => system.terminate()) // and shutdown when done
+  }
+
+  def thisHost(hostStoreInfo: HostStoreInfo) : Boolean = {
+    hostStoreInfo.host.equals(hostInfo.host()) &&
+      hostStoreInfo.port == hostInfo.port
   }
 }
