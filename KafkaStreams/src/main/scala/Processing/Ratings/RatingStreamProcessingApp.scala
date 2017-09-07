@@ -9,17 +9,15 @@
   import Utils.Settings
   import scala.concurrent.duration._
   import scala.concurrent.ExecutionContext.global
+  import Stores.StateStores
+  import Utils.Retry
+  import org.apache.kafka.streams.state.{HostInfo, QueryableStoreType}
+  import scala.concurrent.{Await, ExecutionContext}
+  import scala.util.{Failure, Success, Try}
 
 
   package Processing.Ratings {
 
-    import Stores.StateStores
-    import Utils.Retry
-    import org.apache.kafka.streams.errors.InvalidStateStoreException
-    import org.apache.kafka.streams.state.{HostInfo, QueryableStoreType}
-
-    import scala.concurrent.{Await, ExecutionContext}
-    import scala.util.{Failure, Success, Try}
 
 
     class DummyRankingReducer extends Reducer[Ranking] {
@@ -103,42 +101,34 @@
         import org.apache.kafka.streams.state.KeyValueIterator
         import org.apache.kafka.streams.state.QueryableStoreTypes
         import org.apache.kafka.streams.state.ReadOnlyKeyValueStore
+        import org.apache.kafka.streams.KeyValue
 
-        val keyValueStoreTry = waitUntilStoreIsQueryable(
+        implicit val ec = ExecutionContext.global
+
+        val f = StateStores.waitUntilStoreIsQueryable(
           StateStores.RANKINGS_BY_EMAIL_STORE,
-          QueryableStoreTypes.keyValueStore[String,List[Ranking]](),
+          QueryableStoreTypes.keyValueStore[String, List[Ranking]](),
           streams
-        ) match {
-          case Success(keyValueStore) => {
-            val SIZE = streams.allMetadata.size()
-            val SIZE2 = streams.allMetadataForStore(StateStores.RANKINGS_BY_EMAIL_STORE).size()
-            val range = keyValueStore.all
-            val HASNEXT = range.hasNext
-            import org.apache.kafka.streams.KeyValue
-            while (range.hasNext      ) {
-              val next = range.next
-              System.out.println(String.format("key: %s | value: %s", next.key, next.value))
-            }
+        )
+
+
+        try {
+          val keyValueStore = Await.result(f, 10 seconds)
+          val SIZE = streams.allMetadata.size()
+          val SIZE2 = streams.allMetadataForStore(StateStores.RANKINGS_BY_EMAIL_STORE).size()
+          val range = keyValueStore.all
+          val HASNEXT = range.hasNext
+          while (range.hasNext) {
+            val next = range.next
+            System.out.println(String.format("key: %s | value: %s", next.key, next.value))
           }
-          case Failure(f) => println(f)
         }
-
-      }
-
-
-      def waitUntilStoreIsQueryable[T](
-          storeName: String,
-          queryableStoreType: QueryableStoreType[T],
-          streams: KafkaStreams) : Try[T] = {
-
-
-        val rez = Retry.retry(5) {
-          streams.store(storeName, queryableStoreType)
-        }
-
-        Try{
-          Await.result(rez, 20 seconds)
+        catch {
+          case (ex: Exception) => {
+            println(f)
+          }
         }
       }
+
     }
   }

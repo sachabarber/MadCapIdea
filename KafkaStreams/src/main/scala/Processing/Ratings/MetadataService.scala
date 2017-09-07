@@ -63,26 +63,6 @@ class MetadataService(val streams: KafkaStreams) {
   }
 
 
-
-//  def mapInstancesToHostStoreInfo(metadatas : java.util.Collection[StreamsMetadata]) : List[HostStoreInfo] = {
-//
-//
-//    import scala.compat.java8.StreamConverters._
-//
-//    import scala.compat.java8.StreamConverters._
-//
-//    val scalaStream = metadatas.stream().toScala[Stream]
-//    val theList :  scala.List[HostStoreInfo] =
-//      scalaStream.map(metadata => HostStoreInfo(metadata.host(),
-//      metadata.port(),
-//      metadata.stateStoreNames())).toList
-//
-//    theList
-//
-//  }
-
-
-
   def mapInstancesToHostStoreInfo(metadatas : java.util.Collection[StreamsMetadata]) : List[HostStoreInfo] = {
 
     metadatas.stream.map[HostStoreInfo](metadata =>
@@ -93,7 +73,5 @@ class MetadataService(val streams: KafkaStreams) {
       .collect(Collectors.toList())
       .asScala.toList
   }
-
-
 
 }

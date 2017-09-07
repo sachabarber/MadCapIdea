@@ -11,9 +11,16 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import spray.json.DefaultJsonProtocol._
 import Entities.AkkaHttpEntitiesJsonFormats._
 import Entities._
+import Stores.StateStores
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
+import org.apache.kafka.common.serialization.Serdes
+import scala.concurrent.{Await, ExecutionContext, Future}
+import akka.http.scaladsl.unmarshalling.Unmarshal
+import spray.json._
+import scala.util.{Failure, Success}
+import org.apache.kafka.streams.state.QueryableStoreTypes
+import scala.concurrent.duration._
 
-import scala.concurrent.Future
 
 
 object RestService {
@@ -33,27 +40,60 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
 
   def start() : Unit = {
     val emailRegexPattern =  """\w+""".r
-
+    val storeNameRegexPattern =  """\w+""".r
 
     val route =
-      path("ratingByEmail" / emailRegexPattern) { email =>
+
+
+      path("test") {
         get {
+          parameters('email.as[String]) { (email) =>
+            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
+                        s"<h1>${email}</h1>"))
+          }
+        }
+      } ~
+      path("ratingByEmail") {
+        get {
+          parameters('email.as[String]) { (email) =>
+            try {
 
-          //TODO : This would come from Kafka store, either local or remote
+              val host = metadataService.streamsMetadataForStoreAndKey[String](
+                StateStores.RANKINGS_BY_EMAIL_STORE,
+                email,
+                Serdes.String().serializer()
+              )
 
-          complete(ToResponseMarshallable.apply(List[Ranking](
-            Ranking("fred@here.com", "sacha@there.com", 4.0f),
-            Ranking("sam@here.com", "sacha@there.com", 2.0f)))
-          )
+              var future:Future[List[Ranking]] = null
+
+              //store is hosted on another process, REST Call
+              if(!thisHost(host))
+                future = fetchRemoteRatingByEmail(host, email)
+              else
+                future = fetchLocalRatingByEmail(email)
+
+              val rankings = Await.result(future, 20 seconds)
+              complete(rankings)
+            }
+            catch {
+              case (ex: Exception) => {
+                val finalList:List[Ranking] = scala.collection.immutable.List[Ranking]()
+                complete(finalList)
+              }
+            }
+          }
         }
       } ~
       path("instances") {
         get {
-          val x = metadataService.streamsMetadata
           complete(ToResponseMarshallable.apply(metadataService.streamsMetadata))
         }
+      }~
+      path("instances" / storeNameRegexPattern) { storeName =>
+        get {
+          complete(ToResponseMarshallable.apply(metadataService.streamsMetadataForStore(storeName)))
+        }
       }
-
 
     bindingFuture = Http().bindAndHandle(route, hostInfo.host, hostInfo.port)
     println(s"Server online at http://${hostInfo.host}:${hostInfo.port}/\n")
@@ -65,6 +105,45 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
     }))
   }
 
+
+  def fetchRemoteRatingByEmail(host:HostStoreInfo, email: String) : Future[List[Ranking]] = {
+
+    val requestPath = s"http://${hostInfo.host}:${hostInfo.port}/ratingByEmail?email=${email}"
+    println(s"Client attempting to fetch from online at ${requestPath}")
+
+    val responseFuture: Future[List[Ranking]] = {
+      Http().singleRequest(HttpRequest(uri = requestPath))
+        .flatMap(response => Unmarshal(response.entity).to[List[Ranking]])
+    }
+
+    responseFuture
+  }
+
+  def fetchLocalRatingByEmail(email: String) : Future[List[Ranking]] = {
+
+    val ec = ExecutionContext.global
+
+    val host = metadataService.streamsMetadataForStoreAndKey[String](
+      StateStores.RANKINGS_BY_EMAIL_STORE,
+      email,
+      Serdes.String().serializer()
+    )
+
+    val f = StateStores.waitUntilStoreIsQueryable(
+      StateStores.RANKINGS_BY_EMAIL_STORE,
+      QueryableStoreTypes.keyValueStore[String,List[Ranking]](),
+      streams
+    ).map(_.get(email))(ec)
+
+    val mapped = f.map(ranking => {
+      if (ranking == null)
+        List[Ranking]()
+      else
+        ranking
+    })
+
+    mapped
+  }
 
   def stop() : Unit = {
     bindingFuture
