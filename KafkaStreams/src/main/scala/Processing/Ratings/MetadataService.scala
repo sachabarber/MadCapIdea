@@ -59,7 +59,7 @@ class MetadataService(val streams: KafkaStreams) {
       throw new NotFoundException(
         s"No metadata could be found for store : ${store}, and key type : ${key.getClass.getName}")
 
-    return new HostStoreInfo(metadata.host, metadata.port, metadata.stateStoreNames.asScala.toList)
+    HostStoreInfo(metadata.host, metadata.port, metadata.stateStoreNames.asScala.toList)
   }
 
 
