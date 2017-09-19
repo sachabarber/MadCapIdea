@@ -17,6 +17,8 @@ function RunPipeLine()
 	
 	WriteHeader "STARTING NEW SERVICE INSTANCES"
 	StartZookeeper
+	
+	Start-Sleep -s 20
 	StartKafka
 	
 	Start-Sleep -s 20

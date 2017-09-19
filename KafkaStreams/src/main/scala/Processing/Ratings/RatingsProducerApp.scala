@@ -39,14 +39,14 @@ package Processing.Ratings {
       val rankingProducer = new KafkaProducer[String, Array[Byte]](
         producerProps, Serdes.String.serializer, Serdes.ByteArray.serializer)
 
-      //while (true) {
-      for (i <- 0 to 10) {
+      while (true) {
+      //for (i <- 0 to 10) {
         val ranking = rankingList(random.nextInt(rankingList.size))
         val rankingBytes = jSONSerde.serializer().serialize("", ranking)
         System.out.println(s"Writing ranking ${ranking} to input topic ${RatingsTopics.RATING_SUBMIT_TOPIC}")
         rankingProducer.send(new ProducerRecord[String, Array[Byte]](
           RatingsTopics.RATING_SUBMIT_TOPIC, ranking.toEmail, rankingBytes))
-        Thread.sleep(100)
+        Thread.sleep(500)
       }
 
       Runtime.getRuntime.addShutdownHook(new Thread(() => {
