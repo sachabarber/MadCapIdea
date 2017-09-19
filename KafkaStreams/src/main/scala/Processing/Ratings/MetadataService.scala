@@ -1,9 +1,9 @@
-package Processing.Ratings
+package processing.ratings
 
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.state.StreamsMetadata
 import java.util.stream.Collectors
-import Entities.HostStoreInfo
+import entities.HostStoreInfo
 import org.apache.kafka.common.serialization.Serializer
 import org.apache.kafka.connect.errors.NotFoundException
 import scala.collection.JavaConverters._

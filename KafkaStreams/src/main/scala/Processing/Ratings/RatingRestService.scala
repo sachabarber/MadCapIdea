@@ -1,4 +1,4 @@
-package Processing.Ratings
+package processing.ratings
 
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.state.HostInfo
@@ -9,9 +9,9 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import spray.json.DefaultJsonProtocol._
-import Entities.AkkaHttpEntitiesJsonFormats._
-import Entities._
-import Stores.StateStores
+import entities.AkkaHttpEntitiesJsonFormats._
+import entities._
+import stores.StateStores
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import org.apache.kafka.common.serialization.Serdes
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -43,28 +43,18 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
     val storeNameRegexPattern =  """\w+""".r
 
     val route =
-
-
-      path("test") {
-        get {
-          parameters('email.as[String]) { (email) =>
-            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-                        s"<h1>${email}</h1>"))
-          }
-        }
-      } ~
       path("ratingByEmail") {
         get {
           parameters('email.as[String]) { (email) =>
             try {
 
               val host = metadataService.streamsMetadataForStoreAndKey[String](
-                StateStores.RANKINGS_BY_EMAIL_STORE,
+                StateStores.RATINGS_BY_EMAIL_STORE,
                 email,
                 Serdes.String().serializer()
               )
 
-              var future:Future[List[Ranking]] = null
+              var future:Future[List[Rating]] = null
 
               //store is hosted on another process, REST Call
               if(!thisHost(host))
@@ -72,12 +62,12 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
               else
                 future = fetchLocalRatingByEmail(email)
 
-              val rankings = Await.result(future, 20 seconds)
-              complete(rankings)
+              val ratings = Await.result(future, 20 seconds)
+              complete(ratings)
             }
             catch {
               case (ex: Exception) => {
-                val finalList:List[Ranking] = scala.collection.immutable.List[Ranking]()
+                val finalList:List[Rating] = scala.collection.immutable.List[Rating]()
                 complete(finalList)
               }
             }
@@ -106,40 +96,40 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
   }
 
 
-  def fetchRemoteRatingByEmail(host:HostStoreInfo, email: String) : Future[List[Ranking]] = {
+  def fetchRemoteRatingByEmail(host:HostStoreInfo, email: String) : Future[List[Rating]] = {
 
     val requestPath = s"http://${hostInfo.host}:${hostInfo.port}/ratingByEmail?email=${email}"
     println(s"Client attempting to fetch from online at ${requestPath}")
 
-    val responseFuture: Future[List[Ranking]] = {
+    val responseFuture: Future[List[Rating]] = {
       Http().singleRequest(HttpRequest(uri = requestPath))
-        .flatMap(response => Unmarshal(response.entity).to[List[Ranking]])
+        .flatMap(response => Unmarshal(response.entity).to[List[Rating]])
     }
 
     responseFuture
   }
 
-  def fetchLocalRatingByEmail(email: String) : Future[List[Ranking]] = {
+  def fetchLocalRatingByEmail(email: String) : Future[List[Rating]] = {
 
     val ec = ExecutionContext.global
 
     val host = metadataService.streamsMetadataForStoreAndKey[String](
-      StateStores.RANKINGS_BY_EMAIL_STORE,
+      StateStores.RATINGS_BY_EMAIL_STORE,
       email,
       Serdes.String().serializer()
     )
 
     val f = StateStores.waitUntilStoreIsQueryable(
-      StateStores.RANKINGS_BY_EMAIL_STORE,
-      QueryableStoreTypes.keyValueStore[String,List[Ranking]](),
+      StateStores.RATINGS_BY_EMAIL_STORE,
+      QueryableStoreTypes.keyValueStore[String,List[Rating]](),
       streams
     ).map(_.get(email))(ec)
 
-    val mapped = f.map(ranking => {
-      if (ranking == null)
-        List[Ranking]()
+    val mapped = f.map(rating => {
+      if (rating == null)
+        List[Rating]()
       else
-        ranking
+        rating
     })
 
     mapped

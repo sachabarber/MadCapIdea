@@ -2,9 +2,9 @@ package controllers
 
 import javax.inject.Inject
 import play.api.mvc.{Action, Controller, Result}
-import Entities._
-import Entities.DriverRegistrationJsonFormatters._
-import Entities.PassengerRegistrationJsonFormatters._
+import entities._
+import entities.DriverRegistrationJsonFormatters._
+import entities.PassengerRegistrationJsonFormatters._
 import scala.concurrent.{ExecutionContext, Future}
 import play.modules.reactivemongo._
 import play.api.Logger

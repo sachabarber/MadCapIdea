@@ -1,6 +1,6 @@
 
 
-package Utils {
+package utils {
 
   import java.util.Properties
   import com.typesafe.config.ConfigFactory

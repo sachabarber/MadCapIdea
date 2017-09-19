@@ -11,8 +11,8 @@ import play.api.http.ContentTypes
 import play.api.libs.Comet
 import play.api.libs.json._
 import play.api.mvc.{Controller, _}
-import Entities._
-import Entities.JsonFormatters._
+import entities._
+import entities.JsonFormatters._
 
 import scala.concurrent.ExecutionContext
 
