@@ -1,5 +1,7 @@
 $global:mongoDbInstallationFolder = "C:\Program Files\MongoDB\Server\3.5\bin\"
 $global:kafkaWindowsBatFolder = "C:\Apache\confluent-3.3.0\bin\windows\"
+$global:kafkaAndZooLoggingFolder = "C:\temp\"
+
 $global:kafkaTopics = 
 	"rating-submit-topic",
 	"rating-output-topic"
@@ -12,6 +14,13 @@ function RunPipeLine()
 	WriteHeader "STOPPING PREVIOUS SERVICES"
 	StopZookeeper
 	StopKafka
+	
+	$path = $kafkaAndZooLoggingFolder + "kafka-logs"
+	Remove-Item -Recurse -Force $path
+	
+	$path = $kafkaAndZooLoggingFolder + "zookeeper"
+	Remove-Item -Recurse -Force $path
+	
 
 	Start-Sleep -s 20
 	
