@@ -2,9 +2,9 @@ package controllers
 
 import javax.inject.Inject
 
-import actors.rating.RatingProducerActor
-import entities.RatingJsonFormatters._
-import entities._
+import Actors.Rating.RatingProducerActor
+import Entities.RatingJsonFormatters._
+import Entities._
 import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
 import akka.pattern.{Backoff, BackoffSupervisor}
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
@@ -44,7 +44,7 @@ class RatingController @Inject()
       OneForOneStrategy() {
         case _ => SupervisorStrategy.Restart
       })
-  )
+    )
 
   val ratingSupervisorActorRef = actorSystem.actorOf(ratingSupervisorProps, name = "ratingSupervisor")
 

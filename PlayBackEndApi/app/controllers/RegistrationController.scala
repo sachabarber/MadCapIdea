@@ -2,9 +2,9 @@ package controllers
 
 import javax.inject.Inject
 import play.api.mvc.{Action, Controller, Result}
-import entities._
-import entities.DriverRegistrationJsonFormatters._
-import entities.PassengerRegistrationJsonFormatters._
+import Entities._
+import Entities.DriverRegistrationJsonFormatters._
+import Entities.PassengerRegistrationJsonFormatters._
 import scala.concurrent.{ExecutionContext, Future}
 import play.modules.reactivemongo._
 import play.api.Logger
@@ -14,7 +14,8 @@ import reactivemongo.api.ReadPreference
 import reactivemongo.play.json._
 import collection._
 
-class RegistrationController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
+class RegistrationController @Inject()
+  (val reactiveMongoApi: ReactiveMongoApi)
   (implicit ec: ExecutionContext)
   extends Controller with MongoController with ReactiveMongoComponents {
 

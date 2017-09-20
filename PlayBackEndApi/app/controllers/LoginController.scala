@@ -2,9 +2,9 @@ package controllers
 
 import javax.inject.Inject
 
-import entities.DriverRegistrationJsonFormatters._
-import entities.PassengerRegistrationJsonFormatters._
-import entities._
+import Entities.DriverRegistrationJsonFormatters._
+import Entities.PassengerRegistrationJsonFormatters._
+import Entities._
 import play.api.Logger
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller, Result}
@@ -17,8 +17,9 @@ import utils.Errors
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class LoginController @Inject()(val reactiveMongoApi: ReactiveMongoApi)
-                               (implicit ec: ExecutionContext)
+class LoginController @Inject()
+  (val reactiveMongoApi: ReactiveMongoApi)
+  (implicit ec: ExecutionContext)
   extends Controller with MongoController with ReactiveMongoComponents {
 
   def passRegistrationFuture: Future[JSONCollection] = database.map(_.collection[JSONCollection]("passenger-registrations"))

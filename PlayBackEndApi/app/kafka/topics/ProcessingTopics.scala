@@ -1,6 +1,8 @@
-package kafka.topics
+package Kafka.Topics {
 
-object RatingsTopics {
+  object RatingsTopics {
     val RATING_SUBMIT_TOPIC = "rating-submit-topic"
     val RATING_OUTPUT_TOPIC = "rating-output-topic"
   }
+
+}

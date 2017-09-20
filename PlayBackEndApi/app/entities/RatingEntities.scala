@@ -1,4 +1,4 @@
-package entities
+package Entities
 
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
@@ -20,7 +20,7 @@ object RatingJsonFormatters {
   }
 
   implicit val ratingReads: Reads[Rating] = (
-    (JsPath \ "fromEmail").read[String] and
+      (JsPath \ "fromEmail").read[String] and
       (JsPath \ "toEmail").read[String] and
       ((JsPath \ "score").read[Float])
     )(Rating.apply _)
