@@ -59,4 +59,18 @@ class RatingController @Inject()
           Errors.show(errors)))
     }
   }
+
+  def ratingByEmail = Action.async { request =>
+
+    val email = request.getQueryString("email")
+    email match {
+      case Some(emailAddress) => {
+        Future.successful(Ok("ok"))
+      }
+      case None => {
+        Future.successful(BadRequest(
+          "ratingByEmail endpoint MUST be supplied with a non empty 'email' query string value"))
+      }
+    }
+  }
 }

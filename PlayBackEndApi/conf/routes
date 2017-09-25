@@ -24,6 +24,7 @@ POST  /login/validate                          controllers.LoginController.valid
 
 # Rating page
 POST  /rating/submit/new                       controllers.RatingController.submitNewRating()
+POST  /rating/byemail                          controllers.RatingController.ratingByEmail()
 
 
 # Map static resources from the /public folder to the /assets URL path
