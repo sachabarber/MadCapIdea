@@ -9,6 +9,10 @@ import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
 import akka.pattern.{Backoff, BackoffSupervisor}
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
 import play.api.libs.json._
+import play.api.libs.json.Json
+import play.api.libs.json.Format
+import play.api.libs.json.JsSuccess
+import play.api.libs.json.Writes
 import play.api.libs.ws._
 import play.api.mvc.{Action, Controller}
 import utils.{Errors, Settings}
@@ -62,15 +66,18 @@ class RatingController @Inject()
     }
   }
 
+
+
+
   def ratingByEmail = Action.async { request =>
 
     val email = request.getQueryString("email")
     email match {
       case Some(emailAddress) => {
-        val url = s"http://${Settings.ratingRestApiDefaultHostName}:${Settings.ratingRestApiDefaultPort}/ratingByEmail?email=${emailAddress}"
+        val url = s"http://${Settings.ratingRestApiHostName}:${Settings.ratingRestApiPort}/ratingByEmail?email=${emailAddress}"
         ws.url(url).get().map {
           response => (response.json).validate[List[Rating]]
-        }.map(Ok(_))
+        }.map(x => Ok(Json.toJson(x.get)))
       }
       case None => {
         Future.successful(BadRequest(

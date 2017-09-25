@@ -10,8 +10,8 @@ package utils {
     val config = ConfigFactory.load("application.conf")
     val kafkaConfig = config.getConfig("kafka")
     val bootStrapServers = kafkaConfig.getString("bootStrapServers")
-    val ratingRestApiDefaultHostName = kafkaConfig.getString("ratingRestApiDefaultHostName")
-    val ratingRestApiDefaultPort = kafkaConfig.getInt("ratingRestApiDefaultPort")
+    val ratingRestApiHostName = kafkaConfig.getString("restApiDefaultHostName")
+    val ratingRestApiPort = kafkaConfig.getInt("restApiDefaultPort")
     val ACKS_CONFIG = "acks"
   }
 }
