@@ -9,8 +9,9 @@ import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
 import akka.pattern.{Backoff, BackoffSupervisor}
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
 import play.api.libs.json._
+import play.api.libs.ws._
 import play.api.mvc.{Action, Controller}
-import utils.Errors
+import utils.{Errors, Settings}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Random
@@ -19,7 +20,8 @@ import scala.concurrent.duration._
 class RatingController @Inject()
 (
   implicit actorSystem: ActorSystem,
-  ec: ExecutionContext
+  ec: ExecutionContext,
+  ws: WSClient
 ) extends Controller
 {
 
@@ -65,7 +67,10 @@ class RatingController @Inject()
     val email = request.getQueryString("email")
     email match {
       case Some(emailAddress) => {
-        Future.successful(Ok("ok"))
+        val url = s"http://${Settings.ratingRestApiDefaultHostName}:${Settings.ratingRestApiDefaultPort}/ratingByEmail?email=${emailAddress}"
+        ws.url(url).get().map {
+          response => (response.json).validate[List[Rating]]
+        }.map(Ok(_))
       }
       case None => {
         Future.successful(BadRequest(

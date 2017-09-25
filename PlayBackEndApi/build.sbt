@@ -19,8 +19,8 @@ libraryDependencies ++= Seq(
   "org.reactivemongo" %% "play2-reactivemongo" % "0.11.12",
   "com.typesafe.akka" % "akka-stream-kafka_2.11" % "0.17",
   "org.skinny-framework.com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.8.4",
-  "com.typesafe"        % "config" % configVersion
-
+  "com.typesafe"        % "config" % configVersion,
+  ws
 )
 
 initialize := {

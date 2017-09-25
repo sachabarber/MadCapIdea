@@ -11,6 +11,7 @@ import akka.stream.{ActorMaterializer, KillSwitches}
 import akka.stream.scaladsl.{Keep, MergeHub, Source}
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
+import utils.Settings
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
@@ -22,18 +23,11 @@ class RatingProducerActor(
 ) extends Actor {
 
   val jSONSerde = new JSONSerde[Rating]
-
-
-  //TODO : Need to make this generic and also move stuff to config
-  //TODO : Need to make this generic and also move stuff to config
-  //TODO : Need to make this generic and also move stuff to config
-  //TODO : Need to make this generic and also move stuff to config
-  //TODO : Need to make this generic and also move stuff to config
   val ratingProducerSettings = ProducerSettings(
       context.system,
       new StringSerializer,
       new ByteArraySerializer)
-    .withBootstrapServers("localhost:9092")
+    .withBootstrapServers(s"${Settings.bootStrapServers}")
 
   val ((mergeHubSink, killswitch), kafkaSourceFuture) =
     MergeHub.source[Rating](perProducerBufferSize = 16)
