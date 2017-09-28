@@ -1,3 +1,4 @@
+$global:mongdoDbDataFolder = "C:\data\"
 $global:mongoDbInstallationFolder = "C:\Program Files\MongoDB\Server\3.5\bin\"
 $global:kafkaWindowsBatFolder = "C:\Apache\confluent-3.3.0\bin\windows\"
 $global:kafkaAndZooLoggingFolder = "C:\temp\"
@@ -20,6 +21,7 @@ function RunPipeLine()
 	
 	$path = $kafkaAndZooLoggingFolder + "zookeeper"
 	Remove-Item -Recurse -Force $path
+	
 	
 
 	Start-Sleep -s 20

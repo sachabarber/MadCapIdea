@@ -119,9 +119,9 @@ ReactDOM.render((
             <Route path="/" component={Login} authService={authService}/>
             <Route path="/register" component={Register} authService={authService}/>
             <Route path="/logout" component={Logout} authService={authService}/>
-            <Route path="/createjob" component={CreateJob}/>
-            <Route path="/viewjob" component={ViewJob}/>
-            <Route path="/viewrating" component={ViewRating}/>
+            <Route path="/createjob" component={CreateJob} authService={authService}/>
+            <Route path="/viewjob" component={ViewJob} authService={authService}/>
+            <Route path="/viewrating" component={ViewRating} authService={authService}/>
         </Route>
     </Router>
 ), document.getElementById('root'));

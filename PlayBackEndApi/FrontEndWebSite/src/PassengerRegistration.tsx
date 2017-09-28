@@ -22,7 +22,7 @@ import revalidator from 'revalidator';
 
 let schema = {
     properties: {
-        fullname: {
+        fullName: {
             type: 'string',
             minLength: 8,
             maxLength: 60,
@@ -91,7 +91,7 @@ export class PassengerRegistration extends React.Component<PassengerRegistration
                         <Col xs={10} md={6}>
                             <ValidatedInput type='text'
                                 label='FullName'
-                                name='fullname'
+                                name='fullName'
                                 errorHelp='FullName is invalid'/>
 
                         </Col>

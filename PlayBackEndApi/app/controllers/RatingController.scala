@@ -74,10 +74,13 @@ class RatingController @Inject()
     val email = request.getQueryString("email")
     email match {
       case Some(emailAddress) => {
-        val url = s"http://${Settings.ratingRestApiHostName}:${Settings.ratingRestApiPort}/ratingByEmail?email=${emailAddress}"
-        ws.url(url).get().map {
-          response => (response.json).validate[List[Rating]]
-        }.map(x => Ok(Json.toJson(x.get)))
+//        val url = s"http://${Settings.ratingRestApiHostName}:${Settings.ratingRestApiPort}/ratingByEmail?email=${emailAddress}"
+//        ws.url(url).get().map {
+//          response => (response.json).validate[List[Rating]]
+//        }.map(x => Ok(Json.toJson(x.get)))
+
+        Future.successful(Ok(Json.toJson(List[Rating](Rating("junk1","junk1",1),Rating("junk2","junk2",2),Rating("junk3","junk3",3)))))
+
       }
       case None => {
         Future.successful(BadRequest(

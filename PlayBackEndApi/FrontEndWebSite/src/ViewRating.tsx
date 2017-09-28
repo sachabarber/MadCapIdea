@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
+import * as _ from "lodash";
+import { OkDialog } from "./components/OkDialog";
 import 'bootstrap/dist/css/bootstrap.css';
 import
 {
@@ -8,7 +9,8 @@ import
     Grid,
     Row,
     Col,
-    Label
+    Label,
+    ButtonInput
 } from "react-bootstrap";
 
 import { AuthService } from "./services/AuthService";
@@ -16,7 +18,32 @@ import { AuthService } from "./services/AuthService";
 import { hashHistory  } from 'react-router';
 
 
-export class ViewRating extends React.Component<undefined, undefined> {
+
+class Rating {
+    fromEmail: string
+    toEmail: string
+    score: number
+
+    constructor(fromEmail, toEmail, score) {
+        this.fromEmail = fromEmail;
+        this.toEmail = toEmail;
+        this.score = score;
+    }
+}
+
+
+export interface ViewRatingState {
+    ratings: Array<Rating>;
+    overallRating: number;
+    okDialogOpen: boolean;
+    okDialogKey: number;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+    wasSuccessful: boolean;
+}
+
+
+export class ViewRating extends React.Component<undefined, ViewRatingState> {
 
     private _authService: AuthService;
 
@@ -26,22 +53,73 @@ export class ViewRating extends React.Component<undefined, undefined> {
         if (!this._authService.isAuthenticated()) {
             hashHistory.push('/');
         }
+        this.state = {
+            overallRating: 0,
+            ratings: Array(),
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0,
+            wasSuccessful: false
+        };
+    }   
+
+
+    loadRatingsFromServer = () => {
+
+        var self = this;
+        var currentUserEmail = this._authService.userEmail();
+
+        $.ajax({
+            type: 'GET',
+            url: 'rating/byemail?email=' + currentUserEmail,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+
+            console.log("result of GET rating/byemail");
+            console.log(jqXHR.responseText);
+            let ratingsObtained = JSON.parse(jqXHR.responseText);
+            self.setState(
+                {
+                    overallRating: _.sumBy(ratingsObtained, 'score'),
+                    ratings: ratingsObtained
+                });
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: 'Could not load Ratings',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
+        
+    }
+
+    componentDidMount() {
+        this.loadRatingsFromServer();
     }
 
     render() {
+
+        var rowComponents = this.generateRows();
+
         return (
             <Well className="outer-well">
                     <Grid>
                         <Row className="show-grid">
                             <Col xs={6} md={6}>
                                 <div>
-                                    <h4>YOUR RANKING <Label>4.2</Label></h4>
+                                <h4>YOUR OVERALL RATING <Label>{this.state.overallRating}</Label></h4>
                                 </div>
                             </Col>
                         </Row>
                         <Row className="show-grid">
                             <Col xs={10} md={6}>
-                                <h6>The finer details of your ranking are shown below</h6>
+                                <h6>The finer details of your ratings are shown below</h6>
                             </Col>
                         </Row>
                         <Row className="show-grid">
@@ -50,32 +128,46 @@ export class ViewRating extends React.Component<undefined, undefined> {
                                     <table className="table table-striped table-bordered table-condensed factTable">
                                         <thead>
                                             <tr>
-                                                <th>Ranked By</th>
-                                                <th>Rank Given</th>
+                                                <th>Rated By</th>
+                                                <th>Rating Given</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>John Doe</td>
-                                                <td>4.2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mary Moe</td>
-                                                <td>4.7</td>
-                                            </tr>
-                                            <tr>
-                                                <td>July Dooley</td>
-                                                <td>4.5</td>
-                                            </tr>
+                                            {rowComponents} 
                                         </tbody>
                                     </table>
                                 </div>
                             </Col>
                         </Row>
+                        <Row className="show-grid">
+                            <span>
+                                <OkDialog
+                                    open= {this.state.okDialogOpen}
+                                    okCallBack= {this._okDialogCallBack}
+                                    headerText={this.state.okDialogHeaderText}
+                                    bodyText={this.state.okDialogBodyText}
+                                    key={this.state.okDialogKey}/>
+                            </span>
+                        </Row>
                     </Grid>
             </Well>
         )
     }
+
+    _okDialogCallBack = () => {
+        this.setState(
+            {
+                okDialogOpen: false
+            });
+    }
+
+    generateRows = () => {
+        return this.state.ratings.map(function (item) {
+            return  <tr key={item.fromEmail}>
+                        <td>{item.fromEmail}</td>
+                        <td>{item.score}</td>
+                    </tr>;
+
+        });
+    } 
 }
-
-

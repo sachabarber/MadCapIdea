@@ -19,7 +19,7 @@ object DriverRegistrationJsonFormatters {
 
   implicit val driverRegistrationWrites = new Writes[DriverRegistration] {
     def writes(driverRegistration: DriverRegistration) = Json.obj(
-      "fullname" -> driverRegistration.fullName,
+      "fullName" -> driverRegistration.fullName,
       "email" -> driverRegistration.email,
       "password" -> driverRegistration.password,
       "vehicleDescription" -> driverRegistration.vehicleDescription,
@@ -28,7 +28,7 @@ object DriverRegistrationJsonFormatters {
   }
 
   implicit val driverRegistrationReads: Reads[DriverRegistration] = (
-    (JsPath \ "fullname").read[String] and
+    (JsPath \ "fullName").read[String] and
       (JsPath \ "email").read[String] and
       (JsPath \ "password").read[String] and
       (JsPath \ "vehicleDescription").read[String] and

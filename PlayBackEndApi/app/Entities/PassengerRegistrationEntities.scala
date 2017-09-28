@@ -16,14 +16,14 @@ object PassengerRegistrationJsonFormatters {
 
   implicit val passengerRegistrationWrites = new Writes[PassengerRegistration] {
     def writes(passengerRegistration: PassengerRegistration) = Json.obj(
-      "fullname" -> passengerRegistration.fullName,
+      "fullName" -> passengerRegistration.fullName,
       "email" -> passengerRegistration.email,
       "password" -> passengerRegistration.password
     )
   }
 
   implicit val passengerRegistrationReads: Reads[PassengerRegistration] = (
-    (JsPath \ "fullname").read[String] and
+    (JsPath \ "fullName").read[String] and
       (JsPath \ "email").read[String] and
       (JsPath \ "password").read[String]
     )(PassengerRegistration.apply _)

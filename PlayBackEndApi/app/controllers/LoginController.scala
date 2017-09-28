@@ -74,10 +74,10 @@ class LoginController @Inject()
           case JsSuccess(reg, _) => {
             redactor(reg)
           }
-          case _ => BadRequest("Registration already exists")
+          case _ => BadRequest("Login already exists")
         }
       }
-      case None => BadRequest("Could not find registration")
+      case None => BadRequest("Could not find login")
     }
   }
 

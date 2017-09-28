@@ -29,6 +29,11 @@ export class AuthService {
         return user.fullName;
     }
 
+    userEmail = () => {
+        var user = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return user.email;
+    }
+
     isAuthenticated = () => {
         return this._isAuthenticated;
     }
