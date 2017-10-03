@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 146:
+/***/ 147:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", {
 var TYPES = exports.TYPES = {
     Foo: Symbol("Foo"),
     SomeNumber: Symbol("SomeNumber"),
-    AuthService: Symbol("AuthService")
+    AuthService: Symbol("AuthService"),
+    JobService: Symbol("JobService")
 };
 
 /***/ }),
@@ -148,7 +149,10 @@ var CreateJob = function (_super) {
                 currentPosition: event.latLng
             });
         };
+        _this._jobService = props.route.jobService;
         _this._authService = props.route.authService;
+        console.log("CreateJob ctor");
+        console.log(_this._jobService);
         if (!_this._authService.isAuthenticated()) {
             _reactRouter.hashHistory.push('/');
         }
@@ -344,7 +348,7 @@ var Login = function (_super) {
     return Login;
 }(React.Component);
 exports.Login = Login;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(121)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
 
 /***/ }),
 
@@ -681,7 +685,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(711);
+var _lodash = __webpack_require__(712);
 
 var _ = _interopRequireWildcard(_lodash);
 
@@ -784,7 +788,7 @@ var ViewRating = function (_super) {
     return ViewRating;
 }(React.Component);
 exports.ViewRating = ViewRating;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(121)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
 
 /***/ }),
 
@@ -799,15 +803,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ContainerOperations = undefined;
 
-__webpack_require__(909);
+__webpack_require__(910);
 
-var _inversify = __webpack_require__(174);
+var _inversify = __webpack_require__(121);
 
-var _types = __webpack_require__(146);
+var _types = __webpack_require__(147);
 
 var _Foo = __webpack_require__(415);
 
 var _AuthService = __webpack_require__(417);
+
+var _JobService = __webpack_require__(418);
 
 var ContainerOperations = function () {
     function ContainerOperations() {
@@ -824,6 +830,7 @@ var ContainerOperations = function () {
         this.container.bind(_types.TYPES.SomeNumber).toConstantValue(22);
         this.container.bind(_types.TYPES.Foo).to(_Foo.Foo);
         this.container.bind(_types.TYPES.AuthService).to(_AuthService.AuthService);
+        this.container.bind(_types.TYPES.JobService).to(_JobService.JobService);
     };
     Object.defineProperty(ContainerOperations.prototype, "container", {
         get: function get() {
@@ -1014,7 +1021,7 @@ var DriverRegistration = function (_super) {
     return DriverRegistration;
 }(React.Component);
 exports.DriverRegistration = DriverRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(121)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
 
 /***/ }),
 
@@ -1181,7 +1188,7 @@ var PassengerRegistration = function (_super) {
     return PassengerRegistration;
 }(React.Component);
 exports.PassengerRegistration = PassengerRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(121)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
 
 /***/ }),
 
@@ -1204,7 +1211,7 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactStars = __webpack_require__(895);
+var _reactStars = __webpack_require__(896);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -1289,9 +1296,9 @@ exports.Foo = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(174);
+var _inversify = __webpack_require__(121);
 
-var _types = __webpack_require__(146);
+var _types = __webpack_require__(147);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1358,7 +1365,7 @@ var _ViewRating = __webpack_require__(410);
 
 var _ContainerOperations = __webpack_require__(411);
 
-var _types = __webpack_require__(146);
+var _types = __webpack_require__(147);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1380,6 +1387,7 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 
 var authService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.AuthService);
+var jobService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.JobService);
 var MainNav = function (_super) {
     __extends(MainNav, _super);
     function MainNav(props) {
@@ -1417,11 +1425,11 @@ var App = function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return React.createElement("div", null, React.createElement("div", null, React.createElement(MainNav, { authService: authService }), this.props.children));
+        return React.createElement("div", null, React.createElement("div", null, React.createElement(MainNav, { authService: authService, jobService: jobService }), this.props.children));
     };
     return App;
 }(React.Component);
-ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login, authService: authService }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register, authService: authService }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout, authService: authService }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob, authService: authService }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob, authService: authService }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating, authService: authService }))), document.getElementById('root'));
+ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login, authService: authService }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register, authService: authService }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout, authService: authService }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob, authService: authService, jobService: jobService }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob, authService: authService }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating, authService: authService }))), document.getElementById('root'));
 
 /***/ }),
 
@@ -1438,9 +1446,9 @@ exports.AuthService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(174);
+var _inversify = __webpack_require__(121);
 
-var _rx = __webpack_require__(910);
+var _rx = __webpack_require__(911);
 
 var _rx2 = _interopRequireDefault(_rx);
 
@@ -1468,6 +1476,7 @@ var AuthService = function () {
             _this._authenticatedSubject.onNext(false);
         };
         this.storeUser = function (currentUser) {
+            if (currentUser == null || currentUser == undefined) return;
             _this._isAuthenticated = true;
             sessionStorage.setItem('currentUserProfile', currentUser);
             _this._authenticatedSubject.onNext(true);
@@ -1491,6 +1500,66 @@ var AuthService = function () {
 }();
 exports.AuthService = AuthService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], AuthService);
 exports.AuthService = AuthService;
+
+/***/ }),
+
+/***/ 418:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.JobService = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _inversify = __webpack_require__(121);
+
+var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+        if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = undefined && undefined.__metadata || function (k, v) {
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var JobService = function () {
+    function JobService() {
+        var _this = this;
+        this.clearUserIssuedJob = function () {
+            _this._hasIssuedJob = false;
+            sessionStorage.removeItem('currentUserIssuedJob');
+        };
+        this.storeUserIssuedJob = function (currentUser, job) {
+            if (currentUser == null || currentUser == undefined) return;
+            if (job == null || job == undefined) return;
+            _this._hasIssuedJob = true;
+            var currentUsersJob = {
+                currentUser: currentUser,
+                currentJob: job
+            };
+            sessionStorage.setItem('currentUserIssuedJob', JSON.stringify(currentUsersJob));
+        };
+        this.currentJob = function () {
+            var currentUsersJob = JSON.parse(sessionStorage.getItem('currentUserIssuedJob'));
+            return currentUsersJob;
+        };
+        this.hasIssuedJob = function () {
+            return _this._hasIssuedJob;
+        };
+        this._hasIssuedJob = false;
+    }
+    return JobService;
+}();
+exports.JobService = JobService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], JobService);
+exports.JobService = JobService;
 
 /***/ }),
 
@@ -1568,4 +1637,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[416]);
-//# sourceMappingURL=index.bundle.086091a8ae139ce96fbf.js.map
+//# sourceMappingURL=index.bundle.2a8dd5660a3a696a9867.js.map

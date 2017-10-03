@@ -15,6 +15,7 @@ import
 } from "react-bootstrap";
 
 import { AuthService } from "./services/AuthService";
+import { JobService } from "./services/JobService";
 
 import { hashHistory  } from 'react-router';
 
@@ -44,10 +45,18 @@ export interface CreateJobState {
 export class CreateJob extends React.Component<undefined, CreateJobState> {
 
     private _authService: AuthService;
+    private _jobService: JobService;
+
 
     constructor(props: any) {
         super(props);
+        this._jobService = props.route.jobService;
         this._authService = props.route.authService;
+
+        console.log("CreateJob ctor");
+        console.log(this._jobService);
+
+
         if (!this._authService.isAuthenticated()) {
             hashHistory.push('/');
         }

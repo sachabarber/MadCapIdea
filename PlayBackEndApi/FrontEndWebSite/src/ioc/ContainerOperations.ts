@@ -3,7 +3,7 @@ import { Container } from "inversify";
 import { TYPES } from "../types";
 import { Foo } from "../domain/Foo";
 import { AuthService } from "../services/AuthService";
-
+import { JobService } from "../services/JobService";
 
 export class ContainerOperations {
     private static instance: ContainerOperations;
@@ -25,6 +25,7 @@ export class ContainerOperations {
         this.container.bind<number>(TYPES.SomeNumber).toConstantValue(22);
         this.container.bind<Foo>(TYPES.Foo).to(Foo);
         this.container.bind<AuthService>(TYPES.AuthService).to(AuthService);
+        this.container.bind<JobService>(TYPES.JobService).to(JobService);
     }
 
     public get container(): Container {

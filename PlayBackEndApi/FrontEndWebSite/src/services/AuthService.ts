@@ -19,6 +19,10 @@ export class AuthService {
     }
 
     storeUser = (currentUser) => {
+
+        if (currentUser == null || currentUser == undefined)
+            return;
+
         this._isAuthenticated = true;
         sessionStorage.setItem('currentUserProfile', currentUser);
         this._authenticatedSubject.onNext(true);

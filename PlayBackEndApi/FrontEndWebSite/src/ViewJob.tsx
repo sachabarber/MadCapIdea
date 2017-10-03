@@ -49,8 +49,6 @@ const ViewJobGoogleMap = withGoogleMap(props => (
         ref={props.onMapLoad}
         defaultZoom={14}
         defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}>
-
-
         {props.markers.map((marker, index) => (
             <OverlayView
                 key={marker.key}

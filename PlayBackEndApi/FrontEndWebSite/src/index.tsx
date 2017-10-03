@@ -21,13 +21,17 @@ import { ViewRating } from "./ViewRating";
 
 import { ContainerOperations } from "./ioc/ContainerOperations"; 
 import { AuthService } from "./services/AuthService";
+import { JobService } from "./services/JobService";
+
 import { TYPES } from "./types";
 
 
 let authService = ContainerOperations.getInstance().container.get<AuthService>(TYPES.AuthService);
+let jobService = ContainerOperations.getInstance().container.get<JobService>(TYPES.JobService);
 
 export interface MainNavProps {
     authService: AuthService;
+    jobService: JobService;
 }
 
 export interface MainNavState {
@@ -48,17 +52,18 @@ class MainNav extends React.Component<MainNavProps, MainNavState> {
     }
 
     componentWillMount() {
-        this._subscription = this.props.authService.getAuthenticationStream().subscribe(isAuthenticated => {
-            this.state = {
-                isLoggedIn: isAuthenticated
-            };
-            if (this.state.isLoggedIn) {
-                hashHistory.push('/createjob');
-            }
-            else {
-                hashHistory.push('/');
-            }
-        });
+        this._subscription = this.props.authService.getAuthenticationStream()
+            .subscribe(isAuthenticated => {
+                this.state = {
+                    isLoggedIn: isAuthenticated
+                };
+                if (this.state.isLoggedIn) {
+                    hashHistory.push('/createjob');
+                }
+                else {
+                    hashHistory.push('/');
+                }
+            });
     }
 
     componentWillUnmount() {
@@ -103,7 +108,7 @@ class App extends React.Component<undefined, undefined> {
         return (
             <div>
                 <div>
-                    <MainNav authService={authService}/>
+                    <MainNav authService={authService} jobService={jobService} />
                     {this.props.children}
                 </div>
             </div>
@@ -112,16 +117,35 @@ class App extends React.Component<undefined, undefined> {
 }
 
 
-
 ReactDOM.render((
     <Router history={hashHistory}>
         <Route component={App}>
-            <Route path="/" component={Login} authService={authService}/>
-            <Route path="/register" component={Register} authService={authService}/>
-            <Route path="/logout" component={Logout} authService={authService}/>
-            <Route path="/createjob" component={CreateJob} authService={authService}/>
-            <Route path="/viewjob" component={ViewJob} authService={authService}/>
-            <Route path="/viewrating" component={ViewRating} authService={authService}/>
+            <Route
+                path="/"
+                component={Login}
+                authService={authService} />
+            <Route
+                path="/register"
+                component={Register}
+                authService={authService} />
+            <Route
+                path="/logout"
+                component={Logout}
+                authService={authService} />
+            <Route
+                path="/createjob"
+                component={CreateJob}
+                authService={authService}
+                jobService={jobService}
+            />
+            <Route
+                path="/viewjob"
+                component={ViewJob}
+                authService={authService} />
+            <Route
+                path="/viewrating"
+                component={ViewRating}
+                authService={authService} />
         </Route>
     </Router>
 ), document.getElementById('root'));
