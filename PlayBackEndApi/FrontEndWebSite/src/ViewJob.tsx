@@ -169,7 +169,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                                     }} />
                                 }
                                 markers={this.state.markers}
-                                onMarkerClick={this._handleClick}/>
+                                onMarkerClick={this._handleMarkerClick}/>
                         </Col>
                     </Row>
                     <Row className="show-grid">
@@ -199,7 +199,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         );
     }
 
-    _handleClick = (targetMarker) => {
+    _handleMarkerClick = (targetMarker) => {
         console.log('button on overlay clicked:' + targetMarker.key);
     }
 

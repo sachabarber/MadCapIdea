@@ -132,13 +132,28 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 
+var STYLES = {
+    overlayView: {
+        background: "white",
+        border: "1px solid #ccc",
+        padding: 15
+    }
+};
+var GetPixelPositionOffset = function GetPixelPositionOffset(width, height) {
+    return { x: -(width / 2), y: -(height / 2) };
+};
 var CreateJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
-    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, React.createElement(_reactGoogleMaps.Marker, { position: props.currentPosition, icon: '/assets/images/passenger.png' }));
+    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, React.createElement(_reactGoogleMaps.OverlayView, { key: 'createJobKey', mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: props.currentPosition, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: '/assets/images/passenger.png' }), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
+            return props.onMarkerClick();
+        }, value: 'Create Job' }, "Create Job"))));
 });
 var CreateJob = function (_super) {
     __extends(CreateJob, _super);
     function CreateJob(props) {
         var _this = _super.call(this, props) || this;
+        _this._handleMarkerClick = function () {
+            console.log('button on CreateJob overlay clicked');
+        };
         _this._handleMapLoad = function (map) {
             if (map) {
                 console.log(map.getZoom());
@@ -188,7 +203,7 @@ var CreateJob = function (_super) {
                     marginLeft: 0,
                     marginRight: 0,
                     marginBottom: 20
-                } }), onMapLoad: this._handleMapLoad, onMapClick: this._handleMapClick, currentPosition: this.state.currentPosition }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.ButtonInput, { id: "createJobBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Create Job"))));
+                } }), onMapLoad: this._handleMapLoad, onMapClick: this._handleMapClick, currentPosition: this.state.currentPosition, onMarkerClick: this._handleMarkerClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.ButtonInput, { id: "createJobBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Create Job"))));
     };
     return CreateJob;
 }(React.Component);
@@ -572,7 +587,7 @@ var ViewJob = function (_super) {
     __extends(ViewJob, _super);
     function ViewJob(props) {
         var _this = _super.call(this, props) || this;
-        _this._handleClick = function (targetMarker) {
+        _this._handleMarkerClick = function (targetMarker) {
             console.log('button on overlay clicked:' + targetMarker.key);
         };
         _this._ratingsDialogOkCallBack = function () {
@@ -662,7 +677,7 @@ var ViewJob = function (_super) {
                     marginLeft: 0,
                     marginRight: 0,
                     marginBottom: 20
-                } }), markers: this.state.markers, onMarkerClick: this._handleClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this._ratingsDialogOkCallBack }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this._jobCancelledCallBack, noCallBack: this._jobNotCancelledCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+                } }), markers: this.state.markers, onMarkerClick: this._handleMarkerClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this._ratingsDialogOkCallBack }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this._jobCancelledCallBack, noCallBack: this._jobNotCancelledCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return ViewJob;
 }(React.Component);
@@ -1637,4 +1652,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[416]);
-//# sourceMappingURL=index.bundle.2a8dd5660a3a696a9867.js.map
+//# sourceMappingURL=index.bundle.f01f526f0ca8a8005412.js.map

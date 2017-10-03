@@ -19,7 +19,20 @@ import { JobService } from "./services/JobService";
 
 import { hashHistory  } from 'react-router';
 
-import { withGoogleMap, GoogleMap, Marker, InfoBox } from "react-google-maps";
+import { withGoogleMap, GoogleMap, Marker, InfoBox, OverlayView } from "react-google-maps";
+
+const STYLES = {
+    overlayView: {
+        background: `white`,
+        border: `1px solid #ccc`,
+        padding: 15,
+    }
+}
+
+
+const GetPixelPositionOffset = (width, height) => {
+    return { x: -(width / 2), y: -(height / 2) };
+}
 
 const CreateJobGoogleMap = withGoogleMap(props => (
     <GoogleMap
@@ -27,10 +40,23 @@ const CreateJobGoogleMap = withGoogleMap(props => (
         defaultZoom={16}
         defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}
         onClick={props.onMapClick}>
-        <Marker
+
+        <OverlayView
+            key='createJobKey'
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             position={props.currentPosition}
-            icon='/assets/images/passenger.png'>
-        </Marker>
+            getPixelPositionOffset={GetPixelPositionOffset}>
+            <div style={STYLES.overlayView}>
+                <img src='/assets/images/passenger.png' />
+                <br />
+                <Button
+                    type='button'
+                    bsSize='xsmall'
+                    bsStyle='primary'
+                    onClick={() => props.onMarkerClick()}
+                    value='Create Job'>Create Job</Button>
+            </div>
+        </OverlayView>
     </GoogleMap>
 ));
 
@@ -113,20 +139,17 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                                 onMapLoad={this._handleMapLoad}
                                 onMapClick={this._handleMapClick}
                                 currentPosition={this.state.currentPosition}
+                                onMarkerClick={this._handleMarkerClick}
                                 />
                         </Col>
                     </Row>
-                    <Row className="show-grid">
-                        <ButtonInput
-                            id="createJobBtn"
-                            type='submit'
-                            bsSize='small'
-                            bsStyle='primary'
-                            value='Register'>Create Job</ButtonInput>
-                    </Row>
-                </Grid>
+                 </Grid>
             </Well>
         );
+    }
+
+    _handleMarkerClick = () => {
+        console.log('button on CreateJob overlay clicked');
     }
 
     _handleMapLoad = (map) => {
