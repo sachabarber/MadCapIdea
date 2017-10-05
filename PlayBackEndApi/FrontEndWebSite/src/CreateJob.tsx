@@ -26,6 +26,11 @@ const STYLES = {
         background: `white`,
         border: `1px solid #ccc`,
         padding: 15,
+    },
+    icon: {
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 20
     }
 }
 
@@ -47,7 +52,8 @@ const CreateJobGoogleMap = withGoogleMap(props => (
             position={props.currentPosition}
             getPixelPositionOffset={GetPixelPositionOffset}>
             <div style={STYLES.overlayView}>
-                <img src='/assets/images/passenger.png' />
+                <img style={STYLES.icon}
+                    src='/assets/images/passenger.png' />
                 <br />
                 <Button
                     type='button'
@@ -111,10 +117,10 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                                         left: 0,
                                         right: 0,
                                         bottom: 0,
-                                        width: 600,
-                                        height: 600,
                                         justifyContent: 'flex-end',
                                         alignItems: 'center',
+                                        width: 600,
+                                        height: 600,
                                         marginTop: 20,
                                         marginLeft: 0,
                                         marginRight: 0,

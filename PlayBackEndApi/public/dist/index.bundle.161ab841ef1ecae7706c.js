@@ -137,13 +137,18 @@ var STYLES = {
         background: "white",
         border: "1px solid #ccc",
         padding: 15
+    },
+    icon: {
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 20
     }
 };
 var GetPixelPositionOffset = function GetPixelPositionOffset(width, height) {
     return { x: -(width / 2), y: -(height / 2) };
 };
 var CreateJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
-    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, React.createElement(_reactGoogleMaps.OverlayView, { key: 'createJobKey', mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: props.currentPosition, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: '/assets/images/passenger.png' }), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
+    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, React.createElement(_reactGoogleMaps.OverlayView, { key: 'createJobKey', mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: props.currentPosition, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { style: STYLES.icon, src: '/assets/images/passenger.png' }), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
             return props.onMarkerClick();
         }, value: 'Create Job' }, "Create Job"))));
 });
@@ -183,10 +188,10 @@ var CreateJob = function (_super) {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    width: 600,
-                    height: 600,
                     justifyContent: 'flex-end',
                     alignItems: 'center',
+                    width: 600,
+                    height: 600,
                     marginTop: 20,
                     marginLeft: 0,
                     marginRight: 0,
@@ -203,7 +208,7 @@ var CreateJob = function (_super) {
                     marginLeft: 0,
                     marginRight: 0,
                     marginBottom: 20
-                } }), onMapLoad: this._handleMapLoad, onMapClick: this._handleMapClick, currentPosition: this.state.currentPosition, onMarkerClick: this._handleMarkerClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.ButtonInput, { id: "createJobBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Create Job"))));
+                } }), onMapLoad: this._handleMapLoad, onMapClick: this._handleMapClick, currentPosition: this.state.currentPosition, onMarkerClick: this._handleMarkerClick })))));
     };
     return CreateJob;
 }(React.Component);
@@ -1652,4 +1657,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[416]);
-//# sourceMappingURL=index.bundle.f01f526f0ca8a8005412.js.map
+//# sourceMappingURL=index.bundle.161ab841ef1ecae7706c.js.map
