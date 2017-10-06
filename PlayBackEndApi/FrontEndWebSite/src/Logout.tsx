@@ -59,7 +59,7 @@ export class Logout extends React.Component<undefined, LogoutState> {
                                 launchButtonText="Logout"
                                 yesCallBack={this._logoutYesCallBack}
                                 noCallBack={this._logoutNoCallBack}
-                                headerText="Cancel the job"/>
+                                headerText="Confirm logout"/>
 
                             <OkDialog
                                 open= {this.state.okDialogOpen}
@@ -90,6 +90,8 @@ export class Logout extends React.Component<undefined, LogoutState> {
                  okDialogOpen: true,
                  okDialogKey: Math.random()
              });
+
+         hashHistory.push('/');
      }
 
      _logoutNoCallBack = () => {

@@ -90,7 +90,7 @@ exports.YesNoDialog = YesNoDialog;
 
 /***/ }),
 
-/***/ 410:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -105,7 +105,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(877);
+var _reactMeasure = __webpack_require__(388);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
@@ -231,7 +231,7 @@ exports.CreateJob = CreateJob;
 
 /***/ }),
 
-/***/ 411:
+/***/ 412:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -383,11 +383,11 @@ var Login = function (_super) {
     return Login;
 }(React.Component);
 exports.Login = Login;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
 
 /***/ }),
 
-/***/ 412:
+/***/ 413:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -448,6 +448,7 @@ var Logout = function (_super) {
                 okDialogOpen: true,
                 okDialogKey: Math.random()
             });
+            _reactRouter.hashHistory.push('/');
         };
         _this._logoutNoCallBack = function () {};
         console.log(props);
@@ -464,7 +465,7 @@ var Logout = function (_super) {
         return _this;
     }
     Logout.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, React.createElement("span", null, "YOU ARE CURRENTLY LOGGED IN AS [", this._authService.userName(), "]")), React.createElement("span", null, React.createElement("h6", null, "Click the button to logout")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_YesNoDialog.YesNoDialog, { theId: "logoutBtn", launchButtonText: "Logout", yesCallBack: this._logoutYesCallBack, noCallBack: this._logoutNoCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, React.createElement("span", null, "YOU ARE CURRENTLY LOGGED IN AS [", this._authService.userName(), "]")), React.createElement("span", null, React.createElement("h6", null, "Click the button to logout")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_YesNoDialog.YesNoDialog, { theId: "logoutBtn", launchButtonText: "Logout", yesCallBack: this._logoutYesCallBack, noCallBack: this._logoutNoCallBack, headerText: "Confirm logout" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return Logout;
 }(React.Component);
@@ -472,7 +473,7 @@ exports.Logout = Logout;
 
 /***/ }),
 
-/***/ 413:
+/***/ 414:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -491,9 +492,9 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _PassengerRegistration = __webpack_require__(418);
+var _PassengerRegistration = __webpack_require__(419);
 
-var _DriverRegistration = __webpack_require__(417);
+var _DriverRegistration = __webpack_require__(418);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -538,7 +539,7 @@ exports.Register = Register;
 
 /***/ }),
 
-/***/ 414:
+/***/ 415:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -553,11 +554,11 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(877);
+var _reactMeasure = __webpack_require__(388);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
-var _RatingDialog = __webpack_require__(419);
+var _RatingDialog = __webpack_require__(420);
 
 var _YesNoDialog = __webpack_require__(240);
 
@@ -719,7 +720,7 @@ exports.ViewJob = ViewJob;
 
 /***/ }),
 
-/***/ 415:
+/***/ 416:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -734,7 +735,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(717);
+var _lodash = __webpack_require__(718);
 
 var _ = _interopRequireWildcard(_lodash);
 
@@ -837,11 +838,11 @@ var ViewRating = function (_super) {
     return ViewRating;
 }(React.Component);
 exports.ViewRating = ViewRating;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
 
 /***/ }),
 
-/***/ 416:
+/***/ 417:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -854,15 +855,15 @@ exports.ContainerOperations = undefined;
 
 __webpack_require__(923);
 
-var _inversify = __webpack_require__(122);
+var _inversify = __webpack_require__(121);
 
 var _types = __webpack_require__(147);
 
-var _Foo = __webpack_require__(420);
+var _Foo = __webpack_require__(421);
 
-var _AuthService = __webpack_require__(422);
+var _AuthService = __webpack_require__(423);
 
-var _JobService = __webpack_require__(423);
+var _JobService = __webpack_require__(424);
 
 var ContainerOperations = function () {
     function ContainerOperations() {
@@ -894,7 +895,7 @@ exports.ContainerOperations = ContainerOperations;
 
 /***/ }),
 
-/***/ 417:
+/***/ 418:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1070,11 +1071,11 @@ var DriverRegistration = function (_super) {
     return DriverRegistration;
 }(React.Component);
 exports.DriverRegistration = DriverRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
 
 /***/ }),
 
-/***/ 418:
+/***/ 419:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1237,11 +1238,11 @@ var PassengerRegistration = function (_super) {
     return PassengerRegistration;
 }(React.Component);
 exports.PassengerRegistration = PassengerRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
 
 /***/ }),
 
-/***/ 419:
+/***/ 420:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1332,7 +1333,7 @@ exports.RatingDialog = RatingDialog;
 
 /***/ }),
 
-/***/ 420:
+/***/ 421:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1345,7 +1346,7 @@ exports.Foo = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(122);
+var _inversify = __webpack_require__(121);
 
 var _types = __webpack_require__(147);
 
@@ -1380,7 +1381,7 @@ exports.Foo = Foo;
 
 /***/ }),
 
-/***/ 421:
+/***/ 422:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1400,19 +1401,19 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _Login = __webpack_require__(411);
+var _Login = __webpack_require__(412);
 
-var _Logout = __webpack_require__(412);
+var _Logout = __webpack_require__(413);
 
-var _Register = __webpack_require__(413);
+var _Register = __webpack_require__(414);
 
-var _CreateJob = __webpack_require__(410);
+var _CreateJob = __webpack_require__(411);
 
-var _ViewJob = __webpack_require__(414);
+var _ViewJob = __webpack_require__(415);
 
-var _ViewRating = __webpack_require__(415);
+var _ViewRating = __webpack_require__(416);
 
-var _ContainerOperations = __webpack_require__(416);
+var _ContainerOperations = __webpack_require__(417);
 
 var _types = __webpack_require__(147);
 
@@ -1482,7 +1483,7 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ }),
 
-/***/ 422:
+/***/ 423:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1495,7 +1496,7 @@ exports.AuthService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(122);
+var _inversify = __webpack_require__(121);
 
 var _rx = __webpack_require__(925);
 
@@ -1527,7 +1528,7 @@ var AuthService = function () {
         this.storeUser = function (currentUser) {
             if (currentUser == null || currentUser == undefined) return;
             _this._isAuthenticated = true;
-            sessionStorage.setItem('currentUserProfile', currentUser);
+            sessionStorage.setItem('currentUserProfile', JSON.stringify(currentUser));
             _this._authenticatedSubject.onNext(true);
         };
         this.userName = function () {
@@ -1552,7 +1553,7 @@ exports.AuthService = AuthService;
 
 /***/ }),
 
-/***/ 423:
+/***/ 424:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1565,7 +1566,7 @@ exports.JobService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(122);
+var _inversify = __webpack_require__(121);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1685,5 +1686,5 @@ exports.OkDialog = OkDialog;
 
 /***/ })
 
-},[421]);
-//# sourceMappingURL=index.bundle.05212bd08aef47162af3.js.map
+},[422]);
+//# sourceMappingURL=index.bundle.b379c8754e12c16dcbaa.js.map

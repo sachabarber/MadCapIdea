@@ -24,7 +24,7 @@ export class AuthService {
             return;
 
         this._isAuthenticated = true;
-        sessionStorage.setItem('currentUserProfile', currentUser);
+        sessionStorage.setItem('currentUserProfile', JSON.stringify(currentUser));
         this._authenticatedSubject.onNext(true);
     }
 
