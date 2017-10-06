@@ -26,6 +26,7 @@
     "react-bootstrap-validation": "^0.1.11",
     "react-dom": "^15.5.4",
     "react-google-maps": "^7.0.0",
+    "react-measure": "^2.0.2",
     "react-router": "^3.0.5",
     "react-stars": "^2.1.0",
     "reflect-metadata": "^0.1.10",

@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
+import Measure from 'react-measure'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import
@@ -72,6 +73,10 @@ export interface CreateJobState {
         lat: number,
         lng: number
     };
+    dimensions: {
+        width: number,
+        height: number
+    }
 }
 
 export class CreateJob extends React.Component<undefined, CreateJobState> {
@@ -93,11 +98,15 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
             hashHistory.push('/');
         }
         this.state = {
-            currentPosition: { lat: 50.8202949, lng: -0.1406958 }
-          };
+            currentPosition: { lat: 50.8202949, lng: -0.1406958 },
+            dimensions: { width: -1, height: -1 }
+          };    
     }
 
     render() {
+
+        const adjustedwidth = this.state.dimensions.width;
+
         return (
             <Well className="outer-well">
                 <Grid>
@@ -109,44 +118,56 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                     </Row>
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
-                            <CreateJobGoogleMap
-                                containerElement={
-                                    <div style={{
-                                        position: 'relative',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        justifyContent: 'flex-end',
-                                        alignItems: 'center',
-                                        width: 600,
-                                        height: 600,
-                                        marginTop: 20,
-                                        marginLeft: 0,
-                                        marginRight: 0,
-                                        marginBottom: 20
-                                    }} />
+
+                            <Measure
+                                bounds
+                                onResize={(contentRect) => {
+                                    this.setState({ dimensions: contentRect.bounds })
+                                }}
+                            >
+                                {({ measureRef }) =>
+                                    <div ref={measureRef}>
+                                        <CreateJobGoogleMap
+                                            containerElement={
+                                                <div style={{
+                                                    position: 'relative',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'center',
+                                                    width: { adjustedwidth },
+                                                    height: 600,
+                                                    marginTop: 20,
+                                                    marginLeft: 0,
+                                                    marginRight: 0,
+                                                    marginBottom: 20
+                                                }} />
+                                            }
+                                            mapElement={
+                                                <div style={{
+                                                    position: 'relative',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    width: { adjustedwidth },
+                                                    height: 600,
+                                                    marginTop: 20,
+                                                    marginLeft: 0,
+                                                    marginRight: 0,
+                                                    marginBottom: 20
+                                                }} />
+                                            }
+                                            onMapLoad={this._handleMapLoad}
+                                            onMapClick={this._handleMapClick}
+                                            currentPosition={this.state.currentPosition}
+                                            onMarkerClick={this._handleMarkerClick}
+                                        />
+                                    </div>
                                 }
-                                mapElement={
-                                    <div style={{
-                                        position: 'relative',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        width: 600,
-                                        height: 600,
-                                        marginTop: 20,
-                                        marginLeft: 0,
-                                        marginRight: 0,
-                                        marginBottom: 20
-                                    }} />
-                                }
-                                onMapLoad={this._handleMapLoad}
-                                onMapClick={this._handleMapClick}
-                                currentPosition={this.state.currentPosition}
-                                onMarkerClick={this._handleMarkerClick}
-                                />
+                            </Measure>
                         </Col>
                     </Row>
                  </Grid>
@@ -155,7 +176,7 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
     }
 
     _handleMarkerClick = () => {
-        console.log('button on CreateJob overlay clicked');
+        console.log('button on CreateJob overlay clicked https://github.com/souporserious/react-measure for map');
     }
 
     _handleMapLoad = (map) => {
@@ -165,8 +186,9 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
     }
 
     _handleMapClick = (event) => {
-        this.setState({
+        const newState = Object.assign({}, this.state, {
             currentPosition: event.latLng
-        });
+        })
+        this.setState(newState)
     }
 }

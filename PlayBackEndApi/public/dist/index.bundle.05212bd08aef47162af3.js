@@ -18,7 +18,7 @@ var TYPES = exports.TYPES = {
 
 /***/ }),
 
-/***/ 237:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90,7 +90,7 @@ exports.YesNoDialog = YesNoDialog;
 
 /***/ }),
 
-/***/ 405:
+/***/ 410:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -105,13 +105,19 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
+var _reactMeasure = __webpack_require__(877);
+
+var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
+
 __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(384);
+var _reactGoogleMaps = __webpack_require__(387);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -157,7 +163,7 @@ var CreateJob = function (_super) {
     function CreateJob(props) {
         var _this = _super.call(this, props) || this;
         _this._handleMarkerClick = function () {
-            console.log('button on CreateJob overlay clicked');
+            console.log('button on CreateJob overlay clicked https://github.com/souporserious/react-measure for map');
         };
         _this._handleMapLoad = function (map) {
             if (map) {
@@ -165,9 +171,10 @@ var CreateJob = function (_super) {
             }
         };
         _this._handleMapClick = function (event) {
-            _this.setState({
+            var newState = Object.assign({}, _this.state, {
                 currentPosition: event.latLng
             });
+            _this.setState(newState);
         };
         _this._jobService = props.route.jobService;
         _this._authService = props.route.authService;
@@ -177,38 +184,46 @@ var CreateJob = function (_super) {
             _reactRouter.hashHistory.push('/');
         }
         _this.state = {
-            currentPosition: { lat: 50.8202949, lng: -0.1406958 }
+            currentPosition: { lat: 50.8202949, lng: -0.1406958 },
+            dimensions: { width: -1, height: -1 }
         };
         return _this;
     }
     CreateJob.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "SET YOUR CURRENT LOCATION"), React.createElement("h6", null, "Click the map to set your current location"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(CreateJobGoogleMap, { containerElement: React.createElement("div", { style: {
-                    position: 'relative',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    width: 600,
-                    height: 600,
-                    marginTop: 20,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 20
-                } }), mapElement: React.createElement("div", { style: {
-                    position: 'relative',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: 600,
-                    height: 600,
-                    marginTop: 20,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 20
-                } }), onMapLoad: this._handleMapLoad, onMapClick: this._handleMapClick, currentPosition: this.state.currentPosition, onMarkerClick: this._handleMarkerClick })))));
+        var _this = this;
+        var adjustedwidth = this.state.dimensions.width;
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "SET YOUR CURRENT LOCATION"), React.createElement("h6", null, "Click the map to set your current location"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactMeasure2.default, { bounds: true, onResize: function onResize(contentRect) {
+                _this.setState({ dimensions: contentRect.bounds });
+            } }, function (_a) {
+            var measureRef = _a.measureRef;
+            return React.createElement("div", { ref: measureRef }, React.createElement(CreateJobGoogleMap, { containerElement: React.createElement("div", { style: {
+                        position: 'relative',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        width: { adjustedwidth: adjustedwidth },
+                        height: 600,
+                        marginTop: 20,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        marginBottom: 20
+                    } }), mapElement: React.createElement("div", { style: {
+                        position: 'relative',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        width: { adjustedwidth: adjustedwidth },
+                        height: 600,
+                        marginTop: 20,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        marginBottom: 20
+                    } }), onMapLoad: _this._handleMapLoad, onMapClick: _this._handleMapClick, currentPosition: _this.state.currentPosition, onMarkerClick: _this._handleMarkerClick }));
+        })))));
     };
     return CreateJob;
 }(React.Component);
@@ -216,7 +231,7 @@ exports.CreateJob = CreateJob;
 
 /***/ }),
 
-/***/ 406:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -239,7 +254,7 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactBootstrapValidation = __webpack_require__(203);
 
-var _revalidator = __webpack_require__(236);
+var _revalidator = __webpack_require__(239);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -368,11 +383,11 @@ var Login = function (_super) {
     return Login;
 }(React.Component);
 exports.Login = Login;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97)))
 
 /***/ }),
 
-/***/ 407:
+/***/ 412:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -391,7 +406,7 @@ var _reactRouter = __webpack_require__(57);
 
 var _OkDialog = __webpack_require__(74);
 
-var _YesNoDialog = __webpack_require__(237);
+var _YesNoDialog = __webpack_require__(240);
 
 __webpack_require__(31);
 
@@ -457,7 +472,7 @@ exports.Logout = Logout;
 
 /***/ }),
 
-/***/ 408:
+/***/ 413:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -476,9 +491,9 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _PassengerRegistration = __webpack_require__(413);
+var _PassengerRegistration = __webpack_require__(418);
 
-var _DriverRegistration = __webpack_require__(412);
+var _DriverRegistration = __webpack_require__(417);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -523,7 +538,7 @@ exports.Register = Register;
 
 /***/ }),
 
-/***/ 409:
+/***/ 414:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -538,9 +553,13 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _RatingDialog = __webpack_require__(414);
+var _reactMeasure = __webpack_require__(877);
 
-var _YesNoDialog = __webpack_require__(237);
+var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
+
+var _RatingDialog = __webpack_require__(419);
+
+var _YesNoDialog = __webpack_require__(240);
 
 var _OkDialog = __webpack_require__(74);
 
@@ -550,7 +569,9 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(384);
+var _reactGoogleMaps = __webpack_require__(387);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -651,38 +672,46 @@ var ViewJob = function (_super) {
             okDialogHeaderText: '',
             okDialogBodyText: '',
             okDialogOpen: false,
-            okDialogKey: 0
+            okDialogKey: 0,
+            dimensions: { width: -1, height: -1 }
         };
         return _this;
     }
     ViewJob.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "CURRENT JOB"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(ViewJobGoogleMap, { containerElement: React.createElement("div", { style: {
-                    position: 'relative',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: 600,
-                    height: 600,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    marginTop: 20,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 20
-                } }), mapElement: React.createElement("div", { style: {
-                    position: 'relative',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: 600,
-                    height: 600,
-                    marginTop: 20,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 20
-                } }), markers: this.state.markers, onMarkerClick: this._handleMarkerClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this._ratingsDialogOkCallBack }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this._jobCancelledCallBack, noCallBack: this._jobNotCancelledCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+        var _this = this;
+        var adjustedwidth = this.state.dimensions.width;
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "CURRENT JOB"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactMeasure2.default, { bounds: true, onResize: function onResize(contentRect) {
+                _this.setState({ dimensions: contentRect.bounds });
+            } }, function (_a) {
+            var measureRef = _a.measureRef;
+            return React.createElement("div", { ref: measureRef }, React.createElement(ViewJobGoogleMap, { containerElement: React.createElement("div", { style: {
+                        position: 'relative',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        width: { adjustedwidth: adjustedwidth },
+                        height: 600,
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        marginTop: 20,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        marginBottom: 20
+                    } }), mapElement: React.createElement("div", { style: {
+                        position: 'relative',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        width: { adjustedwidth: adjustedwidth },
+                        height: 600,
+                        marginTop: 20,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        marginBottom: 20
+                    } }), markers: _this.state.markers, onMarkerClick: _this._handleMarkerClick }));
+        }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this._ratingsDialogOkCallBack }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this._jobCancelledCallBack, noCallBack: this._jobNotCancelledCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return ViewJob;
 }(React.Component);
@@ -690,7 +719,7 @@ exports.ViewJob = ViewJob;
 
 /***/ }),
 
-/***/ 410:
+/***/ 415:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -705,7 +734,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(712);
+var _lodash = __webpack_require__(717);
 
 var _ = _interopRequireWildcard(_lodash);
 
@@ -808,11 +837,11 @@ var ViewRating = function (_super) {
     return ViewRating;
 }(React.Component);
 exports.ViewRating = ViewRating;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97)))
 
 /***/ }),
 
-/***/ 411:
+/***/ 416:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -823,17 +852,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ContainerOperations = undefined;
 
-__webpack_require__(910);
+__webpack_require__(923);
 
-var _inversify = __webpack_require__(121);
+var _inversify = __webpack_require__(122);
 
 var _types = __webpack_require__(147);
 
-var _Foo = __webpack_require__(415);
+var _Foo = __webpack_require__(420);
 
-var _AuthService = __webpack_require__(417);
+var _AuthService = __webpack_require__(422);
 
-var _JobService = __webpack_require__(418);
+var _JobService = __webpack_require__(423);
 
 var ContainerOperations = function () {
     function ContainerOperations() {
@@ -865,7 +894,7 @@ exports.ContainerOperations = ContainerOperations;
 
 /***/ }),
 
-/***/ 412:
+/***/ 417:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -890,7 +919,7 @@ var _reactRouter = __webpack_require__(57);
 
 var _reactBootstrapValidation = __webpack_require__(203);
 
-var _revalidator = __webpack_require__(236);
+var _revalidator = __webpack_require__(239);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -1041,11 +1070,11 @@ var DriverRegistration = function (_super) {
     return DriverRegistration;
 }(React.Component);
 exports.DriverRegistration = DriverRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97)))
 
 /***/ }),
 
-/***/ 413:
+/***/ 418:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1070,7 +1099,7 @@ var _reactRouter = __webpack_require__(57);
 
 var _reactBootstrapValidation = __webpack_require__(203);
 
-var _revalidator = __webpack_require__(236);
+var _revalidator = __webpack_require__(239);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -1208,11 +1237,11 @@ var PassengerRegistration = function (_super) {
     return PassengerRegistration;
 }(React.Component);
 exports.PassengerRegistration = PassengerRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97)))
 
 /***/ }),
 
-/***/ 414:
+/***/ 419:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1231,7 +1260,7 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactStars = __webpack_require__(896);
+var _reactStars = __webpack_require__(909);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -1303,7 +1332,7 @@ exports.RatingDialog = RatingDialog;
 
 /***/ }),
 
-/***/ 415:
+/***/ 420:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1316,7 +1345,7 @@ exports.Foo = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(121);
+var _inversify = __webpack_require__(122);
 
 var _types = __webpack_require__(147);
 
@@ -1351,7 +1380,7 @@ exports.Foo = Foo;
 
 /***/ }),
 
-/***/ 416:
+/***/ 421:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1371,19 +1400,19 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _Login = __webpack_require__(406);
+var _Login = __webpack_require__(411);
 
-var _Logout = __webpack_require__(407);
+var _Logout = __webpack_require__(412);
 
-var _Register = __webpack_require__(408);
+var _Register = __webpack_require__(413);
 
-var _CreateJob = __webpack_require__(405);
+var _CreateJob = __webpack_require__(410);
 
-var _ViewJob = __webpack_require__(409);
+var _ViewJob = __webpack_require__(414);
 
-var _ViewRating = __webpack_require__(410);
+var _ViewRating = __webpack_require__(415);
 
-var _ContainerOperations = __webpack_require__(411);
+var _ContainerOperations = __webpack_require__(416);
 
 var _types = __webpack_require__(147);
 
@@ -1453,7 +1482,7 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ }),
 
-/***/ 417:
+/***/ 422:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1466,9 +1495,9 @@ exports.AuthService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(121);
+var _inversify = __webpack_require__(122);
 
-var _rx = __webpack_require__(911);
+var _rx = __webpack_require__(925);
 
 var _rx2 = _interopRequireDefault(_rx);
 
@@ -1523,7 +1552,7 @@ exports.AuthService = AuthService;
 
 /***/ }),
 
-/***/ 418:
+/***/ 423:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1536,7 +1565,7 @@ exports.JobService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(121);
+var _inversify = __webpack_require__(122);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1656,5 +1685,5 @@ exports.OkDialog = OkDialog;
 
 /***/ })
 
-},[416]);
-//# sourceMappingURL=index.bundle.161ab841ef1ecae7706c.js.map
+},[421]);
+//# sourceMappingURL=index.bundle.05212bd08aef47162af3.js.map

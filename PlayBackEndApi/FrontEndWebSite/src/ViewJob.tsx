@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
+import Measure from 'react-measure'
+
 
 import { RatingDialog } from "./components/RatingDialog";
 import { YesNoDialog } from "./components/YesNoDialog";
@@ -86,6 +88,10 @@ export interface ViewJobState {
     okDialogKey: number;
     okDialogHeaderText: string;
     okDialogBodyText: string;
+    dimensions: {
+        width: number,
+        height: number
+    }
 }
 
 export class ViewJob extends React.Component<undefined, ViewJobState> {
@@ -119,12 +125,16 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             okDialogHeaderText: '',
             okDialogBodyText: '',
             okDialogOpen: false,
-            okDialogKey:0
+            okDialogKey: 0,
+            dimensions: { width: -1, height: -1 }
         };
     }
 
 
     render() {
+
+        const adjustedwidth = this.state.dimensions.width;
+
         return (
             <Well className="outer-well">
                 <Grid>
@@ -135,41 +145,52 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                     </Row>
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
-                            <ViewJobGoogleMap
-                                containerElement={
-                                    <div style={{
-                                        position: 'relative',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        width: 600,
-                                        height: 600,
-                                        justifyContent: 'flex-end',
-                                        alignItems: 'center',
-                                        marginTop: 20,
-                                        marginLeft: 0,
-                                        marginRight: 0,
-                                        marginBottom: 20
-                                    }} />
+                            <Measure
+                                bounds
+                                onResize={(contentRect) => {
+                                    this.setState({ dimensions: contentRect.bounds })
+                                }}
+                            >
+                                {({ measureRef }) =>
+                                    <div ref={measureRef}>
+                                        <ViewJobGoogleMap
+                                            containerElement={
+                                                <div style={{
+                                                    position: 'relative',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    width: { adjustedwidth },
+                                                    height: 600,
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'center',
+                                                    marginTop: 20,
+                                                    marginLeft: 0,
+                                                    marginRight: 0,
+                                                    marginBottom: 20
+                                                }} />
+                                            }
+                                            mapElement={
+                                                <div style={{
+                                                    position: 'relative',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    width: { adjustedwidth },
+                                                    height: 600,
+                                                    marginTop: 20,
+                                                    marginLeft: 0,
+                                                    marginRight: 0,
+                                                    marginBottom: 20
+                                                }} />
+                                            }
+                                            markers={this.state.markers}
+                                            onMarkerClick={this._handleMarkerClick} />
+                                    </div>
                                 }
-                                mapElement={
-                                    <div style={{
-                                        position: 'relative',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        width: 600,
-                                        height: 600,
-                                        marginTop: 20,
-                                        marginLeft: 0,
-                                        marginRight: 0,
-                                        marginBottom: 20
-                                    }} />
-                                }
-                                markers={this.state.markers}
-                                onMarkerClick={this._handleMarkerClick}/>
+                            </Measure>
                         </Col>
                     </Row>
                     <Row className="show-grid">
