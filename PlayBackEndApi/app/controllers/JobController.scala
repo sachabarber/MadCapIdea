@@ -2,13 +2,13 @@ package controllers
 
 import javax.inject.Inject
 
+import Entities.Job
 import Entities.JobJsonFormatters._
-import Entities._
+import entities._
 import actors.job.JobProducerActor
 import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
 import akka.pattern.{Backoff, BackoffSupervisor}
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
-import Entities.Job
 import play.api.libs.json._
 import play.api.libs.json.Json
 import play.api.libs.json.Format
@@ -37,11 +37,11 @@ class JobController @Inject()
 
   implicit val mat = ActorMaterializer(
     ActorMaterializerSettings(actorSystem).withSupervisionStrategy(decider))
-  val childJobActorProps = Props(classOf[JobProducerActor],mat,ec)
+  val childJobProducerActorProps = Props(classOf[JobProducerActor],mat,ec)
   val rand = new Random()
-  val jobSupervisorProps = BackoffSupervisor.props(
+  val jobProducerSupervisorProps = BackoffSupervisor.props(
     Backoff.onStop(
-      childJobActorProps,
+      childJobProducerActorProps,
       childName = s"JobProducerActor_${rand.nextInt()}",
       minBackoff = 3.seconds,
       maxBackoff = 30.seconds,
@@ -52,12 +52,17 @@ class JobController @Inject()
       })
   )
 
-  val jobSupervisorActorRef = actorSystem.actorOf(jobSupervisorProps, name = "jobSupervisor")
+
+  //TODO : We should create consumer actor/supervisor here, and set it up to be able to write to the
+  //comet frame
+
+
+  val jobProducerSupervisorActorRef = actorSystem.actorOf(jobProducerSupervisorProps, name = "jobProducerSupervisor")
 
   def submitJob = Action.async(parse.json) { request =>
     Json.fromJson[Job](request.body) match {
       case JsSuccess(job, _) => {
-        jobSupervisorActorRef ! job
+        jobProducerSupervisorActorRef ! job
         Future.successful(Ok(Json.toJson(job.copy(clientEmail = job.clientEmail.toUpperCase))))
       }
       case JsError(errors) =>
