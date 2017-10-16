@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { hashHistory  } from 'react-router'
+import { hashHistory } from 'react-router'
 import { OkDialog } from "./components/OkDialog";
 import { YesNoDialog } from "./components/YesNoDialog";
 import { AuthService } from "./services/AuthService";
-
+import { JobService } from "./services/JobService";
+import { PositionService } from "./services/PositionService";
 import 'bootstrap/dist/css/bootstrap.css';
-import
-{
+import {
     Well,
     Grid,
     Row,
@@ -25,11 +25,17 @@ export interface LogoutState {
 export class Logout extends React.Component<undefined, LogoutState> {
 
     private _authService: AuthService;
+    private _jobService: JobService;
+    private _positionService: PositionService;
+
 
     constructor(props: any) {
         super(props);
         console.log(props);
         this._authService = props.route.authService;
+        this._jobService = props.route.jobService;
+        this._positionService = props.route.positionService;
+
         if (!this._authService.isAuthenticated()) {
             hashHistory.push('/');
         }
@@ -59,14 +65,14 @@ export class Logout extends React.Component<undefined, LogoutState> {
                                 launchButtonText="Logout"
                                 yesCallBack={this._logoutYesCallBack}
                                 noCallBack={this._logoutNoCallBack}
-                                headerText="Confirm logout"/>
+                                headerText="Confirm logout" />
 
                             <OkDialog
-                                open= {this.state.okDialogOpen}
-                                okCallBack= {this._okDialogCallBack}
+                                open={this.state.okDialogOpen}
+                                okCallBack={this._okDialogCallBack}
                                 headerText={this.state.okDialogHeaderText}
                                 bodyText={this.state.okDialogBodyText}
-                                key={this.state.okDialogKey}/>
+                                key={this.state.okDialogKey} />
                         </span>
                     </Row>
                 </Grid>
@@ -81,21 +87,25 @@ export class Logout extends React.Component<undefined, LogoutState> {
             });
     }
 
-     _logoutYesCallBack = () => {
-         this._authService.clearUser();
-         this.setState(
-             {
-                 okDialogHeaderText: 'Logout',
-                 okDialogBodyText: 'You have been logged out',
-                 okDialogOpen: true,
-                 okDialogKey: Math.random()
-             });
+    _logoutYesCallBack = () => {
 
-         hashHistory.push('/');
-     }
+        var email = this._authService.userEmail();
+        this._jobService.clearUserIssuedJob();
+        this._authService.clearUser();
+        this._positionService.clearUserPosition(email);
 
-     _logoutNoCallBack = () => {
-     }
+        this.setState(
+            {
+                okDialogHeaderText: 'Logout',
+                okDialogBodyText: 'You have been logged out',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
+
+        hashHistory.push('/');
+    }
+
+    _logoutNoCallBack = () => {
+    }
 }
-
 

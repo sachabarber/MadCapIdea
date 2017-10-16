@@ -2,10 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
 import Measure from 'react-measure'
-
 import 'bootstrap/dist/css/bootstrap.css';
-import
-{
+import {
     Well,
     Grid,
     Row,
@@ -14,12 +12,11 @@ import
     ButtonGroup,
     Button
 } from "react-bootstrap";
-
 import { AuthService } from "./services/AuthService";
 import { JobService } from "./services/JobService";
-
-import { hashHistory  } from 'react-router';
-
+import { PositionService } from "./services/PositionService";
+import { Position } from "./domain/Position";
+import { hashHistory } from 'react-router';
 import { withGoogleMap, GoogleMap, Marker, InfoBox, OverlayView } from "react-google-maps";
 
 const STYLES = {
@@ -60,7 +57,8 @@ const CreateJobGoogleMap = withGoogleMap(props => (
                     type='button'
                     bsSize='xsmall'
                     bsStyle='primary'
-                    onClick={() => props.onMarkerClick()}
+                    onClick={() => props.onCreateJobClick()}
+                    disabled={props.hasIssuedJob}
                     value='Create Job'>Create Job</Button>
             </div>
         </OverlayView>
@@ -69,38 +67,43 @@ const CreateJobGoogleMap = withGoogleMap(props => (
 
 
 export interface CreateJobState {
-    currentPosition: {
-        lat: number,
-        lng: number
-    };
+    currentPosition: Position;
     dimensions: {
         width: number,
         height: number
-    }
+    };
+    hasIssuedJob: boolean;
 }
 
 export class CreateJob extends React.Component<undefined, CreateJobState> {
 
     private _authService: AuthService;
     private _jobService: JobService;
-
+    private _positionService: PositionService;
 
     constructor(props: any) {
         super(props);
         this._jobService = props.route.jobService;
         this._authService = props.route.authService;
-
+        this._positionService = props.route.positionService;
+        console.log(this._authService.userName());
+        console.log(this._authService.userEmail());
         console.log("CreateJob ctor");
         console.log(this._jobService);
-
 
         if (!this._authService.isAuthenticated()) {
             hashHistory.push('/');
         }
+
+        if (this._authService.isDriver()) {
+            hashHistory.push('/viewjob');
+        }
+
         this.state = {
-            currentPosition: { lat: 50.8202949, lng: -0.1406958 },
-            dimensions: { width: -1, height: -1 }
-          };    
+            currentPosition: new Position(50.8202949, -0.1406958),
+            dimensions: { width: -1, height: -1 },
+            hasIssuedJob: this._jobService.hasIssuedJob()
+        };
     }
 
     render() {
@@ -163,20 +166,31 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                                             onMapLoad={this._handleMapLoad}
                                             onMapClick={this._handleMapClick}
                                             currentPosition={this.state.currentPosition}
-                                            onMarkerClick={this._handleMarkerClick}
+                                            onCreateJobClick={this._handleCreateJobClick}
+                                            hasIssuedJob={this.state.hasIssuedJob}
                                         />
                                     </div>
                                 }
                             </Measure>
                         </Col>
                     </Row>
-                 </Grid>
+                </Grid>
             </Well>
         );
     }
 
-    _handleMarkerClick = () => {
+    _handleCreateJobClick = () => {
         console.log('button on CreateJob overlay clicked https://github.com/souporserious/react-measure for map');
+
+        //TODO: Send job over the wire, and then do all this
+        this._jobService.storeUserIssuedJob({ name: "test" }, { jobId: 123 });
+        const newState = Object.assign({}, this.state, {
+            hasIssuedJob: this._jobService.hasIssuedJob()
+        })
+        this.setState(newState)
+        var currentUser = this._authService.user;
+        this._positionService.storeUserPosition(currentUser, this.state.currentPosition);
+        hashHistory.push('/viewjob');
     }
 
     _handleMapLoad = (map) => {
@@ -187,7 +201,7 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
 
     _handleMapClick = (event) => {
         const newState = Object.assign({}, this.state, {
-            currentPosition: event.latLng
+            currentPosition: new Position(event.latLng.lat(), event.latLng.lng())
         })
         this.setState(newState)
     }

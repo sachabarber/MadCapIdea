@@ -3,5 +3,6 @@ export const TYPES = {
     SomeNumber: Symbol("SomeNumber"),
 
     AuthService: Symbol("AuthService"),
-    JobService: Symbol("JobService")
+    JobService: Symbol("JobService"),
+    PositionService: Symbol("PositionService")
 };

@@ -2,20 +2,15 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { OkDialog } from "./components/OkDialog";
 import 'bootstrap/dist/css/bootstrap.css';
-import
-{
+import {
     Well,
     Grid,
     Row,
     Col,
     ButtonInput
 } from "react-bootstrap";
-
-
 import { AuthService } from "./services/AuthService";
-
-import { hashHistory  } from 'react-router';
-
+import { hashHistory } from 'react-router';
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
 import revalidator from 'revalidator';
 
@@ -92,7 +87,7 @@ export class PassengerRegistration extends React.Component<PassengerRegistration
                             <ValidatedInput type='text'
                                 label='FullName'
                                 name='fullName'
-                                errorHelp='FullName is invalid'/>
+                                errorHelp='FullName is invalid' />
 
                         </Col>
                     </Row>
@@ -101,7 +96,7 @@ export class PassengerRegistration extends React.Component<PassengerRegistration
                             <ValidatedInput type='text'
                                 label='Email'
                                 name='email'
-                                errorHelp='Email address is invalid'/>
+                                errorHelp='Email address is invalid' />
                         </Col>
                     </Row>
                     <Row className="show-grid">
@@ -109,7 +104,7 @@ export class PassengerRegistration extends React.Component<PassengerRegistration
                             <ValidatedInput type='password'
                                 label='Password'
                                 name='password'
-                                errorHelp='Password is invalid'/>
+                                errorHelp='Password is invalid' />
                         </Col>
                     </Row>
                     <Row className="show-grid">
@@ -125,11 +120,11 @@ export class PassengerRegistration extends React.Component<PassengerRegistration
                     <Row className="show-grid">
                         <span>
                             <OkDialog
-                                open= {this.state.okDialogOpen}
-                                okCallBack= {this._okDialogCallBack}
+                                open={this.state.okDialogOpen}
+                                okCallBack={this._okDialogCallBack}
                                 headerText={this.state.okDialogHeaderText}
                                 bodyText={this.state.okDialogBodyText}
-                                key={this.state.okDialogKey}/>
+                                key={this.state.okDialogKey} />
                         </span>
                     </Row>
                 </Grid>
@@ -171,7 +166,7 @@ export class PassengerRegistration extends React.Component<PassengerRegistration
     _handleValidSubmit = (values) => {
         var passenger = values;
         var self = this;
-               
+
         $.ajax({
             type: 'POST',
             url: 'registration/save/passenger',
@@ -179,33 +174,36 @@ export class PassengerRegistration extends React.Component<PassengerRegistration
             contentType: "application/json; charset=utf-8",
             dataType: 'json'
         })
-        .done(function (jdata, textStatus, jqXHR) {
-            var redactedPassenger = passenger;
-            redactedPassenger.password = "";
-            console.log("redacted ${redactedPassenger}");
-            console.log(redactedPassenger);
-            console.log("Auth Service");
-            console.log(self.props.authService);
-            self.props.authService.storeUser(redactedPassenger);
-
-            self.setState(
-                {
-                    wasSuccessful : true,
-                    okDialogHeaderText: 'Registration Successful',
-                    okDialogBodyText: 'You are now registered',
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                });
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            self.setState(
-                {
-                    okDialogHeaderText: 'Error',
-                    okDialogBodyText: jqXHR.responseText,
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                });
-        });
+            .done(function (jdata, textStatus, jqXHR) {
+                var redactedPassenger = passenger;
+                redactedPassenger.password = "";
+                console.log("redacted ${redactedPassenger}");
+                console.log(redactedPassenger);
+                console.log("Auth Service");
+                console.log(self.props.authService);
+                let userProfile = {
+                    isDriver: false,
+                    user: redactedPassenger
+                };
+                self.setState(
+                    {
+                        wasSuccessful: true,
+                        okDialogHeaderText: 'Registration Successful',
+                        okDialogBodyText: 'You are now registered',
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+                self.props.authService.storeUser(userProfile);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                self.setState(
+                    {
+                        okDialogHeaderText: 'Error',
+                        okDialogBodyText: jqXHR.responseText,
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+            });
     }
 
     _okDialogCallBack = () => {
@@ -219,5 +217,4 @@ export class PassengerRegistration extends React.Component<PassengerRegistration
         }
     }
 }
-
 

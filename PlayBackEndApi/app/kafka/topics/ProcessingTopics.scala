@@ -5,4 +5,9 @@ package Kafka.Topics {
     val RATING_OUTPUT_TOPIC = "rating-output-topic"
   }
 
+
+  object JobTopics {
+    val JOB_SUBMIT_TOPIC = "job-submit-topic"
+  }
+
 }

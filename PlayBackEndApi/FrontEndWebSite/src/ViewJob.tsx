@@ -2,33 +2,27 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
 import Measure from 'react-measure'
-
-
 import { RatingDialog } from "./components/RatingDialog";
 import { YesNoDialog } from "./components/YesNoDialog";
 import { OkDialog } from "./components/OkDialog";
-
-
 import 'bootstrap/dist/css/bootstrap.css';
-import
-{
+import {
     Well,
     Grid,
     Row,
     Col,
     ButtonInput,
     ButtonGroup,
-    Button, 
+    Button,
     Modal,
     Popover,
     Tooltip,
     OverlayTrigger
 } from "react-bootstrap";
-
 import { AuthService } from "./services/AuthService";
-
-import { hashHistory  } from 'react-router';
-
+import { PositionService } from "./services/PositionService";
+import { Position } from "./domain/Position";
+import { hashHistory } from 'react-router';
 import { withGoogleMap, GoogleMap, Marker, OverlayView } from "react-google-maps";
 
 const STYLES = {
@@ -50,7 +44,8 @@ const ViewJobGoogleMap = withGoogleMap(props => (
     <GoogleMap
         ref={props.onMapLoad}
         defaultZoom={14}
-        defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}>
+        defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}
+        onClick={props.onMapClick}>
         {props.markers.map((marker, index) => (
             <OverlayView
                 key={marker.key}
@@ -60,30 +55,37 @@ const ViewJobGoogleMap = withGoogleMap(props => (
                 <div style={STYLES.overlayView}>
                     <img src={marker.icon} />
                     <strong>{marker.key}</strong>
-                    <br/>
+                    <br />
                     <Button
                         type='button'
                         bsSize='xsmall'
                         bsStyle='primary'
-                        onClick={() => props.onMarkerClick(marker) }
+                        onClick={() => props.onMarkerClick(marker)}
                         value='Accept'>Accept</Button>
                 </div>
             </OverlayView>
-        )) }
+        ))}
     </GoogleMap>
 ));
 
+
+class PositionMarker {
+
+    position: Position;
+    key: string;
+    icon: string;
+
+    constructor(thePosition: Position, theKey: string, theIcon: string) {
+        this.position = thePosition;
+        this.key = theKey;
+        this.icon = theIcon;
+    }
+
+}
+
+
 export interface ViewJobState {
-    markers: [
-        {
-            position: {
-                lat: number,
-                lng: number
-            },
-            key: string,
-            icon:string
-        }
-    ];
+    markers: Array<PositionMarker>;
     okDialogOpen: boolean;
     okDialogKey: number;
     okDialogHeaderText: string;
@@ -91,42 +93,46 @@ export interface ViewJobState {
     dimensions: {
         width: number,
         height: number
-    }
+    },
+    currentPosition: Position;
 }
 
 export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     private _authService: AuthService;
+    private _positionService: PositionService;
 
     constructor(props: any) {
         super(props);
         this._authService = props.route.authService;
+        this._positionService = props.route.positionService;
+
         if (!this._authService.isAuthenticated()) {
             hashHistory.push('/');
         }
         this.state = {
-            markers: [{
-                    position: {
-                        lat: 50.8202949,
-                        lng: -0.1406958
-                    },
-                    key: 'driver_1',
-                    icon: '/assets/images/driver.png'
-                },
-                {
-                    position: {
-                        lat: 50.8128187,
-                        lng: -0.1361418
-                    },
-                    key: 'driver_2',
-                    icon: '/assets/images/driver.png'
-                }
+
+            //TODO : 1. This should not be hard coded
+            //TODO : 2. We should push out current job when we FIRST LOAD this page
+            //          if we are a client, and we should enrich it if we are a driver
+            //       3. The list of markers should be worked out again every time based
+            //          on RX stream messages
+
+            markers: [
+                new PositionMarker(
+                    new Position(50.8202949, -0.1406958),
+                    'driver_1', '/assets/images/driver.png'),
+                new PositionMarker(
+                    new Position(50.8128187, -0.1361418),
+                    'driver_2', '/assets/images/driver.png')
             ],
             okDialogHeaderText: '',
             okDialogBodyText: '',
             okDialogOpen: false,
             okDialogKey: 0,
-            dimensions: { width: -1, height: -1 }
+            dimensions: { width: -1, height: -1 },
+            currentPosition: this._positionService.currentPosition(
+                this._authService.userEmail())
         };
     }
 
@@ -187,6 +193,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                                                 }} />
                                             }
                                             markers={this.state.markers}
+                                            onMapClick={this._handleMapClick}
                                             onMarkerClick={this._handleMarkerClick} />
                                     </div>
                                 }
@@ -198,21 +205,21 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                             <RatingDialog
                                 theId="viewJobCompleteBtn"
                                 headerText="Rate your driver/passenger"
-                                okCallBack= {this._ratingsDialogOkCallBack}/>
+                                okCallBack={this._ratingsDialogOkCallBack} />
 
                             <YesNoDialog
                                 theId="viewJobCancelBtn"
                                 launchButtonText="Cancel"
                                 yesCallBack={this._jobCancelledCallBack}
                                 noCallBack={this._jobNotCancelledCallBack}
-                                headerText="Cancel the job"/>
+                                headerText="Cancel the job" />
 
                             <OkDialog
-                                open= {this.state.okDialogOpen}
-                                okCallBack= {this._okDialogCallBack}
+                                open={this.state.okDialogOpen}
+                                okCallBack={this._okDialogCallBack}
                                 headerText={this.state.okDialogHeaderText}
                                 bodyText={this.state.okDialogBodyText}
-                                key={this.state.okDialogKey}/>
+                                key={this.state.okDialogKey} />
                         </span>
                     </Row>
                 </Grid>
@@ -222,6 +229,13 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     _handleMarkerClick = (targetMarker) => {
         console.log('button on overlay clicked:' + targetMarker.key);
+    }
+
+    _handleMapClick = (event) => {
+        const newState = Object.assign({}, this.state, {
+            currentPosition: new Position(event.latLng.lat(), event.latLng.lng())
+        })
+        this.setState(newState)
     }
 
     _ratingsDialogOkCallBack = () => {
@@ -242,7 +256,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job successfully cancelled',
                 okDialogOpen: true,
-                okDialogKey: Math.random() 
+                okDialogKey: Math.random()
             });
     }
 
@@ -253,7 +267,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job remains open',
                 okDialogOpen: true,
-                okDialogKey: Math.random() 
+                okDialogKey: Math.random()
             });
     }
 

@@ -8,16 +8,27 @@ import { ContainerOperations } from "./ioc/ContainerOperations";
 import Rx from 'rx';  
 
 
+class ClockEventArgs {
+
+    detail: any;
+
+    constructor(detail: any) {
+        this.detail = detail;
+    }
+
+}
+
 (function () {
 
     var evt;
 
-    window['clockChanged'] = function (incomingJsonPayload) {
-        evt = new CustomEvent('onClockChanged', { detail: incomingJsonPayload });
+    window['clockChanged'] = function (incomingJsonPayload: any) {
+        evt = new CustomEvent('onClockChanged', new ClockEventArgs(incomingJsonPayload));
         window.dispatchEvent(evt);
     }
 
-    var source = Rx.Observable.fromEvent(window, 'onClockChanged');
+    var source: Rx.Observable<any>
+        = Rx.Observable.fromEvent(window, 'onClockChanged');
 
     var subscription = source.subscribe(
         function (x) {

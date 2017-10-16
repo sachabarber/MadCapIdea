@@ -1,15 +1,12 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
-
 import 'bootstrap/dist/css/bootstrap.css';
 import
 {
     Button,
     Modal
 } from "react-bootstrap";
-
-
 import ReactStars from 'react-stars';
 
 

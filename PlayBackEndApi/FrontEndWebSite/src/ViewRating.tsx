@@ -3,8 +3,7 @@ import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
 import { OkDialog } from "./components/OkDialog";
 import 'bootstrap/dist/css/bootstrap.css';
-import
-{
+import {
     Well,
     Grid,
     Row,
@@ -12,10 +11,8 @@ import
     Label,
     ButtonInput
 } from "react-bootstrap";
-
 import { AuthService } from "./services/AuthService";
-
-import { hashHistory  } from 'react-router';
+import { hashHistory } from 'react-router';
 
 
 
@@ -62,7 +59,7 @@ export class ViewRating extends React.Component<undefined, ViewRatingState> {
             okDialogKey: 0,
             wasSuccessful: false
         };
-    }   
+    }
 
 
     loadRatingsFromServer = () => {
@@ -76,27 +73,27 @@ export class ViewRating extends React.Component<undefined, ViewRatingState> {
             contentType: "application/json; charset=utf-8",
             dataType: 'json'
         })
-        .done(function (jdata, textStatus, jqXHR) {
+            .done(function (jdata, textStatus, jqXHR) {
 
-            console.log("result of GET rating/byemail");
-            console.log(jqXHR.responseText);
-            let ratingsObtained = JSON.parse(jqXHR.responseText);
-            self.setState(
-                {
-                    overallRating: _.sumBy(ratingsObtained, 'score'),
-                    ratings: ratingsObtained
-                });
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            self.setState(
-                {
-                    okDialogHeaderText: 'Error',
-                    okDialogBodyText: 'Could not load Ratings',
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                });
-        });
-        
+                console.log("result of GET rating/byemail");
+                console.log(jqXHR.responseText);
+                let ratingsObtained = JSON.parse(jqXHR.responseText);
+                self.setState(
+                    {
+                        overallRating: _.sumBy(ratingsObtained, 'score'),
+                        ratings: ratingsObtained
+                    });
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                self.setState(
+                    {
+                        okDialogHeaderText: 'Error',
+                        okDialogBodyText: 'Could not load Ratings',
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+            });
+
     }
 
     componentDidMount() {
@@ -109,47 +106,47 @@ export class ViewRating extends React.Component<undefined, ViewRatingState> {
 
         return (
             <Well className="outer-well">
-                    <Grid>
-                        <Row className="show-grid">
-                            <Col xs={6} md={6}>
-                                <div>
+                <Grid>
+                    <Row className="show-grid">
+                        <Col xs={6} md={6}>
+                            <div>
                                 <h4>YOUR OVERALL RATING <Label>{this.state.overallRating}</Label></h4>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row className="show-grid">
-                            <Col xs={10} md={6}>
-                                <h6>The finer details of your ratings are shown below</h6>
-                            </Col>
-                        </Row>
-                        <Row className="show-grid">
-                            <Col xs={10} md={6}>
-                                <div className="table-responsive">
-                                    <table className="table table-striped table-bordered table-condensed factTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Rated By</th>
-                                                <th>Rating Given</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {rowComponents} 
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row className="show-grid">
-                            <span>
-                                <OkDialog
-                                    open= {this.state.okDialogOpen}
-                                    okCallBack= {this._okDialogCallBack}
-                                    headerText={this.state.okDialogHeaderText}
-                                    bodyText={this.state.okDialogBodyText}
-                                    key={this.state.okDialogKey}/>
-                            </span>
-                        </Row>
-                    </Grid>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <h6>The finer details of your ratings are shown below</h6>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
+                            <div className="table-responsive">
+                                <table className="table table-striped table-bordered table-condensed factTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Rated By</th>
+                                            <th>Rating Given</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {rowComponents}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <span>
+                            <OkDialog
+                                open={this.state.okDialogOpen}
+                                okCallBack={this._okDialogCallBack}
+                                headerText={this.state.okDialogHeaderText}
+                                bodyText={this.state.okDialogBodyText}
+                                key={this.state.okDialogKey} />
+                        </span>
+                    </Row>
+                </Grid>
             </Well>
         )
     }
@@ -163,11 +160,11 @@ export class ViewRating extends React.Component<undefined, ViewRatingState> {
 
     generateRows = () => {
         return this.state.ratings.map(function (item) {
-            return  <tr key={item.fromEmail}>
-                        <td>{item.fromEmail}</td>
-                        <td>{item.score}</td>
-                    </tr>;
+            return <tr key={item.fromEmail}>
+                <td>{item.fromEmail}</td>
+                <td>{item.score}</td>
+            </tr>;
 
         });
-    } 
+    }
 }

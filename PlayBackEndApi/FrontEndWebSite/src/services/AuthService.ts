@@ -1,6 +1,6 @@
 ﻿import { injectable, inject } from "inversify";
 import { TYPES } from "../types";
-import Rx from 'rx';  
+import Rx from 'rx';
 
 @injectable()
 export class AuthService {
@@ -12,37 +12,47 @@ export class AuthService {
 
     }
 
-    clearUser = () => {
+    clearUser = (): void => {
         this._isAuthenticated = false;
         sessionStorage.removeItem('currentUserProfile');
         this._authenticatedSubject.onNext(false);
     }
 
-    storeUser = (currentUser) => {
+    storeUser = (currentProfile: any): void => {
 
-        if (currentUser == null || currentUser == undefined)
+        if (currentProfile == null || currentProfile == undefined)
             return;
 
         this._isAuthenticated = true;
-        sessionStorage.setItem('currentUserProfile', JSON.stringify(currentUser));
+        sessionStorage.setItem('currentUserProfile', JSON.stringify(currentProfile));
         this._authenticatedSubject.onNext(true);
     }
 
-    userName = () => {
-        var user = JSON.parse(sessionStorage.getItem('currentUserProfile'));
-        return user.fullName;
+    userName = (): string => {
+        var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return userProfile.user.fullName;
     }
 
-    userEmail = () => {
-        var user = JSON.parse(sessionStorage.getItem('currentUserProfile'));
-        return user.email;
+    user = (): any => {
+        var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return userProfile.user;
     }
 
-    isAuthenticated = () => {
+    userEmail = (): string => {
+        var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return userProfile.user.email;
+    }
+
+    isDriver = (): boolean => {
+        var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return userProfile.isDriver;
+    }
+
+    isAuthenticated = (): boolean => {
         return this._isAuthenticated;
     }
 
-    getAuthenticationStream = () => {
+    getAuthenticationStream = (): Rx.Observable<boolean> => {
         return this._authenticatedSubject.asObservable();
     }
 }

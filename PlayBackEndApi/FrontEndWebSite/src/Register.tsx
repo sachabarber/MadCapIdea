@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import 'bootstrap/dist/css/bootstrap.css';
-import
-{
+import {
     Well,
     Grid,
     Row,
@@ -11,11 +10,8 @@ import
     ButtonGroup,
     Button
 } from "react-bootstrap";
-
 import { AuthService } from "./services/AuthService";
-
-import { hashHistory  } from 'react-router';
-
+import { hashHistory } from 'react-router';
 import { PassengerRegistration } from "./PassengerRegistration";
 import { DriverRegistration } from "./DriverRegistration";
 
@@ -53,16 +49,16 @@ export class Register extends React.Component<undefined, RegisterState> {
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
                             <ButtonGroup>
-                                <Button bsSize='small' onClick={this._onOptionChange.bind(this, 'passenger') } active={this.state.option === 'passenger'}>Passenger</Button>
-                                <Button bsSize='small' onClick={this._onOptionChange.bind(this, 'driver') } active={this.state.option === 'driver'}>Driver</Button>
+                                <Button bsSize='small' onClick={this._onOptionChange.bind(this, 'passenger')} active={this.state.option === 'passenger'}>Passenger</Button>
+                                <Button bsSize='small' onClick={this._onOptionChange.bind(this, 'driver')} active={this.state.option === 'driver'}>Driver</Button>
                             </ButtonGroup>
                         </Col>
                     </Row>
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
                             {this.state.option === 'passenger' ?
-                                <div><PassengerRegistration authService={this._authService}/></div> :
-                                <div><DriverRegistration authService={this._authService}/></div>
+                                <div><PassengerRegistration authService={this._authService} /></div> :
+                                <div><DriverRegistration authService={this._authService} /></div>
                             }
                         </Col>
                     </Row>

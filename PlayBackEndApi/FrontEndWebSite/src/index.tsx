@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
 import 'bootstrap/dist/css/bootstrap.css';
 import {
     Nav,
@@ -8,30 +7,32 @@ import {
     NavItem,
     NavDropdown,
     MenuItem,
-    Button} from "react-bootstrap";
-
-import { Router, Route, hashHistory  } from 'react-router'
-
+    Button
+} from "react-bootstrap";
+import { Router, Route, hashHistory } from 'react-router'
 import { Login } from "./Login";
 import { Logout } from "./Logout";
 import { Register } from "./Register";
 import { CreateJob } from "./CreateJob";
 import { ViewJob } from "./ViewJob";
 import { ViewRating } from "./ViewRating";
-
-import { ContainerOperations } from "./ioc/ContainerOperations"; 
+import { ContainerOperations } from "./ioc/ContainerOperations";
 import { AuthService } from "./services/AuthService";
 import { JobService } from "./services/JobService";
-
+import { PositionService } from "./services/PositionService";
 import { TYPES } from "./types";
 
 
 let authService = ContainerOperations.getInstance().container.get<AuthService>(TYPES.AuthService);
 let jobService = ContainerOperations.getInstance().container.get<JobService>(TYPES.JobService);
+let positionService = ContainerOperations.getInstance().container.get<PositionService>(TYPES.PositionService);
+
 
 export interface MainNavProps {
     authService: AuthService;
     jobService: JobService;
+    positionService: PositionService;
+
 }
 
 export interface MainNavState {
@@ -88,7 +89,7 @@ class MainNav extends React.Component<MainNavProps, MainNavState> {
                             <NavItem eventKey={2} href='#/viewrating'>View Rating</NavItem>
                         </Nav>
                     </Navbar.Collapse>
-                </Navbar> : 
+                </Navbar> :
                 <Navbar pullRight collapseOnSelect>
                     <Navbar.Header>
                         <Navbar.Brand>
@@ -108,7 +109,11 @@ class App extends React.Component<undefined, undefined> {
         return (
             <div>
                 <div>
-                    <MainNav authService={authService} jobService={jobService} />
+                    <MainNav
+                        authService={authService}
+                        jobService={jobService}
+                        positionService={positionService}
+                    />
                     {this.props.children}
                 </div>
             </div>
@@ -131,17 +136,20 @@ ReactDOM.render((
             <Route
                 path="/logout"
                 component={Logout}
-                authService={authService} />
+                authService={authService}
+                jobService={jobService}
+                positionService={positionService} />
             <Route
                 path="/createjob"
                 component={CreateJob}
                 authService={authService}
                 jobService={jobService}
-            />
+                positionService={positionService} />
             <Route
                 path="/viewjob"
                 component={ViewJob}
-                authService={authService} />
+                authService={authService}
+                positionService={positionService} />
             <Route
                 path="/viewrating"
                 component={ViewRating}
@@ -149,5 +157,4 @@ ReactDOM.render((
         </Route>
     </Router>
 ), document.getElementById('root'));
-
 

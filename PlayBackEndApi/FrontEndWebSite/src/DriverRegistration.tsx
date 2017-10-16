@@ -2,19 +2,15 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { OkDialog } from "./components/OkDialog";
 import 'bootstrap/dist/css/bootstrap.css';
-import
-{
+import {
     Well,
     Grid,
     Row,
     Col,
     ButtonInput
 } from "react-bootstrap";
-
 import { AuthService } from "./services/AuthService";
-
-import { hashHistory  } from 'react-router';
-
+import { hashHistory } from 'react-router';
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
 import revalidator from 'revalidator';
 
@@ -103,7 +99,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
                             <ValidatedInput type='text'
                                 label='FullName'
                                 name='fullName'
-                                errorHelp='FullName is invalid'/>
+                                errorHelp='FullName is invalid' />
 
                         </Col>
                     </Row>
@@ -112,7 +108,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
                             <ValidatedInput type='text'
                                 label='Email'
                                 name='email'
-                                errorHelp='Email address is invalid'/>
+                                errorHelp='Email address is invalid' />
 
                         </Col>
                     </Row>
@@ -121,7 +117,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
                             <ValidatedInput type='password'
                                 name='password'
                                 label='Password'
-                                errorHelp='Password is invalid'/>
+                                errorHelp='Password is invalid' />
                         </Col>
                     </Row>
                     <Row className="show-grid">
@@ -134,7 +130,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
                             <ValidatedInput type='text'
                                 label='Vehicle Description'
                                 name='vehicleDescription'
-                                errorHelp='Vehicle description is invalid'/>
+                                errorHelp='Vehicle description is invalid' />
                         </Col>
                     </Row>
                     <Row className="show-grid">
@@ -142,7 +138,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
                             <ValidatedInput type='text'
                                 label='Vehicle Registration Number'
                                 name='vehicleRegistrationNumber'
-                                errorHelp='Vehicle registration number is invalid'/>
+                                errorHelp='Vehicle registration number is invalid' />
                         </Col>
                     </Row>
 
@@ -159,11 +155,11 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
                     <Row className="show-grid">
                         <span>
                             <OkDialog
-                                open= {this.state.okDialogOpen}
-                                okCallBack= {this._okDialogCallBack}
+                                open={this.state.okDialogOpen}
+                                okCallBack={this._okDialogCallBack}
                                 headerText={this.state.okDialogHeaderText}
                                 bodyText={this.state.okDialogBodyText}
-                                key={this.state.okDialogKey}/>
+                                key={this.state.okDialogKey} />
                         </span>
                     </Row>
                 </Grid>
@@ -214,31 +210,35 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
             contentType: "application/json; charset=utf-8",
             dataType: 'json'
         })
-        .done(function (jdata, textStatus, jqXHR) {
-            var redactedDriver = driver;
-            redactedDriver.password = "";
-            console.log("redacted ${redactedDriver}");
-            console.log(redactedDriver);
-            console.log("Auth Service");
-            console.log(self.props.authService);
-            self.props.authService.storeUser(redactedDriver);
-            self.setState(
-                {
-                    okDialogHeaderText: 'Registration Successful',
-                    okDialogBodyText: 'You are now registered',
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                });
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            self.setState(
-                {
-                    okDialogHeaderText: 'Error',
-                    okDialogBodyText: jqXHR.responseText,
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                });
-        });
+            .done(function (jdata, textStatus, jqXHR) {
+                var redactedDriver = driver;
+                redactedDriver.password = "";
+                console.log("redacted ${redactedDriver}");
+                console.log(redactedDriver);
+                console.log("Auth Service");
+                console.log(self.props.authService);
+                let userProfile = {
+                    isDriver: true,
+                    user: redactedDriver
+                };
+                self.setState(
+                    {
+                        okDialogHeaderText: 'Registration Successful',
+                        okDialogBodyText: 'You are now registered',
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+                self.props.authService.storeUser(userProfile);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                self.setState(
+                    {
+                        okDialogHeaderText: 'Error',
+                        okDialogBodyText: jqXHR.responseText,
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+            });
     }
 
     _okDialogCallBack = () => {
@@ -247,10 +247,9 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
                 okDialogOpen: false
             });
         if (this.state.wasSuccessful) {
-            hashHistory.push('/');
+            hashHistory.push('/viewjob');
         }
     }
 
 }
-
 

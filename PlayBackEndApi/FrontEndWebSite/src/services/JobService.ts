@@ -4,17 +4,17 @@
 export class JobService {
 
     private _hasIssuedJob: boolean;
-    
+
     constructor() {
         this._hasIssuedJob = false;
     }
 
-    clearUserIssuedJob = () => {
+    clearUserIssuedJob = (): void => {
         this._hasIssuedJob = false;
         sessionStorage.removeItem('currentUserIssuedJob');
     }
 
-    storeUserIssuedJob = (currentUser, job) => {
+    storeUserIssuedJob = (currentUser: any, job: any): void => {
 
         if (currentUser == null || currentUser == undefined)
             return;
@@ -30,12 +30,12 @@ export class JobService {
         sessionStorage.setItem('currentUserIssuedJob', JSON.stringify(currentUsersJob));
     }
 
-    currentJob = () => {
+    currentJob = (): any => {
         var currentUsersJob = JSON.parse(sessionStorage.getItem('currentUserIssuedJob'));
         return currentUsersJob;
     }
 
-    hasIssuedJob = () => {
+    hasIssuedJob = (): boolean => {
         return this._hasIssuedJob;
     }
 }

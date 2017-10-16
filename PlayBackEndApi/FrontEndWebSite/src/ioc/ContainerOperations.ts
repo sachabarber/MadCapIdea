@@ -4,13 +4,15 @@ import { TYPES } from "../types";
 import { Foo } from "../domain/Foo";
 import { AuthService } from "../services/AuthService";
 import { JobService } from "../services/JobService";
+import { PositionService } from "../services/PositionService";
+
 
 export class ContainerOperations {
     private static instance: ContainerOperations;
-    private _container:Container = new Container();
+    private _container: Container = new Container();
 
     private constructor() {
-        
+
     }
 
     static getInstance() {
@@ -26,6 +28,7 @@ export class ContainerOperations {
         this.container.bind<Foo>(TYPES.Foo).to(Foo);
         this.container.bind<AuthService>(TYPES.AuthService).to(AuthService);
         this.container.bind<JobService>(TYPES.JobService).to(JobService);
+        this.container.bind<PositionService>(TYPES.PositionService).to(PositionService);
     }
 
     public get container(): Container {

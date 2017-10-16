@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-
 export interface FooterProps {
     text: string;
 }
@@ -17,7 +16,7 @@ export class Footer extends React.Component<FooterProps, undefined> {
     render() {
 
         return <div>
-                <h1>I come through a factory and this is my text: {this.props.text}</h1>
-               </div>;
+            <h1>I come through a factory and this is my text: {this.props.text}</h1>
+        </div>;
     }
 }

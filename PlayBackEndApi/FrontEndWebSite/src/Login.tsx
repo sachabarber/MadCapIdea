@@ -2,15 +2,13 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { OkDialog } from "./components/OkDialog";
 import 'bootstrap/dist/css/bootstrap.css';
-import
-{
+import {
     Well,
     Grid,
     Row,
     Col,
     ButtonInput
 } from "react-bootstrap";
-
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
 import revalidator from 'revalidator';
 import { AuthService } from "./services/AuthService";
@@ -78,7 +76,7 @@ export class Login extends React.Component<undefined, LoginState> {
                                 <ValidatedInput type='text'
                                     label='Email'
                                     name='email'
-                                    errorHelp='Email address is invalid'/>
+                                    errorHelp='Email address is invalid' />
 
                             </Col>
                         </Row>
@@ -87,7 +85,7 @@ export class Login extends React.Component<undefined, LoginState> {
                                 <ValidatedInput type='password'
                                     name='password'
                                     label='Password'
-                                    errorHelp='Password is invalid'/>
+                                    errorHelp='Password is invalid' />
 
                             </Col>
                         </Row>
@@ -97,7 +95,7 @@ export class Login extends React.Component<undefined, LoginState> {
                                     type='checkbox'
                                     name='isDriver'
                                     label='Are you a driver?'
-                                    />
+                                />
                             </Col>
                         </Row>
                         <Row className="show-grid">
@@ -113,11 +111,11 @@ export class Login extends React.Component<undefined, LoginState> {
                         <Row className="show-grid">
                             <span>
                                 <OkDialog
-                                    open= {this.state.okDialogOpen}
-                                    okCallBack= {this._okDialogCallBack}
+                                    open={this.state.okDialogOpen}
+                                    okCallBack={this._okDialogCallBack}
                                     headerText={this.state.okDialogHeaderText}
                                     bodyText={this.state.okDialogBodyText}
-                                    key={this.state.okDialogKey}/>
+                                    key={this.state.okDialogKey} />
                             </span>
                         </Row>
                     </Grid>
@@ -171,30 +169,34 @@ export class Login extends React.Component<undefined, LoginState> {
             contentType: "application/json; charset=utf-8",
             dataType: 'json'
         })
-        .done(function (jdata, textStatus, jqXHR) {
+            .done(function (jdata, textStatus, jqXHR) {
 
-            console.log("result of login");
-            console.log(jqXHR.responseText);
-            let currentUser = jqXHR.responseText;
-            self._authService.storeUser(currentUser);
+                console.log("result of login");
+                console.log(jqXHR.responseText);
+                let currentUser = JSON.parse(jqXHR.responseText);
+                let userProfile = {
+                    isDriver: logindetails.isDriver,
+                    user: currentUser
+                };
+                self._authService.storeUser(userProfile);
 
-            self.setState(
-                {
-                    okDialogHeaderText: 'Login Successful',
-                    okDialogBodyText: 'You are now logged in',
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                });
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            self.setState(
-                {
-                    okDialogHeaderText: 'Error',
-                    okDialogBodyText: jqXHR.responseText,
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                });
-        });
+                self.setState(
+                    {
+                        okDialogHeaderText: 'Login Successful',
+                        okDialogBodyText: 'You are now logged in',
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                self.setState(
+                    {
+                        okDialogHeaderText: 'Error',
+                        okDialogBodyText: jqXHR.responseText,
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+            });
     }
 
     _okDialogCallBack = () => {
@@ -204,5 +206,4 @@ export class Login extends React.Component<undefined, LoginState> {
             });
     }
 }
-
 
