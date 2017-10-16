@@ -15,7 +15,6 @@ import { AuthService } from "./services/AuthService";
 import { hashHistory } from 'react-router';
 
 
-
 class Rating {
     fromEmail: string
     toEmail: string

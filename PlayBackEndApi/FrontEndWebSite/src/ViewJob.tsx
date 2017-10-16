@@ -75,10 +75,10 @@ class PositionMarker {
     key: string;
     icon: string;
 
-    constructor(thePosition: Position, theKey: string, theIcon: string) {
-        this.position = thePosition;
-        this.key = theKey;
-        this.icon = theIcon;
+    constructor(position: Position, key: string, icon: string) {
+        this.position = position;
+        this.key = key;
+        this.icon = icon;
     }
 
 }

@@ -43,7 +43,6 @@ class MainNav extends React.Component<MainNavProps, MainNavState> {
 
     private _subscription: any;
 
-
     constructor(props: any) {
         super(props);
         console.log(props);

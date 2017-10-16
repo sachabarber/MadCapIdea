@@ -3,7 +3,6 @@
 # ~~~~
 
 # Home page
-
 GET        /                                   controllers.HomeController.index()
 
 GET        /scala/comet/liveClock              controllers.ScalaCometController.streamClock()
@@ -11,20 +10,21 @@ GET        /scala/comet/kick                   controllers.ScalaCometController.
 
 
 # Registration page
-
 POST  /registration/save/passenger             controllers.RegistrationController.savePassengerRegistration()
 POST  /registration/save/driver                controllers.RegistrationController.saveDriverRegistration()
 
 # Login page
-
-
 POST  /login/validate                          controllers.LoginController.validateLogin()
 
 
 
 # Rating page
 POST  /rating/submit/new                       controllers.RatingController.submitNewRating()
-GET  /rating/byemail                          controllers.RatingController.ratingByEmail()
+GET  /rating/byemail                           controllers.RatingController.ratingByEmail()
+
+
+# Rating page
+POST  /job/submit                              controllers.JobController.submitJob()
 
 
 # Map static resources from the /public folder to the /assets URL path

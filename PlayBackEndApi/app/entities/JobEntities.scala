@@ -1,4 +1,4 @@
-package entities
+package Entities
 
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
@@ -17,6 +17,7 @@ object Job {
   implicit val formatter = Json.format[Job]
 }
 
+
 object JobJsonFormatters {
 
   implicit val jobWrites = new Writes[Job] {
@@ -33,7 +34,7 @@ object JobJsonFormatters {
   }
 
   implicit val jobReads: Reads[Job] = (
-      (JsPath \ "clientFullName").read[String] and
+    (JsPath \ "clientFullName").read[String] and
       (JsPath \ "clientEmail").read[String] and
       (JsPath \ "driverFullName").read[String] and
       (JsPath \ "driverEmail").read[String] and

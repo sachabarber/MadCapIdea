@@ -1,4 +1,4 @@
-package Actors.Rating
+package actors.rating
 
 import Entities.Rating
 import Kafka.Topics.RatingsTopics
@@ -7,8 +7,8 @@ import akka.Done
 import akka.actor.{Actor, PoisonPill}
 import akka.kafka.ProducerSettings
 import akka.kafka.scaladsl.Producer
-import akka.stream.{ActorMaterializer, KillSwitches}
 import akka.stream.scaladsl.{Keep, MergeHub, Source}
+import akka.stream.{ActorMaterializer, KillSwitches}
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
 import utils.Settings
@@ -18,15 +18,15 @@ import scala.util.{Failure, Success}
 
 
 class RatingProducerActor(
-    implicit materializer: ActorMaterializer,
-    ec: ExecutionContext
-) extends Actor {
+                           implicit materializer: ActorMaterializer,
+                           ec: ExecutionContext
+                         ) extends Actor {
 
   val jSONSerde = new JSONSerde[Rating]
   val ratingProducerSettings = ProducerSettings(
-      context.system,
-      new StringSerializer,
-      new ByteArraySerializer)
+    context.system,
+    new StringSerializer,
+    new ByteArraySerializer)
     .withBootstrapServers(s"${Settings.bootStrapServers}")
 
   val ((mergeHubSink, killswitch), kafkaSourceFuture) =

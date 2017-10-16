@@ -1,5 +1,6 @@
 package actors.job
 
+import Entities.Job
 import Kafka.Topics.JobTopics
 import Serialization.JSONSerde
 import akka.{Done, NotUsed}
@@ -8,7 +9,7 @@ import akka.kafka.{ConsumerSettings, ProducerSettings, Subscriptions}
 import akka.kafka.scaladsl.{Consumer, Producer}
 import akka.stream.scaladsl.{Keep, MergeHub, Sink, Source}
 import akka.stream.{ActorMaterializer, KillSwitches}
-import entities.{Init, Job}
+import entities.Init
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, ByteArraySerializer, StringDeserializer, StringSerializer}

@@ -101,9 +101,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var Position = function () {
-    function Position(theLat, theLng) {
-        this.lat = theLat;
-        this.lng = theLng;
+    function Position(lat, lng) {
+        this.lat = lat;
+        this.lng = lng;
     }
     return Position;
 }();
@@ -661,10 +661,10 @@ var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
     }));
 });
 var PositionMarker = function () {
-    function PositionMarker(thePosition, theKey, theIcon) {
-        this.position = thePosition;
-        this.key = theKey;
-        this.icon = theIcon;
+    function PositionMarker(position, key, icon) {
+        this.position = position;
+        this.key = key;
+        this.icon = icon;
     }
     return PositionMarker;
 }();
@@ -1825,4 +1825,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[423]);
-//# sourceMappingURL=index.bundle.3005d87319fd69c311b6.js.map
+//# sourceMappingURL=index.bundle.ab9ae2b633a29bf571dd.js.map

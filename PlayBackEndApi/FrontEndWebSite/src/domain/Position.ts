@@ -3,8 +3,8 @@
     lat: number;
     lng: number;
 
-    constructor(theLat: number, theLng: number) {
-        this.lat = theLat;
-        this.lng = theLng;
+    constructor(lat: number, lng: number) {
+        this.lat = lat;
+        this.lng = lng;
     }
 }

@@ -5,7 +5,9 @@ $global:kafkaAndZooLoggingFolder = "C:\temp\"
 
 $global:kafkaTopics = 
 	"rating-submit-topic",
-	"rating-output-topic"
+	"rating-output-topic",
+	"job-submit-topic"
+	
 $global:ProcessesToKill = @()
 
 

@@ -2,9 +2,9 @@ package controllers
 
 import javax.inject.Inject
 
-import Actors.Rating.RatingProducerActor
 import Entities.RatingJsonFormatters._
 import Entities._
+import actors.rating.RatingProducerActor
 import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
 import akka.pattern.{Backoff, BackoffSupervisor}
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
@@ -50,7 +50,7 @@ class RatingController @Inject()
       OneForOneStrategy() {
         case _ => SupervisorStrategy.Restart
       })
-    )
+  )
 
   val ratingSupervisorActorRef = actorSystem.actorOf(ratingSupervisorProps, name = "ratingSupervisor")
 
@@ -74,13 +74,10 @@ class RatingController @Inject()
     val email = request.getQueryString("email")
     email match {
       case Some(emailAddress) => {
-//        val url = s"http://${Settings.ratingRestApiHostName}:${Settings.ratingRestApiPort}/ratingByEmail?email=${emailAddress}"
-//        ws.url(url).get().map {
-//          response => (response.json).validate[List[Rating]]
-//        }.map(x => Ok(Json.toJson(x.get)))
-
-        Future.successful(Ok(Json.toJson(List[Rating](Rating("junk1","junk1",1),Rating("junk2","junk2",2),Rating("junk3","junk3",3)))))
-
+        val url = s"http://${Settings.ratingRestApiHostName}:${Settings.ratingRestApiPort}/ratingByEmail?email=${emailAddress}"
+        ws.url(url).get().map {
+          response => (response.json).validate[List[Rating]]
+        }.map(x => Ok(Json.toJson(x.get)))
       }
       case None => {
         Future.successful(BadRequest(
