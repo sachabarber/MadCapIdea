@@ -1,14 +1,14 @@
 package actors.job
 
-import Kafka.Topics.JobTopics
-import Serialization.JSONSerde
+import kafka.topics.JobTopics
+import serialization.JSONSerde
 import akka.Done
 import akka.actor.{Actor, PoisonPill}
 import akka.kafka.ProducerSettings
 import akka.kafka.scaladsl.Producer
 import akka.stream.scaladsl.{Keep, MergeHub, Source}
 import akka.stream.{ActorMaterializer, KillSwitches}
-import Entities.Job
+import entities.Job
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
 import utils.Settings
@@ -18,9 +18,9 @@ import scala.util.{Failure, Success}
 
 
 class JobProducerActor(
-                        implicit materializer: ActorMaterializer,
-                        ec: ExecutionContext
-                      ) extends Actor {
+  implicit materializer: ActorMaterializer,
+  ec: ExecutionContext
+) extends Actor {
 
   val jSONSerde = new JSONSerde[Job]
   val jobProducerSettings = ProducerSettings(

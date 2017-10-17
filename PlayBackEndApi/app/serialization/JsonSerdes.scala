@@ -9,7 +9,7 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 
 
-package Serialization {
+package serialization {
 
   object Json {
 

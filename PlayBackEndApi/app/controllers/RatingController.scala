@@ -1,8 +1,8 @@
 package controllers
 
 import javax.inject.Inject
-import Entities.RatingJsonFormatters._
-import Entities._
+import entities.RatingJsonFormatters._
+import entities._
 import actors.rating.RatingProducerActor
 import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
 import akka.pattern.{Backoff, BackoffSupervisor}

@@ -1,15 +1,14 @@
 package actors.job
 
-import Entities.Job
-import Kafka.Topics.JobTopics
-import Serialization.JSONSerde
+import entities.{Job, Init}
+import kafka.topics.JobTopics
+import serialization.JSONSerde
 import akka.{Done, NotUsed}
 import akka.actor.{Actor, ActorSystem, PoisonPill}
 import akka.kafka.{ConsumerSettings, ProducerSettings, Subscriptions}
 import akka.kafka.scaladsl.{Consumer, Producer}
 import akka.stream.scaladsl.{Keep, MergeHub, Sink, Source}
 import akka.stream.{ActorMaterializer, KillSwitches}
-import entities.{Init}
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, ByteArraySerializer, StringDeserializer, StringSerializer}
@@ -23,8 +22,8 @@ import scala.util.{Failure, Success}
 
 //TODO : This actor shouls take in a way of pushing back to Websocket
 class JobConsumerActor
-(val sink:Sink[JsValue, NotUsed])
-(implicit materializer: ActorMaterializer, ec: ExecutionContext
+  (val sink:Sink[JsValue, NotUsed])
+  (implicit materializer: ActorMaterializer, ec: ExecutionContext
 ) extends Actor {
 
   val jSONSerde = new JSONSerde[Job]

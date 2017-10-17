@@ -2,8 +2,8 @@ package controllers
 
 import javax.inject.Inject
 
-import Entities.Job
-import Entities.JobJsonFormatters._
+import entities.Job
+import entities.JobJsonFormatters._
 import entities._
 import actors.job.{JobConsumerActor, JobProducerActor}
 import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
@@ -19,7 +19,6 @@ import play.api.libs.json.JsSuccess
 import play.api.libs.json.Writes
 import play.api.mvc.{Action, Controller}
 import utils.Errors
-
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Random
 import scala.concurrent.duration._

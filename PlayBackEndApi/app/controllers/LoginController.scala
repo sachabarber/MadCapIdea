@@ -1,9 +1,9 @@
 package controllers
 
 import javax.inject.Inject
-import Entities.DriverRegistrationJsonFormatters._
-import Entities.PassengerRegistrationJsonFormatters._
-import Entities._
+import entities.DriverRegistrationJsonFormatters._
+import entities.PassengerRegistrationJsonFormatters._
+import entities._
 import play.api.Logger
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller, Result}

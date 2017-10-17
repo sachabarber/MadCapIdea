@@ -1,8 +1,8 @@
 package actors.rating
 
-import Entities.Rating
-import Kafka.Topics.RatingsTopics
-import Serialization.JSONSerde
+import entities.Rating
+import kafka.topics.RatingsTopics
+import serialization.JSONSerde
 import akka.Done
 import akka.actor.{Actor, PoisonPill}
 import akka.kafka.ProducerSettings
@@ -12,15 +12,14 @@ import akka.stream.{ActorMaterializer, KillSwitches}
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
 import utils.Settings
-
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
 
 class RatingProducerActor(
-                           implicit materializer: ActorMaterializer,
-                           ec: ExecutionContext
-                         ) extends Actor {
+ implicit materializer: ActorMaterializer,
+ ec: ExecutionContext
+) extends Actor {
 
   val jSONSerde = new JSONSerde[Rating]
   val ratingProducerSettings = ProducerSettings(
