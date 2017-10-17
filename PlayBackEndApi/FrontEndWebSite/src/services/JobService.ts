@@ -14,20 +14,13 @@ export class JobService {
         sessionStorage.removeItem('currentUserIssuedJob');
     }
 
-    storeUserIssuedJob = (currentUser: any, job: any): void => {
-
-        if (currentUser == null || currentUser == undefined)
-            return;
+    storeUserIssuedJob = (job: any): void => {
 
         if (job == null || job == undefined)
             return;
 
         this._hasIssuedJob = true;
-        let currentUsersJob = {
-            currentUser: currentUser,
-            currentJob: job
-        }
-        sessionStorage.setItem('currentUserIssuedJob', JSON.stringify(currentUsersJob));
+        sessionStorage.setItem('currentUserIssuedJob', JSON.stringify(job));
     }
 
     currentJob = (): any => {

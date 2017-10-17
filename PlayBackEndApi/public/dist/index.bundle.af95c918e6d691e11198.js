@@ -19,7 +19,7 @@ var TYPES = exports.TYPES = {
 
 /***/ }),
 
-/***/ 240:
+/***/ 241:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91,7 +91,7 @@ exports.YesNoDialog = YesNoDialog;
 
 /***/ }),
 
-/***/ 241:
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -111,11 +111,11 @@ exports.Position = Position;
 
 /***/ }),
 
-/***/ 412:
+/***/ 413:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function($) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -126,19 +126,21 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(389);
+var _reactMeasure = __webpack_require__(390);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
+
+var _OkDialog = __webpack_require__(58);
 
 __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _Position = __webpack_require__(241);
+var _Position = __webpack_require__(242);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(388);
+var _reactGoogleMaps = __webpack_require__(389);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -186,16 +188,46 @@ var CreateJob = function (_super) {
     function CreateJob(props) {
         var _this = _super.call(this, props) || this;
         _this._handleCreateJobClick = function () {
-            console.log('button on CreateJob overlay clicked https://github.com/souporserious/react-measure for map');
-            //TODO: Send job over the wire, and then do all this
-            _this._jobService.storeUserIssuedJob({ name: "test" }, { jobId: 123 });
-            var newState = Object.assign({}, _this.state, {
-                hasIssuedJob: _this._jobService.hasIssuedJob()
+            var self = _this;
+            var currentUser = _this._authService.user();
+            var newJob = {
+                clientFullName: currentUser.fullName,
+                clientEmail: currentUser.email,
+                driverFullName: '',
+                driverEmail: '',
+                vehicleDescription: '',
+                vehicleRegistrationNumber: '',
+                isAssigned: false,
+                isCompleted: false
+            };
+            $.ajax({
+                type: 'POST',
+                url: 'job/submit',
+                data: JSON.stringify(newJob),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json'
+            }).done(function (jdata, textStatus, jqXHR) {
+                this._jobService.storeUserIssuedJob(newJob);
+                var newState = Object.assign({}, this.state, {
+                    hasIssuedJob: this._jobService.hasIssuedJob()
+                });
+                this.setState(newState);
+                this._positionService.storeUserPosition(currentUser, this.state.currentPosition);
+                _reactRouter.hashHistory.push('/viewjob');
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                var newState = Object.assign({}, this.state, {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+                this.setState(newState);
             });
-            _this.setState(newState);
-            var currentUser = _this._authService.user;
-            _this._positionService.storeUserPosition(currentUser, _this.state.currentPosition);
-            _reactRouter.hashHistory.push('/viewjob');
+        };
+        _this._okDialogCallBack = function () {
+            _this.setState({
+                okDialogOpen: false
+            });
         };
         _this._handleMapLoad = function (map) {
             if (map) {
@@ -224,7 +256,12 @@ var CreateJob = function (_super) {
         _this.state = {
             currentPosition: new _Position.Position(50.8202949, -0.1406958),
             dimensions: { width: -1, height: -1 },
-            hasIssuedJob: _this._jobService.hasIssuedJob()
+            hasIssuedJob: _this._jobService.hasIssuedJob(),
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0,
+            wasSuccessful: false
         };
         return _this;
     }
@@ -262,15 +299,16 @@ var CreateJob = function (_super) {
                         marginRight: 0,
                         marginBottom: 20
                     } }), onMapLoad: _this._handleMapLoad, onMapClick: _this._handleMapClick, currentPosition: _this.state.currentPosition, onCreateJobClick: _this._handleCreateJobClick, hasIssuedJob: _this.state.hasIssuedJob }));
-        })))));
+        }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return CreateJob;
 }(React.Component);
 exports.CreateJob = CreateJob;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
 
 /***/ }),
 
-/***/ 413:
+/***/ 414:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -285,7 +323,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(74);
+var _OkDialog = __webpack_require__(58);
 
 __webpack_require__(31);
 
@@ -426,11 +464,11 @@ var Login = function (_super) {
     return Login;
 }(React.Component);
 exports.Login = Login;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
 
 /***/ }),
 
-/***/ 414:
+/***/ 415:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -447,9 +485,9 @@ var React = _interopRequireWildcard(_react);
 
 var _reactRouter = __webpack_require__(57);
 
-var _OkDialog = __webpack_require__(74);
+var _OkDialog = __webpack_require__(58);
 
-var _YesNoDialog = __webpack_require__(240);
+var _YesNoDialog = __webpack_require__(241);
 
 __webpack_require__(31);
 
@@ -521,7 +559,7 @@ exports.Logout = Logout;
 
 /***/ }),
 
-/***/ 415:
+/***/ 416:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -540,9 +578,9 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _PassengerRegistration = __webpack_require__(420);
+var _PassengerRegistration = __webpack_require__(421);
 
-var _DriverRegistration = __webpack_require__(419);
+var _DriverRegistration = __webpack_require__(420);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -587,7 +625,7 @@ exports.Register = Register;
 
 /***/ }),
 
-/***/ 416:
+/***/ 417:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -602,25 +640,25 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(389);
+var _reactMeasure = __webpack_require__(390);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
-var _RatingDialog = __webpack_require__(421);
+var _RatingDialog = __webpack_require__(422);
 
-var _YesNoDialog = __webpack_require__(240);
+var _YesNoDialog = __webpack_require__(241);
 
-var _OkDialog = __webpack_require__(74);
+var _OkDialog = __webpack_require__(58);
 
 __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _Position = __webpack_require__(241);
+var _Position = __webpack_require__(242);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(388);
+var _reactGoogleMaps = __webpack_require__(389);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -777,7 +815,7 @@ exports.ViewJob = ViewJob;
 
 /***/ }),
 
-/***/ 417:
+/***/ 418:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -792,11 +830,11 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(720);
+var _lodash = __webpack_require__(721);
 
 var _ = _interopRequireWildcard(_lodash);
 
-var _OkDialog = __webpack_require__(74);
+var _OkDialog = __webpack_require__(58);
 
 __webpack_require__(31);
 
@@ -895,11 +933,11 @@ var ViewRating = function (_super) {
     return ViewRating;
 }(React.Component);
 exports.ViewRating = ViewRating;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
 
 /***/ }),
 
-/***/ 418:
+/***/ 419:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -910,19 +948,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ContainerOperations = undefined;
 
-__webpack_require__(925);
+__webpack_require__(926);
 
 var _inversify = __webpack_require__(96);
 
 var _types = __webpack_require__(147);
 
-var _Foo = __webpack_require__(422);
+var _Foo = __webpack_require__(423);
 
-var _AuthService = __webpack_require__(424);
+var _AuthService = __webpack_require__(425);
 
-var _JobService = __webpack_require__(425);
+var _JobService = __webpack_require__(426);
 
-var _PositionService = __webpack_require__(426);
+var _PositionService = __webpack_require__(427);
 
 var ContainerOperations = function () {
     function ContainerOperations() {
@@ -955,7 +993,7 @@ exports.ContainerOperations = ContainerOperations;
 
 /***/ }),
 
-/***/ 419:
+/***/ 420:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -970,7 +1008,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(74);
+var _OkDialog = __webpack_require__(58);
 
 __webpack_require__(31);
 
@@ -1135,11 +1173,11 @@ var DriverRegistration = function (_super) {
     return DriverRegistration;
 }(React.Component);
 exports.DriverRegistration = DriverRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
 
 /***/ }),
 
-/***/ 420:
+/***/ 421:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1154,7 +1192,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _OkDialog = __webpack_require__(74);
+var _OkDialog = __webpack_require__(58);
 
 __webpack_require__(31);
 
@@ -1306,11 +1344,11 @@ var PassengerRegistration = function (_super) {
     return PassengerRegistration;
 }(React.Component);
 exports.PassengerRegistration = PassengerRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
 
 /***/ }),
 
-/***/ 421:
+/***/ 422:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1329,7 +1367,7 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactStars = __webpack_require__(911);
+var _reactStars = __webpack_require__(912);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -1401,7 +1439,7 @@ exports.RatingDialog = RatingDialog;
 
 /***/ }),
 
-/***/ 422:
+/***/ 423:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1449,7 +1487,7 @@ exports.Foo = Foo;
 
 /***/ }),
 
-/***/ 423:
+/***/ 424:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1469,21 +1507,27 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _Login = __webpack_require__(413);
+var _Login = __webpack_require__(414);
 
-var _Logout = __webpack_require__(414);
+var _Logout = __webpack_require__(415);
 
-var _Register = __webpack_require__(415);
+var _Register = __webpack_require__(416);
 
-var _CreateJob = __webpack_require__(412);
+var _CreateJob = __webpack_require__(413);
 
-var _ViewJob = __webpack_require__(416);
+var _ViewJob = __webpack_require__(417);
 
-var _ViewRating = __webpack_require__(417);
+var _ViewRating = __webpack_require__(418);
 
-var _ContainerOperations = __webpack_require__(418);
+var _ContainerOperations = __webpack_require__(419);
 
 var _types = __webpack_require__(147);
+
+var _rx = __webpack_require__(240);
+
+var _rx2 = _interopRequireDefault(_rx);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1507,6 +1551,28 @@ var __extends = undefined && undefined.__extends || function () {
 var authService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.AuthService);
 var jobService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.JobService);
 var positionService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.PositionService);
+var JobEventArgs = function () {
+    function JobEventArgs(detail) {
+        this.detail = detail;
+    }
+    return JobEventArgs;
+}();
+(function () {
+    var evt;
+    window['jobChanged'] = function (incomingJsonPayload) {
+        evt = new CustomEvent('onJobChanged', new JobEventArgs(incomingJsonPayload));
+        window.dispatchEvent(evt);
+    };
+    var source = _rx2.default.Observable.fromEvent(window, 'onJobChanged');
+    var subscription = source.subscribe(function (x) {
+        console.log('RX saw onJobChanged');
+        console.log('RX x = ', x.detail);
+    }, function (err) {
+        console.log('Error: %s', err);
+    }, function () {
+        console.log('Completed');
+    });
+})();
 var MainNav = function (_super) {
     __extends(MainNav, _super);
     function MainNav(props) {
@@ -1552,7 +1618,7 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ }),
 
-/***/ 424:
+/***/ 425:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1567,7 +1633,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _inversify = __webpack_require__(96);
 
-var _rx = __webpack_require__(927);
+var _rx = __webpack_require__(240);
 
 var _rx2 = _interopRequireDefault(_rx);
 
@@ -1630,7 +1696,7 @@ exports.AuthService = AuthService;
 
 /***/ }),
 
-/***/ 425:
+/***/ 426:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1664,15 +1730,10 @@ var JobService = function () {
             _this._hasIssuedJob = false;
             sessionStorage.removeItem('currentUserIssuedJob');
         };
-        this.storeUserIssuedJob = function (currentUser, job) {
-            if (currentUser == null || currentUser == undefined) return;
+        this.storeUserIssuedJob = function (job) {
             if (job == null || job == undefined) return;
             _this._hasIssuedJob = true;
-            var currentUsersJob = {
-                currentUser: currentUser,
-                currentJob: job
-            };
-            sessionStorage.setItem('currentUserIssuedJob', JSON.stringify(currentUsersJob));
+            sessionStorage.setItem('currentUserIssuedJob', JSON.stringify(job));
         };
         this.currentJob = function () {
             var currentUsersJob = JSON.parse(sessionStorage.getItem('currentUserIssuedJob'));
@@ -1690,7 +1751,7 @@ exports.JobService = JobService;
 
 /***/ }),
 
-/***/ 426:
+/***/ 427:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1751,7 +1812,7 @@ exports.PositionService = PositionService;
 
 /***/ }),
 
-/***/ 74:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1824,5 +1885,5 @@ exports.OkDialog = OkDialog;
 
 /***/ })
 
-},[423]);
-//# sourceMappingURL=index.bundle.f1214dda6c3b195b9257.js.map
+},[424]);
+//# sourceMappingURL=index.bundle.af95c918e6d691e11198.js.map

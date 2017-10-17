@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
 import Measure from 'react-measure'
+import { OkDialog } from "./components/OkDialog";
 import 'bootstrap/dist/css/bootstrap.css';
 import {
     Well,
@@ -73,6 +74,11 @@ export interface CreateJobState {
         height: number
     };
     hasIssuedJob: boolean;
+    okDialogOpen: boolean;
+    okDialogKey: number;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+    wasSuccessful: boolean;
 }
 
 export class CreateJob extends React.Component<undefined, CreateJobState> {
@@ -102,7 +108,12 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
         this.state = {
             currentPosition: new Position(50.8202949, -0.1406958),
             dimensions: { width: -1, height: -1 },
-            hasIssuedJob: this._jobService.hasIssuedJob()
+            hasIssuedJob: this._jobService.hasIssuedJob(),
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0,
+            wasSuccessful: false
         };
     }
 
@@ -174,23 +185,73 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                             </Measure>
                         </Col>
                     </Row>
+                    <Row className="show-grid">
+                        <span>
+                            <OkDialog
+                                open={this.state.okDialogOpen}
+                                okCallBack={this._okDialogCallBack}
+                                headerText={this.state.okDialogHeaderText}
+                                bodyText={this.state.okDialogBodyText}
+                                key={this.state.okDialogKey} />
+                        </span>
+                    </Row>
                 </Grid>
             </Well>
         );
     }
 
     _handleCreateJobClick = () => {
-        console.log('button on CreateJob overlay clicked https://github.com/souporserious/react-measure for map');
 
-        //TODO: Send job over the wire, and then do all this
-        this._jobService.storeUserIssuedJob({ name: "test" }, { jobId: 123 });
-        const newState = Object.assign({}, this.state, {
-            hasIssuedJob: this._jobService.hasIssuedJob()
+
+        var self = this;
+        var currentUser = this._authService.user();
+
+        var newJob = {
+
+            clientFullName: currentUser.fullName,
+            clientEmail: currentUser.email,
+            driverFullName: '',
+            driverEmail: '',
+            vehicleDescription: '',
+            vehicleRegistrationNumber: '',
+            isAssigned: false,
+            isCompleted: false
+
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'job/submit',
+            data: JSON.stringify(newJob),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
         })
-        this.setState(newState)
-        var currentUser = this._authService.user;
-        this._positionService.storeUserPosition(currentUser, this.state.currentPosition);
-        hashHistory.push('/viewjob');
+            .done(function (jdata, textStatus, jqXHR) {
+
+                this._jobService.storeUserIssuedJob(newJob);
+                const newState = Object.assign({}, this.state, {
+                    hasIssuedJob: this._jobService.hasIssuedJob()
+                });
+                this.setState(newState)
+                this._positionService.storeUserPosition(currentUser, this.state.currentPosition);
+                hashHistory.push('/viewjob');
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                const newState = Object.assign({}, this.state, {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                })
+                this.setState(newState)
+            });
+    }
+
+    _okDialogCallBack = () => {
+        this.setState(
+            {
+                okDialogOpen: false
+            });
     }
 
     _handleMapLoad = (map) => {
