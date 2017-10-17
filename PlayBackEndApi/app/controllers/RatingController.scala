@@ -1,7 +1,6 @@
 package controllers
 
 import javax.inject.Inject
-
 import Entities.RatingJsonFormatters._
 import Entities._
 import actors.rating.RatingProducerActor
@@ -16,7 +15,6 @@ import play.api.libs.json.Writes
 import play.api.libs.ws._
 import play.api.mvc.{Action, Controller}
 import utils.{Errors, Settings}
-
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Random
 import scala.concurrent.duration._
@@ -32,7 +30,7 @@ class RatingController @Inject()
   //Error handling for streams
   //http://doc.akka.io/docs/akka/2.5.2/scala/stream/stream-error.html
   val decider: Supervision.Decider = {
-    case _                      => Supervision.Restart
+    case _ => Supervision.Restart
   }
 
   implicit val mat = ActorMaterializer(

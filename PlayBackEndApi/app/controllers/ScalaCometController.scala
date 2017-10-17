@@ -34,7 +34,7 @@ class ScalaCometController @Inject()
   //Error handling for streams
   //http://doc.akka.io/docs/akka/2.5.2/scala/stream/stream-error.html
   val decider: Supervision.Decider = {
-    case _                      => Supervision.Restart
+    case _ => Supervision.Restart
   }
 
   implicit val mat = ActorMaterializer(

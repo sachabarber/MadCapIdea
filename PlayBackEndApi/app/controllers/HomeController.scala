@@ -2,7 +2,6 @@ package controllers
 
 
 import javax.inject.Inject
-
 import play.api.mvc.{Action, Controller}
 
 class HomeController @Inject() (environment: play.api.Environment)

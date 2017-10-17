@@ -3,15 +3,17 @@ package actors.job
 import Entities.Job
 import Kafka.Topics.JobTopics
 import Serialization.JSONSerde
-import akka.Done
+import akka.{Done, NotUsed}
 import akka.actor.{Actor, ActorSystem, PoisonPill}
 import akka.kafka.{ConsumerSettings, ProducerSettings, Subscriptions}
 import akka.kafka.scaladsl.{Consumer, Producer}
 import akka.stream.scaladsl.{Keep, MergeHub, Sink, Source}
 import akka.stream.{ActorMaterializer, KillSwitches}
+import entities.{Init}
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, ByteArraySerializer, StringDeserializer, StringSerializer}
+import play.api.libs.json.{JsValue, Json}
 import utils.Settings
 
 import scala.concurrent.ExecutionContext
@@ -20,10 +22,10 @@ import scala.util.{Failure, Success}
 
 
 //TODO : This actor shouls take in a way of pushing back to Websocket
-class JobConsumerActor(
-                        implicit materializer: ActorMaterializer,
-                        ec: ExecutionContext
-                      ) extends Actor {
+class JobConsumerActor
+(val sink:Sink[JsValue, NotUsed])
+(implicit materializer: ActorMaterializer, ec: ExecutionContext
+) extends Actor {
 
   val jSONSerde = new JSONSerde[Job]
   val jobConsumerSettings = ConsumerSettings(
@@ -51,7 +53,6 @@ class JobConsumerActor(
     case Failure(e) => {
       self ! PoisonPill
     }
-
   }
 
   override def postStop(): Unit = {
@@ -62,14 +63,17 @@ class JobConsumerActor(
 
   override def receive: Receive = {
     case (job: Job) => {
-      println(s"JobProducerActor seen ${job}")
-
-      //TODO : Job should be sent out over the websocket stuff
+      println(s"JobConsumerActor seen ${job}")
+      val finalJsonValue = Json.toJson(job)
+      Source.single(finalJsonValue).runWith(sink)
     }
     case Done => {
       println(s"JobConsumerActor seen 'Done'")
       killswitch.shutdown()
       self ! PoisonPill
+    }
+    case Init => {
+      println("JobConsumerActor saw init")
     }
   }
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import javax.inject.Inject
-
 import Entities.DriverRegistrationJsonFormatters._
 import Entities.PassengerRegistrationJsonFormatters._
 import Entities._
