@@ -226,25 +226,25 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
             contentType: "application/json; charset=utf-8",
             dataType: 'json'
         })
-            .done(function (jdata, textStatus, jqXHR) {
+        .done(function (jdata, textStatus, jqXHR) {
 
-                this._jobService.storeUserIssuedJob(newJob);
-                const newState = Object.assign({}, this.state, {
-                    hasIssuedJob: this._jobService.hasIssuedJob()
-                });
-                this.setState(newState)
-                this._positionService.storeUserPosition(currentUser, this.state.currentPosition);
-                hashHistory.push('/viewjob');
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                const newState = Object.assign({}, this.state, {
-                    okDialogHeaderText: 'Error',
-                    okDialogBodyText: jqXHR.responseText,
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                })
-                this.setState(newState)
+            self._jobService.storeUserIssuedJob(newJob);
+            const newState = Object.assign({}, self.state, {
+                hasIssuedJob: self._jobService.hasIssuedJob()
             });
+            //self.setState(newState)
+            self._positionService.storeUserPosition(currentUser, self.state.currentPosition);
+            hashHistory.push('/viewjob');
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            const newState = Object.assign({}, self.state, {
+                okDialogHeaderText: 'Error',
+                okDialogBodyText: jqXHR.responseText,
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            })
+            self.setState(newState)
+        });
     }
 
     _okDialogCallBack = () => {

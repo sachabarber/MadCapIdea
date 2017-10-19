@@ -207,21 +207,21 @@ var CreateJob = function (_super) {
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json'
             }).done(function (jdata, textStatus, jqXHR) {
-                this._jobService.storeUserIssuedJob(newJob);
-                var newState = Object.assign({}, this.state, {
-                    hasIssuedJob: this._jobService.hasIssuedJob()
+                self._jobService.storeUserIssuedJob(newJob);
+                var newState = Object.assign({}, self.state, {
+                    hasIssuedJob: self._jobService.hasIssuedJob()
                 });
-                this.setState(newState);
-                this._positionService.storeUserPosition(currentUser, this.state.currentPosition);
+                //self.setState(newState)
+                self._positionService.storeUserPosition(currentUser, self.state.currentPosition);
                 _reactRouter.hashHistory.push('/viewjob');
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                var newState = Object.assign({}, this.state, {
+                var newState = Object.assign({}, self.state, {
                     okDialogHeaderText: 'Error',
                     okDialogBodyText: jqXHR.responseText,
                     okDialogOpen: true,
                     okDialogKey: Math.random()
                 });
-                this.setState(newState);
+                self.setState(newState);
             });
         };
         _this._okDialogCallBack = function () {
@@ -1886,4 +1886,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[424]);
-//# sourceMappingURL=index.bundle.50a4bc33c6632324d417.js.map
+//# sourceMappingURL=index.bundle.6dbec511f8f59f06aa27.js.map
