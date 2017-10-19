@@ -121,7 +121,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             //          if we are a client, and we should enrich it if we are a driver
             //       3. The list of markers should be worked out again every time based
             //          on RX stream messages
-
             markers: [
                 new PositionMarker(
                     new Position(50.8202949, -0.1406958),
@@ -144,7 +143,13 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         this._subscription =
             this._jobStreamService.getJobStream()
             .subscribe(
-                jobArgs => {
+            jobArgs => {
+
+                    //TODO : 1. This should not be hard coded
+                    //TODO : 2. We should push out current job when we FIRST LOAD this page
+                    //          if we are a client, and we should enrich it if we are a driver
+                    //       3. The list of markers should be worked out again every time based
+                    //          on RX stream messages
                     console.log('RX saw onJobChanged');
                     console.log('RX x = ', jobArgs.detail);
                 },
@@ -258,11 +263,31 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     }
 
     _handleMapClick = (event) => {
+
+        //TODO : This should go through ALL the current markers find the one that
+        //matches current user, and update its position, and send event out to server
         const newState = Object.assign({}, this.state, {
             currentPosition: new Position(event.latLng.lat(), event.latLng.lng())
         })
         this.setState(newState)
     }
+
+    _addMarkerForJob = (jobArgs: any): void => {
+        //TODO : should see if the client/driver for the job is in the list if it is remove it
+        //TODO : add it
+    }
+
+    _shouldShowMarkerForJob = (jobArgs: any): boolean => {
+
+        //TODO
+        //1. If the current job client is the current client logged in
+        //2. If the current job driver is the current driver logged in
+        //3. If the job isAssigned and its for the current logged in client/driver
+        //4. Or if the job is unassigned and ithere is no other active job for this client/driver
+        return true;
+    }
+
+
 
     _ratingsDialogOkCallBack = () => {
         console.log('RATINGS OK CLICKED');

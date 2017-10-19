@@ -20,7 +20,7 @@ var TYPES = exports.TYPES = {
 
 /***/ }),
 
-/***/ 241:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,7 +92,7 @@ exports.YesNoDialog = YesNoDialog;
 
 /***/ }),
 
-/***/ 242:
+/***/ 241:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -127,7 +127,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(390);
+var _reactMeasure = __webpack_require__(389);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
@@ -137,11 +137,11 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _Position = __webpack_require__(242);
+var _Position = __webpack_require__(241);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(389);
+var _reactGoogleMaps = __webpack_require__(388);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -488,7 +488,7 @@ var _reactRouter = __webpack_require__(57);
 
 var _OkDialog = __webpack_require__(58);
 
-var _YesNoDialog = __webpack_require__(241);
+var _YesNoDialog = __webpack_require__(240);
 
 __webpack_require__(31);
 
@@ -641,13 +641,13 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(390);
+var _reactMeasure = __webpack_require__(389);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
 var _RatingDialog = __webpack_require__(422);
 
-var _YesNoDialog = __webpack_require__(241);
+var _YesNoDialog = __webpack_require__(240);
 
 var _OkDialog = __webpack_require__(58);
 
@@ -655,11 +655,11 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _Position = __webpack_require__(242);
+var _Position = __webpack_require__(241);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(389);
+var _reactGoogleMaps = __webpack_require__(388);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -715,10 +715,24 @@ var ViewJob = function (_super) {
             console.log('button on overlay clicked:' + targetMarker.key);
         };
         _this._handleMapClick = function (event) {
+            //TODO : This should go through ALL the current markers find the one that
+            //matches current user, and update its position, and send event out to server
             var newState = Object.assign({}, _this.state, {
                 currentPosition: new _Position.Position(event.latLng.lat(), event.latLng.lng())
             });
             _this.setState(newState);
+        };
+        _this._addMarkerForJob = function (jobArgs) {
+            //TODO : should see if the client/driver for the job is in the list if it is remove it
+            //TODO : add it
+        };
+        _this._shouldShowMarkerForJob = function (jobArgs) {
+            //TODO
+            //1. If the current job client is the current client logged in
+            //2. If the current job driver is the current driver logged in
+            //3. If the job isAssigned and its for the current logged in client/driver
+            //4. Or if the job is unassigned and ithere is no other active job for this client/driver
+            return true;
         };
         _this._ratingsDialogOkCallBack = function () {
             console.log('RATINGS OK CLICKED');
@@ -777,6 +791,11 @@ var ViewJob = function (_super) {
     }
     ViewJob.prototype.componentWillMount = function () {
         this._subscription = this._jobStreamService.getJobStream().subscribe(function (jobArgs) {
+            //TODO : 1. This should not be hard coded
+            //TODO : 2. We should push out current job when we FIRST LOAD this page
+            //          if we are a client, and we should enrich it if we are a driver
+            //       3. The list of markers should be worked out again every time based
+            //          on RX stream messages
             console.log('RX saw onJobChanged');
             console.log('RX x = ', jobArgs.detail);
         }, function (error) {
@@ -846,7 +865,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(721);
+var _lodash = __webpack_require__(723);
 
 var _ = _interopRequireWildcard(_lodash);
 
@@ -964,21 +983,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ContainerOperations = undefined;
 
-__webpack_require__(926);
+__webpack_require__(928);
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(81);
 
 var _types = __webpack_require__(147);
 
 var _Foo = __webpack_require__(423);
 
-var _AuthService = __webpack_require__(425);
+var _AuthService = __webpack_require__(426);
 
-var _JobService = __webpack_require__(426);
+var _JobService = __webpack_require__(427);
 
-var _JobStreamService = __webpack_require__(933);
+var _JobStreamService = __webpack_require__(428);
 
-var _PositionService = __webpack_require__(427);
+var _PositionService = __webpack_require__(429);
 
 var ContainerOperations = function () {
     function ContainerOperations() {
@@ -1386,7 +1405,7 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactStars = __webpack_require__(912);
+var _reactStars = __webpack_require__(914);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -1471,7 +1490,7 @@ exports.Foo = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(81);
 
 var _types = __webpack_require__(147);
 
@@ -1507,6 +1526,25 @@ exports.Foo = Foo;
 /***/ }),
 
 /***/ 424:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var JobEventArgs = function () {
+    function JobEventArgs(detail) {
+        this.detail = detail;
+    }
+    return JobEventArgs;
+}();
+exports.JobEventArgs = JobEventArgs;
+
+/***/ }),
+
+/***/ 425:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1611,7 +1649,7 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ }),
 
-/***/ 425:
+/***/ 426:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1624,9 +1662,9 @@ exports.AuthService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(81);
 
-var _rx = __webpack_require__(240);
+var _rx = __webpack_require__(411);
 
 var _rx2 = _interopRequireDefault(_rx);
 
@@ -1689,7 +1727,7 @@ exports.AuthService = AuthService;
 
 /***/ }),
 
-/***/ 426:
+/***/ 427:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1702,7 +1740,7 @@ exports.JobService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(81);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1744,7 +1782,63 @@ exports.JobService = JobService;
 
 /***/ }),
 
-/***/ 427:
+/***/ 428:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.JobStreamService = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _inversify = __webpack_require__(81);
+
+var _JobEventArgs = __webpack_require__(424);
+
+var _rx = __webpack_require__(411);
+
+var _rx2 = _interopRequireDefault(_rx);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+        if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = undefined && undefined.__metadata || function (k, v) {
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var JobStreamService = function () {
+    function JobStreamService() {
+        var _this = this;
+        this.init = function () {
+            window['jobChanged'] = function (incomingJsonPayload) {
+                var evt = new CustomEvent('onJobChanged', new _JobEventArgs.JobEventArgs(incomingJsonPayload));
+                window.dispatchEvent(evt);
+            };
+            _this._jobSourceObservable = _rx2.default.Observable.fromEvent(window, 'onJobChanged');
+        };
+        this.getJobStream = function () {
+            return _this._jobSourceObservable;
+        };
+    }
+    return JobStreamService;
+}();
+exports.JobStreamService = JobStreamService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], JobStreamService);
+exports.JobStreamService = JobStreamService;
+
+/***/ }),
+
+/***/ 429:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1757,7 +1851,7 @@ exports.PositionService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(81);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1876,82 +1970,7 @@ var OkDialog = function (_super) {
 }(React.Component);
 exports.OkDialog = OkDialog;
 
-/***/ }),
-
-/***/ 932:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var JobEventArgs = function () {
-    function JobEventArgs(detail) {
-        this.detail = detail;
-    }
-    return JobEventArgs;
-}();
-exports.JobEventArgs = JobEventArgs;
-
-/***/ }),
-
-/***/ 933:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.JobStreamService = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _inversify = __webpack_require__(96);
-
-var _JobEventArgs = __webpack_require__(932);
-
-var _rx = __webpack_require__(240);
-
-var _rx2 = _interopRequireDefault(_rx);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
-    var c = arguments.length,
-        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-        d;
-    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
-        if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    }return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = undefined && undefined.__metadata || function (k, v) {
-    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var JobStreamService = function () {
-    function JobStreamService() {
-        var _this = this;
-        this.init = function () {
-            window['jobChanged'] = function (incomingJsonPayload) {
-                var evt = new CustomEvent('onJobChanged', new _JobEventArgs.JobEventArgs(incomingJsonPayload));
-                window.dispatchEvent(evt);
-            };
-            _this._jobSourceObservable = _rx2.default.Observable.fromEvent(window, 'onJobChanged');
-        };
-        this.getJobStream = function () {
-            return _this._jobSourceObservable;
-        };
-    }
-    return JobStreamService;
-}();
-exports.JobStreamService = JobStreamService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], JobStreamService);
-exports.JobStreamService = JobStreamService;
-
 /***/ })
 
-},[424]);
-//# sourceMappingURL=index.bundle.9eccc95b94ccb66b9d38.js.map
+},[425]);
+//# sourceMappingURL=index.bundle.9884a62fba3c15ff031a.js.map
