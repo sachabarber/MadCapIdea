@@ -20,6 +20,7 @@ import {
     OverlayTrigger
 } from "react-bootstrap";
 import { AuthService } from "./services/AuthService";
+import { JobStreamService } from "./services/JobStreamService";
 import { PositionService } from "./services/PositionService";
 import { Position } from "./domain/Position";
 import { hashHistory } from 'react-router';
@@ -100,13 +101,16 @@ export interface ViewJobState {
 export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     private _authService: AuthService;
+    private _jobStreamService: JobStreamService;
     private _positionService: PositionService;
+    private _subscription: any; 
 
     constructor(props: any) {
         super(props);
         this._authService = props.route.authService;
+        this._jobStreamService = props.route.jobStreamService;
         this._positionService = props.route.positionService;
-
+        
         if (!this._authService.isAuthenticated()) {
             hashHistory.push('/');
         }
@@ -134,6 +138,28 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             currentPosition: this._positionService.currentPosition(
                 this._authService.userEmail())
         };
+    }
+
+    componentWillMount() {
+        this._subscription =
+            this._jobStreamService.getJobStream()
+            .subscribe(
+                jobArgs => {
+                    console.log('RX saw onJobChanged');
+                    console.log('RX x = ', jobArgs.detail);
+                },
+                error => {
+                    console.log('RX saw ERROR');
+                    console.log('RX error = ', error);
+                },
+                () => {
+                    console.log('RX saw COMPLETE');
+                }
+            );
+    }
+
+    componentWillUnmount() {
+        this._subscription.dispose();
     }
 
 

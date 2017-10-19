@@ -14,6 +14,7 @@ var TYPES = exports.TYPES = {
     SomeNumber: Symbol("SomeNumber"),
     AuthService: Symbol("AuthService"),
     JobService: Symbol("JobService"),
+    JobStreamService: Symbol("JobStreamService"),
     PositionService: Symbol("PositionService")
 };
 
@@ -753,6 +754,7 @@ var ViewJob = function (_super) {
             });
         };
         _this._authService = props.route.authService;
+        _this._jobStreamService = props.route.jobStreamService;
         _this._positionService = props.route.positionService;
         if (!_this._authService.isAuthenticated()) {
             _reactRouter.hashHistory.push('/');
@@ -773,6 +775,20 @@ var ViewJob = function (_super) {
         };
         return _this;
     }
+    ViewJob.prototype.componentWillMount = function () {
+        this._subscription = this._jobStreamService.getJobStream().subscribe(function (jobArgs) {
+            console.log('RX saw onJobChanged');
+            console.log('RX x = ', jobArgs.detail);
+        }, function (error) {
+            console.log('RX saw ERROR');
+            console.log('RX error = ', error);
+        }, function () {
+            console.log('RX saw COMPLETE');
+        });
+    };
+    ViewJob.prototype.componentWillUnmount = function () {
+        this._subscription.dispose();
+    };
     ViewJob.prototype.render = function () {
         var _this = this;
         var adjustedwidth = this.state.dimensions.width;
@@ -960,6 +976,8 @@ var _AuthService = __webpack_require__(425);
 
 var _JobService = __webpack_require__(426);
 
+var _JobStreamService = __webpack_require__(933);
+
 var _PositionService = __webpack_require__(427);
 
 var ContainerOperations = function () {
@@ -978,6 +996,7 @@ var ContainerOperations = function () {
         this.container.bind(_types.TYPES.Foo).to(_Foo.Foo);
         this.container.bind(_types.TYPES.AuthService).to(_AuthService.AuthService);
         this.container.bind(_types.TYPES.JobService).to(_JobService.JobService);
+        this.container.bind(_types.TYPES.JobStreamService).to(_JobStreamService.JobStreamService);
         this.container.bind(_types.TYPES.PositionService).to(_PositionService.PositionService);
     };
     Object.defineProperty(ContainerOperations.prototype, "container", {
@@ -1523,12 +1542,6 @@ var _ContainerOperations = __webpack_require__(419);
 
 var _types = __webpack_require__(147);
 
-var _rx = __webpack_require__(240);
-
-var _rx2 = _interopRequireDefault(_rx);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var __extends = undefined && undefined.__extends || function () {
@@ -1550,29 +1563,9 @@ var __extends = undefined && undefined.__extends || function () {
 
 var authService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.AuthService);
 var jobService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.JobService);
+var jobStreamService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.JobStreamService);
 var positionService = _ContainerOperations.ContainerOperations.getInstance().container.get(_types.TYPES.PositionService);
-var JobEventArgs = function () {
-    function JobEventArgs(detail) {
-        this.detail = detail;
-    }
-    return JobEventArgs;
-}();
-(function () {
-    var evt;
-    window['jobChanged'] = function (incomingJsonPayload) {
-        evt = new CustomEvent('onJobChanged', new JobEventArgs(incomingJsonPayload));
-        window.dispatchEvent(evt);
-    };
-    var source = _rx2.default.Observable.fromEvent(window, 'onJobChanged');
-    var subscription = source.subscribe(function (x) {
-        console.log('RX saw onJobChanged');
-        console.log('RX x = ', x.detail);
-    }, function (err) {
-        console.log('Error: %s', err);
-    }, function () {
-        console.log('Completed');
-    });
-})();
+jobStreamService.init();
 var MainNav = function (_super) {
     __extends(MainNav, _super);
     function MainNav(props) {
@@ -1610,11 +1603,11 @@ var App = function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return React.createElement("div", null, React.createElement("div", null, React.createElement(MainNav, { authService: authService, jobService: jobService, positionService: positionService }), this.props.children));
+        return React.createElement("div", null, React.createElement("div", null, React.createElement(MainNav, { authService: authService, jobService: jobService, jobStreamService: jobStreamService, positionService: positionService }), this.props.children));
     };
     return App;
 }(React.Component);
-ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login, authService: authService }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register, authService: authService }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout, authService: authService, jobService: jobService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob, authService: authService, jobService: jobService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob, authService: authService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating, authService: authService }))), document.getElementById('root'));
+ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login, authService: authService }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register, authService: authService }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout, authService: authService, jobService: jobService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob, authService: authService, jobService: jobService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob, authService: authService, jobStreamService: jobStreamService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating, authService: authService }))), document.getElementById('root'));
 
 /***/ }),
 
@@ -1883,7 +1876,82 @@ var OkDialog = function (_super) {
 }(React.Component);
 exports.OkDialog = OkDialog;
 
+/***/ }),
+
+/***/ 932:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var JobEventArgs = function () {
+    function JobEventArgs(detail) {
+        this.detail = detail;
+    }
+    return JobEventArgs;
+}();
+exports.JobEventArgs = JobEventArgs;
+
+/***/ }),
+
+/***/ 933:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.JobStreamService = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _inversify = __webpack_require__(96);
+
+var _JobEventArgs = __webpack_require__(932);
+
+var _rx = __webpack_require__(240);
+
+var _rx2 = _interopRequireDefault(_rx);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+        if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = undefined && undefined.__metadata || function (k, v) {
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var JobStreamService = function () {
+    function JobStreamService() {
+        var _this = this;
+        this.init = function () {
+            window['jobChanged'] = function (incomingJsonPayload) {
+                var evt = new CustomEvent('onJobChanged', new _JobEventArgs.JobEventArgs(incomingJsonPayload));
+                window.dispatchEvent(evt);
+            };
+            _this._jobSourceObservable = _rx2.default.Observable.fromEvent(window, 'onJobChanged');
+        };
+        this.getJobStream = function () {
+            return _this._jobSourceObservable;
+        };
+    }
+    return JobStreamService;
+}();
+exports.JobStreamService = JobStreamService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], JobStreamService);
+exports.JobStreamService = JobStreamService;
+
 /***/ })
 
 },[424]);
-//# sourceMappingURL=index.bundle.6dbec511f8f59f06aa27.js.map
+//# sourceMappingURL=index.bundle.9eccc95b94ccb66b9d38.js.map

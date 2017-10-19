@@ -19,57 +19,22 @@ import { ViewRating } from "./ViewRating";
 import { ContainerOperations } from "./ioc/ContainerOperations";
 import { AuthService } from "./services/AuthService";
 import { JobService } from "./services/JobService";
+import { JobStreamService } from "./services/JobStreamService";
 import { PositionService } from "./services/PositionService";
 import { TYPES } from "./types";
 import Rx from 'rx';
 
 let authService = ContainerOperations.getInstance().container.get<AuthService>(TYPES.AuthService);
 let jobService = ContainerOperations.getInstance().container.get<JobService>(TYPES.JobService);
+let jobStreamService = ContainerOperations.getInstance().container.get<JobStreamService>(TYPES.JobStreamService);
 let positionService = ContainerOperations.getInstance().container.get<PositionService>(TYPES.PositionService);
-
-
-
-class JobEventArgs {
-
-    detail: any;
-
-    constructor(detail: any) {
-        this.detail = detail;
-    }
-
-}
-
-
-(function () {
-
-    var evt;
-
-    window['jobChanged'] = function (incomingJsonPayload: any) {
-        evt = new CustomEvent('onJobChanged', new JobEventArgs(incomingJsonPayload));
-        window.dispatchEvent(evt);
-    }
-
-    var source: Rx.Observable<any>
-        = Rx.Observable.fromEvent(window, 'onJobChanged');
-
-    var subscription = source.subscribe(
-        function (x) {
-            console.log('RX saw onJobChanged');
-            console.log('RX x = ', x.detail);
-        },
-        function (err) {
-            console.log('Error: %s', err);
-        },
-        function () {
-            console.log('Completed');
-        });
-
-}());
+jobStreamService.init();
 
 
 export interface MainNavProps {
     authService: AuthService;
     jobService: JobService;
+    jobStreamService: JobStreamService;
     positionService: PositionService;
 
 }
@@ -150,6 +115,7 @@ class App extends React.Component<undefined, undefined> {
                     <MainNav
                         authService={authService}
                         jobService={jobService}
+                        jobStreamService={jobStreamService}
                         positionService={positionService}
                     />
                     {this.props.children}
@@ -187,6 +153,7 @@ ReactDOM.render((
                 path="/viewjob"
                 component={ViewJob}
                 authService={authService}
+                jobStreamService={jobStreamService}
                 positionService={positionService} />
             <Route
                 path="/viewrating"
