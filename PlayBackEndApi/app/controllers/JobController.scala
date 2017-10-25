@@ -47,13 +47,17 @@ class JobController @Inject()
 
   //job producer
   val childJobProducerActorProps = Props(classOf[JobProducerActor],mat,ec)
-  val jobProducerSupervisorProps = createBackoffSupervisor(childJobProducerActorProps,s"JobProducerActor_${rand.nextInt()}")
-  val jobProducerSupervisorActorRef = actorSystem.actorOf(jobProducerSupervisorProps, name = "jobProducerSupervisor")
+  val jobProducerSupervisorProps = createBackoffSupervisor(childJobProducerActorProps,
+    s"JobProducerActor_${rand.nextInt()}")
+  val jobProducerSupervisorActorRef = actorSystem.actorOf(jobProducerSupervisorProps,
+    name = "jobProducerSupervisor")
 
   //job consumer
   val childJobConsumerActorProps = Props(new JobConsumerActor(sink)(mat,ec))
-  val jobConsumerSupervisorProps = createBackoffSupervisor(childJobConsumerActorProps,s"JobConsumerActor_${rand.nextInt()}")
-  val jobConsumerSupervisorActorRef = actorSystem.actorOf(jobConsumerSupervisorProps, name = "jobConsumerSupervisor")
+  val jobConsumerSupervisorProps = createBackoffSupervisor(childJobConsumerActorProps,
+    s"JobConsumerActor_${rand.nextInt()}")
+  val jobConsumerSupervisorActorRef = actorSystem.actorOf(jobConsumerSupervisorProps,
+    name = "jobConsumerSupervisor")
   jobConsumerSupervisorActorRef ! Init
 
 
