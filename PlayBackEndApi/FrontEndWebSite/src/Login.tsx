@@ -61,9 +61,9 @@ export class Login extends React.Component<undefined, LoginState> {
                 <Form
                     // Supply callbacks to both valid and invalid
                     // submit attempts
-                    validateAll={this._validateForm}
-                    onInvalidSubmit={this._handleInvalidSubmit}
-                    onValidSubmit={this._handleValidSubmit}>
+                    validateAll={this.validateForm}
+                    onInvalidSubmit={this.handleInvalidSubmit}
+                    onValidSubmit={this.handleValidSubmit}>
                     <Grid>
                         <Row className="show-grid">
                             <Col xs={10} md={6}>
@@ -112,7 +112,7 @@ export class Login extends React.Component<undefined, LoginState> {
                             <span>
                                 <OkDialog
                                     open={this.state.okDialogOpen}
-                                    okCallBack={this._okDialogCallBack}
+                                    okCallBack={this.okDialogCallBack}
                                     headerText={this.state.okDialogHeaderText}
                                     bodyText={this.state.okDialogBodyText}
                                     key={this.state.okDialogKey} />
@@ -124,7 +124,7 @@ export class Login extends React.Component<undefined, LoginState> {
         )
     }
 
-    _validateForm = (values) => {
+    validateForm = (values) => {
         let res = revalidator.validate(values, schema);
 
         // If the values passed validation, we return true
@@ -143,7 +143,7 @@ export class Login extends React.Component<undefined, LoginState> {
         }, {});
     }
 
-    _handleInvalidSubmit = (errors, values) => {
+    handleInvalidSubmit = (errors, values) => {
 
         console.log(values);
 
@@ -158,7 +158,7 @@ export class Login extends React.Component<undefined, LoginState> {
             });
     }
 
-    _handleValidSubmit = (values) => {
+    handleValidSubmit = (values) => {
         var logindetails = values;
         var self = this;
 
@@ -199,7 +199,7 @@ export class Login extends React.Component<undefined, LoginState> {
             });
     }
 
-    _okDialogCallBack = () => {
+    okDialogCallBack = () => {
         this.setState(
             {
                 okDialogOpen: false

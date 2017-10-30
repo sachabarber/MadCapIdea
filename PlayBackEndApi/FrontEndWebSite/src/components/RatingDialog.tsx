@@ -36,7 +36,7 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
         };
     }
 
-    _close = () => {
+    close = () => {
         this.setState(
         {
             showModal: false,
@@ -45,7 +45,7 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
         });
     }
 
-    _open = () => {
+    open = () => {
         this.setState(
         {
             showModal: true,
@@ -54,7 +54,7 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
         });
     }
 
-    _ratingChanged = (newRating) => {
+    ratingChanged = (newRating) => {
         console.log(newRating)
         this.setState(
             {
@@ -63,8 +63,8 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
             });
     }
 
-    _okClicked = () => {
-        this._close();
+    okClicked = () => {
+        this.close();
         this.props.okCallBack();
     }
 
@@ -77,11 +77,11 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
                     type='button'
                     bsSize='small'
                     bsStyle='primary'
-                    onClick={this._open}>
+                    onClick={this.open}>
                 Complete
             </Button>
 
-            <Modal show={this.state.showModal} onHide={this._close}>
+            <Modal show={this.state.showModal} onHide={this.close}>
                 <Modal.Header closeButton>
                     <Modal.Title>{ this.props.headerText }</Modal.Title>
                 </Modal.Header>
@@ -89,7 +89,7 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
                     <h4>Give your rating between 1-5</h4>
                     <h5>{this.state.ratingText}</h5>
                     <ReactStars count={5}
-                                onChange={this._ratingChanged}
+                                onChange={this.ratingChanged}
                                 size={24}
                                 color2={'#ffd700'} />
                 </Modal.Body>
@@ -97,7 +97,7 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
                     <Button type='submit'
                             bsSize='small'
                             bsStyle='primary'
-                            onClick={this._okClicked}>
+                            onClick={this.okClicked}>
                         Ok
                     </Button>
                 </Modal.Footer>

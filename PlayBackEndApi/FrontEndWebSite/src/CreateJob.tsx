@@ -16,6 +16,7 @@ import {
 import { AuthService } from "./services/AuthService";
 import { JobService } from "./services/JobService";
 import { PositionService } from "./services/PositionService";
+import { UUIDService } from "./services/UUIDService";
 import { Position } from "./domain/Position";
 import { hashHistory } from 'react-router';
 import { withGoogleMap, GoogleMap, Marker, InfoBox, OverlayView } from "react-google-maps";
@@ -174,10 +175,10 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                                                     marginBottom: 20
                                                 }} />
                                             }
-                                            onMapLoad={this._handleMapLoad}
-                                            onMapClick={this._handleMapClick}
+                                            onMapLoad={this.handleMapLoad}
+                                            onMapClick={this.handleMapClick}
                                             currentPosition={this.state.currentPosition}
-                                            onCreateJobClick={this._handleCreateJobClick}
+                                            onCreateJobClick={this.handleCreateJobClick}
                                             hasIssuedJob={this.state.hasIssuedJob}
                                         />
                                     </div>
@@ -189,7 +190,7 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                         <span>
                             <OkDialog
                                 open={this.state.okDialogOpen}
-                                okCallBack={this._okDialogCallBack}
+                                okCallBack={this.okDialogCallBack}
                                 headerText={this.state.okDialogHeaderText}
                                 bodyText={this.state.okDialogBodyText}
                                 key={this.state.okDialogKey} />
@@ -200,23 +201,25 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
         );
     }
 
-    _handleCreateJobClick = () => {
-
+    handleCreateJobClick = () => {
 
         var self = this;
         var currentUser = this._authService.user();
 
         var newJob = {
-
+            jobUUID: UUIDService.createUUID(),
             clientFullName: currentUser.fullName,
             clientEmail: currentUser.email,
+            clientPosition: {
+                latitude: self.state.currentPosition.lat,
+                longitude: self.state.currentPosition.lng
+            },
             driverFullName: '',
             driverEmail: '',
             vehicleDescription: '',
             vehicleRegistrationNumber: '',
             isAssigned: false,
             isCompleted: false
-
         }
 
         $.ajax({
@@ -227,12 +230,11 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
             dataType: 'json'
         })
         .done(function (jdata, textStatus, jqXHR) {
-
             self._jobService.storeUserIssuedJob(newJob);
             const newState = Object.assign({}, self.state, {
                 hasIssuedJob: self._jobService.hasIssuedJob()
             });
-            //self.setState(newState)
+            self.setState(newState)
             self._positionService.storeUserPosition(currentUser, self.state.currentPosition);
             hashHistory.push('/viewjob');
         })
@@ -247,20 +249,20 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
         });
     }
 
-    _okDialogCallBack = () => {
+    okDialogCallBack = () => {
         this.setState(
             {
                 okDialogOpen: false
             });
     }
 
-    _handleMapLoad = (map) => {
+    handleMapLoad = (map) => {
         if (map) {
             console.log(map.getZoom());
         }
     }
 
-    _handleMapClick = (event) => {
+    handleMapClick = (event) => {
         const newState = Object.assign({}, this.state, {
             currentPosition: new Position(event.latLng.lat(), event.latLng.lng())
         })

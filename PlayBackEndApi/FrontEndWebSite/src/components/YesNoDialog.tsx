@@ -33,21 +33,21 @@ export class YesNoDialog extends React.Component<YesNoDialogProps, YesNoDialogSt
         };
     }
 
-    _yesClicked = () => {
+    yesClicked = () => {
         this.setState({ showModal: false });
         this.props.yesCallBack();
     }
 
-    _noClicked = () => {
+    noClicked = () => {
         this.setState({ showModal: false });
         this.props.noCallBack();
     }
 
-    _close = () => {
+    close = () => {
         this.setState({ showModal: false });
     }
 
-    _open = () => {
+    open = () => {
         this.setState({ showModal: true });
     }
 
@@ -60,9 +60,9 @@ export class YesNoDialog extends React.Component<YesNoDialogProps, YesNoDialogSt
                     type='button'
                     bsSize='small'
                     bsStyle='primary'
-                    onClick={this._open}>{this.props.launchButtonText}</Button>
+                    onClick={this.open}>{this.props.launchButtonText}</Button>
 
-                <Modal show={this.state.showModal} onHide={this._close}>
+                <Modal show={this.state.showModal} onHide={this.close}>
                     <Modal.Header closeButton>
                         <Modal.Title>{ this.props.headerText }</Modal.Title>
                     </Modal.Header>
@@ -74,12 +74,12 @@ export class YesNoDialog extends React.Component<YesNoDialogProps, YesNoDialogSt
                             type='button'
                             bsSize='small'
                             bsStyle='primary'
-                            onClick={this._yesClicked}>Yes</Button>
+                            onClick={this.yesClicked}>Yes</Button>
                         <Button
                             type='button'
                             bsSize='small'
                             bsStyle='danger'
-                            onClick={this._noClicked}>Cancel</Button>
+                            onClick={this.noClicked}>Cancel</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

@@ -37,17 +37,17 @@ export class OkDialog extends React.Component<OkDialogProps, OkDialogState> {
         }
     }
 
-    _okClicked = () => {
+    okClicked = () => {
         this.setState({ showModal: false });
         this.props.okCallBack();
     }
 
-    _close = () => {
+    close = () => {
         this.setState({ showModal: false });
         this.props.okCallBack();
     }
 
-    _open = () => {
+    open = () => {
         this.setState({ showModal: true });
     }
 
@@ -55,7 +55,7 @@ export class OkDialog extends React.Component<OkDialogProps, OkDialogState> {
         return (
             <div className="leftFloat">
 
-                <Modal show={this.state.showModal} onHide={this._close}>
+                <Modal show={this.state.showModal} onHide={this.close}>
                     <Modal.Header closeButton>
                         <Modal.Title>{ this.props.headerText }</Modal.Title>
                     </Modal.Header>
@@ -67,7 +67,7 @@ export class OkDialog extends React.Component<OkDialogProps, OkDialogState> {
                             type='button'
                             bsSize='small'
                             bsStyle='primary'
-                            onClick={this._okClicked}>Ok</Button>
+                            onClick={this.okClicked}>Ok</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

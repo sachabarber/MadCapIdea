@@ -63,13 +63,13 @@ export class Logout extends React.Component<undefined, LogoutState> {
                             <YesNoDialog
                                 theId="logoutBtn"
                                 launchButtonText="Logout"
-                                yesCallBack={this._logoutYesCallBack}
-                                noCallBack={this._logoutNoCallBack}
+                                yesCallBack={this.logoutYesCallBack}
+                                noCallBack={this.logoutNoCallBack}
                                 headerText="Confirm logout" />
 
                             <OkDialog
                                 open={this.state.okDialogOpen}
-                                okCallBack={this._okDialogCallBack}
+                                okCallBack={this.okDialogCallBack}
                                 headerText={this.state.okDialogHeaderText}
                                 bodyText={this.state.okDialogBodyText}
                                 key={this.state.okDialogKey} />
@@ -80,19 +80,20 @@ export class Logout extends React.Component<undefined, LogoutState> {
         )
     }
 
-    _okDialogCallBack = () => {
+    okDialogCallBack = () => {
         this.setState(
             {
                 okDialogOpen: false
             });
     }
 
-    _logoutYesCallBack = () => {
+    logoutYesCallBack = () => {
 
         var email = this._authService.userEmail();
         this._jobService.clearUserIssuedJob();
         this._authService.clearUser();
         this._positionService.clearUserPosition(email);
+        this._positionService.clearUserJobPositions(email);
 
         this.setState(
             {
@@ -105,7 +106,8 @@ export class Logout extends React.Component<undefined, LogoutState> {
         hashHistory.push('/');
     }
 
-    _logoutNoCallBack = () => {
+    logoutNoCallBack = () => {
+
     }
 }
 

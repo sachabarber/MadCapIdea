@@ -85,9 +85,9 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
             <Form className="submittable-form-inner"
                 // Supply callbacks to both valid and invalid
                 // submit attempts
-                validateAll={this._validateForm}
-                onInvalidSubmit={this._handleInvalidSubmit}
-                onValidSubmit={this._handleValidSubmit}>
+                validateAll={this.validateForm}
+                onInvalidSubmit={this.handleInvalidSubmit}
+                onValidSubmit={this.handleValidSubmit}>
                 <Grid>
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
@@ -156,7 +156,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
                         <span>
                             <OkDialog
                                 open={this.state.okDialogOpen}
-                                okCallBack={this._okDialogCallBack}
+                                okCallBack={this.okDialogCallBack}
                                 headerText={this.state.okDialogHeaderText}
                                 bodyText={this.state.okDialogBodyText}
                                 key={this.state.okDialogKey} />
@@ -168,7 +168,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
     }
 
 
-    _validateForm = (values) => {
+    validateForm = (values) => {
         let res = revalidator.validate(values, schema);
 
         // If the values passed validation, we return true
@@ -187,7 +187,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
         }, {});
     }
 
-    _handleInvalidSubmit = (errors, values) => {
+    handleInvalidSubmit = (errors, values) => {
         // Errors is an array containing input names
         // that failed to validate
         this.setState(
@@ -199,7 +199,7 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
             });
     }
 
-    _handleValidSubmit = (values) => {
+    handleValidSubmit = (values) => {
         var driver = values;
         var self = this;
 
@@ -210,38 +210,38 @@ export class DriverRegistration extends React.Component<DriverRegistrationProps,
             contentType: "application/json; charset=utf-8",
             dataType: 'json'
         })
-            .done(function (jdata, textStatus, jqXHR) {
-                var redactedDriver = driver;
-                redactedDriver.password = "";
-                console.log("redacted ${redactedDriver}");
-                console.log(redactedDriver);
-                console.log("Auth Service");
-                console.log(self.props.authService);
-                let userProfile = {
-                    isDriver: true,
-                    user: redactedDriver
-                };
-                self.setState(
-                    {
-                        okDialogHeaderText: 'Registration Successful',
-                        okDialogBodyText: 'You are now registered',
-                        okDialogOpen: true,
-                        okDialogKey: Math.random()
-                    });
-                self.props.authService.storeUser(userProfile);
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                self.setState(
-                    {
-                        okDialogHeaderText: 'Error',
-                        okDialogBodyText: jqXHR.responseText,
-                        okDialogOpen: true,
-                        okDialogKey: Math.random()
-                    });
-            });
+        .done(function (jdata, textStatus, jqXHR) {
+            var redactedDriver = driver;
+            redactedDriver.password = "";
+            console.log("redacted ${redactedDriver}");
+            console.log(redactedDriver);
+            console.log("Auth Service");
+            console.log(self.props.authService);
+            let userProfile = {
+                isDriver: true,
+                user: redactedDriver
+            };
+            self.setState(
+                {
+                    okDialogHeaderText: 'Registration Successful',
+                    okDialogBodyText: 'You are now registered',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+            self.props.authService.storeUser(userProfile);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
     }
 
-    _okDialogCallBack = () => {
+    okDialogCallBack = () => {
         this.setState(
             {
                 okDialogOpen: false

@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 147:
+/***/ 239:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10,8 +10,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var TYPES = exports.TYPES = {
-    Foo: Symbol("Foo"),
-    SomeNumber: Symbol("SomeNumber"),
     AuthService: Symbol("AuthService"),
     JobService: Symbol("JobService"),
     JobStreamService: Symbol("JobStreamService"),
@@ -62,18 +60,18 @@ var YesNoDialog = function (_super) {
     __extends(YesNoDialog, _super);
     function YesNoDialog(props) {
         var _this = _super.call(this, props) || this;
-        _this._yesClicked = function () {
+        _this.yesClicked = function () {
             _this.setState({ showModal: false });
             _this.props.yesCallBack();
         };
-        _this._noClicked = function () {
+        _this.noClicked = function () {
             _this.setState({ showModal: false });
             _this.props.noCallBack();
         };
-        _this._close = function () {
+        _this.close = function () {
             _this.setState({ showModal: false });
         };
-        _this._open = function () {
+        _this.open = function () {
             _this.setState({ showModal: true });
         };
         console.log(_this.props);
@@ -84,7 +82,7 @@ var YesNoDialog = function (_super) {
         return _this;
     }
     YesNoDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, this.props.launchButtonText), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Are you sure?")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._yesClicked }, "Yes"), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'danger', onClick: this._noClicked }, "Cancel"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this.open }, this.props.launchButtonText), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Are you sure?")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this.yesClicked }, "Yes"), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'danger', onClick: this.noClicked }, "Cancel"))));
     };
     return YesNoDialog;
 }(React.Component);
@@ -112,7 +110,7 @@ exports.Position = Position;
 
 /***/ }),
 
-/***/ 413:
+/***/ 414:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -127,7 +125,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(389);
+var _reactMeasure = __webpack_require__(390);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
@@ -137,11 +135,13 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
+var _UUIDService = __webpack_require__(431);
+
 var _Position = __webpack_require__(241);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(388);
+var _reactGoogleMaps = __webpack_require__(389);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -188,12 +188,17 @@ var CreateJob = function (_super) {
     __extends(CreateJob, _super);
     function CreateJob(props) {
         var _this = _super.call(this, props) || this;
-        _this._handleCreateJobClick = function () {
+        _this.handleCreateJobClick = function () {
             var self = _this;
             var currentUser = _this._authService.user();
             var newJob = {
+                jobUUID: _UUIDService.UUIDService.createUUID(),
                 clientFullName: currentUser.fullName,
                 clientEmail: currentUser.email,
+                clientPosition: {
+                    latitude: self.state.currentPosition.lat,
+                    longitude: self.state.currentPosition.lng
+                },
                 driverFullName: '',
                 driverEmail: '',
                 vehicleDescription: '',
@@ -212,7 +217,7 @@ var CreateJob = function (_super) {
                 var newState = Object.assign({}, self.state, {
                     hasIssuedJob: self._jobService.hasIssuedJob()
                 });
-                //self.setState(newState)
+                self.setState(newState);
                 self._positionService.storeUserPosition(currentUser, self.state.currentPosition);
                 _reactRouter.hashHistory.push('/viewjob');
             }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -225,17 +230,17 @@ var CreateJob = function (_super) {
                 self.setState(newState);
             });
         };
-        _this._okDialogCallBack = function () {
+        _this.okDialogCallBack = function () {
             _this.setState({
                 okDialogOpen: false
             });
         };
-        _this._handleMapLoad = function (map) {
+        _this.handleMapLoad = function (map) {
             if (map) {
                 console.log(map.getZoom());
             }
         };
-        _this._handleMapClick = function (event) {
+        _this.handleMapClick = function (event) {
             var newState = Object.assign({}, _this.state, {
                 currentPosition: new _Position.Position(event.latLng.lat(), event.latLng.lng())
             });
@@ -299,8 +304,8 @@ var CreateJob = function (_super) {
                         marginLeft: 0,
                         marginRight: 0,
                         marginBottom: 20
-                    } }), onMapLoad: _this._handleMapLoad, onMapClick: _this._handleMapClick, currentPosition: _this.state.currentPosition, onCreateJobClick: _this._handleCreateJobClick, hasIssuedJob: _this.state.hasIssuedJob }));
-        }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+                    } }), onMapLoad: _this.handleMapLoad, onMapClick: _this.handleMapClick, currentPosition: _this.state.currentPosition, onCreateJobClick: _this.handleCreateJobClick, hasIssuedJob: _this.state.hasIssuedJob }));
+        }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return CreateJob;
 }(React.Component);
@@ -309,7 +314,7 @@ exports.CreateJob = CreateJob;
 
 /***/ }),
 
-/***/ 414:
+/***/ 415:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -330,9 +335,9 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactBootstrapValidation = __webpack_require__(203);
+var _reactBootstrapValidation = __webpack_require__(202);
 
-var _revalidator = __webpack_require__(239);
+var _revalidator = __webpack_require__(238);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -379,7 +384,7 @@ var Login = function (_super) {
     __extends(Login, _super);
     function Login(props) {
         var _this = _super.call(this, props) || this;
-        _this._validateForm = function (values) {
+        _this.validateForm = function (values) {
             var res = _revalidator2.default.validate(values, schema);
             // If the values passed validation, we return true
             if (res.valid) {
@@ -394,7 +399,7 @@ var Login = function (_super) {
                 return errors;
             }, {});
         };
-        _this._handleInvalidSubmit = function (errors, values) {
+        _this.handleInvalidSubmit = function (errors, values) {
             console.log(values);
             // Errors is an array containing input names
             // that failed to validate
@@ -405,7 +410,7 @@ var Login = function (_super) {
                 okDialogKey: Math.random()
             });
         };
-        _this._handleValidSubmit = function (values) {
+        _this.handleValidSubmit = function (values) {
             var logindetails = values;
             var self = _this;
             $.ajax({
@@ -438,7 +443,7 @@ var Login = function (_super) {
                 });
             });
         };
-        _this._okDialogCallBack = function () {
+        _this.okDialogCallBack = function () {
             _this.setState({
                 okDialogOpen: false
             });
@@ -460,7 +465,7 @@ var Login = function (_super) {
         , {
             // Supply callbacks to both valid and invalid
             // submit attempts
-            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "ENTER YOUR LOGIN DETAILS"), React.createElement("span", null, React.createElement("h6", null, "Or click ", React.createElement("a", { href: "#/register" }, "here"), " to register")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'checkbox', name: 'isDriver', label: 'Are you a driver?' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "loginBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Login"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))))));
+            validateAll: this.validateForm, onInvalidSubmit: this.handleInvalidSubmit, onValidSubmit: this.handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "ENTER YOUR LOGIN DETAILS"), React.createElement("span", null, React.createElement("h6", null, "Or click ", React.createElement("a", { href: "#/register" }, "here"), " to register")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'checkbox', name: 'isDriver', label: 'Are you a driver?' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "loginBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Login"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))))));
     };
     return Login;
 }(React.Component);
@@ -469,7 +474,7 @@ exports.Login = Login;
 
 /***/ }),
 
-/***/ 415:
+/***/ 416:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -517,16 +522,17 @@ var Logout = function (_super) {
     __extends(Logout, _super);
     function Logout(props) {
         var _this = _super.call(this, props) || this;
-        _this._okDialogCallBack = function () {
+        _this.okDialogCallBack = function () {
             _this.setState({
                 okDialogOpen: false
             });
         };
-        _this._logoutYesCallBack = function () {
+        _this.logoutYesCallBack = function () {
             var email = _this._authService.userEmail();
             _this._jobService.clearUserIssuedJob();
             _this._authService.clearUser();
             _this._positionService.clearUserPosition(email);
+            _this._positionService.clearUserJobPositions(email);
             _this.setState({
                 okDialogHeaderText: 'Logout',
                 okDialogBodyText: 'You have been logged out',
@@ -535,7 +541,7 @@ var Logout = function (_super) {
             });
             _reactRouter.hashHistory.push('/');
         };
-        _this._logoutNoCallBack = function () {};
+        _this.logoutNoCallBack = function () {};
         console.log(props);
         _this._authService = props.route.authService;
         _this._jobService = props.route.jobService;
@@ -552,7 +558,7 @@ var Logout = function (_super) {
         return _this;
     }
     Logout.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, React.createElement("span", null, "YOU ARE CURRENTLY LOGGED IN AS [", this._authService.userName(), "]")), React.createElement("span", null, React.createElement("h6", null, "Click the button to logout")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_YesNoDialog.YesNoDialog, { theId: "logoutBtn", launchButtonText: "Logout", yesCallBack: this._logoutYesCallBack, noCallBack: this._logoutNoCallBack, headerText: "Confirm logout" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, React.createElement("span", null, "YOU ARE CURRENTLY LOGGED IN AS [", this._authService.userName(), "]")), React.createElement("span", null, React.createElement("h6", null, "Click the button to logout")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_YesNoDialog.YesNoDialog, { theId: "logoutBtn", launchButtonText: "Logout", yesCallBack: this.logoutYesCallBack, noCallBack: this.logoutNoCallBack, headerText: "Confirm logout" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return Logout;
 }(React.Component);
@@ -560,7 +566,7 @@ exports.Logout = Logout;
 
 /***/ }),
 
-/***/ 416:
+/***/ 417:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -579,9 +585,9 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _PassengerRegistration = __webpack_require__(421);
+var _PassengerRegistration = __webpack_require__(422);
 
-var _DriverRegistration = __webpack_require__(420);
+var _DriverRegistration = __webpack_require__(421);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -613,9 +619,9 @@ var Register = function (_super) {
         return _this;
     }
     Register.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "PLEASE ENTER YOUR REGISTRATION DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h6", null, "Choose your registration type "))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonGroup, null, React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'passenger'), active: this.state.option === 'passenger' }, "Passenger"), React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this._onOptionChange.bind(this, 'driver'), active: this.state.option === 'driver' }, "Driver")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, this.state.option === 'passenger' ? React.createElement("div", null, React.createElement(_PassengerRegistration.PassengerRegistration, { authService: this._authService })) : React.createElement("div", null, React.createElement(_DriverRegistration.DriverRegistration, { authService: this._authService }))))));
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "PLEASE ENTER YOUR REGISTRATION DETAILS"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h6", null, "Choose your registration type "))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonGroup, null, React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this.onOptionChange.bind(this, 'passenger'), active: this.state.option === 'passenger' }, "Passenger"), React.createElement(_reactBootstrap.Button, { bsSize: 'small', onClick: this.onOptionChange.bind(this, 'driver'), active: this.state.option === 'driver' }, "Driver")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, this.state.option === 'passenger' ? React.createElement("div", null, React.createElement(_PassengerRegistration.PassengerRegistration, { authService: this._authService })) : React.createElement("div", null, React.createElement(_DriverRegistration.DriverRegistration, { authService: this._authService }))))));
     };
-    Register.prototype._onOptionChange = function (option) {
+    Register.prototype.onOptionChange = function (option) {
         this.setState({
             option: option
         });
@@ -626,7 +632,7 @@ exports.Register = Register;
 
 /***/ }),
 
-/***/ 417:
+/***/ 418:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -641,11 +647,15 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(389);
+var _lodash = __webpack_require__(336);
+
+var _ = _interopRequireWildcard(_lodash);
+
+var _reactMeasure = __webpack_require__(390);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
-var _RatingDialog = __webpack_require__(422);
+var _RatingDialog = __webpack_require__(423);
 
 var _YesNoDialog = __webpack_require__(240);
 
@@ -657,9 +667,11 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _Position = __webpack_require__(241);
 
+var _PositionMarker = __webpack_require__(425);
+
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(388);
+var _reactGoogleMaps = __webpack_require__(389);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -692,49 +704,79 @@ var STYLES = {
 var GetPixelPositionOffset = function GetPixelPositionOffset(width, height) {
     return { x: -(width / 2), y: -(height / 2) };
 };
+var GetAcceptButtonCss = function GetAcceptButtonCss(isDriver) {
+    return isDriver ? "displayNone" : "displayBlock";
+};
 var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
     return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 14, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, props.markers.map(function (marker, index) {
-        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
+        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { className: GetAcceptButtonCss(marker.isDriver), type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
                 return props.onMarkerClick(marker);
             }, value: 'Accept' }, "Accept")));
     }));
 });
-var PositionMarker = function () {
-    function PositionMarker(position, key, icon) {
-        this.position = position;
-        this.key = key;
-        this.icon = icon;
-    }
-    return PositionMarker;
-}();
 var ViewJob = function (_super) {
     __extends(ViewJob, _super);
     function ViewJob(props) {
         var _this = _super.call(this, props) || this;
-        _this._handleMarkerClick = function (targetMarker) {
+        _this.handleMarkerClick = function (targetMarker) {
             console.log('button on overlay clicked:' + targetMarker.key);
         };
-        _this._handleMapClick = function (event) {
-            //TODO : This should go through ALL the current markers find the one that
-            //matches current user, and update its position, and send event out to server
-            var newState = Object.assign({}, _this.state, {
-                currentPosition: new _Position.Position(event.latLng.lat(), event.latLng.lng())
-            });
-            _this.setState(newState);
+        _this.handleMapClick = function (event) {
+            var currentUser = _this._authService.user();
+            var isDriver = _this._authService.isDriver();
+            var matchedMarker = _.find(_this.state.markers, { 'email': currentUser.email });
+            if (matchedMarker != undefined) {
+                var newMarkersList = _this.state.markers;
+                _.remove(newMarkersList, function (n) {
+                    return n.email === matchedMarker.email;
+                });
+                matchedMarker.position = new _Position.Position(event.latLng.lat(), event.latLng.lng());
+                newMarkersList.push(matchedMarker);
+                var newState = Object.assign({}, _this.state, {
+                    currentPosition: new _Position.Position(event.latLng.lat(), event.latLng.lng()),
+                    markers: newMarkersList
+                });
+                _this.setState(newState);
+            } else {
+                if (isDriver) {
+                    var newDriverMarker = _this.createMarker(currentUser.fullName, currentUser.email, isDriver, event);
+                    var newMarkersList = _this.state.markers;
+                    newMarkersList.push(newDriverMarker);
+                    var newState = Object.assign({}, _this.state, {
+                        currentPosition: new _Position.Position(event.latLng.lat(), event.latLng.lng()),
+                        markers: newMarkersList
+                    });
+                    _this.setState(newState);
+                }
+            }
+            _this._positionService.clearUserJobPositions(currentUser.email);
+            _this._positionService.storeUserJobPositions(currentUser.email, _this.state.markers);
+            //TODO : We should push out Job here based on whether current user was driver/client
+            //TODO : We should push out Job here based on whether current user was driver/client
+            //TODO : We should push out Job here based on whether current user was driver/client
+            //TODO : We should push out Job here based on whether current user was driver/client
+            //TODO : We should push out Job here based on whether current user was driver/client
         };
-        _this._addMarkerForJob = function (jobArgs) {
+        _this.createMarker = function (fullname, email, isDriver, event) {
+            return new _PositionMarker.PositionMarker(fullname, new _Position.Position(event.latLng.lat(), event.latLng.lng()), fullname, email, _this.createIcon(isDriver), isDriver);
+        };
+        _this.createIcon = function (isDriver) {
+            return isDriver ? '/assets/images/driver.png' : '/assets/images/passenger.png';
+        };
+        _this.addMarkerForJob = function (jobArgs) {
             //TODO : should see if the client/driver for the job is in the list if it is remove it
             //TODO : add it
+            //TODO : Update the list of position markers in the PositionService
         };
-        _this._shouldShowMarkerForJob = function (jobArgs) {
+        _this.shouldShowMarkerForJob = function (jobArgs) {
             //TODO
             //1. If the current job client is the current client logged in
             //2. If the current job driver is the current driver logged in
             //3. If the job isAssigned and its for the current logged in client/driver
-            //4. Or if the job is unassigned and ithere is no other active job for this client/driver
+            //4. Or if the job is unassigned and if there is no other active job for this client/driver
             return true;
         };
-        _this._ratingsDialogOkCallBack = function () {
+        _this.ratingsDialogOkCallBack = function () {
             console.log('RATINGS OK CLICKED');
             _this.setState({
                 okDialogHeaderText: 'Ratings',
@@ -743,7 +785,7 @@ var ViewJob = function (_super) {
                 okDialogKey: Math.random()
             });
         };
-        _this._jobCancelledCallBack = function () {
+        _this.jobCancelledCallBack = function () {
             console.log('YES CLICKED');
             _this.setState({
                 okDialogHeaderText: 'Job Cancellaton',
@@ -752,7 +794,7 @@ var ViewJob = function (_super) {
                 okDialogKey: Math.random()
             });
         };
-        _this._jobNotCancelledCallBack = function () {
+        _this.jobNotCancelledCallBack = function () {
             console.log('NO CLICKED');
             _this.setState({
                 okDialogHeaderText: 'Job Cancellaton',
@@ -761,7 +803,7 @@ var ViewJob = function (_super) {
                 okDialogKey: Math.random()
             });
         };
-        _this._okDialogCallBack = function () {
+        _this.okDialogCallBack = function () {
             console.log('OK on OkDialog CLICKED');
             _this.setState({
                 okDialogOpen: false
@@ -773,19 +815,39 @@ var ViewJob = function (_super) {
         if (!_this._authService.isAuthenticated()) {
             _reactRouter.hashHistory.push('/');
         }
+        //TODO : remove this
+        //this._positionService.storeUserJobPositions(
+        //    this._authService.userEmail(),
+        //    [
+        //        new PositionMarker(
+        //            'driver_1',
+        //            new Position(50.8202949, -0.1406958),
+        //            "driver_1",
+        //            "drive1@here.com",
+        //            '/assets/images/driver.png',
+        //            true
+        //        ),
+        //        new PositionMarker(
+        //            'driver_2',
+        //            new Position(50.8128187, -0.1361418),
+        //            "driver_2",
+        //            "drive2@here.com",
+        //            '/assets/images/driver.png',
+        //            true
+        //        )
+        //    ]);
+        var savedMarkers = new Array();
+        if (_this._positionService.hasJobPositions(_this._authService.userEmail())) {
+            savedMarkers = _this._positionService.userJobPositions(_this._authService.userEmail());
+        }
         _this.state = {
-            //TODO : 1. This should not be hard coded
-            //TODO : 2. We should push out current job when we FIRST LOAD this page
-            //          if we are a client, and we should enrich it if we are a driver
-            //       3. The list of markers should be worked out again every time based
-            //          on RX stream messages
-            markers: [new PositionMarker(new _Position.Position(50.8202949, -0.1406958), 'driver_1', '/assets/images/driver.png'), new PositionMarker(new _Position.Position(50.8128187, -0.1361418), 'driver_2', '/assets/images/driver.png')],
+            markers: savedMarkers,
             okDialogHeaderText: '',
             okDialogBodyText: '',
             okDialogOpen: false,
             okDialogKey: 0,
             dimensions: { width: -1, height: -1 },
-            currentPosition: _this._positionService.currentPosition(_this._authService.userEmail())
+            currentPosition: _this._authService.isDriver() ? null : _this._positionService.currentPosition(_this._authService.userEmail())
         };
         return _this;
     }
@@ -807,6 +869,7 @@ var ViewJob = function (_super) {
     };
     ViewJob.prototype.componentWillUnmount = function () {
         this._subscription.dispose();
+        this._positionService.storeUserJobPositions(this._authService.user, this.state.markers);
     };
     ViewJob.prototype.render = function () {
         var _this = this;
@@ -841,8 +904,8 @@ var ViewJob = function (_super) {
                         marginLeft: 0,
                         marginRight: 0,
                         marginBottom: 20
-                    } }), markers: _this.state.markers, onMapClick: _this._handleMapClick, onMarkerClick: _this._handleMarkerClick }));
-        }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this._ratingsDialogOkCallBack }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this._jobCancelledCallBack, noCallBack: this._jobNotCancelledCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+                    } }), markers: _this.state.markers, onMapClick: _this.handleMapClick, onMarkerClick: _this.handleMarkerClick }));
+        }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this.ratingsDialogOkCallBack }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this.jobCancelledCallBack, noCallBack: this.jobNotCancelledCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return ViewJob;
 }(React.Component);
@@ -850,7 +913,7 @@ exports.ViewJob = ViewJob;
 
 /***/ }),
 
-/***/ 418:
+/***/ 419:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -865,7 +928,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(723);
+var _lodash = __webpack_require__(336);
 
 var _ = _interopRequireWildcard(_lodash);
 
@@ -933,7 +996,7 @@ var ViewRating = function (_super) {
                 });
             });
         };
-        _this._okDialogCallBack = function () {
+        _this.okDialogCallBack = function () {
             _this.setState({
                 okDialogOpen: false
             });
@@ -963,7 +1026,7 @@ var ViewRating = function (_super) {
     };
     ViewRating.prototype.render = function () {
         var rowComponents = this.generateRows();
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 6, md: 6 }, React.createElement("div", null, React.createElement("h4", null, "YOUR OVERALL RATING ", React.createElement(_reactBootstrap.Label, null, this.state.overallRating))))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h6", null, "The finer details of your ratings are shown below"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("div", { className: "table-responsive" }, React.createElement("table", { className: "table table-striped table-bordered table-condensed factTable" }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "Rated By"), React.createElement("th", null, "Rating Given"))), React.createElement("tbody", null, rowComponents))))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 6, md: 6 }, React.createElement("div", null, React.createElement("h4", null, "YOUR OVERALL RATING ", React.createElement(_reactBootstrap.Label, null, this.state.overallRating))))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h6", null, "The finer details of your ratings are shown below"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("div", { className: "table-responsive" }, React.createElement("table", { className: "table table-striped table-bordered table-condensed factTable" }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "Rated By"), React.createElement("th", null, "Rating Given"))), React.createElement("tbody", null, rowComponents))))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return ViewRating;
 }(React.Component);
@@ -972,7 +1035,7 @@ exports.ViewRating = ViewRating;
 
 /***/ }),
 
-/***/ 419:
+/***/ 420:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -983,21 +1046,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ContainerOperations = undefined;
 
-__webpack_require__(928);
+__webpack_require__(929);
 
-var _inversify = __webpack_require__(81);
+var _inversify = __webpack_require__(96);
 
-var _types = __webpack_require__(147);
+var _types = __webpack_require__(239);
 
-var _Foo = __webpack_require__(423);
+var _AuthService = __webpack_require__(427);
 
-var _AuthService = __webpack_require__(426);
+var _JobService = __webpack_require__(428);
 
-var _JobService = __webpack_require__(427);
+var _JobStreamService = __webpack_require__(429);
 
-var _JobStreamService = __webpack_require__(428);
-
-var _PositionService = __webpack_require__(429);
+var _PositionService = __webpack_require__(430);
 
 var ContainerOperations = function () {
     function ContainerOperations() {
@@ -1011,8 +1072,6 @@ var ContainerOperations = function () {
         return ContainerOperations.instance;
     };
     ContainerOperations.prototype.createInversifyContainer = function () {
-        this.container.bind(_types.TYPES.SomeNumber).toConstantValue(22);
-        this.container.bind(_types.TYPES.Foo).to(_Foo.Foo);
         this.container.bind(_types.TYPES.AuthService).to(_AuthService.AuthService);
         this.container.bind(_types.TYPES.JobService).to(_JobService.JobService);
         this.container.bind(_types.TYPES.JobStreamService).to(_JobStreamService.JobStreamService);
@@ -1031,7 +1090,7 @@ exports.ContainerOperations = ContainerOperations;
 
 /***/ }),
 
-/***/ 420:
+/***/ 421:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1054,9 +1113,9 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactBootstrapValidation = __webpack_require__(203);
+var _reactBootstrapValidation = __webpack_require__(202);
 
-var _revalidator = __webpack_require__(239);
+var _revalidator = __webpack_require__(238);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -1124,7 +1183,7 @@ var DriverRegistration = function (_super) {
     __extends(DriverRegistration, _super);
     function DriverRegistration(props) {
         var _this = _super.call(this, props) || this;
-        _this._validateForm = function (values) {
+        _this.validateForm = function (values) {
             var res = _revalidator2.default.validate(values, schema);
             // If the values passed validation, we return true
             if (res.valid) {
@@ -1139,7 +1198,7 @@ var DriverRegistration = function (_super) {
                 return errors;
             }, {});
         };
-        _this._handleInvalidSubmit = function (errors, values) {
+        _this.handleInvalidSubmit = function (errors, values) {
             // Errors is an array containing input names
             // that failed to validate
             _this.setState({
@@ -1149,7 +1208,7 @@ var DriverRegistration = function (_super) {
                 okDialogKey: Math.random()
             });
         };
-        _this._handleValidSubmit = function (values) {
+        _this.handleValidSubmit = function (values) {
             var driver = values;
             var self = _this;
             $.ajax({
@@ -1185,7 +1244,7 @@ var DriverRegistration = function (_super) {
                 });
             });
         };
-        _this._okDialogCallBack = function () {
+        _this.okDialogCallBack = function () {
             _this.setState({
                 okDialogOpen: false
             });
@@ -1206,7 +1265,7 @@ var DriverRegistration = function (_super) {
         return React.createElement(_reactBootstrapValidation.Form, { className: "submittable-form-inner",
             // Supply callbacks to both valid and invalid
             // submit attempts
-            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Driver details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullName', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Vehicle details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Description', name: 'vehicleDescription', errorHelp: 'Vehicle description is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Registration Number', name: 'vehicleRegistrationNumber', errorHelp: 'Vehicle registration number is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+            validateAll: this.validateForm, onInvalidSubmit: this.handleInvalidSubmit, onValidSubmit: this.handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Driver details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullName', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', name: 'password', label: 'Password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Vehicle details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Description', name: 'vehicleDescription', errorHelp: 'Vehicle description is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Vehicle Registration Number', name: 'vehicleRegistrationNumber', errorHelp: 'Vehicle registration number is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return DriverRegistration;
 }(React.Component);
@@ -1215,7 +1274,7 @@ exports.DriverRegistration = DriverRegistration;
 
 /***/ }),
 
-/***/ 421:
+/***/ 422:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1238,9 +1297,9 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactBootstrapValidation = __webpack_require__(203);
+var _reactBootstrapValidation = __webpack_require__(202);
 
-var _revalidator = __webpack_require__(239);
+var _revalidator = __webpack_require__(238);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -1294,7 +1353,7 @@ var PassengerRegistration = function (_super) {
     __extends(PassengerRegistration, _super);
     function PassengerRegistration(props) {
         var _this = _super.call(this, props) || this;
-        _this._validateForm = function (values) {
+        _this.validateForm = function (values) {
             var res = _revalidator2.default.validate(values, schema);
             // If the values passed validation, we return true
             if (res.valid) {
@@ -1309,7 +1368,7 @@ var PassengerRegistration = function (_super) {
                 return errors;
             }, {});
         };
-        _this._handleInvalidSubmit = function (errors, values) {
+        _this.handleInvalidSubmit = function (errors, values) {
             // Errors is an array containing input names
             // that failed to validate
             _this.setState({
@@ -1319,7 +1378,7 @@ var PassengerRegistration = function (_super) {
                 okDialogKey: Math.random()
             });
         };
-        _this._handleValidSubmit = function (values) {
+        _this.handleValidSubmit = function (values) {
             var passenger = values;
             var self = _this;
             $.ajax({
@@ -1356,7 +1415,7 @@ var PassengerRegistration = function (_super) {
                 });
             });
         };
-        _this._okDialogCallBack = function () {
+        _this.okDialogCallBack = function () {
             _this.setState({
                 okDialogOpen: false
             });
@@ -1377,7 +1436,7 @@ var PassengerRegistration = function (_super) {
         return React.createElement(_reactBootstrapValidation.Form, { className: "submittable-form-inner",
             // Supply callbacks to both valid and invalid
             // submit attempts
-            validateAll: this._validateForm, onInvalidSubmit: this._handleInvalidSubmit, onValidSubmit: this._handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Passenger details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullName', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', label: 'Password', name: 'password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this._okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+            validateAll: this.validateForm, onInvalidSubmit: this.handleInvalidSubmit, onValidSubmit: this.handleValidSubmit }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "Passenger details"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'FullName', name: 'fullName', errorHelp: 'FullName is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'text', label: 'Email', name: 'email', errorHelp: 'Email address is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrapValidation.ValidatedInput, { type: 'password', label: 'Password', name: 'password', errorHelp: 'Password is invalid' }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactBootstrap.ButtonInput, { id: "registerBtn", type: 'submit', bsSize: 'small', bsStyle: 'primary', value: 'Register' }, "Register"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return PassengerRegistration;
 }(React.Component);
@@ -1386,7 +1445,7 @@ exports.PassengerRegistration = PassengerRegistration;
 
 /***/ }),
 
-/***/ 422:
+/***/ 423:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1405,7 +1464,7 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactStars = __webpack_require__(914);
+var _reactStars = __webpack_require__(915);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -1434,29 +1493,29 @@ var RatingDialog = function (_super) {
     __extends(RatingDialog, _super);
     function RatingDialog(props) {
         var _this = _super.call(this, props) || this;
-        _this._close = function () {
+        _this.close = function () {
             _this.setState({
                 showModal: false,
                 rating: 0,
                 ratingText: ''
             });
         };
-        _this._open = function () {
+        _this.open = function () {
             _this.setState({
                 showModal: true,
                 rating: 0,
                 ratingText: 'Current rating 0'
             });
         };
-        _this._ratingChanged = function (newRating) {
+        _this.ratingChanged = function (newRating) {
             console.log(newRating);
             _this.setState({
                 rating: newRating,
                 ratingText: 'Current rating ' + newRating
             });
         };
-        _this._okClicked = function () {
-            _this._close();
+        _this.okClicked = function () {
+            _this.close();
             _this.props.okCallBack();
         };
         console.log(_this.props);
@@ -1469,59 +1528,11 @@ var RatingDialog = function (_super) {
         return _this;
     }
     RatingDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement("h5", null, this.state.ratingText), React.createElement(_reactStars2.default, { count: 5, onChange: this._ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this.open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement("h5", null, this.state.ratingText), React.createElement(_reactStars2.default, { count: 5, onChange: this.ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this.okClicked }, "Ok"))));
     };
     return RatingDialog;
 }(React.Component);
 exports.RatingDialog = RatingDialog;
-
-/***/ }),
-
-/***/ 423:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Foo = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _inversify = __webpack_require__(81);
-
-var _types = __webpack_require__(147);
-
-var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
-    var c = arguments.length,
-        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-        d;
-    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
-        if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    }return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = undefined && undefined.__metadata || function (k, v) {
-    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = undefined && undefined.__param || function (paramIndex, decorator) {
-    return function (target, key) {
-        decorator(target, key, paramIndex);
-    };
-};
-
-var Foo = function () {
-    function Foo(num) {
-        this._num = num;
-    }
-    Foo.prototype.getNum = function () {
-        return this._num * 2;
-    };
-    return Foo;
-}();
-exports.Foo = Foo = __decorate([(0, _inversify.injectable)(), __param(0, (0, _inversify.inject)(_types.TYPES.SomeNumber)), __metadata("design:paramtypes", [Number])], Foo);
-exports.Foo = Foo;
 
 /***/ }),
 
@@ -1550,6 +1561,30 @@ exports.JobEventArgs = JobEventArgs;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var PositionMarker = function () {
+    function PositionMarker(key, position, name, email, icon, isDriver) {
+        this.key = key;
+        this.position = position;
+        this.name = name;
+        this.email = email;
+        this.icon = icon;
+        this.isDriver = isDriver;
+    }
+    return PositionMarker;
+}();
+exports.PositionMarker = PositionMarker;
+
+/***/ }),
+
+/***/ 426:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
@@ -1564,21 +1599,21 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _Login = __webpack_require__(414);
+var _Login = __webpack_require__(415);
 
-var _Logout = __webpack_require__(415);
+var _Logout = __webpack_require__(416);
 
-var _Register = __webpack_require__(416);
+var _Register = __webpack_require__(417);
 
-var _CreateJob = __webpack_require__(413);
+var _CreateJob = __webpack_require__(414);
 
-var _ViewJob = __webpack_require__(417);
+var _ViewJob = __webpack_require__(418);
 
-var _ViewRating = __webpack_require__(418);
+var _ViewRating = __webpack_require__(419);
 
-var _ContainerOperations = __webpack_require__(419);
+var _ContainerOperations = __webpack_require__(420);
 
-var _types = __webpack_require__(147);
+var _types = __webpack_require__(239);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1649,7 +1684,7 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ }),
 
-/***/ 426:
+/***/ 427:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1662,9 +1697,9 @@ exports.AuthService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(81);
+var _inversify = __webpack_require__(96);
 
-var _rx = __webpack_require__(411);
+var _rx = __webpack_require__(412);
 
 var _rx2 = _interopRequireDefault(_rx);
 
@@ -1727,7 +1762,7 @@ exports.AuthService = AuthService;
 
 /***/ }),
 
-/***/ 427:
+/***/ 428:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1740,7 +1775,7 @@ exports.JobService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(81);
+var _inversify = __webpack_require__(96);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1782,7 +1817,7 @@ exports.JobService = JobService;
 
 /***/ }),
 
-/***/ 428:
+/***/ 429:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1795,11 +1830,11 @@ exports.JobStreamService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(81);
+var _inversify = __webpack_require__(96);
 
 var _JobEventArgs = __webpack_require__(424);
 
-var _rx = __webpack_require__(411);
+var _rx = __webpack_require__(412);
 
 var _rx2 = _interopRequireDefault(_rx);
 
@@ -1838,7 +1873,7 @@ exports.JobStreamService = JobStreamService;
 
 /***/ }),
 
-/***/ 429:
+/***/ 430:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1851,7 +1886,7 @@ exports.PositionService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(81);
+var _inversify = __webpack_require__(96);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1866,10 +1901,35 @@ var __metadata = undefined && undefined.__metadata || function (k, v) {
 };
 
 var PositionService = function () {
+    //markers: Array<PositionMarker>;
     function PositionService() {
+        this.clearUserJobPositions = function (email) {
+            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+            sessionStorage.removeItem(keyCurrentUserJobPositions);
+        };
+        this.storeUserJobPositions = function (currentUser, jobPositions) {
+            if (currentUser == null || currentUser == undefined) return;
+            if (jobPositions == null || jobPositions == undefined) return;
+            var currentUsersJobPositions = {
+                currentUser: currentUser,
+                jobPositions: jobPositions
+            };
+            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + currentUser.email;
+            sessionStorage.setItem(keyCurrentUserJobPositions, JSON.stringify(currentUsersJobPositions));
+        };
+        this.userJobPositions = function (email) {
+            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+            var currentUserJobPositions = JSON.parse(sessionStorage.getItem(keyCurrentUserJobPositions));
+            return currentUserJobPositions.jobPositions;
+        };
+        this.hasJobPositions = function (email) {
+            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+            var currentUserJobPositions = JSON.parse(sessionStorage.getItem(keyCurrentUserJobPositions));
+            return currentUserJobPositions != null && currentUserJobPositions != undefined;
+        };
         this.clearUserPosition = function (email) {
-            var key = 'currentUserPosition_' + email;
-            sessionStorage.removeItem(key);
+            var keyCurrentUserPosition = 'currentUserPosition_' + email;
+            sessionStorage.removeItem(keyCurrentUserPosition);
         };
         this.storeUserPosition = function (currentUser, position) {
             if (currentUser == null || currentUser == undefined) return;
@@ -1878,17 +1938,17 @@ var PositionService = function () {
                 currentUser: currentUser,
                 position: position
             };
-            var key = 'currentUserPosition_' + currentUser.email;
-            sessionStorage.setItem(key, JSON.stringify(currentUsersPosition));
+            var keyCurrentUserPosition = 'currentUserPosition_' + currentUser.email;
+            sessionStorage.setItem(keyCurrentUserPosition, JSON.stringify(currentUsersPosition));
         };
         this.currentPosition = function (email) {
-            var key = 'currentUserPosition_' + email;
-            var currentUsersPosition = JSON.parse(sessionStorage.getItem(key));
+            var keyCurrentUserPosition = 'currentUserPosition_' + email;
+            var currentUsersPosition = JSON.parse(sessionStorage.getItem(keyCurrentUserPosition));
             return currentUsersPosition.position;
         };
         this.hasPosition = function (email) {
-            var key = 'currentUserPosition_' + email;
-            var currentUsersPosition = JSON.parse(sessionStorage.getItem(key));
+            var keyCurrentUserPosition = 'currentUserPosition_' + email;
+            var currentUsersPosition = JSON.parse(sessionStorage.getItem(keyCurrentUserPosition));
             return currentUsersPosition != null && currentUsersPosition != undefined;
         };
     }
@@ -1896,6 +1956,34 @@ var PositionService = function () {
 }();
 exports.PositionService = PositionService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], PositionService);
 exports.PositionService = PositionService;
+
+/***/ }),
+
+/***/ 431:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var UUIDService = function () {
+    function UUIDService() {}
+    return UUIDService;
+}();
+exports.UUIDService = UUIDService;
+
+UUIDService.createUUID = function () {
+    var result, i, j;
+    result = '';
+    for (j = 0; j < 32; j++) {
+        if (j == 8 || j == 12 || j == 16 || j == 20) result = result + '-';
+        i = Math.floor(Math.random() * 16).toString(16).toUpperCase();
+        result = result + i;
+    }
+    return result;
+};
 
 /***/ }),
 
@@ -1941,15 +2029,15 @@ var OkDialog = function (_super) {
     __extends(OkDialog, _super);
     function OkDialog(props) {
         var _this = _super.call(this, props) || this;
-        _this._okClicked = function () {
+        _this.okClicked = function () {
             _this.setState({ showModal: false });
             _this.props.okCallBack();
         };
-        _this._close = function () {
+        _this.close = function () {
             _this.setState({ showModal: false });
             _this.props.okCallBack();
         };
-        _this._open = function () {
+        _this.open = function () {
             _this.setState({ showModal: true });
         };
         //set initial state
@@ -1964,7 +2052,7 @@ var OkDialog = function (_super) {
         }
     };
     OkDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this._close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, this.props.bodyText)), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this._okClicked }, "Ok"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, this.props.bodyText)), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this.okClicked }, "Ok"))));
     };
     return OkDialog;
 }(React.Component);
@@ -1972,5 +2060,5 @@ exports.OkDialog = OkDialog;
 
 /***/ })
 
-},[425]);
-//# sourceMappingURL=index.bundle.9884a62fba3c15ff031a.js.map
+},[426]);
+//# sourceMappingURL=index.bundle.2299a41e2e3f712785de.js.map

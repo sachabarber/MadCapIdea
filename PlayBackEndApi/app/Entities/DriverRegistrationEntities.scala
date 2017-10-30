@@ -28,7 +28,7 @@ object DriverRegistrationJsonFormatters {
   }
 
   implicit val driverRegistrationReads: Reads[DriverRegistration] = (
-    (JsPath \ "fullName").read[String] and
+      (JsPath \ "fullName").read[String] and
       (JsPath \ "email").read[String] and
       (JsPath \ "password").read[String] and
       (JsPath \ "vehicleDescription").read[String] and

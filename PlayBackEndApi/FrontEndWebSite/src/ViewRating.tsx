@@ -72,27 +72,26 @@ export class ViewRating extends React.Component<undefined, ViewRatingState> {
             contentType: "application/json; charset=utf-8",
             dataType: 'json'
         })
-            .done(function (jdata, textStatus, jqXHR) {
+        .done(function (jdata, textStatus, jqXHR) {
 
-                console.log("result of GET rating/byemail");
-                console.log(jqXHR.responseText);
-                let ratingsObtained = JSON.parse(jqXHR.responseText);
-                self.setState(
-                    {
-                        overallRating: _.sumBy(ratingsObtained, 'score'),
-                        ratings: ratingsObtained
-                    });
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                self.setState(
-                    {
-                        okDialogHeaderText: 'Error',
-                        okDialogBodyText: 'Could not load Ratings',
-                        okDialogOpen: true,
-                        okDialogKey: Math.random()
-                    });
-            });
-
+            console.log("result of GET rating/byemail");
+            console.log(jqXHR.responseText);
+            let ratingsObtained = JSON.parse(jqXHR.responseText);
+            self.setState(
+                {
+                    overallRating: _.sumBy(ratingsObtained, 'score'),
+                    ratings: ratingsObtained
+                });
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: 'Could not load Ratings',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
     }
 
     componentDidMount() {
@@ -139,7 +138,7 @@ export class ViewRating extends React.Component<undefined, ViewRatingState> {
                         <span>
                             <OkDialog
                                 open={this.state.okDialogOpen}
-                                okCallBack={this._okDialogCallBack}
+                                okCallBack={this.okDialogCallBack}
                                 headerText={this.state.okDialogHeaderText}
                                 bodyText={this.state.okDialogBodyText}
                                 key={this.state.okDialogKey} />
@@ -150,7 +149,7 @@ export class ViewRating extends React.Component<undefined, ViewRatingState> {
         )
     }
 
-    _okDialogCallBack = () => {
+    okDialogCallBack = () => {
         this.setState(
             {
                 okDialogOpen: false

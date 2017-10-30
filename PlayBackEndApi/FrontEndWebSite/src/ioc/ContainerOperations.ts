@@ -1,7 +1,6 @@
 ﻿import "reflect-metadata";
 import { Container } from "inversify";
 import { TYPES } from "../types";
-import { Foo } from "../domain/Foo";
 import { AuthService } from "../services/AuthService";
 import { JobService } from "../services/JobService";
 import { JobStreamService } from "../services/JobStreamService";
@@ -25,8 +24,6 @@ export class ContainerOperations {
     }
 
     private createInversifyContainer() {
-        this.container.bind<number>(TYPES.SomeNumber).toConstantValue(22);
-        this.container.bind<Foo>(TYPES.Foo).to(Foo);
         this.container.bind<AuthService>(TYPES.AuthService).to(AuthService);
         this.container.bind<JobService>(TYPES.JobService).to(JobService);
         this.container.bind<JobStreamService>(TYPES.JobStreamService).to(JobStreamService);

@@ -49,8 +49,8 @@ export class Register extends React.Component<undefined, RegisterState> {
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
                             <ButtonGroup>
-                                <Button bsSize='small' onClick={this._onOptionChange.bind(this, 'passenger')} active={this.state.option === 'passenger'}>Passenger</Button>
-                                <Button bsSize='small' onClick={this._onOptionChange.bind(this, 'driver')} active={this.state.option === 'driver'}>Driver</Button>
+                                <Button bsSize='small' onClick={this.onOptionChange.bind(this, 'passenger')} active={this.state.option === 'passenger'}>Passenger</Button>
+                                <Button bsSize='small' onClick={this.onOptionChange.bind(this, 'driver')} active={this.state.option === 'driver'}>Driver</Button>
                             </ButtonGroup>
                         </Col>
                     </Row>
@@ -67,7 +67,7 @@ export class Register extends React.Component<undefined, RegisterState> {
         )
     }
 
-    _onOptionChange(option) {
+    onOptionChange(option) {
         this.setState({
             option: option
         });

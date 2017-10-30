@@ -33,4 +33,10 @@ body {
 #comet {
   display: none; }
 
-/*# sourceMappingURL=indexCss.bundle.9884a62fba3c15ff031a.css.map*/
+.displayNone {
+  display: none; }
+
+.displayBlock {
+  display: block; }
+
+/*# sourceMappingURL=indexCss.bundle.2299a41e2e3f712785de.css.map*/
