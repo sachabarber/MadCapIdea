@@ -153,6 +153,7 @@ ReactDOM.render((
                 path="/viewjob"
                 component={ViewJob}
                 authService={authService}
+                jobService={jobService}
                 jobStreamService={jobStreamService}
                 positionService={positionService} />
             <Route

@@ -20,6 +20,7 @@ import {
     OverlayTrigger
 } from "react-bootstrap";
 import { AuthService } from "./services/AuthService";
+import { JobService } from "./services/JobService";
 import { JobStreamService } from "./services/JobStreamService";
 import { PositionService } from "./services/PositionService";
 import { Position } from "./domain/Position";
@@ -43,7 +44,6 @@ const GetPixelPositionOffset = (width, height) => {
 const GetAcceptButtonCss = (isDriver:boolean): string => {
     return isDriver ? "displayNone" : "displayBlock";
 }
-
 
 const ViewJobGoogleMap = withGoogleMap(props => (
 
@@ -92,6 +92,7 @@ export interface ViewJobState {
 export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     private _authService: AuthService;
+    private _jobService: JobService;
     private _jobStreamService: JobStreamService;
     private _positionService: PositionService;
     private _subscription: any; 
@@ -100,34 +101,12 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         super(props);
         this._authService = props.route.authService;
         this._jobStreamService = props.route.jobStreamService;
+        this._jobService = props.route.jobService;
         this._positionService = props.route.positionService;
         
         if (!this._authService.isAuthenticated()) {
             hashHistory.push('/');
         }
-
-        //TODO : remove this
-        //this._positionService.storeUserJobPositions(
-        //    this._authService.userEmail(),
-        //    [
-        //        new PositionMarker(
-        //            'driver_1',
-        //            new Position(50.8202949, -0.1406958),
-        //            "driver_1",
-        //            "drive1@here.com",
-        //            '/assets/images/driver.png',
-        //            true
-        //        ),
-        //        new PositionMarker(
-        //            'driver_2',
-        //            new Position(50.8128187, -0.1361418),
-        //            "driver_2",
-        //            "drive2@here.com",
-        //            '/assets/images/driver.png',
-        //            true
-        //        )
-        //    ]);
-
 
         let savedMarkers: Array<PositionMarker> = new Array<PositionMarker>();
         if (this._positionService.hasJobPositions(this._authService.userEmail())) {
@@ -148,18 +127,21 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     }
 
     componentWillMount() {
+        var self = this;
         this._subscription =
             this._jobStreamService.getJobStream()
+            .where(function (x, idx, obs) {
+                return self.shouldShowMarkerForJob(x.detail);
+            })
             .subscribe(
-            jobArgs => {
+                jobArgs => {
 
-                    //TODO : 1. This should not be hard coded
-                    //TODO : 2. We should push out current job when we FIRST LOAD this page
-                    //          if we are a client, and we should enrich it if we are a driver
-                    //       3. The list of markers should be worked out again every time based
-                    //          on RX stream messages
                     console.log('RX saw onJobChanged');
                     console.log('RX x = ', jobArgs.detail);
+
+                    this._jobService.clearUserIssuedJob();
+                    this._jobService.storeUserIssuedJob(jobArgs.detail);
+                    this.addMarkerForJob(jobArgs.detail);
                 },
                 error => {
                     console.log('RX saw ERROR');
@@ -175,7 +157,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         this._subscription.dispose();
         this._positionService.storeUserJobPositions(this._authService.user, this.state.markers);
     }
-
 
     render() {
 
@@ -267,6 +248,13 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     }
 
     handleMarkerClick = (targetMarker) => {
+
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
         console.log('button on overlay clicked:' + targetMarker.key);
     }
 
@@ -275,7 +263,12 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         let currentUser = this._authService.user();
         let isDriver = this._authService.isDriver();
         let matchedMarker = _.find(this.state.markers, { 'email': currentUser.email });
-        
+
+        this._positionService.clearUserPosition(this._authService.userEmail());
+        this._positionService.storeUserPosition(
+            this._authService.userEmail(),
+            new Position(event.latLng.lat(), event.latLng.lng()));
+
         if (matchedMarker != undefined) {
             let newMarkersList = this.state.markers;
             _.remove(newMarkersList, function (n) {
@@ -304,14 +297,94 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
         this._positionService.clearUserJobPositions(currentUser.email);
         this._positionService.storeUserJobPositions(currentUser.email, this.state.markers);
+        this.pushOutJob();
+    }
 
 
-        //TODO : We should push out Job here based on whether current user was driver/client
-        //TODO : We should push out Job here based on whether current user was driver/client
-        //TODO : We should push out Job here based on whether current user was driver/client
-        //TODO : We should push out Job here based on whether current user was driver/client
-        //TODO : We should push out Job here based on whether current user was driver/client
+    pushOutJob = (): void => {
 
+        var self = this;
+        let currentUser = this._authService.user();
+        let isDriver = this._authService.isDriver();
+        let hasIssuedJob = this._jobService.hasIssuedJob();
+        let currentJob = this._jobService.currentJob();
+
+        var localClientFullName = '';
+        var localClientEmail = '';
+        var localClientPosition = null;
+        var localDriverFullName = '';
+        var localDriverEmail = '';
+        var localIsAssigned = false;
+
+        if (!isDriver) {
+            if (hasIssuedJob) {
+                if (currentJob.clientFullName != undefined && currentJob.clientFullName != "") {
+                    localClientFullName = currentJob.clientFullName;
+                }
+                if (currentJob.clientEmail != undefined && currentJob.clientEmail != '') {
+                    localClientEmail = currentJob.clientEmail;
+                }
+                if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
+                    localClientPosition = currentJob.clientPosition;
+                }
+            }
+            else {
+                localClientFullName = !isDriver ? this._authService.userName() : '';
+                localClientEmail = !isDriver ? this._authService.userEmail() : '';
+            }
+        }
+
+        if (isDriver) {
+            if (hasIssuedJob) {
+                if (currentJob.driverFullName != undefined && currentJob.driverFullName != '') {
+                    localDriverFullName = currentJob.driverFullName;
+                }
+                if (currentJob.driverEmail != undefined && currentJob.driverEmail != '') {
+                    localDriverEmail = currentJob.driverEmail;
+                }
+                if (currentJob.isAssigned != undefined && currentJob.isAssigned != null) {
+                    localIsAssigned = currentJob.isAssigned;
+                }
+            }
+            else {
+                localDriverFullName = this._authService.userName();
+                localDriverEmail = this._authService.userEmail();
+            }
+        }
+
+        var newJob = {
+            jobUUID: hasIssuedJob ? currentJob.jobUUID : '',
+            clientFullName: localClientFullName,
+            clientEmail: localClientEmail,
+            clientPosition: localClientPosition,
+            driverFullName: localDriverFullName,
+            driverEmail: localDriverEmail,
+            vehicleDescription: isDriver ? this._authService.user().vehicleDescription : '',
+            vehicleRegistrationNumber: isDriver ? this._authService.user().vehicleRegistrationNumber : '',
+            isAssigned: localIsAssigned,
+            isCompleted: false
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'job/submit',
+            data: JSON.stringify(newJob),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+            self._jobService.clearUserIssuedJob();
+            self._jobService.storeUserIssuedJob(newJob);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            const newState = Object.assign({}, self.state, {
+                okDialogHeaderText: 'Error',
+                okDialogBodyText: jqXHR.responseText,
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            })
+            self.setState(newState)
+        });
     }
 
 
@@ -334,7 +407,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         //TODO : should see if the client/driver for the job is in the list if it is remove it
         //TODO : add it
         //TODO : Update the list of position markers in the PositionService
-
+        //TODO : Should clear out the current stored job
+        //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
     }
 
     shouldShowMarkerForJob = (jobArgs: any): boolean => {
@@ -349,6 +423,9 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     ratingsDialogOkCallBack = () => {
         console.log('RATINGS OK CLICKED');
+
+        //TODO : Add a rating by calling the REST endpoint
+
         this.setState(
             {
                 okDialogHeaderText: 'Ratings',
@@ -359,7 +436,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     }
 
     jobCancelledCallBack = () => {
-        console.log('YES CLICKED');
+        console.log('CANCEL YES CLICKED');
+        this._jobService.clearUserIssuedJob();
         this.setState(
             {
                 okDialogHeaderText: 'Job Cancellaton',
@@ -370,7 +448,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     }
 
     jobNotCancelledCallBack = () => {
-        console.log('NO CLICKED');
+        console.log('CANCEL NO CLICKED');
         this.setState(
             {
                 okDialogHeaderText: 'Job Cancellaton',

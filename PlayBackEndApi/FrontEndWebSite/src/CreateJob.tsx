@@ -211,8 +211,8 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
             clientFullName: currentUser.fullName,
             clientEmail: currentUser.email,
             clientPosition: {
-                latitude: self.state.currentPosition.lat,
-                longitude: self.state.currentPosition.lng
+                latitude: self.state.currentPosition.latitude,
+                longitude: self.state.currentPosition.longitude
             },
             driverFullName: '',
             driverEmail: '',

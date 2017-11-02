@@ -100,9 +100,12 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var Position = function () {
-    function Position(lat, lng) {
-        this.lat = lat;
-        this.lng = lng;
+    function Position(latitude, longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        //keep map happy
+        this.lat = latitude;
+        this.lng = longitude;
     }
     return Position;
 }();
@@ -196,8 +199,8 @@ var CreateJob = function (_super) {
                 clientFullName: currentUser.fullName,
                 clientEmail: currentUser.email,
                 clientPosition: {
-                    latitude: self.state.currentPosition.lat,
-                    longitude: self.state.currentPosition.lng
+                    latitude: self.state.currentPosition.latitude,
+                    longitude: self.state.currentPosition.longitude
                 },
                 driverFullName: '',
                 driverEmail: '',
@@ -310,7 +313,7 @@ var CreateJob = function (_super) {
     return CreateJob;
 }(React.Component);
 exports.CreateJob = CreateJob;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(81)))
 
 /***/ }),
 
@@ -470,7 +473,7 @@ var Login = function (_super) {
     return Login;
 }(React.Component);
 exports.Login = Login;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(81)))
 
 /***/ }),
 
@@ -636,7 +639,7 @@ exports.Register = Register;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function($) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -719,12 +722,20 @@ var ViewJob = function (_super) {
     function ViewJob(props) {
         var _this = _super.call(this, props) || this;
         _this.handleMarkerClick = function (targetMarker) {
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
             console.log('button on overlay clicked:' + targetMarker.key);
         };
         _this.handleMapClick = function (event) {
             var currentUser = _this._authService.user();
             var isDriver = _this._authService.isDriver();
             var matchedMarker = _.find(_this.state.markers, { 'email': currentUser.email });
+            _this._positionService.clearUserPosition(_this._authService.userEmail());
+            _this._positionService.storeUserPosition(_this._authService.userEmail(), new _Position.Position(event.latLng.lat(), event.latLng.lng()));
             if (matchedMarker != undefined) {
                 var newMarkersList = _this.state.markers;
                 _.remove(newMarkersList, function (n) {
@@ -751,11 +762,82 @@ var ViewJob = function (_super) {
             }
             _this._positionService.clearUserJobPositions(currentUser.email);
             _this._positionService.storeUserJobPositions(currentUser.email, _this.state.markers);
-            //TODO : We should push out Job here based on whether current user was driver/client
-            //TODO : We should push out Job here based on whether current user was driver/client
-            //TODO : We should push out Job here based on whether current user was driver/client
-            //TODO : We should push out Job here based on whether current user was driver/client
-            //TODO : We should push out Job here based on whether current user was driver/client
+            _this.pushOutJob();
+        };
+        _this.pushOutJob = function () {
+            var self = _this;
+            var currentUser = _this._authService.user();
+            var isDriver = _this._authService.isDriver();
+            var hasIssuedJob = _this._jobService.hasIssuedJob();
+            var currentJob = _this._jobService.currentJob();
+            var localClientFullName = '';
+            var localClientEmail = '';
+            var localClientPosition = null;
+            var localDriverFullName = '';
+            var localDriverEmail = '';
+            var localIsAssigned = false;
+            if (!isDriver) {
+                if (hasIssuedJob) {
+                    if (currentJob.clientFullName != undefined && currentJob.clientFullName != "") {
+                        localClientFullName = currentJob.clientFullName;
+                    }
+                    if (currentJob.clientEmail != undefined && currentJob.clientEmail != '') {
+                        localClientEmail = currentJob.clientEmail;
+                    }
+                    if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
+                        localClientPosition = currentJob.clientPosition;
+                    }
+                } else {
+                    localClientFullName = !isDriver ? _this._authService.userName() : '';
+                    localClientEmail = !isDriver ? _this._authService.userEmail() : '';
+                }
+            }
+            if (isDriver) {
+                if (hasIssuedJob) {
+                    if (currentJob.driverFullName != undefined && currentJob.driverFullName != '') {
+                        localDriverFullName = currentJob.driverFullName;
+                    }
+                    if (currentJob.driverEmail != undefined && currentJob.driverEmail != '') {
+                        localDriverEmail = currentJob.driverEmail;
+                    }
+                    if (currentJob.isAssigned != undefined && currentJob.isAssigned != null) {
+                        localIsAssigned = currentJob.isAssigned;
+                    }
+                } else {
+                    localDriverFullName = _this._authService.userName();
+                    localDriverEmail = _this._authService.userEmail();
+                }
+            }
+            var newJob = {
+                jobUUID: hasIssuedJob ? currentJob.jobUUID : '',
+                clientFullName: localClientFullName,
+                clientEmail: localClientEmail,
+                clientPosition: localClientPosition,
+                driverFullName: localDriverFullName,
+                driverEmail: localDriverEmail,
+                vehicleDescription: isDriver ? _this._authService.user().vehicleDescription : '',
+                vehicleRegistrationNumber: isDriver ? _this._authService.user().vehicleRegistrationNumber : '',
+                isAssigned: localIsAssigned,
+                isCompleted: false
+            };
+            $.ajax({
+                type: 'POST',
+                url: 'job/submit',
+                data: JSON.stringify(newJob),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json'
+            }).done(function (jdata, textStatus, jqXHR) {
+                self._jobService.clearUserIssuedJob();
+                self._jobService.storeUserIssuedJob(newJob);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                var newState = Object.assign({}, self.state, {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+                self.setState(newState);
+            });
         };
         _this.createMarker = function (fullname, email, isDriver, event) {
             return new _PositionMarker.PositionMarker(fullname, new _Position.Position(event.latLng.lat(), event.latLng.lng()), fullname, email, _this.createIcon(isDriver), isDriver);
@@ -767,6 +849,8 @@ var ViewJob = function (_super) {
             //TODO : should see if the client/driver for the job is in the list if it is remove it
             //TODO : add it
             //TODO : Update the list of position markers in the PositionService
+            //TODO : Should clear out the current stored job
+            //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
         };
         _this.shouldShowMarkerForJob = function (jobArgs) {
             //TODO
@@ -778,6 +862,7 @@ var ViewJob = function (_super) {
         };
         _this.ratingsDialogOkCallBack = function () {
             console.log('RATINGS OK CLICKED');
+            //TODO : Add a rating by calling the REST endpoint
             _this.setState({
                 okDialogHeaderText: 'Ratings',
                 okDialogBodyText: 'Rating successfully recorded',
@@ -786,7 +871,8 @@ var ViewJob = function (_super) {
             });
         };
         _this.jobCancelledCallBack = function () {
-            console.log('YES CLICKED');
+            console.log('CANCEL YES CLICKED');
+            _this._jobService.clearUserIssuedJob();
             _this.setState({
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job successfully cancelled',
@@ -795,7 +881,7 @@ var ViewJob = function (_super) {
             });
         };
         _this.jobNotCancelledCallBack = function () {
-            console.log('NO CLICKED');
+            console.log('CANCEL NO CLICKED');
             _this.setState({
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job remains open',
@@ -811,31 +897,11 @@ var ViewJob = function (_super) {
         };
         _this._authService = props.route.authService;
         _this._jobStreamService = props.route.jobStreamService;
+        _this._jobService = props.route.jobService;
         _this._positionService = props.route.positionService;
         if (!_this._authService.isAuthenticated()) {
             _reactRouter.hashHistory.push('/');
         }
-        //TODO : remove this
-        //this._positionService.storeUserJobPositions(
-        //    this._authService.userEmail(),
-        //    [
-        //        new PositionMarker(
-        //            'driver_1',
-        //            new Position(50.8202949, -0.1406958),
-        //            "driver_1",
-        //            "drive1@here.com",
-        //            '/assets/images/driver.png',
-        //            true
-        //        ),
-        //        new PositionMarker(
-        //            'driver_2',
-        //            new Position(50.8128187, -0.1361418),
-        //            "driver_2",
-        //            "drive2@here.com",
-        //            '/assets/images/driver.png',
-        //            true
-        //        )
-        //    ]);
         var savedMarkers = new Array();
         if (_this._positionService.hasJobPositions(_this._authService.userEmail())) {
             savedMarkers = _this._positionService.userJobPositions(_this._authService.userEmail());
@@ -852,14 +918,16 @@ var ViewJob = function (_super) {
         return _this;
     }
     ViewJob.prototype.componentWillMount = function () {
-        this._subscription = this._jobStreamService.getJobStream().subscribe(function (jobArgs) {
-            //TODO : 1. This should not be hard coded
-            //TODO : 2. We should push out current job when we FIRST LOAD this page
-            //          if we are a client, and we should enrich it if we are a driver
-            //       3. The list of markers should be worked out again every time based
-            //          on RX stream messages
+        var _this = this;
+        var self = this;
+        this._subscription = this._jobStreamService.getJobStream().where(function (x, idx, obs) {
+            return self.shouldShowMarkerForJob(x.detail);
+        }).subscribe(function (jobArgs) {
             console.log('RX saw onJobChanged');
             console.log('RX x = ', jobArgs.detail);
+            _this._jobService.clearUserIssuedJob();
+            _this._jobService.storeUserIssuedJob(jobArgs.detail);
+            _this.addMarkerForJob(jobArgs.detail);
         }, function (error) {
             console.log('RX saw ERROR');
             console.log('RX error = ', error);
@@ -910,6 +978,7 @@ var ViewJob = function (_super) {
     return ViewJob;
 }(React.Component);
 exports.ViewJob = ViewJob;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(81)))
 
 /***/ }),
 
@@ -1031,7 +1100,7 @@ var ViewRating = function (_super) {
     return ViewRating;
 }(React.Component);
 exports.ViewRating = ViewRating;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(81)))
 
 /***/ }),
 
@@ -1048,7 +1117,7 @@ exports.ContainerOperations = undefined;
 
 __webpack_require__(929);
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(97);
 
 var _types = __webpack_require__(239);
 
@@ -1270,7 +1339,7 @@ var DriverRegistration = function (_super) {
     return DriverRegistration;
 }(React.Component);
 exports.DriverRegistration = DriverRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(81)))
 
 /***/ }),
 
@@ -1441,7 +1510,7 @@ var PassengerRegistration = function (_super) {
     return PassengerRegistration;
 }(React.Component);
 exports.PassengerRegistration = PassengerRegistration;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(81)))
 
 /***/ }),
 
@@ -1680,7 +1749,7 @@ var App = function (_super) {
     };
     return App;
 }(React.Component);
-ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login, authService: authService }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register, authService: authService }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout, authService: authService, jobService: jobService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob, authService: authService, jobService: jobService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob, authService: authService, jobStreamService: jobStreamService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating, authService: authService }))), document.getElementById('root'));
+ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory }, React.createElement(_reactRouter.Route, { component: App }, React.createElement(_reactRouter.Route, { path: "/", component: _Login.Login, authService: authService }), React.createElement(_reactRouter.Route, { path: "/register", component: _Register.Register, authService: authService }), React.createElement(_reactRouter.Route, { path: "/logout", component: _Logout.Logout, authService: authService, jobService: jobService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/createjob", component: _CreateJob.CreateJob, authService: authService, jobService: jobService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/viewjob", component: _ViewJob.ViewJob, authService: authService, jobService: jobService, jobStreamService: jobStreamService, positionService: positionService }), React.createElement(_reactRouter.Route, { path: "/viewrating", component: _ViewRating.ViewRating, authService: authService }))), document.getElementById('root'));
 
 /***/ }),
 
@@ -1697,7 +1766,7 @@ exports.AuthService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(97);
 
 var _rx = __webpack_require__(412);
 
@@ -1775,7 +1844,7 @@ exports.JobService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(97);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -1830,7 +1899,7 @@ exports.JobStreamService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(97);
 
 var _JobEventArgs = __webpack_require__(424);
 
@@ -1886,7 +1955,7 @@ exports.PositionService = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _inversify = __webpack_require__(96);
+var _inversify = __webpack_require__(97);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
@@ -2061,4 +2130,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.2299a41e2e3f712785de.js.map
+//# sourceMappingURL=index.bundle.7964659067c989748571.js.map
