@@ -96,6 +96,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     private _jobStreamService: JobStreamService;
     private _positionService: PositionService;
     private _subscription: any; 
+    private currentJobUUID: any;
 
     constructor(props: any) {
         super(props);
@@ -327,69 +328,65 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             }
         }
 
-        if (!isDriver) {
-            //clientFullName
-            if (hasIssuedJob) {
-                if (currentJob.clientFullName != undefined && currentJob.clientFullName != "") {
-                    localClientFullName = currentJob.clientFullName;
-                }
-                else {
-                    localClientFullName = currentUser.fullName;
-                }
+        //clientFullName
+        if (hasIssuedJob) {
+            if (currentJob.clientFullName != undefined && currentJob.clientFullName != "") {
+                localClientFullName = currentJob.clientFullName;
             }
-            //clientEmail
-            if (hasIssuedJob) {
-                if (currentJob.clientEmail != undefined && currentJob.clientEmail != "") {
-                    localClientEmail = currentJob.clientEmail;
-                }
-                else {
-                    localClientEmail = currentUser.email;
-                }
+            else {
+                localClientFullName = !isDriver ? currentUser.fullName : '';
             }
-            //clientPosition
-            if (hasIssuedJob) {
-                if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
-                    localClientPosition = currentJob.clientPosition;
-                }
-                else {
-                    localClientPosition = currentPosition;
-                }
+        }
+        //clientEmail
+        if (hasIssuedJob) {
+            if (currentJob.clientEmail != undefined && currentJob.clientEmail != "") {
+                localClientEmail = currentJob.clientEmail;
+            }
+            else {
+                localClientEmail = !isDriver ? currentUser.email : '';
+            }
+        }
+        //clientPosition
+        if (hasIssuedJob) {
+            if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
+                localClientPosition = currentJob.clientPosition;
+            }
+            else {
+                localClientPosition = !isDriver ? currentPosition : null;
             }
         }
 
-        if (isDriver) {
-            if (hasIssuedJob) {
-                //driverFullName
-                if (currentJob.driverFullName != undefined && currentJob.driverFullName != "") {
-                    localDriverFullName = currentJob.driverFullName;
-                }
-                else {
-                    localDriverFullName = currentUser.fullName;
-                }
-                //driverEmail
-                if (currentJob.driverEmail != undefined && currentJob.driverEmail != "") {
-                    localDriverEmail = currentJob.driverEmail;
-                }
-                else {
-                    localDriverEmail = currentUser.email;
-                }
-                //driverPosition
-                if (currentJob.driverPosition != undefined && currentJob.driverPosition != null) {
-                    localDriverPosition = currentJob.driverPosition;
-                }
-                else {
-                    localDriverPosition = currentPosition;
-                }
+        if (hasIssuedJob) {
+            //driverFullName
+            if (currentJob.driverFullName != undefined && currentJob.driverFullName != "") {
+                localDriverFullName = currentJob.driverFullName;
             }
             else {
-                localDriverFullName = currentUser.fullName;
-                localDriverEmail = currentUser.email;
-                localDriverPosition = this._positionService.currentPosition(currentUser.email);
+                localDriverFullName = isDriver ? currentUser.fullName : '';
             }
+            //driverEmail
+            if (currentJob.driverEmail != undefined && currentJob.driverEmail != "") {
+                localDriverEmail = currentJob.driverEmail;
+            }
+            else {
+                localDriverEmail = isDriver ? currentUser.email : '';
+            }
+            //driverPosition
+            if (currentJob.driverPosition != undefined && currentJob.driverPosition != null) {
+                localDriverPosition = currentJob.driverPosition;
+            }
+            else {
+                localDriverPosition = isDriver ? currentPosition : null;
+            }
+        }
+        else {
+            localDriverFullName = currentUser.fullName;
+            localDriverEmail = currentUser.email;
+            localDriverPosition = isDriver ? currentPosition : null;
         }
 
         var newJob = {
-            jobUUID: hasIssuedJob ? currentJob.jobUUID : '',
+            jobUUID: this.currentJobUUID != undefined && this.currentJobUUID != '' ? this.currentJobUUID : '',
             clientFullName: localClientFullName,
             clientEmail: localClientEmail,
             clientPosition: localClientPosition,
@@ -441,6 +438,11 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     }
 
     addMarkerForJob = (jobArgs: any): void => {
+
+        if (jobArgs.detail.jobUUID != undefined && jobArgs.detail.jobUUID != '')
+            this.currentJobUUID = jobArgs.detail.jobUUID;
+
+
         //TODO : should see if the client/driver for the job is in the list if it is remove it
         //TODO : add it
         //TODO : Update the list of position markers in the PositionService

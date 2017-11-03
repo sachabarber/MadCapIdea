@@ -785,60 +785,56 @@ var ViewJob = function (_super) {
                     localIsAssigned = false;
                 }
             }
-            if (!isDriver) {
-                //clientFullName
-                if (hasIssuedJob) {
-                    if (currentJob.clientFullName != undefined && currentJob.clientFullName != "") {
-                        localClientFullName = currentJob.clientFullName;
-                    } else {
-                        localClientFullName = currentUser.fullName;
-                    }
-                }
-                //clientEmail
-                if (hasIssuedJob) {
-                    if (currentJob.clientEmail != undefined && currentJob.clientEmail != "") {
-                        localClientEmail = currentJob.clientEmail;
-                    } else {
-                        localClientEmail = currentUser.email;
-                    }
-                }
-                //clientPosition
-                if (hasIssuedJob) {
-                    if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
-                        localClientPosition = currentJob.clientPosition;
-                    } else {
-                        localClientPosition = currentPosition;
-                    }
+            //clientFullName
+            if (hasIssuedJob) {
+                if (currentJob.clientFullName != undefined && currentJob.clientFullName != "") {
+                    localClientFullName = currentJob.clientFullName;
+                } else {
+                    localClientFullName = !isDriver ? currentUser.fullName : '';
                 }
             }
-            if (isDriver) {
-                if (hasIssuedJob) {
-                    //driverFullName
-                    if (currentJob.driverFullName != undefined && currentJob.driverFullName != "") {
-                        localDriverFullName = currentJob.driverFullName;
-                    } else {
-                        localDriverFullName = currentUser.fullName;
-                    }
-                    //driverEmail
-                    if (currentJob.driverEmail != undefined && currentJob.driverEmail != "") {
-                        localDriverEmail = currentJob.driverEmail;
-                    } else {
-                        localDriverEmail = currentUser.email;
-                    }
-                    //driverPosition
-                    if (currentJob.driverPosition != undefined && currentJob.driverPosition != null) {
-                        localDriverPosition = currentJob.driverPosition;
-                    } else {
-                        localDriverPosition = currentPosition;
-                    }
+            //clientEmail
+            if (hasIssuedJob) {
+                if (currentJob.clientEmail != undefined && currentJob.clientEmail != "") {
+                    localClientEmail = currentJob.clientEmail;
                 } else {
-                    localDriverFullName = currentUser.fullName;
-                    localDriverEmail = currentUser.email;
-                    localDriverPosition = _this._positionService.currentPosition(currentUser.email);
+                    localClientEmail = !isDriver ? currentUser.email : '';
                 }
+            }
+            //clientPosition
+            if (hasIssuedJob) {
+                if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
+                    localClientPosition = currentJob.clientPosition;
+                } else {
+                    localClientPosition = !isDriver ? currentPosition : null;
+                }
+            }
+            if (hasIssuedJob) {
+                //driverFullName
+                if (currentJob.driverFullName != undefined && currentJob.driverFullName != "") {
+                    localDriverFullName = currentJob.driverFullName;
+                } else {
+                    localDriverFullName = isDriver ? currentUser.fullName : '';
+                }
+                //driverEmail
+                if (currentJob.driverEmail != undefined && currentJob.driverEmail != "") {
+                    localDriverEmail = currentJob.driverEmail;
+                } else {
+                    localDriverEmail = isDriver ? currentUser.email : '';
+                }
+                //driverPosition
+                if (currentJob.driverPosition != undefined && currentJob.driverPosition != null) {
+                    localDriverPosition = currentJob.driverPosition;
+                } else {
+                    localDriverPosition = isDriver ? currentPosition : null;
+                }
+            } else {
+                localDriverFullName = currentUser.fullName;
+                localDriverEmail = currentUser.email;
+                localDriverPosition = isDriver ? currentPosition : null;
             }
             var newJob = {
-                jobUUID: hasIssuedJob ? currentJob.jobUUID : '',
+                jobUUID: _this.currentJobUUID != undefined && _this.currentJobUUID != '' ? _this.currentJobUUID : '',
                 clientFullName: localClientFullName,
                 clientEmail: localClientEmail,
                 clientPosition: localClientPosition,
@@ -876,6 +872,7 @@ var ViewJob = function (_super) {
             return isDriver ? '/assets/images/driver.png' : '/assets/images/passenger.png';
         };
         _this.addMarkerForJob = function (jobArgs) {
+            if (jobArgs.detail.jobUUID != undefined && jobArgs.detail.jobUUID != '') _this.currentJobUUID = jobArgs.detail.jobUUID;
             //TODO : should see if the client/driver for the job is in the list if it is remove it
             //TODO : add it
             //TODO : Update the list of position markers in the PositionService
@@ -2160,4 +2157,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.195b9abd3ee3c9292bf7.js.map
+//# sourceMappingURL=index.bundle.d0832fdd2d2fdf1de283.js.map
