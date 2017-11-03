@@ -266,7 +266,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
         this._positionService.clearUserPosition(this._authService.userEmail());
         this._positionService.storeUserPosition(
-            this._authService.userEmail(),
+            currentUser,
             new Position(event.latLng.lat(), event.latLng.lng()));
 
         if (matchedMarker != undefined) {
@@ -296,7 +296,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             }
         }
         this._positionService.clearUserJobPositions(currentUser.email);
-        this._positionService.storeUserJobPositions(currentUser.email, this.state.markers);
+        this._positionService.storeUserJobPositions(currentUser, this.state.markers);
         this.pushOutJob();
     }
 
@@ -308,47 +308,83 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         let isDriver = this._authService.isDriver();
         let hasIssuedJob = this._jobService.hasIssuedJob();
         let currentJob = this._jobService.currentJob();
+        let currentPosition = this._positionService.currentPosition(currentUser.email);
 
         var localClientFullName = '';
         var localClientEmail = '';
         var localClientPosition = null;
         var localDriverFullName = '';
         var localDriverEmail = '';
+        var localDriverPosition = null;
         var localIsAssigned = false;
 
+        if (hasIssuedJob) {
+            if (currentJob.isAssigned != undefined && currentJob.isAssigned != null) {
+                localIsAssigned = currentJob.isAssigned;
+            }
+            else {
+                localIsAssigned = false;
+            }
+        }
+
         if (!isDriver) {
+            //clientFullName
             if (hasIssuedJob) {
                 if (currentJob.clientFullName != undefined && currentJob.clientFullName != "") {
                     localClientFullName = currentJob.clientFullName;
                 }
-                if (currentJob.clientEmail != undefined && currentJob.clientEmail != '') {
+                else {
+                    localClientFullName = currentUser.fullName;
+                }
+            }
+            //clientEmail
+            if (hasIssuedJob) {
+                if (currentJob.clientEmail != undefined && currentJob.clientEmail != "") {
                     localClientEmail = currentJob.clientEmail;
                 }
+                else {
+                    localClientEmail = currentUser.email;
+                }
+            }
+            //clientPosition
+            if (hasIssuedJob) {
                 if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
                     localClientPosition = currentJob.clientPosition;
                 }
-            }
-            else {
-                localClientFullName = !isDriver ? this._authService.userName() : '';
-                localClientEmail = !isDriver ? this._authService.userEmail() : '';
+                else {
+                    localClientPosition = currentPosition;
+                }
             }
         }
 
         if (isDriver) {
             if (hasIssuedJob) {
-                if (currentJob.driverFullName != undefined && currentJob.driverFullName != '') {
+                //driverFullName
+                if (currentJob.driverFullName != undefined && currentJob.driverFullName != "") {
                     localDriverFullName = currentJob.driverFullName;
                 }
-                if (currentJob.driverEmail != undefined && currentJob.driverEmail != '') {
+                else {
+                    localDriverFullName = currentUser.fullName;
+                }
+                //driverEmail
+                if (currentJob.driverEmail != undefined && currentJob.driverEmail != "") {
                     localDriverEmail = currentJob.driverEmail;
                 }
-                if (currentJob.isAssigned != undefined && currentJob.isAssigned != null) {
-                    localIsAssigned = currentJob.isAssigned;
+                else {
+                    localDriverEmail = currentUser.email;
+                }
+                //driverPosition
+                if (currentJob.driverPosition != undefined && currentJob.driverPosition != null) {
+                    localDriverPosition = currentJob.driverPosition;
+                }
+                else {
+                    localDriverPosition = currentPosition;
                 }
             }
             else {
-                localDriverFullName = this._authService.userName();
-                localDriverEmail = this._authService.userEmail();
+                localDriverFullName = currentUser.fullName;
+                localDriverEmail = currentUser.email;
+                localDriverPosition = this._positionService.currentPosition(currentUser.email);
             }
         }
 
@@ -359,6 +395,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             clientPosition: localClientPosition,
             driverFullName: localDriverFullName,
             driverEmail: localDriverEmail,
+            driverPosition: localDriverPosition,
             vehicleDescription: isDriver ? this._authService.user().vehicleDescription : '',
             vehicleRegistrationNumber: isDriver ? this._authService.user().vehicleRegistrationNumber : '',
             isAssigned: localIsAssigned,

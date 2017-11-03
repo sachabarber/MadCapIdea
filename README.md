@@ -92,6 +92,10 @@ I will maintain a list of stories and their sub tasks using Trello here : https:
 - Replace the official confluent-3.3.0\bin\windows BAT files with the ones found here : https://github.com/renukaradhya/confluentplatform/tree/master/bin/windows
 - Modify the confluent-3.3.0\etc\kafka\zookeeper.properties file to change the *dataDir* to something like *dataDir=c:/temp/zookeeper* 
 - Modify the confluent-3.3.0\etc\kafka\server.properties file to uncomment the line *delete.topic.enable=true* 
+- Modify the confluent-3.3.0\etc\kafka\server.properties file file to change the *log.dirs* *log.dirs=c:/temp/kafka-logs*
+
+
+
 
 
 #### How To Run Using PowerShell

@@ -735,7 +735,7 @@ var ViewJob = function (_super) {
             var isDriver = _this._authService.isDriver();
             var matchedMarker = _.find(_this.state.markers, { 'email': currentUser.email });
             _this._positionService.clearUserPosition(_this._authService.userEmail());
-            _this._positionService.storeUserPosition(_this._authService.userEmail(), new _Position.Position(event.latLng.lat(), event.latLng.lng()));
+            _this._positionService.storeUserPosition(currentUser, new _Position.Position(event.latLng.lat(), event.latLng.lng()));
             if (matchedMarker != undefined) {
                 var newMarkersList = _this.state.markers;
                 _.remove(newMarkersList, function (n) {
@@ -761,7 +761,7 @@ var ViewJob = function (_super) {
                 }
             }
             _this._positionService.clearUserJobPositions(currentUser.email);
-            _this._positionService.storeUserJobPositions(currentUser.email, _this.state.markers);
+            _this._positionService.storeUserJobPositions(currentUser, _this.state.markers);
             _this.pushOutJob();
         };
         _this.pushOutJob = function () {
@@ -770,42 +770,71 @@ var ViewJob = function (_super) {
             var isDriver = _this._authService.isDriver();
             var hasIssuedJob = _this._jobService.hasIssuedJob();
             var currentJob = _this._jobService.currentJob();
+            var currentPosition = _this._positionService.currentPosition(currentUser.email);
             var localClientFullName = '';
             var localClientEmail = '';
             var localClientPosition = null;
             var localDriverFullName = '';
             var localDriverEmail = '';
+            var localDriverPosition = null;
             var localIsAssigned = false;
+            if (hasIssuedJob) {
+                if (currentJob.isAssigned != undefined && currentJob.isAssigned != null) {
+                    localIsAssigned = currentJob.isAssigned;
+                } else {
+                    localIsAssigned = false;
+                }
+            }
             if (!isDriver) {
+                //clientFullName
                 if (hasIssuedJob) {
                     if (currentJob.clientFullName != undefined && currentJob.clientFullName != "") {
                         localClientFullName = currentJob.clientFullName;
+                    } else {
+                        localClientFullName = currentUser.fullName;
                     }
-                    if (currentJob.clientEmail != undefined && currentJob.clientEmail != '') {
+                }
+                //clientEmail
+                if (hasIssuedJob) {
+                    if (currentJob.clientEmail != undefined && currentJob.clientEmail != "") {
                         localClientEmail = currentJob.clientEmail;
+                    } else {
+                        localClientEmail = currentUser.email;
                     }
+                }
+                //clientPosition
+                if (hasIssuedJob) {
                     if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
                         localClientPosition = currentJob.clientPosition;
+                    } else {
+                        localClientPosition = currentPosition;
                     }
-                } else {
-                    localClientFullName = !isDriver ? _this._authService.userName() : '';
-                    localClientEmail = !isDriver ? _this._authService.userEmail() : '';
                 }
             }
             if (isDriver) {
                 if (hasIssuedJob) {
-                    if (currentJob.driverFullName != undefined && currentJob.driverFullName != '') {
+                    //driverFullName
+                    if (currentJob.driverFullName != undefined && currentJob.driverFullName != "") {
                         localDriverFullName = currentJob.driverFullName;
+                    } else {
+                        localDriverFullName = currentUser.fullName;
                     }
-                    if (currentJob.driverEmail != undefined && currentJob.driverEmail != '') {
+                    //driverEmail
+                    if (currentJob.driverEmail != undefined && currentJob.driverEmail != "") {
                         localDriverEmail = currentJob.driverEmail;
+                    } else {
+                        localDriverEmail = currentUser.email;
                     }
-                    if (currentJob.isAssigned != undefined && currentJob.isAssigned != null) {
-                        localIsAssigned = currentJob.isAssigned;
+                    //driverPosition
+                    if (currentJob.driverPosition != undefined && currentJob.driverPosition != null) {
+                        localDriverPosition = currentJob.driverPosition;
+                    } else {
+                        localDriverPosition = currentPosition;
                     }
                 } else {
-                    localDriverFullName = _this._authService.userName();
-                    localDriverEmail = _this._authService.userEmail();
+                    localDriverFullName = currentUser.fullName;
+                    localDriverEmail = currentUser.email;
+                    localDriverPosition = _this._positionService.currentPosition(currentUser.email);
                 }
             }
             var newJob = {
@@ -815,6 +844,7 @@ var ViewJob = function (_super) {
                 clientPosition: localClientPosition,
                 driverFullName: localDriverFullName,
                 driverEmail: localDriverEmail,
+                driverPosition: localDriverPosition,
                 vehicleDescription: isDriver ? _this._authService.user().vehicleDescription : '',
                 vehicleRegistrationNumber: isDriver ? _this._authService.user().vehicleRegistrationNumber : '',
                 isAssigned: localIsAssigned,
@@ -2130,4 +2160,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.7964659067c989748571.js.map
+//# sourceMappingURL=index.bundle.195b9abd3ee3c9292bf7.js.map

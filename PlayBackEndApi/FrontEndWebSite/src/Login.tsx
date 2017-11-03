@@ -169,34 +169,34 @@ export class Login extends React.Component<undefined, LoginState> {
             contentType: "application/json; charset=utf-8",
             dataType: 'json'
         })
-            .done(function (jdata, textStatus, jqXHR) {
+        .done(function (jdata, textStatus, jqXHR) {
 
-                console.log("result of login");
-                console.log(jqXHR.responseText);
-                let currentUser = JSON.parse(jqXHR.responseText);
-                let userProfile = {
-                    isDriver: logindetails.isDriver,
-                    user: currentUser
-                };
-                self._authService.storeUser(userProfile);
+            console.log("result of login");
+            console.log(jqXHR.responseText);
+            let currentUser = JSON.parse(jqXHR.responseText);
+            let userProfile = {
+                isDriver: logindetails.isDriver,
+                user: currentUser
+            };
+            self._authService.storeUser(userProfile);
 
-                self.setState(
-                    {
-                        okDialogHeaderText: 'Login Successful',
-                        okDialogBodyText: 'You are now logged in',
-                        okDialogOpen: true,
-                        okDialogKey: Math.random()
-                    });
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                self.setState(
-                    {
-                        okDialogHeaderText: 'Error',
-                        okDialogBodyText: jqXHR.responseText,
-                        okDialogOpen: true,
-                        okDialogKey: Math.random()
-                    });
-            });
+            self.setState(
+                {
+                    okDialogHeaderText: 'Login Successful',
+                    okDialogBodyText: 'You are now logged in',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
     }
 
     okDialogCallBack = () => {
