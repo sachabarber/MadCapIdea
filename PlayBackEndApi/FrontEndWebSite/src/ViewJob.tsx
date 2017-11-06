@@ -87,6 +87,7 @@ export interface ViewJobState {
         height: number
     },
     currentPosition: Position;
+    isJobAccepted: boolean
 }
 
 export class ViewJob extends React.Component<undefined, ViewJobState> {
@@ -96,7 +97,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     private _jobStreamService: JobStreamService;
     private _positionService: PositionService;
     private _subscription: any; 
-    private currentJobUUID: any;
+    private _currentJobUUID: any;
 
     constructor(props: any) {
         super(props);
@@ -122,8 +123,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             okDialogKey: 0,
             dimensions: { width: -1, height: -1 },
             currentPosition: this._authService.isDriver() ? null :
-                this._positionService.currentPosition(
-                this._authService.userEmail())
+                this._positionService.currentPosition(this._authService.userEmail()),
+            isJobAccepted:false
         };
     }
 
@@ -221,28 +222,37 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                             </Measure>
                         </Col>
                     </Row>
-                    <Row className="show-grid">
-                        <span>
-                            <RatingDialog
-                                theId="viewJobCompleteBtn"
-                                headerText="Rate your driver/passenger"
-                                okCallBack={this.ratingsDialogOkCallBack} />
 
-                            <YesNoDialog
-                                theId="viewJobCancelBtn"
-                                launchButtonText="Cancel"
-                                yesCallBack={this.jobCancelledCallBack}
-                                noCallBack={this.jobNotCancelledCallBack}
-                                headerText="Cancel the job" />
+                    {this.state.isJobAccepted === true ?
+                        <Row className="show-grid">
+                            <span>
+                                <RatingDialog
+                                    theId="viewJobCompleteBtn"
+                                    headerText="Rate your driver/passenger"
+                                    okCallBack={this.ratingsDialogOkCallBack} />
 
-                            <OkDialog
-                                open={this.state.okDialogOpen}
-                                okCallBack={this.okDialogCallBack}
-                                headerText={this.state.okDialogHeaderText}
-                                bodyText={this.state.okDialogBodyText}
-                                key={this.state.okDialogKey} />
-                        </span>
-                    </Row>
+                                {!(this._authService.isDriver() === true) ?
+
+                                    <YesNoDialog
+                                        theId="viewJobCancelBtn"
+                                        launchButtonText="Cancel"
+                                        yesCallBack={this.jobCancelledCallBack}
+                                        noCallBack={this.jobNotCancelledCallBack}
+                                        headerText="Cancel the job" />
+                                    : 
+                                    null
+                                }
+
+                                <OkDialog
+                                    open={this.state.okDialogOpen}
+                                    okCallBack={this.okDialogCallBack}
+                                    headerText={this.state.okDialogHeaderText}
+                                    bodyText={this.state.okDialogBodyText}
+                                    key={this.state.okDialogKey} />
+                            </span>
+                        </Row> :
+                        null
+                    }
                 </Grid>
             </Well>
         );
@@ -256,6 +266,14 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         //TODO :This should update the current job with "IsAccepted" and push it out
         //TODO :This should update the current job with "IsAccepted" and push it out
         //TODO :This should update the current job with "IsAccepted" and push it out
+
+
+        const newState = Object.assign({}, this.state, {
+            isJobAccepted: true
+        })
+        this.setState(newState);
+
+
         console.log('button on overlay clicked:' + targetMarker.key);
     }
 
@@ -386,7 +404,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
 
         var newJob = {
-            jobUUID: this.currentJobUUID != undefined && this.currentJobUUID != '' ? this.currentJobUUID : '',
+            jobUUID: this._currentJobUUID != undefined && this._currentJobUUID != '' ? this._currentJobUUID : '',
             clientFullName: localClientFullName,
             clientEmail: localClientEmail,
             clientPosition: localClientPosition,
@@ -439,8 +457,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     addMarkerForJob = (jobArgs: any): void => {
 
-        if (jobArgs.detail.jobUUID != undefined && jobArgs.detail.jobUUID != '')
-            this.currentJobUUID = jobArgs.detail.jobUUID;
+        if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '')
+            this._currentJobUUID = jobArgs.jobUUID;
 
 
         //TODO : should see if the client/driver for the job is in the list if it is remove it
@@ -464,7 +482,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         console.log('RATINGS OK CLICKED');
 
         //TODO : Add a rating by calling the REST endpoint
-
+        this._jobService.clearUserIssuedJob();
+        this._positionService.clearUserJobPositions(this._authService.userEmail());
         this.setState(
             {
                 okDialogHeaderText: 'Ratings',
@@ -477,6 +496,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     jobCancelledCallBack = () => {
         console.log('CANCEL YES CLICKED');
         this._jobService.clearUserIssuedJob();
+        this._positionService.clearUserJobPositions(this._authService.userEmail());
         this.setState(
             {
                 okDialogHeaderText: 'Job Cancellaton',

@@ -728,6 +728,10 @@ var ViewJob = function (_super) {
             //TODO :This should update the current job with "IsAccepted" and push it out
             //TODO :This should update the current job with "IsAccepted" and push it out
             //TODO :This should update the current job with "IsAccepted" and push it out
+            var newState = Object.assign({}, _this.state, {
+                isJobAccepted: true
+            });
+            _this.setState(newState);
             console.log('button on overlay clicked:' + targetMarker.key);
         };
         _this.handleMapClick = function (event) {
@@ -834,7 +838,7 @@ var ViewJob = function (_super) {
                 localDriverPosition = isDriver ? currentPosition : null;
             }
             var newJob = {
-                jobUUID: _this.currentJobUUID != undefined && _this.currentJobUUID != '' ? _this.currentJobUUID : '',
+                jobUUID: _this._currentJobUUID != undefined && _this._currentJobUUID != '' ? _this._currentJobUUID : '',
                 clientFullName: localClientFullName,
                 clientEmail: localClientEmail,
                 clientPosition: localClientPosition,
@@ -872,7 +876,7 @@ var ViewJob = function (_super) {
             return isDriver ? '/assets/images/driver.png' : '/assets/images/passenger.png';
         };
         _this.addMarkerForJob = function (jobArgs) {
-            if (jobArgs.detail.jobUUID != undefined && jobArgs.detail.jobUUID != '') _this.currentJobUUID = jobArgs.detail.jobUUID;
+            if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '') _this._currentJobUUID = jobArgs.jobUUID;
             //TODO : should see if the client/driver for the job is in the list if it is remove it
             //TODO : add it
             //TODO : Update the list of position markers in the PositionService
@@ -890,6 +894,8 @@ var ViewJob = function (_super) {
         _this.ratingsDialogOkCallBack = function () {
             console.log('RATINGS OK CLICKED');
             //TODO : Add a rating by calling the REST endpoint
+            _this._jobService.clearUserIssuedJob();
+            _this._positionService.clearUserJobPositions(_this._authService.userEmail());
             _this.setState({
                 okDialogHeaderText: 'Ratings',
                 okDialogBodyText: 'Rating successfully recorded',
@@ -900,6 +906,7 @@ var ViewJob = function (_super) {
         _this.jobCancelledCallBack = function () {
             console.log('CANCEL YES CLICKED');
             _this._jobService.clearUserIssuedJob();
+            _this._positionService.clearUserJobPositions(_this._authService.userEmail());
             _this.setState({
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job successfully cancelled',
@@ -940,7 +947,8 @@ var ViewJob = function (_super) {
             okDialogOpen: false,
             okDialogKey: 0,
             dimensions: { width: -1, height: -1 },
-            currentPosition: _this._authService.isDriver() ? null : _this._positionService.currentPosition(_this._authService.userEmail())
+            currentPosition: _this._authService.isDriver() ? null : _this._positionService.currentPosition(_this._authService.userEmail()),
+            isJobAccepted: false
         };
         return _this;
     }
@@ -1000,7 +1008,7 @@ var ViewJob = function (_super) {
                         marginRight: 0,
                         marginBottom: 20
                     } }), markers: _this.state.markers, onMapClick: _this.handleMapClick, onMarkerClick: _this.handleMarkerClick }));
-        }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this.ratingsDialogOkCallBack }), React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this.jobCancelledCallBack, noCallBack: this.jobNotCancelledCallBack, headerText: "Cancel the job" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+        }))), this.state.isJobAccepted === true ? React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this.ratingsDialogOkCallBack }), !(this._authService.isDriver() === true) ? React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this.jobCancelledCallBack, noCallBack: this.jobNotCancelledCallBack, headerText: "Cancel the job" }) : null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))) : null));
     };
     return ViewJob;
 }(React.Component);
@@ -2157,4 +2165,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.d0832fdd2d2fdf1de283.js.map
+//# sourceMappingURL=index.bundle.ca8b9f7e6559b2693a49.js.map

@@ -13,7 +13,7 @@ import ReactStars from 'react-stars';
 export interface RatingDialogProps {
     headerText: string;
     theId: string;
-    okCallBack() : void;
+    okCallBack(): void;
 }
 
 export interface RatingDialogState {
@@ -32,7 +32,7 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
         this.state = {
             showModal: false,
             rating:0,
-            ratingText:''
+            ratingText: ''
         };
     }
 
