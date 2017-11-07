@@ -18,6 +18,12 @@ In essence I want to write a very (pardon the pun) but uber simple “uber” ty
 - The rating should only be available once a “pickup client” has marked a job as “completed”
 - A “driver” or a “pickup client” should ALWAYS be able to view their previous ratings. 
 
+## Picture Says A 1000nd Words
+
+So here is a nice picture which shows the main moving parts
+
+![Overview](/docs/overview.png)
+
 ## Technologies That I Will Try And Use
 
 - WebPack
