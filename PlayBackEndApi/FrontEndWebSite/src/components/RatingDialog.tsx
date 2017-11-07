@@ -13,7 +13,7 @@ import ReactStars from 'react-stars';
 export interface RatingDialogProps {
     headerText: string;
     theId: string;
-    okCallBack(): void;
+    okCallBack(rating: number): void;
 }
 
 export interface RatingDialogState {
@@ -65,7 +65,7 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
 
     okClicked = () => {
         this.close();
-        this.props.okCallBack();
+        this.props.okCallBack(this.state.rating);
     }
 
     render() {

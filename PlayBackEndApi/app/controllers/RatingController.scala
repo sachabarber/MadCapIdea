@@ -65,10 +65,7 @@ class RatingController @Inject()
   }
 
 
-
-
   def ratingByEmail = Action.async { request =>
-
     val email = request.getQueryString("email")
     email match {
       case Some(emailAddress) => {

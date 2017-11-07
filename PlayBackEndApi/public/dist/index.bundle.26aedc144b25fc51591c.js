@@ -850,23 +850,9 @@ var ViewJob = function (_super) {
                 isAssigned: localIsAssigned,
                 isCompleted: false
             };
-            $.ajax({
-                type: 'POST',
-                url: 'job/submit',
-                data: JSON.stringify(newJob),
-                contentType: "application/json; charset=utf-8",
-                dataType: 'json'
-            }).done(function (jdata, textStatus, jqXHR) {
+            _this.makePOSTRequest('job/submit', newJob, self, function (jdata, textStatus, jqXHR) {
                 self._jobService.clearUserIssuedJob();
                 self._jobService.storeUserIssuedJob(newJob);
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                var newState = Object.assign({}, self.state, {
-                    okDialogHeaderText: 'Error',
-                    okDialogBodyText: jqXHR.responseText,
-                    okDialogOpen: true,
-                    okDialogKey: Math.random()
-                });
-                self.setState(newState);
             });
         };
         _this.createMarker = function (fullname, email, isDriver, event) {
@@ -891,16 +877,54 @@ var ViewJob = function (_super) {
             //4. Or if the job is unassigned and if there is no other active job for this client/driver
             return true;
         };
-        _this.ratingsDialogOkCallBack = function () {
+        _this.ratingsDialogOkCallBack = function (theRatingScore) {
             console.log('RATINGS OK CLICKED');
-            //TODO : Add a rating by calling the REST endpoint
-            _this._jobService.clearUserIssuedJob();
-            _this._positionService.clearUserJobPositions(_this._authService.userEmail());
-            _this.setState({
-                okDialogHeaderText: 'Ratings',
-                okDialogBodyText: 'Rating successfully recorded',
-                okDialogOpen: true,
-                okDialogKey: Math.random()
+            var self = _this;
+            var currentUser = _this._authService.user();
+            var isDriver = _this._authService.isDriver();
+            var currentJob = _this._jobService.currentJob();
+            var ratingJSON = null;
+            if (!isDriver) {
+                ratingJSON = {
+                    fromEmail: _this._authService.userEmail(),
+                    toEmail: currentJob.driverEmail,
+                    score: theRatingScore
+                };
+            } else {
+                ratingJSON = {
+                    fromEmail: _this._authService.userEmail(),
+                    toEmail: currentJob.clientEmail,
+                    score: theRatingScore
+                };
+            }
+            _this.makePOSTRequest('rating/submit/new', ratingJSON, self, function (jdata, textStatus, jqXHR) {
+                this._jobService.clearUserIssuedJob();
+                this._positionService.clearUserJobPositions(this._authService.userEmail());
+                this.setState({
+                    okDialogHeaderText: 'Ratings',
+                    okDialogBodyText: 'Rating successfully recorded',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+            });
+        };
+        _this.makePOSTRequest = function (route, jsonData, context, doneCallback) {
+            $.ajax({
+                type: 'POST',
+                url: route,
+                data: JSON.stringify(jsonData),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json'
+            }).done(function (jdata, textStatus, jqXHR) {
+                doneCallback(jdata, textStatus, jqXHR);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                var newState = Object.assign({}, context.state, {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+                context.setState(newState);
             });
         };
         _this.jobCancelledCallBack = function () {
@@ -955,7 +979,7 @@ var ViewJob = function (_super) {
     ViewJob.prototype.componentWillMount = function () {
         var _this = this;
         var self = this;
-        this._subscription = this._jobStreamService.getJobStream().where(function (x, idx, obs) {
+        this._subscription = this._jobStreamService.getJobStream().retry().where(function (x, idx, obs) {
             return self.shouldShowMarkerForJob(x.detail);
         }).subscribe(function (jobArgs) {
             console.log('RX saw onJobChanged');
@@ -1620,7 +1644,7 @@ var RatingDialog = function (_super) {
         };
         _this.okClicked = function () {
             _this.close();
-            _this.props.okCallBack();
+            _this.props.okCallBack(_this.state.rating);
         };
         console.log(_this.props);
         //set initial state
@@ -2165,4 +2189,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.ca8b9f7e6559b2693a49.js.map
+//# sourceMappingURL=index.bundle.26aedc144b25fc51591c.js.map

@@ -90,6 +90,9 @@ export interface ViewJobState {
     isJobAccepted: boolean
 }
 
+type DoneCallback = (jdata: any, textStatus: any, jqXHR: any) => void
+
+
 export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     private _authService: AuthService;
@@ -132,6 +135,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         var self = this;
         this._subscription =
             this._jobStreamService.getJobStream()
+            .retry()
             .where(function (x, idx, obs) {
                 return self.shouldShowMarkerForJob(x.detail);
             })
@@ -404,43 +408,35 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
 
         var newJob = {
-            jobUUID: this._currentJobUUID != undefined && this._currentJobUUID != '' ? this._currentJobUUID : '',
+            jobUUID: this._currentJobUUID != undefined && this._currentJobUUID != '' ?
+                this._currentJobUUID : '',
             clientFullName: localClientFullName,
             clientEmail: localClientEmail,
             clientPosition: localClientPosition,
             driverFullName: localDriverFullName,
             driverEmail: localDriverEmail,
             driverPosition: localDriverPosition,
-            vehicleDescription: isDriver ? this._authService.user().vehicleDescription : '',
-            vehicleRegistrationNumber: isDriver ? this._authService.user().vehicleRegistrationNumber : '',
+            vehicleDescription: isDriver ?
+                this._authService.user().vehicleDescription : '',
+            vehicleRegistrationNumber: isDriver ?
+                this._authService.user().vehicleRegistrationNumber : '',
             isAssigned: localIsAssigned,
             isCompleted: false
         }
 
-        $.ajax({
-            type: 'POST',
-            url: 'job/submit',
-            data: JSON.stringify(newJob),
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json'
-        })
-        .done(function (jdata, textStatus, jqXHR) {
-            self._jobService.clearUserIssuedJob();
-            self._jobService.storeUserIssuedJob(newJob);
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            const newState = Object.assign({}, self.state, {
-                okDialogHeaderText: 'Error',
-                okDialogBodyText: jqXHR.responseText,
-                okDialogOpen: true,
-                okDialogKey: Math.random()
-            })
-            self.setState(newState)
-        });
+        this.makePOSTRequest('job/submit', newJob, self,
+            function (jdata, textStatus, jqXHR) {
+                self._jobService.clearUserIssuedJob();
+                self._jobService.storeUserIssuedJob(newJob);
+            });
     }
 
+    createMarker = (
+        fullname: string,
+        email: string,
+        isDriver: boolean,
+        event: any): PositionMarker => {
 
-    createMarker = (fullname: string, email: string, isDriver: boolean, event: any, ): PositionMarker => {
         return new PositionMarker(
             fullname,
             new Position(event.latLng.lat(), event.latLng.lng()),
@@ -478,19 +474,69 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         return true;
     }
 
-    ratingsDialogOkCallBack = () => {
+    ratingsDialogOkCallBack = (theRatingScore: number) => {
         console.log('RATINGS OK CLICKED');
 
-        //TODO : Add a rating by calling the REST endpoint
-        this._jobService.clearUserIssuedJob();
-        this._positionService.clearUserJobPositions(this._authService.userEmail());
-        this.setState(
-            {
-                okDialogHeaderText: 'Ratings',
-                okDialogBodyText: 'Rating successfully recorded',
+        var self = this;
+        let currentUser = this._authService.user();
+        let isDriver = this._authService.isDriver();
+        let currentJob = this._jobService.currentJob();
+
+        var ratingJSON = null;
+
+        if (!isDriver) {
+            ratingJSON = {
+                fromEmail: this._authService.userEmail(),
+                toEmail: currentJob.driverEmail,
+                score: theRatingScore
+            }
+        }
+        else {
+            ratingJSON = {
+                fromEmail: this._authService.userEmail(),
+                toEmail: currentJob.clientEmail,
+                score: theRatingScore
+            }
+        }
+
+        this.makePOSTRequest('rating/submit/new', ratingJSON, self,
+            function (jdata, textStatus, jqXHR) {
+                this._jobService.clearUserIssuedJob();
+                this._positionService.clearUserJobPositions(this._authService.userEmail());
+                this.setState(
+                    {
+                        okDialogHeaderText: 'Ratings',
+                        okDialogBodyText: 'Rating successfully recorded',
+                        okDialogOpen: true,
+                        okDialogKey: Math.random()
+                    });
+            });
+    }
+
+   
+    makePOSTRequest = (route: string, jsonData: any, context: ViewJob, doneCallback: DoneCallback) => {
+
+        $.ajax({
+            type: 'POST',
+            url: route,
+            data: JSON.stringify(jsonData),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+            doneCallback(jdata, textStatus, jqXHR);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            const newState = Object.assign({}, context.state, {
+                okDialogHeaderText: 'Error',
+                okDialogBodyText: jqXHR.responseText,
                 okDialogOpen: true,
                 okDialogKey: Math.random()
-            });
+            })
+            context.setState(newState)
+        });
+
+
     }
 
     jobCancelledCallBack = () => {
