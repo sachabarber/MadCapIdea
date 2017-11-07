@@ -734,6 +734,20 @@ var ViewJob = function (_super) {
             _this.setState(newState);
             console.log('button on overlay clicked:' + targetMarker.key);
         };
+        _this.addMarkerForJob = function (jobArgs) {
+            if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '') _this._currentJobUUID = jobArgs.jobUUID;
+            //TODO : should see if the client/driver for the job is in the list if it is remove it
+            //TODO : add it
+            //TODO : Update the list of position markers in the PositionService
+            //TODO : Should clear out the current stored job
+            //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
+        };
+        _this.shouldShowMarkerForJob = function (jobArgs) {
+            //TODO
+            //1. Job exists and is unassigned and if there is no other active job for this client/driver
+            //2. If the job isAssigned and its for the current logged in client/driver
+            return true;
+        };
         _this.handleMapClick = function (event) {
             var currentUser = _this._authService.user();
             var isDriver = _this._authService.isDriver();
@@ -860,22 +874,6 @@ var ViewJob = function (_super) {
         };
         _this.createIcon = function (isDriver) {
             return isDriver ? '/assets/images/driver.png' : '/assets/images/passenger.png';
-        };
-        _this.addMarkerForJob = function (jobArgs) {
-            if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '') _this._currentJobUUID = jobArgs.jobUUID;
-            //TODO : should see if the client/driver for the job is in the list if it is remove it
-            //TODO : add it
-            //TODO : Update the list of position markers in the PositionService
-            //TODO : Should clear out the current stored job
-            //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
-        };
-        _this.shouldShowMarkerForJob = function (jobArgs) {
-            //TODO
-            //1. If the current job client is the current client logged in
-            //2. If the current job driver is the current driver logged in
-            //3. If the job isAssigned and its for the current logged in client/driver
-            //4. Or if the job is unassigned and if there is no other active job for this client/driver
-            return true;
         };
         _this.ratingsDialogOkCallBack = function (theRatingScore) {
             console.log('RATINGS OK CLICKED');
@@ -2189,4 +2187,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.26aedc144b25fc51591c.js.map
+//# sourceMappingURL=index.bundle.c3c468ac74e8d5506b6c.js.map

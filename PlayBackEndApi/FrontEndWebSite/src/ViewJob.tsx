@@ -270,8 +270,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         //TODO :This should update the current job with "IsAccepted" and push it out
         //TODO :This should update the current job with "IsAccepted" and push it out
         //TODO :This should update the current job with "IsAccepted" and push it out
-
-
         const newState = Object.assign({}, this.state, {
             isJobAccepted: true
         })
@@ -280,6 +278,28 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
         console.log('button on overlay clicked:' + targetMarker.key);
     }
+
+    addMarkerForJob = (jobArgs: any): void => {
+
+        if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '')
+            this._currentJobUUID = jobArgs.jobUUID;
+
+
+        //TODO : should see if the client/driver for the job is in the list if it is remove it
+        //TODO : add it
+        //TODO : Update the list of position markers in the PositionService
+        //TODO : Should clear out the current stored job
+        //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
+    }
+
+    shouldShowMarkerForJob = (jobArgs: any): boolean => {
+
+        //TODO
+        //1. Job exists and is unassigned and if there is no other active job for this client/driver
+        //2. If the job isAssigned and its for the current logged in client/driver
+        return true;
+    }
+
 
     handleMapClick = (event) => {
 
@@ -450,30 +470,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     createIcon = (isDriver: boolean): string => {
         return isDriver ? '/assets/images/driver.png' : '/assets/images/passenger.png';
     }
-
-    addMarkerForJob = (jobArgs: any): void => {
-
-        if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '')
-            this._currentJobUUID = jobArgs.jobUUID;
-
-
-        //TODO : should see if the client/driver for the job is in the list if it is remove it
-        //TODO : add it
-        //TODO : Update the list of position markers in the PositionService
-        //TODO : Should clear out the current stored job
-        //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
-    }
-
-    shouldShowMarkerForJob = (jobArgs: any): boolean => {
-
-        //TODO
-        //1. If the current job client is the current client logged in
-        //2. If the current job driver is the current driver logged in
-        //3. If the job isAssigned and its for the current logged in client/driver
-        //4. Or if the job is unassigned and if there is no other active job for this client/driver
-        return true;
-    }
-
+    
     ratingsDialogOkCallBack = (theRatingScore: number) => {
         console.log('RATINGS OK CLICKED');
 
@@ -481,7 +478,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         let currentUser = this._authService.user();
         let isDriver = this._authService.isDriver();
         let currentJob = this._jobService.currentJob();
-
         var ratingJSON = null;
 
         if (!isDriver) {
@@ -515,7 +511,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
    
     makePOSTRequest = (route: string, jsonData: any, context: ViewJob, doneCallback: DoneCallback) => {
-
         $.ajax({
             type: 'POST',
             url: route,
@@ -535,8 +530,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             })
             context.setState(newState)
         });
-
-
     }
 
     jobCancelledCallBack = () => {
