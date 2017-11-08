@@ -1,8 +1,7 @@
-﻿@import './hello/hello.scss';
+﻿@import './job/job.scss';
+@import './variables.scss';
 
 
-$body-background: #ffffff;
-$standard-margin-left: 15px;
 
 body {
     background-color: $body-background;
@@ -26,9 +25,7 @@ body {
     margin-bottom : 10px;
 }
 
-#createJobBtn, #viewJobCompleteBtn, #viewJobCancelBtn, #logoutBtn {
-    margin-left : $standard-margin-left;
-}
+
 
 .leftFloat {
     float:left;

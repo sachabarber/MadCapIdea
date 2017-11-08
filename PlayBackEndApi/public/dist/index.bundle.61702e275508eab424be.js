@@ -722,17 +722,28 @@ var ViewJob = function (_super) {
     function ViewJob(props) {
         var _this = _super.call(this, props) || this;
         _this.handleMarkerClick = function (targetMarker) {
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            var newState = Object.assign({}, _this.state, {
-                isJobAccepted: true
-            });
-            _this.setState(newState);
             console.log('button on overlay clicked:' + targetMarker.key);
+            console.log(targetMarker);
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            //TODO :This should update the current job with "IsAccepted" and push it out
+            var currentJob = _this._jobService.currentJob();
+            var jobForMarker = targetMarker.jobForMarker;
+            currentJob.driverFullName = jobForMarker.driverFullName;
+            currentJob.driverEmail = jobForMarker.driverEmail;
+            currentJob.driverPosition = jobForMarker.driverPosition;
+            currentJob.vehicleDescription = jobForMarker.vehicleDescription;
+            currentJob.vehicleRegistrationNumber = jobForMarker.vehicleRegistrationNumber;
+            currentJob.isAssigned = true;
+            _this.makePOSTRequest('job/submit', currentJob, _this, function (jdata, textStatus, jqXHR) {
+                var newState = Object.assign({}, this.state, {
+                    isJobAccepted: true
+                });
+                this.setState(newState);
+            });
         };
         _this.addMarkerForJob = function (jobArgs) {
             if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '') _this._currentJobUUID = jobArgs.jobUUID;
@@ -743,10 +754,24 @@ var ViewJob = function (_super) {
             //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
         };
         _this.shouldShowMarkerForJob = function (jobArgs) {
-            //TODO
-            //1. Job exists and is unassigned and if there is no other active job for this client/driver
-            //2. If the job isAssigned and its for the current logged in client/driver
-            return true;
+            var isDriver = _this._authService.isDriver();
+            var currentJob = _this._jobService.currentJob();
+            var hasJob = currentJob != undefined && currentJob != null;
+            //case 1 - No job exists, to allow driver to add their mark initially
+            if (!hasJob && isDriver) return true;
+            //case 2 - Job exists and is unassigned and if there is no other active 
+            //         job for this client/ driver
+            if (hasJob && !currentJob.isAssigned) return true;
+            //case 3 - If the job isAssigned and its for the current logged in client/driver
+            if (hasJob && currentJob.isAssigned) {
+                if (currentJob.clientEmail == jobArgs.clientEmail) {
+                    return true;
+                }
+                if (currentJob.driverEmail == jobArgs.driverEmail) {
+                    return true;
+                }
+            }
+            return false;
         };
         _this.handleMapClick = function (event) {
             var currentUser = _this._authService.user();
@@ -768,7 +793,7 @@ var ViewJob = function (_super) {
                 _this.setState(newState);
             } else {
                 if (isDriver) {
-                    var newDriverMarker = _this.createMarker(currentUser.fullName, currentUser.email, isDriver, event);
+                    var newDriverMarker = _this.createDriverMarker(currentUser, event);
                     var newMarkersList = _this.state.markers;
                     newMarkersList.push(newDriverMarker);
                     var newState = Object.assign({}, _this.state, {
@@ -869,8 +894,23 @@ var ViewJob = function (_super) {
                 self._jobService.storeUserIssuedJob(newJob);
             });
         };
-        _this.createMarker = function (fullname, email, isDriver, event) {
-            return new _PositionMarker.PositionMarker(fullname, new _Position.Position(event.latLng.lat(), event.latLng.lng()), fullname, email, _this.createIcon(isDriver), isDriver);
+        _this.createDriverMarker = function (driver, event) {
+            var localDriverFullName = driver.fullName;
+            var localDriverEmail = driver.email;
+            var localDriverPosition = new _Position.Position(event.latLng.lat(), event.latLng.lng());
+            var localVehicleDescription = _this._authService.user().vehicleDescription;
+            var localVehicleRegistrationNumber = _this._authService.user().vehicleRegistrationNumber;
+            var driverJob = {
+                jobUUID: _this._currentJobUUID != undefined && _this._currentJobUUID != '' ? _this._currentJobUUID : '',
+                driverFullName: localDriverFullName,
+                driverEmail: localDriverEmail,
+                driverPosition: localDriverPosition,
+                vehicleDescription: localVehicleDescription,
+                vehicleRegistrationNumber: localVehicleRegistrationNumber,
+                isAssigned: false,
+                isCompleted: false
+            };
+            return new _PositionMarker.PositionMarker(localDriverFullName, localDriverPosition, localDriverFullName, localDriverEmail, _this.createIcon(true), true, driverJob);
         };
         _this.createIcon = function (isDriver) {
             return isDriver ? '/assets/images/driver.png' : '/assets/images/passenger.png';
@@ -1691,7 +1731,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var PositionMarker = function () {
-    function PositionMarker(key, position, name, email, icon, isDriver) {
+    function PositionMarker(key, position, name, email, icon, isDriver, jobForMarker) {
         this.key = key;
         this.position = position;
         this.name = name;
@@ -2187,4 +2227,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.c3c468ac74e8d5506b6c.js.map
+//# sourceMappingURL=index.bundle.61702e275508eab424be.js.map

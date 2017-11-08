@@ -1,0 +1,5 @@
+﻿@import '../variables.scss';
+
+#createJobBtn, #viewJobCompleteBtn, #viewJobCancelBtn, #logoutBtn {
+    margin-left: $standard-margin-left;
+}

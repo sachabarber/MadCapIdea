@@ -1,5 +1,5 @@
-#helloText {
-  background-color: coral; }
+#createJobBtn, #viewJobCompleteBtn, #viewJobCancelBtn, #logoutBtn {
+  margin-left: 15px; }
 
 body {
   background-color: #ffffff;
@@ -17,9 +17,6 @@ body {
   margin-top: 10px;
   margin-right: 10px;
   margin-bottom: 10px; }
-
-#createJobBtn, #viewJobCompleteBtn, #viewJobCancelBtn, #logoutBtn {
-  margin-left: 15px; }
 
 .leftFloat {
   float: left; }
@@ -39,4 +36,4 @@ body {
 .displayBlock {
   display: block; }
 
-/*# sourceMappingURL=indexCss.bundle.c3c468ac74e8d5506b6c.css.map*/
+/*# sourceMappingURL=indexCss.bundle.61702e275508eab424be.css.map*/

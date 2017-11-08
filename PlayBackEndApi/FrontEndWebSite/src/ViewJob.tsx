@@ -264,19 +264,31 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     handleMarkerClick = (targetMarker) => {
 
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        const newState = Object.assign({}, this.state, {
-            isJobAccepted: true
-        })
-        this.setState(newState);
-
-
         console.log('button on overlay clicked:' + targetMarker.key);
+        console.log(targetMarker);
+
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        //TODO :This should update the current job with "IsAccepted" and push it out
+        let currentJob = this._jobService.currentJob();
+        let jobForMarker = targetMarker.jobForMarker;
+        currentJob.driverFullName = jobForMarker.driverFullName;
+        currentJob.driverEmail = jobForMarker.driverEmail;
+        currentJob.driverPosition = jobForMarker.driverPosition;
+        currentJob.vehicleDescription = jobForMarker.vehicleDescription;
+        currentJob.vehicleRegistrationNumber = jobForMarker.vehicleRegistrationNumber;
+        currentJob.isAssigned = true;
+
+        this.makePOSTRequest('job/submit', currentJob, this,
+            function (jdata, textStatus, jqXHR) {
+                const newState = Object.assign({}, this.state, {
+                    isJobAccepted: true
+                })
+                this.setState(newState);
+            });
     }
 
     addMarkerForJob = (jobArgs: any): void => {
@@ -294,10 +306,29 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     shouldShowMarkerForJob = (jobArgs: any): boolean => {
 
-        //TODO
-        //1. Job exists and is unassigned and if there is no other active job for this client/driver
-        //2. If the job isAssigned and its for the current logged in client/driver
-        return true;
+        let isDriver = this._authService.isDriver();
+        let currentJob = this._jobService.currentJob();
+        let hasJob = currentJob != undefined && currentJob != null;
+
+        //case 1 - No job exists, to allow driver to add their mark initially
+        if (!hasJob && isDriver)
+            return true;
+        
+        //case 2 - Job exists and is unassigned and if there is no other active 
+        //         job for this client/ driver
+        if (hasJob && !currentJob.isAssigned)
+            return true;
+
+        //case 3 - If the job isAssigned and its for the current logged in client/driver
+        if (hasJob && currentJob.isAssigned) {
+            if (currentJob.clientEmail == jobArgs.clientEmail) {
+                return true;
+            }
+            if (currentJob.driverEmail == jobArgs.driverEmail) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -328,7 +359,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         else {
             if (isDriver) {
                 let newDriverMarker =
-                    this.createMarker(currentUser.fullName, currentUser.email, isDriver, event);
+                    this.createDriverMarker(currentUser, event);
                 let newMarkersList = this.state.markers;
                 newMarkersList.push(newDriverMarker);
                 const newState = Object.assign({}, this.state, {
@@ -451,19 +482,37 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             });
     }
 
-    createMarker = (
-        fullname: string,
-        email: string,
-        isDriver: boolean,
+    createDriverMarker = (
+        driver: any,
         event: any): PositionMarker => {
 
+        let localDriverFullName = driver.fullName;
+        let localDriverEmail = driver.email;
+        let localDriverPosition = new Position(event.latLng.lat(), event.latLng.lng());
+        let localVehicleDescription = this._authService.user().vehicleDescription;
+        let localVehicleRegistrationNumber = this._authService.user().vehicleRegistrationNumber;
+
+        var driverJob = {
+            jobUUID: this._currentJobUUID != undefined && this._currentJobUUID != '' ?
+                this._currentJobUUID : '',
+
+            driverFullName: localDriverFullName,
+            driverEmail: localDriverEmail,
+            driverPosition: localDriverPosition,
+            vehicleDescription: localVehicleDescription,
+            vehicleRegistrationNumber: localVehicleRegistrationNumber,
+            isAssigned: false,
+            isCompleted: false
+        }		
+
         return new PositionMarker(
-            fullname,
-            new Position(event.latLng.lat(), event.latLng.lng()),
-            fullname,
-            email,
-            this.createIcon(isDriver),
-            isDriver
+            localDriverFullName,
+            localDriverPosition,
+            localDriverFullName,
+            localDriverEmail,
+            this.createIcon(true),
+            true,
+            driverJob
         );
     }
 

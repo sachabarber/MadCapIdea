@@ -8,7 +8,7 @@ export class PositionMarker {
     email: string;
     icon: string;
     isDriver: boolean;
-
+    jobForMarker: any;
 
     constructor(
         key: string,
@@ -16,12 +16,15 @@ export class PositionMarker {
         name: string,
         email: string,
         icon: string,
-        isDriver: boolean) {
+        isDriver: boolean,
+        jobForMarker: any) {
+
         this.key = key;
         this.position = position;
         this.name = name;
         this.email = email;
         this.icon = icon;
         this.isDriver = isDriver;
+
     }
 }
