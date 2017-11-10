@@ -267,12 +267,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         console.log('button on overlay clicked:' + targetMarker.key);
         console.log(targetMarker);
 
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
-        //TODO :This should update the current job with "IsAccepted" and push it out
         let currentJob = this._jobService.currentJob();
         let jobForMarker = targetMarker.jobForMarker;
         currentJob.driverFullName = jobForMarker.driverFullName;
@@ -296,13 +290,99 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '')
             this._currentJobUUID = jobArgs.jobUUID;
 
+        let isDriver = this._authService.isDriver();
+        let jobClientEmail = jobArgs.clientEmail;
+        let jobDriverEmail = jobArgs.driverEmail;
+        let newMarkersList = this.state.markers;
+        let newPositionForUser = null;
 
-        //TODO : should see if the client/driver for the job is in the list if it is remove it
-        //TODO : add it
-        //TODO : Update the list of position markers in the PositionService
-        //TODO : Should clear out the current stored job
-        //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
+        //if job is assigned, we want to end up with only the matched client/driver shown
+        if (jobArgs.isAssigned) {
+            let pairedNames = [jobArgs.clientEmail, jobArgs.driverEmail];
+            let finalList: Array<PositionMarker> = new Array<PositionMarker>();
+            for (var i = 0; i < this.state.markers.length; i++) {
+                if (pairedNames.indexOf(this.state.markers[i].email) >= 0) {
+                    finalList.push(this.state.markers[i]);
+                }
+            }
+            newMarkersList = finalList;
+        }
+
+        //should see if the client for the job is in the list of markers and if it is update its 
+        //job and positio. Where position many be null, as its not the position for the user requested
+        newPositionForUser = this.updateMatchedUserMarker(
+            jobClientEmail,
+            newMarkersList,
+            jobArgs.clientPosition,
+            jobArgs);
+
+        //should see if the driver for the job is in the list of markers and if it is update its 
+        //job and positio. Where position many be null, as its not the position for the user requested
+        newPositionForUser = this.updateMatchedUserMarker(
+            jobDriverEmail,
+            newMarkersList,
+            jobArgs.driverPosition,
+            jobArgs);
+
+        //update the state
+        var newState = this.updateStateForNewMarker(newMarkersList, newPositionForUser);
+
+
+        //Update the list of position markers in the PositionService
+        this._positionService.clearUserJobPositions(this._authService.userEmail());
+        this._positionService.storeUserJobPositions(this._authService.user, newMarkersList);
+
+        //Update the position in the PositionService
+        if (newPositionForUser != undefined && newPositionForUser != null) {
+            this._positionService.clearUserPosition(this._authService.userEmail());
+            this._positionService.storeUserPosition(this._authService.userEmail(), newPositionForUser);
+        }
+
+        //Should clear out the current stored job
+        //Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
+        this._jobService.clearUserIssuedJob();
+        this._jobService.storeUserIssuedJob(jobArgs);
+
+        //update the state
+        this.setState(newState);
     }
+
+    updateMatchedUserMarker = (jobEmailToCheck: string, newMarkersList: PositionMarker[],
+        jobPosition: Position, jobForMarker:any): Position => {
+
+        var possibleUserPosition = null;
+        if (jobEmailToCheck != undefined && jobEmailToCheck != null) {
+
+            let matchedMarker = _.find(this.state.markers, { 'email': jobEmailToCheck });
+            _.remove(newMarkersList, function (n) {
+                return n.email === matchedMarker.email;
+            });
+            if (matchedMarker != null) {
+                //update its position
+                matchedMarker.position = jobPosition;
+                matchedMarker.jobForMarker = jobForMarker;
+                possibleUserPosition = jobPosition;
+            }
+        }
+        return possibleUserPosition;
+    }
+
+
+    updateStateForNewMarker = (newMarkersList:PositionMarker[], position: Position): any => {
+
+        if (position != null) {
+            return Object.assign({}, this.state, {
+                currentPosition: position,
+                markers: newMarkersList
+            })
+        }
+        else {
+           return Object.assign({}, this.state, {
+                markers: newMarkersList
+            })
+        }
+    }
+
 
     shouldShowMarkerForJob = (jobArgs: any): boolean => {
 

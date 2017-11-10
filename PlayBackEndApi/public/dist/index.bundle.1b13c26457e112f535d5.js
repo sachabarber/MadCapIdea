@@ -747,11 +747,58 @@ var ViewJob = function (_super) {
         };
         _this.addMarkerForJob = function (jobArgs) {
             if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '') _this._currentJobUUID = jobArgs.jobUUID;
-            //TODO : should see if the client/driver for the job is in the list if it is remove it
-            //TODO : add it
-            //TODO : Update the list of position markers in the PositionService
-            //TODO : Should clear out the current stored job
-            //TODO : Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
+            var isDriver = _this._authService.isDriver();
+            var jobClientEmail = jobArgs.clientEmail;
+            var jobDriverEmail = jobArgs.driverEmail;
+            var newMarkersList = _this.state.markers;
+            var newPositionForUser = null;
+            //should see if the client for the job is in the list if it is remove it
+            newPositionForUser = _this.obtainPositonForUser(jobClientEmail, newMarkersList, jobArgs.clientPosition);
+            //TODO : create NEW marker for client, add it to the list of newMarkersList
+            //TODO : create NEW marker for client, add it to the list of newMarkersList
+            //TODO : create NEW marker for client, add it to the list of newMarkersList
+            //TODO : Repeat above for Driver
+            //TODO : Repeat above for Driver
+            //TODO : Repeat above for Driver
+            var newState = _this.updateStateForNewMarker(newMarkersList, newPositionForUser);
+            //Update the list of position markers in the PositionService
+            _this._positionService.clearUserJobPositions(_this._authService.userEmail());
+            _this._positionService.storeUserJobPositions(_this._authService.user, newMarkersList);
+            //Update the position in the PositionService
+            if (newPositionForUser != undefined && newPositionForUser != null) {
+                _this._positionService.clearUserPosition(_this._authService.userEmail());
+                _this._positionService.storeUserPosition(_this._authService.userEmail(), newPositionForUser);
+            }
+            //Should clear out the current stored job
+            //Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
+            _this._jobService.clearUserIssuedJob();
+            _this._jobService.storeUserIssuedJob(jobArgs);
+            //update the state
+            _this.setState(newState);
+        };
+        _this.obtainPositonForUser = function (jobEmailToCheck, newMarkersList, jobPosition) {
+            if (jobEmailToCheck != undefined && jobEmailToCheck != null) {
+                var matchedMarker_1 = _.find(_this.state.markers, { 'email': jobEmailToCheck });
+                _.remove(newMarkersList, function (n) {
+                    return n.email === matchedMarker_1.email;
+                });
+                //grab position for user
+                if (_this._authService.userEmail() == jobEmailToCheck) {
+                    return jobPosition;
+                }
+            }
+        };
+        _this.updateStateForNewMarker = function (newMarkersList, position) {
+            if (position != null) {
+                return Object.assign({}, _this.state, {
+                    currentPosition: position,
+                    markers: newMarkersList
+                });
+            } else {
+                return Object.assign({}, _this.state, {
+                    markers: newMarkersList
+                });
+            }
         };
         _this.shouldShowMarkerForJob = function (jobArgs) {
             var isDriver = _this._authService.isDriver();
@@ -2227,4 +2274,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.61702e275508eab424be.js.map
+//# sourceMappingURL=index.bundle.1b13c26457e112f535d5.js.map
