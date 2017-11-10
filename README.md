@@ -91,6 +91,12 @@ I will maintain a list of stories and their sub tasks using Trello here : https:
 
 - MongoDB : https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.6-signed.msi/download
 - Confluence Platform 3.3.0 Open Source : http://packages.confluent.io/archive/3.3/confluent-oss-3.3.0-2.11.zip
+- SBT
+- Java 8 SDK
+- Webpack
+- Node.Js
+- NPM
+- IntelliJ IDEA v17.0 community
 
 #### Initial Instructions
 
@@ -108,18 +114,27 @@ I will maintain a list of stories and their sub tasks using Trello here : https:
 
 There are quite a few moving peices to this app, and they all need to be running in order for it to all work together.
 
-*1. Kafka/Zookeeper etc etc**
+*1. Update node.js dependencies**
+Make sure you have Node.Js installed, and make sure NPM is installed too, also ensure that webpack is globally installed
+
+- Open command line and change to the *MadCapIdea\PlayBackEndApi\FrontEndWebSite\* folder and run *npm install*
+- now run *webpack* from same folder
+
+
+
+
+*2. Kafka/Zookeeper etc etc**
 You can run the following powershell script to get all the pre-requistites up and running (assuming you have downloaded them all)
 
 - Open PowerShell command line and change to the *PowerShellProject\PowerShellProject\* folder and run *.\RunPipeline.ps1*
 
 
-*2. Play application*
+*3. Play application*
 - Open/create a new SBT/Scala project inside IntelliJ IDEA (you will need the SBT plugin, and Java8 installed on your machine). 
   Open this folder *MadCapIdea\PlayBackEndApi*
 
 
-*3. Kafka Streams application*
+*4. Kafka Streams application*
 TODO, hopefully docker which I will add at end of PowerShell script
 TODO, hopefully docker which I will add at end of PowerShell script
 TODO, hopefully docker which I will add at end of PowerShell script
