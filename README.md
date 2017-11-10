@@ -104,40 +104,28 @@ I will maintain a list of stories and their sub tasks using Trello here : https:
 
 
 
-#### How To Run Using PowerShell
+#### How To Run It All
 
+There are quite a few moving peices to this app, and they all need to be running in order for it to all work together.
+
+*1. Kafka/Zookeeper etc etc**
 You can run the following powershell script to get all the pre-requistites up and running (assuming you have downloaded them all)
 
 - Open PowerShell command line and change to the *PowerShellProject\PowerShellProject\* folder and run *.\RunPipeline.ps1*
 
-#### How To Run Manually
 
-Assuming you downloaded all Dependencies and did the initial instructions
-
-cd C:\Apache\confluent-3.3.0\bin\windows
-zookeeper-server-start.bat ..\..\etc\kafka\zookeeper.properties
+*2. Play application*
+- Open/create a new SBT/Scala project inside IntelliJ IDEA (you will need the SBT plugin, and Java8 installed on your machine). 
+  Open this folder *MadCapIdea\PlayBackEndApi*
 
 
-cd C:\Apache\confluent-3.3.0\bin\windows
-kafka-server-start.bat ..\..\etc\kafka\server.properties
+*3. Kafka Streams application*
+TODO, hopefully docker which I will add at end of PowerShell script
+TODO, hopefully docker which I will add at end of PowerShell script
+TODO, hopefully docker which I will add at end of PowerShell script
+TODO, hopefully docker which I will add at end of PowerShell script
+TODO, hopefully docker which I will add at end of PowerShell script
+TODO, hopefully docker which I will add at end of PowerShell script
 
-
-cd C:\Apache\confluent-3.3.0\bin\windows
-kafka-topics.bat --list --zookeeper localhost:2181
-
-
-cd C:\Apache\confluent-3.3.0\bin\windows
-kafka-console-producer.bat --broker-list localhost:9092 --topic test
-
-cd C:\Apache\confluent-3.3.0\bin\windows
-kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning
-
-kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic  rating-output-topic --from-beginning 
- 
- 
-kafka-console-consumer.bat --zookeeper localhost:2181 --topic rating-output-topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer 
-
-
- 
-
+  
 
