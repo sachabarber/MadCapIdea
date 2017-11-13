@@ -7,7 +7,8 @@ export class PositionMarker {
     name: string;
     email: string;
     icon: string;
-    isDriver: boolean;
+    isDriverIcon: boolean;
+    currentUserIsDriver: boolean;
     jobForMarker: any;
 
     constructor(
@@ -15,16 +16,22 @@ export class PositionMarker {
         position: Position,
         name: string,
         email: string,
-        icon: string,
-        isDriver: boolean,
+        isDriverIcon: boolean,
+        currentUserIsDriver: boolean,
         jobForMarker: any) {
 
         this.key = key;
         this.position = position;
         this.name = name;
         this.email = email;
-        this.icon = icon;
-        this.isDriver = isDriver;
+        this.icon = this.createIcon(isDriverIcon);
+        this.isDriverIcon = isDriverIcon;
+        this.currentUserIsDriver = currentUserIsDriver;
+        this.jobForMarker = jobForMarker;
 
+    }
+
+    createIcon = (isDriverIcon: boolean): string => {
+        return isDriverIcon ? '/assets/images/driver.png' : '/assets/images/passenger.png';
     }
 }

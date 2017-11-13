@@ -707,12 +707,16 @@ var STYLES = {
 var GetPixelPositionOffset = function GetPixelPositionOffset(width, height) {
     return { x: -(width / 2), y: -(height / 2) };
 };
-var GetAcceptButtonCss = function GetAcceptButtonCss(isDriver) {
-    return isDriver ? "displayNone" : "displayBlock";
+var GetAcceptButtonCss = function GetAcceptButtonCss(isDriverIcon, currentUserIsDriver) {
+    if (!currentUserIsDriver && isDriverIcon) {
+        return "displayBlock";
+    } else {
+        "displayNone";
+    }
 };
 var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
     return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 14, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, props.markers.map(function (marker, index) {
-        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { className: GetAcceptButtonCss(marker.isDriver), type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
+        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { className: GetAcceptButtonCss(marker.isDriverIcon, marker.currentUserIsDriver), type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
                 return props.onMarkerClick(marker);
             }, value: 'Accept' }, "Accept")));
     }));
@@ -724,12 +728,6 @@ var ViewJob = function (_super) {
         _this.handleMarkerClick = function (targetMarker) {
             console.log('button on overlay clicked:' + targetMarker.key);
             console.log(targetMarker);
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
-            //TODO :This should update the current job with "IsAccepted" and push it out
             var currentJob = _this._jobService.currentJob();
             var jobForMarker = targetMarker.jobForMarker;
             currentJob.driverFullName = jobForMarker.driverFullName;
@@ -752,14 +750,29 @@ var ViewJob = function (_super) {
             var jobDriverEmail = jobArgs.driverEmail;
             var newMarkersList = _this.state.markers;
             var newPositionForUser = null;
-            //should see if the client for the job is in the list if it is remove it
-            newPositionForUser = _this.obtainPositonForUser(jobClientEmail, newMarkersList, jobArgs.clientPosition);
-            //TODO : create NEW marker for client, add it to the list of newMarkersList
-            //TODO : create NEW marker for client, add it to the list of newMarkersList
-            //TODO : create NEW marker for client, add it to the list of newMarkersList
-            //TODO : Repeat above for Driver
-            //TODO : Repeat above for Driver
-            //TODO : Repeat above for Driver
+            //if job is assigned, we want to end up with only the matched client/driver shown
+            if (jobArgs.isAssigned) {
+                var pairedNames = [jobArgs.clientEmail, jobArgs.driverEmail];
+                var finalList = new Array();
+                for (var i = 0; i < _this.state.markers.length; i++) {
+                    if (pairedNames.indexOf(_this.state.markers[i].email) >= 0) {
+                        finalList.push(_this.state.markers[i]);
+                    }
+                }
+                newMarkersList = finalList;
+            }
+            //should see if the client for the job is in the list of markers and if it is update its 
+            //job and positio. Where position many be null, as its not the position for the user requested
+            if (jobClientEmail != undefined && jobClientEmail != null && _this.state.markers.length == 0) {
+                newPositionForUser = jobArgs.clientPosition;
+                newMarkersList.push(new _PositionMarker.PositionMarker(jobArgs.clientFullName, jobArgs.clientPosition, jobArgs.clientFullName, jobArgs.clientEmail, false, isDriver, jobArgs));
+            } else {
+                newPositionForUser = _this.updateMatchedUserMarker(jobClientEmail, newMarkersList, jobArgs.clientPosition, jobArgs);
+            }
+            //should see if the driver for the job is in the list of markers and if it is update its 
+            //job and position. Where position many be null, as its not the position for the user requested
+            newPositionForUser = _this.updateMatchedUserMarker(jobDriverEmail, newMarkersList, jobArgs.driverPosition, jobArgs);
+            //update the state
             var newState = _this.updateStateForNewMarker(newMarkersList, newPositionForUser);
             //Update the list of position markers in the PositionService
             _this._positionService.clearUserJobPositions(_this._authService.userEmail());
@@ -776,17 +789,18 @@ var ViewJob = function (_super) {
             //update the state
             _this.setState(newState);
         };
-        _this.obtainPositonForUser = function (jobEmailToCheck, newMarkersList, jobPosition) {
+        _this.updateMatchedUserMarker = function (jobEmailToCheck, newMarkersList, jobPosition, jobForMarker) {
+            var possibleUserPosition = null;
             if (jobEmailToCheck != undefined && jobEmailToCheck != null) {
-                var matchedMarker_1 = _.find(_this.state.markers, { 'email': jobEmailToCheck });
-                _.remove(newMarkersList, function (n) {
-                    return n.email === matchedMarker_1.email;
-                });
-                //grab position for user
-                if (_this._authService.userEmail() == jobEmailToCheck) {
-                    return jobPosition;
+                var matchedMarker = _.find(_this.state.markers, { 'email': jobEmailToCheck });
+                if (matchedMarker != null) {
+                    //update its position
+                    matchedMarker.position = jobPosition;
+                    matchedMarker.jobForMarker = jobForMarker;
+                    possibleUserPosition = jobPosition;
                 }
             }
+            return possibleUserPosition;
         };
         _this.updateStateForNewMarker = function (newMarkersList, position) {
             if (position != null) {
@@ -947,6 +961,7 @@ var ViewJob = function (_super) {
             var localDriverPosition = new _Position.Position(event.latLng.lat(), event.latLng.lng());
             var localVehicleDescription = _this._authService.user().vehicleDescription;
             var localVehicleRegistrationNumber = _this._authService.user().vehicleRegistrationNumber;
+            var currentUserIsDriver = _this._authService.isDriver();
             var driverJob = {
                 jobUUID: _this._currentJobUUID != undefined && _this._currentJobUUID != '' ? _this._currentJobUUID : '',
                 driverFullName: localDriverFullName,
@@ -957,10 +972,7 @@ var ViewJob = function (_super) {
                 isAssigned: false,
                 isCompleted: false
             };
-            return new _PositionMarker.PositionMarker(localDriverFullName, localDriverPosition, localDriverFullName, localDriverEmail, _this.createIcon(true), true, driverJob);
-        };
-        _this.createIcon = function (isDriver) {
-            return isDriver ? '/assets/images/driver.png' : '/assets/images/passenger.png';
+            return new _PositionMarker.PositionMarker(localDriverFullName, localDriverPosition, localDriverFullName, localDriverEmail, true, currentUserIsDriver, driverJob);
         };
         _this.ratingsDialogOkCallBack = function (theRatingScore) {
             console.log('RATINGS OK CLICKED');
@@ -989,7 +1001,10 @@ var ViewJob = function (_super) {
                     okDialogHeaderText: 'Ratings',
                     okDialogBodyText: 'Rating successfully recorded',
                     okDialogOpen: true,
-                    okDialogKey: Math.random()
+                    okDialogKey: Math.random(),
+                    markers: new Array(),
+                    currentPosition: null,
+                    isJobAccepted: false
                 });
             });
         };
@@ -1020,7 +1035,10 @@ var ViewJob = function (_super) {
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job successfully cancelled',
                 okDialogOpen: true,
-                okDialogKey: Math.random()
+                okDialogKey: Math.random(),
+                markers: new Array(),
+                currentPosition: null,
+                isJobAccepted: false
             });
         };
         _this.jobNotCancelledCallBack = function () {
@@ -1778,13 +1796,18 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var PositionMarker = function () {
-    function PositionMarker(key, position, name, email, icon, isDriver, jobForMarker) {
+    function PositionMarker(key, position, name, email, isDriverIcon, currentUserIsDriver, jobForMarker) {
+        this.createIcon = function (isDriverIcon) {
+            return isDriverIcon ? '/assets/images/driver.png' : '/assets/images/passenger.png';
+        };
         this.key = key;
         this.position = position;
         this.name = name;
         this.email = email;
-        this.icon = icon;
-        this.isDriver = isDriver;
+        this.icon = this.createIcon(isDriverIcon);
+        this.isDriverIcon = isDriverIcon;
+        this.currentUserIsDriver = currentUserIsDriver;
+        this.jobForMarker = jobForMarker;
     }
     return PositionMarker;
 }();
@@ -2274,4 +2297,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.1b13c26457e112f535d5.js.map
+//# sourceMappingURL=index.bundle.14ca612a41da8e14ba40.js.map

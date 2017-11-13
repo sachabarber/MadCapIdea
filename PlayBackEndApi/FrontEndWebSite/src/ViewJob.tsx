@@ -41,8 +41,14 @@ const GetPixelPositionOffset = (width, height) => {
     return { x: -(width / 2), y: -(height / 2) };
 }
 
-const GetAcceptButtonCss = (isDriver:boolean): string => {
-    return isDriver ? "displayNone" : "displayBlock";
+const GetAcceptButtonCss = (isDriverIcon: boolean, currentUserIsDriver: boolean): string => {
+
+    if (!currentUserIsDriver && isDriverIcon) {
+        return "displayBlock"
+    }
+    else {
+        "displayNone"
+    }
 }
 
 const ViewJobGoogleMap = withGoogleMap(props => (
@@ -63,7 +69,7 @@ const ViewJobGoogleMap = withGoogleMap(props => (
                     <strong>{marker.key}</strong>
                     <br />
                     <Button
-                        className={GetAcceptButtonCss(marker.isDriver)}
+                        className={GetAcceptButtonCss(marker.isDriverIcon, marker.currentUserIsDriver)}
                         type='button'
                         bsSize='xsmall'
                         bsStyle='primary'
@@ -310,14 +316,28 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
         //should see if the client for the job is in the list of markers and if it is update its 
         //job and positio. Where position many be null, as its not the position for the user requested
-        newPositionForUser = this.updateMatchedUserMarker(
-            jobClientEmail,
-            newMarkersList,
-            jobArgs.clientPosition,
-            jobArgs);
+        if (jobClientEmail != undefined && jobClientEmail != null && this.state.markers.length ==0) {
+            newPositionForUser = jobArgs.clientPosition;
+            newMarkersList.push(new PositionMarker(
+                jobArgs.clientFullName,
+                jobArgs.clientPosition,
+                jobArgs.clientFullName,
+                jobArgs.clientEmail,
+                false,
+                isDriver,
+                jobArgs)
+            );
+        }
+        else {
+            newPositionForUser = this.updateMatchedUserMarker(
+                jobClientEmail,
+                newMarkersList,
+                jobArgs.clientPosition,
+                jobArgs);
+        }
 
         //should see if the driver for the job is in the list of markers and if it is update its 
-        //job and positio. Where position many be null, as its not the position for the user requested
+        //job and position. Where position many be null, as its not the position for the user requested
         newPositionForUser = this.updateMatchedUserMarker(
             jobDriverEmail,
             newMarkersList,
@@ -354,9 +374,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         if (jobEmailToCheck != undefined && jobEmailToCheck != null) {
 
             let matchedMarker = _.find(this.state.markers, { 'email': jobEmailToCheck });
-            _.remove(newMarkersList, function (n) {
-                return n.email === matchedMarker.email;
-            });
             if (matchedMarker != null) {
                 //update its position
                 matchedMarker.position = jobPosition;
@@ -571,6 +588,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         let localDriverPosition = new Position(event.latLng.lat(), event.latLng.lng());
         let localVehicleDescription = this._authService.user().vehicleDescription;
         let localVehicleRegistrationNumber = this._authService.user().vehicleRegistrationNumber;
+        let currentUserIsDriver = this._authService.isDriver();
 
         var driverJob = {
             jobUUID: this._currentJobUUID != undefined && this._currentJobUUID != '' ?
@@ -590,15 +608,13 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             localDriverPosition,
             localDriverFullName,
             localDriverEmail,
-            this.createIcon(true),
             true,
+            currentUserIsDriver,
             driverJob
         );
     }
 
-    createIcon = (isDriver: boolean): string => {
-        return isDriver ? '/assets/images/driver.png' : '/assets/images/passenger.png';
-    }
+
     
     ratingsDialogOkCallBack = (theRatingScore: number) => {
         console.log('RATINGS OK CLICKED');
@@ -633,7 +649,10 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                         okDialogHeaderText: 'Ratings',
                         okDialogBodyText: 'Rating successfully recorded',
                         okDialogOpen: true,
-                        okDialogKey: Math.random()
+                        okDialogKey: Math.random(),
+                        markers: new Array<PositionMarker>(),
+                        currentPosition: null,
+                        isJobAccepted: false
                     });
             });
     }
@@ -670,7 +689,10 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job successfully cancelled',
                 okDialogOpen: true,
-                okDialogKey: Math.random()
+                okDialogKey: Math.random(),
+                markers: new Array<PositionMarker>(),
+                currentPosition: null,
+                isJobAccepted : false
             });
     }
 
