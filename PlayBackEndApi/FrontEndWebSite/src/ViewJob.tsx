@@ -44,10 +44,10 @@ const GetPixelPositionOffset = (width, height) => {
 const GetAcceptButtonCss = (isDriverIcon: boolean, currentUserIsDriver: boolean): string => {
 
     if (!currentUserIsDriver && isDriverIcon) {
-        return "displayBlock"
+        return "displayBlock";
     }
     else {
-        "displayNone"
+        return "displayNone";
     }
 }
 
@@ -55,7 +55,7 @@ const ViewJobGoogleMap = withGoogleMap(props => (
 
     <GoogleMap
         ref={props.onMapLoad}
-        defaultZoom={14}
+        defaultZoom={16}
         defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}
         onClick={props.onMapClick}>
         {props.markers.map((marker, index) => (
@@ -300,7 +300,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         let jobClientEmail = jobArgs.clientEmail;
         let jobDriverEmail = jobArgs.driverEmail;
         let newMarkersList = this.state.markers;
-        let newPositionForUser = null;
+        var newPositionForUser = null;
 
         //if job is assigned, we want to end up with only the matched client/driver shown
         if (jobArgs.isAssigned) {
@@ -314,13 +314,25 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             newMarkersList = finalList;
         }
 
+
+        //TODO :  Need to translate from Job position to this position
+        //TODO :  Need to translate from Job position to this position
+//TODO :  Need to translate from Job position to this position
+//TODO :  Need to translate from Job position to this position
+//TODO :  Need to translate from Job position to this position
+//TODO :  Need to translate from Job position to this position
+//TODO :  Need to translate from Job position to this position
+//TODO :  Need to translate from Job position to this position
+
+
+
         //should see if the client for the job is in the list of markers and if it is update its 
-        //job and positio. Where position many be null, as its not the position for the user requested
+        //job and position. Where position many be null, as its not the position for the user requested
         if (jobClientEmail != undefined && jobClientEmail != null && this.state.markers.length ==0) {
-            newPositionForUser = jobArgs.clientPosition;
+            newPositionForUser = new Position(jobArgs.clientPosition.latitude, jobArgs.clientPosition.longitude);
             newMarkersList.push(new PositionMarker(
                 jobArgs.clientFullName,
-                jobArgs.clientPosition,
+                newPositionForUser,
                 jobArgs.clientFullName,
                 jobArgs.clientEmail,
                 false,
@@ -329,20 +341,31 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             );
         }
         else {
-            newPositionForUser = this.updateMatchedUserMarker(
+            let newPositionForUser = new Position(jobArgs.clientPosition.latitude, jobArgs.clientPosition.longitude);
+            this.updateMatchedUserMarker(
                 jobClientEmail,
                 newMarkersList,
-                jobArgs.clientPosition,
+                newPositionForUser,
                 jobArgs);
         }
 
         //should see if the driver for the job is in the list of markers and if it is update its 
         //job and position. Where position many be null, as its not the position for the user requested
-        newPositionForUser = this.updateMatchedUserMarker(
+        
+        let newPositionForDriver = null;
+        if (jobArgs.driverPosition != undefined && jobArgs.driverPosition != null) {
+            newPositionForDriver = new Position(jobArgs.driverPosition.latitude, jobArgs.driverPosition.longitude);
+        }
+
+        this.updateMatchedUserMarker(
             jobDriverEmail,
             newMarkersList,
-            jobArgs.driverPosition,
+            newPositionForDriver,
             jobArgs);
+
+        if (isDriver) {
+            newPositionForUser = newPositionForDriver;
+        }
 
         //update the state
         var newState = this.updateStateForNewMarker(newMarkersList, newPositionForUser);
@@ -368,9 +391,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     }
 
     updateMatchedUserMarker = (jobEmailToCheck: string, newMarkersList: PositionMarker[],
-        jobPosition: Position, jobForMarker:any): Position => {
+        jobPosition: Position, jobForMarker:any): void => {
 
-        var possibleUserPosition = null;
         if (jobEmailToCheck != undefined && jobEmailToCheck != null) {
 
             let matchedMarker = _.find(this.state.markers, { 'email': jobEmailToCheck });
@@ -378,10 +400,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 //update its position
                 matchedMarker.position = jobPosition;
                 matchedMarker.jobForMarker = jobForMarker;
-                possibleUserPosition = jobPosition;
             }
         }
-        return possibleUserPosition;
     }
 
 

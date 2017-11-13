@@ -711,11 +711,11 @@ var GetAcceptButtonCss = function GetAcceptButtonCss(isDriverIcon, currentUserIs
     if (!currentUserIsDriver && isDriverIcon) {
         return "displayBlock";
     } else {
-        "displayNone";
+        return "displayNone";
     }
 };
 var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
-    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 14, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, props.markers.map(function (marker, index) {
+    return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, props.markers.map(function (marker, index) {
         return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { className: GetAcceptButtonCss(marker.isDriverIcon, marker.currentUserIsDriver), type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
                 return props.onMarkerClick(marker);
             }, value: 'Accept' }, "Accept")));
@@ -761,17 +761,33 @@ var ViewJob = function (_super) {
                 }
                 newMarkersList = finalList;
             }
+            //TODO :  Need to translate from Job position to this position
+            //TODO :  Need to translate from Job position to this position
+            //TODO :  Need to translate from Job position to this position
+            //TODO :  Need to translate from Job position to this position
+            //TODO :  Need to translate from Job position to this position
+            //TODO :  Need to translate from Job position to this position
+            //TODO :  Need to translate from Job position to this position
+            //TODO :  Need to translate from Job position to this position
             //should see if the client for the job is in the list of markers and if it is update its 
-            //job and positio. Where position many be null, as its not the position for the user requested
+            //job and position. Where position many be null, as its not the position for the user requested
             if (jobClientEmail != undefined && jobClientEmail != null && _this.state.markers.length == 0) {
-                newPositionForUser = jobArgs.clientPosition;
-                newMarkersList.push(new _PositionMarker.PositionMarker(jobArgs.clientFullName, jobArgs.clientPosition, jobArgs.clientFullName, jobArgs.clientEmail, false, isDriver, jobArgs));
+                newPositionForUser = new _Position.Position(jobArgs.clientPosition.latitude, jobArgs.clientPosition.longitude);
+                newMarkersList.push(new _PositionMarker.PositionMarker(jobArgs.clientFullName, newPositionForUser, jobArgs.clientFullName, jobArgs.clientEmail, false, isDriver, jobArgs));
             } else {
-                newPositionForUser = _this.updateMatchedUserMarker(jobClientEmail, newMarkersList, jobArgs.clientPosition, jobArgs);
+                var newPositionForUser_1 = new _Position.Position(jobArgs.clientPosition.latitude, jobArgs.clientPosition.longitude);
+                _this.updateMatchedUserMarker(jobClientEmail, newMarkersList, newPositionForUser_1, jobArgs);
             }
             //should see if the driver for the job is in the list of markers and if it is update its 
             //job and position. Where position many be null, as its not the position for the user requested
-            newPositionForUser = _this.updateMatchedUserMarker(jobDriverEmail, newMarkersList, jobArgs.driverPosition, jobArgs);
+            var newPositionForDriver = null;
+            if (jobArgs.driverPosition != undefined && jobArgs.driverPosition != null) {
+                newPositionForDriver = new _Position.Position(jobArgs.driverPosition.latitude, jobArgs.driverPosition.longitude);
+            }
+            _this.updateMatchedUserMarker(jobDriverEmail, newMarkersList, newPositionForDriver, jobArgs);
+            if (isDriver) {
+                newPositionForUser = newPositionForDriver;
+            }
             //update the state
             var newState = _this.updateStateForNewMarker(newMarkersList, newPositionForUser);
             //Update the list of position markers in the PositionService
@@ -790,17 +806,14 @@ var ViewJob = function (_super) {
             _this.setState(newState);
         };
         _this.updateMatchedUserMarker = function (jobEmailToCheck, newMarkersList, jobPosition, jobForMarker) {
-            var possibleUserPosition = null;
             if (jobEmailToCheck != undefined && jobEmailToCheck != null) {
                 var matchedMarker = _.find(_this.state.markers, { 'email': jobEmailToCheck });
                 if (matchedMarker != null) {
                     //update its position
                     matchedMarker.position = jobPosition;
                     matchedMarker.jobForMarker = jobForMarker;
-                    possibleUserPosition = jobPosition;
                 }
             }
-            return possibleUserPosition;
         };
         _this.updateStateForNewMarker = function (newMarkersList, position) {
             if (position != null) {
@@ -2297,4 +2310,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.14ca612a41da8e14ba40.js.map
+//# sourceMappingURL=index.bundle.6a1f249867b1cde97565.js.map
