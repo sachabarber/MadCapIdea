@@ -9,22 +9,29 @@ export class JobService {
         this._hasIssuedJob = false;
     }
 
-    clearUserIssuedJob = (): void => {
+    clearUserIssuedJob = (email: string): void => {
         this._hasIssuedJob = false;
-        sessionStorage.removeItem('currentUserIssuedJob');
+        let keyCurrentUserIssuedJob = 'currentUserIssuedJob_' + email;
+        sessionStorage.removeItem(keyCurrentUserIssuedJob);
+
     }
 
-    storeUserIssuedJob = (job: any): void => {
+    storeUserIssuedJob = (email: string, job: any): void => {
+
+        if (email == null || email == undefined)
+            return;
 
         if (job == null || job == undefined)
             return;
 
         this._hasIssuedJob = true;
-        sessionStorage.setItem('currentUserIssuedJob', JSON.stringify(job));
+        let keyCurrentUserIssuedJob = 'currentUserIssuedJob_' + email;
+        sessionStorage.setItem(keyCurrentUserIssuedJob, JSON.stringify(job));
     }
 
-    currentJob = (): any => {
-        var currentUsersJob = JSON.parse(sessionStorage.getItem('currentUserIssuedJob'));
+    currentJob = (email: string): any => {
+        let keyCurrentUserIssuedJob = 'currentUserIssuedJob_' + email;
+        var currentUsersJob = JSON.parse(sessionStorage.getItem(keyCurrentUserIssuedJob));
         return currentUsersJob;
     }
 

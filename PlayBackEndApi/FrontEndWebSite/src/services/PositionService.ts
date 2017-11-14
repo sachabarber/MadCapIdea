@@ -6,15 +6,6 @@ import { PositionMarker } from "../domain/PositionMarker";
 @injectable()
 export class PositionService {
 
-    //markers: Array<PositionMarker>;
-
-    constructor() {
-
-    }
-
-   
-
-
     clearUserJobPositions = (email: string): void => {
         let keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
         sessionStorage.removeItem(keyCurrentUserJobPositions);

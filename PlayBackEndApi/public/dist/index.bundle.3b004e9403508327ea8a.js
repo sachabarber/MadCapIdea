@@ -750,6 +750,7 @@ var ViewJob = function (_super) {
             var jobDriverEmail = jobArgs.driverEmail;
             var newMarkersList = _this.state.markers;
             var newPositionForUser = null;
+            var newPositionForDriver = null;
             //if job is assigned, we want to end up with only the matched client/driver shown
             if (jobArgs.isAssigned) {
                 var pairedNames = [jobArgs.clientEmail, jobArgs.driverEmail];
@@ -761,30 +762,32 @@ var ViewJob = function (_super) {
                 }
                 newMarkersList = finalList;
             }
-            //TODO :  Need to translate from Job position to this position
-            //TODO :  Need to translate from Job position to this position
-            //TODO :  Need to translate from Job position to this position
-            //TODO :  Need to translate from Job position to this position
-            //TODO :  Need to translate from Job position to this position
-            //TODO :  Need to translate from Job position to this position
-            //TODO :  Need to translate from Job position to this position
-            //TODO :  Need to translate from Job position to this position
-            //should see if the client for the job is in the list of markers and if it is update its 
-            //job and position. Where position many be null, as its not the position for the user requested
-            if (jobClientEmail != undefined && jobClientEmail != null && _this.state.markers.length == 0) {
+            //see if the client is in the list (which it may not be). If its not add it, otherwise update it
+            if (jobArgs.clientPosition != undefined && jobArgs.clientPosition != null) {
                 newPositionForUser = new _Position.Position(jobArgs.clientPosition.latitude, jobArgs.clientPosition.longitude);
-                newMarkersList.push(new _PositionMarker.PositionMarker(jobArgs.clientFullName, newPositionForUser, jobArgs.clientFullName, jobArgs.clientEmail, false, isDriver, jobArgs));
-            } else {
-                var newPositionForUser_1 = new _Position.Position(jobArgs.clientPosition.latitude, jobArgs.clientPosition.longitude);
-                _this.updateMatchedUserMarker(jobClientEmail, newMarkersList, newPositionForUser_1, jobArgs);
             }
-            //should see if the driver for the job is in the list of markers and if it is update its 
-            //job and position. Where position many be null, as its not the position for the user requested
-            var newPositionForDriver = null;
+            if (jobClientEmail != undefined && jobClientEmail != null && newPositionForUser != undefined && newPositionForUser != null) {
+                var matchedMarker = _.find(_this.state.markers, { 'email': jobClientEmail });
+                if (matchedMarker == null) {
+                    newMarkersList.push(new _PositionMarker.PositionMarker(jobArgs.clientFullName, newPositionForUser, jobArgs.clientFullName, jobArgs.clientEmail, false, isDriver, jobArgs));
+                } else {
+                    if (jobArgs.clientPosition != undefined && jobArgs.clientPosition != null) {
+                        _this.updateMatchedUserMarker(jobClientEmail, newMarkersList, newPositionForUser, jobArgs);
+                    }
+                }
+            }
+            //see if the driver is in the list (which it may not be). If its not add it, otherwise update it
             if (jobArgs.driverPosition != undefined && jobArgs.driverPosition != null) {
                 newPositionForDriver = new _Position.Position(jobArgs.driverPosition.latitude, jobArgs.driverPosition.longitude);
             }
-            _this.updateMatchedUserMarker(jobDriverEmail, newMarkersList, newPositionForDriver, jobArgs);
+            if (jobDriverEmail != undefined && jobDriverEmail != null && newPositionForDriver != undefined && newPositionForDriver != null) {
+                var matchedMarker = _.find(_this.state.markers, { 'email': jobDriverEmail });
+                if (matchedMarker == null) {
+                    newMarkersList.push(new _PositionMarker.PositionMarker(jobArgs.driverFullName, newPositionForDriver, jobArgs.driverFullName, jobArgs.driverEmail, true, isDriver, jobArgs));
+                } else {
+                    _this.updateMatchedUserMarker(jobDriverEmail, newMarkersList, newPositionForDriver, jobArgs);
+                }
+            }
             if (isDriver) {
                 newPositionForUser = newPositionForDriver;
             }
@@ -851,17 +854,18 @@ var ViewJob = function (_super) {
             var currentUser = _this._authService.user();
             var isDriver = _this._authService.isDriver();
             var matchedMarker = _.find(_this.state.markers, { 'email': currentUser.email });
+            var newPosition = new _Position.Position(event.latLng.lat(), event.latLng.lng());
             _this._positionService.clearUserPosition(_this._authService.userEmail());
-            _this._positionService.storeUserPosition(currentUser, new _Position.Position(event.latLng.lat(), event.latLng.lng()));
+            _this._positionService.storeUserPosition(currentUser, newPosition);
             if (matchedMarker != undefined) {
                 var newMarkersList = _this.state.markers;
                 _.remove(newMarkersList, function (n) {
                     return n.email === matchedMarker.email;
                 });
-                matchedMarker.position = new _Position.Position(event.latLng.lat(), event.latLng.lng());
+                matchedMarker.position = newPosition;
                 newMarkersList.push(matchedMarker);
                 var newState = Object.assign({}, _this.state, {
-                    currentPosition: new _Position.Position(event.latLng.lat(), event.latLng.lng()),
+                    currentPosition: newPosition,
                     markers: newMarkersList
                 });
                 _this.setState(newState);
@@ -871,7 +875,7 @@ var ViewJob = function (_super) {
                     var newMarkersList = _this.state.markers;
                     newMarkersList.push(newDriverMarker);
                     var newState = Object.assign({}, _this.state, {
-                        currentPosition: new _Position.Position(event.latLng.lat(), event.latLng.lng()),
+                        currentPosition: newPosition,
                         markers: newMarkersList
                     });
                     _this.setState(newState);
@@ -879,9 +883,9 @@ var ViewJob = function (_super) {
             }
             _this._positionService.clearUserJobPositions(currentUser.email);
             _this._positionService.storeUserJobPositions(currentUser, _this.state.markers);
-            _this.pushOutJob();
+            _this.pushOutJob(newPosition);
         };
-        _this.pushOutJob = function () {
+        _this.pushOutJob = function (newPosition) {
             var self = _this;
             var currentUser = _this._authService.user();
             var isDriver = _this._authService.isDriver();
@@ -920,10 +924,12 @@ var ViewJob = function (_super) {
             }
             //clientPosition
             if (hasIssuedJob) {
-                if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
-                    localClientPosition = currentJob.clientPosition;
+                if (!isDriver) {
+                    localClientPosition = newPosition;
                 } else {
-                    localClientPosition = !isDriver ? currentPosition : null;
+                    if (currentJob.clientPosition != undefined && currentJob.clientPosition != null) {
+                        localClientPosition = currentJob.clientPosition;
+                    }
                 }
             }
             if (hasIssuedJob) {
@@ -940,10 +946,12 @@ var ViewJob = function (_super) {
                     localDriverEmail = isDriver ? currentUser.email : '';
                 }
                 //driverPosition
-                if (currentJob.driverPosition != undefined && currentJob.driverPosition != null) {
-                    localDriverPosition = currentJob.driverPosition;
+                if (isDriver) {
+                    localDriverPosition = newPosition;
                 } else {
-                    localDriverPosition = isDriver ? currentPosition : null;
+                    if (currentJob.driverPosition != undefined && currentJob.driverPosition != null) {
+                        localDriverPosition = currentJob.driverPosition;
+                    }
                 }
             } else {
                 localDriverFullName = currentUser.fullName;
@@ -2310,4 +2318,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[426]);
-//# sourceMappingURL=index.bundle.6a1f249867b1cde97565.js.map
+//# sourceMappingURL=index.bundle.3b004e9403508327ea8a.js.map
