@@ -92,8 +92,8 @@ export class Logout extends React.Component<undefined, LogoutState> {
         var email = this._authService.userEmail();
         this._jobService.clearUserIssuedJob();
         this._authService.clearUser();
-        this._positionService.clearUserPosition(email);
-        this._positionService.clearUserJobPositions(email);
+        this._positionService.clearUserPosition();
+        this._positionService.clearUserJobPositions();
 
         this.setState(
             {

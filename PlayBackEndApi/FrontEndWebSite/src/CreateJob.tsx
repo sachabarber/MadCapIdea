@@ -235,7 +235,7 @@ export class CreateJob extends React.Component<undefined, CreateJobState> {
                 hasIssuedJob: self._jobService.hasIssuedJob()
             });
             self.setState(newState)
-            self._positionService.storeUserPosition(currentUser, self.state.currentPosition);
+            self._positionService.storeUserPosition(self.state.currentPosition);
             hashHistory.push('/viewjob');
         })
         .fail(function (jqXHR, textStatus, errorThrown) {

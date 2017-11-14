@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 239:
+/***/ 115:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,7 +18,85 @@ var TYPES = exports.TYPES = {
 
 /***/ }),
 
-/***/ 240:
+/***/ 148:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.AuthService = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _inversify = __webpack_require__(97);
+
+var _rx = __webpack_require__(413);
+
+var _rx2 = _interopRequireDefault(_rx);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+        if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = undefined && undefined.__metadata || function (k, v) {
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AuthService = function () {
+    function AuthService() {
+        var _this = this;
+        this._authenticatedSubject = new _rx2.default.Subject();
+        this.clearUser = function () {
+            _this._isAuthenticated = false;
+            sessionStorage.removeItem('currentUserProfile');
+            _this._authenticatedSubject.onNext(false);
+        };
+        this.storeUser = function (currentProfile) {
+            if (currentProfile == null || currentProfile == undefined) return;
+            _this._isAuthenticated = true;
+            sessionStorage.setItem('currentUserProfile', JSON.stringify(currentProfile));
+            _this._authenticatedSubject.onNext(true);
+        };
+        this.userName = function () {
+            var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+            return userProfile.user.fullName;
+        };
+        this.user = function () {
+            var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+            return userProfile.user;
+        };
+        this.userEmail = function () {
+            var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+            return userProfile.user.email;
+        };
+        this.isDriver = function () {
+            var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+            return userProfile.isDriver;
+        };
+        this.isAuthenticated = function () {
+            return _this._isAuthenticated;
+        };
+        this.getAuthenticationStream = function () {
+            return _this._authenticatedSubject.asObservable();
+        };
+    }
+    return AuthService;
+}();
+exports.AuthService = AuthService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], AuthService);
+exports.AuthService = AuthService;
+
+/***/ }),
+
+/***/ 241:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90,7 +168,7 @@ exports.YesNoDialog = YesNoDialog;
 
 /***/ }),
 
-/***/ 241:
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113,7 +191,7 @@ exports.Position = Position;
 
 /***/ }),
 
-/***/ 414:
+/***/ 415:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -128,7 +206,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _reactMeasure = __webpack_require__(390);
+var _reactMeasure = __webpack_require__(391);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
@@ -140,11 +218,11 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _UUIDService = __webpack_require__(431);
 
-var _Position = __webpack_require__(241);
+var _Position = __webpack_require__(242);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(389);
+var _reactGoogleMaps = __webpack_require__(390);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -221,7 +299,7 @@ var CreateJob = function (_super) {
                     hasIssuedJob: self._jobService.hasIssuedJob()
                 });
                 self.setState(newState);
-                self._positionService.storeUserPosition(currentUser, self.state.currentPosition);
+                self._positionService.storeUserPosition(self.state.currentPosition);
                 _reactRouter.hashHistory.push('/viewjob');
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 var newState = Object.assign({}, self.state, {
@@ -317,7 +395,7 @@ exports.CreateJob = CreateJob;
 
 /***/ }),
 
-/***/ 415:
+/***/ 416:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -338,9 +416,9 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _reactBootstrapValidation = __webpack_require__(202);
+var _reactBootstrapValidation = __webpack_require__(204);
 
-var _revalidator = __webpack_require__(238);
+var _revalidator = __webpack_require__(240);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -477,7 +555,7 @@ exports.Login = Login;
 
 /***/ }),
 
-/***/ 416:
+/***/ 417:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -496,7 +574,7 @@ var _reactRouter = __webpack_require__(57);
 
 var _OkDialog = __webpack_require__(58);
 
-var _YesNoDialog = __webpack_require__(240);
+var _YesNoDialog = __webpack_require__(241);
 
 __webpack_require__(31);
 
@@ -534,8 +612,8 @@ var Logout = function (_super) {
             var email = _this._authService.userEmail();
             _this._jobService.clearUserIssuedJob();
             _this._authService.clearUser();
-            _this._positionService.clearUserPosition(email);
-            _this._positionService.clearUserJobPositions(email);
+            _this._positionService.clearUserPosition();
+            _this._positionService.clearUserJobPositions();
             _this.setState({
                 okDialogHeaderText: 'Logout',
                 okDialogBodyText: 'You have been logged out',
@@ -569,7 +647,7 @@ exports.Logout = Logout;
 
 /***/ }),
 
-/***/ 417:
+/***/ 418:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -588,9 +666,9 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _PassengerRegistration = __webpack_require__(422);
+var _PassengerRegistration = __webpack_require__(423);
 
-var _DriverRegistration = __webpack_require__(421);
+var _DriverRegistration = __webpack_require__(422);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -635,7 +713,7 @@ exports.Register = Register;
 
 /***/ }),
 
-/***/ 418:
+/***/ 419:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -650,17 +728,17 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(336);
+var _lodash = __webpack_require__(337);
 
 var _ = _interopRequireWildcard(_lodash);
 
-var _reactMeasure = __webpack_require__(390);
+var _reactMeasure = __webpack_require__(391);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
-var _RatingDialog = __webpack_require__(423);
+var _RatingDialog = __webpack_require__(424);
 
-var _YesNoDialog = __webpack_require__(240);
+var _YesNoDialog = __webpack_require__(241);
 
 var _OkDialog = __webpack_require__(58);
 
@@ -668,13 +746,13 @@ __webpack_require__(31);
 
 var _reactBootstrap = __webpack_require__(24);
 
-var _Position = __webpack_require__(241);
+var _Position = __webpack_require__(242);
 
-var _PositionMarker = __webpack_require__(425);
+var _PositionMarker = __webpack_require__(426);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactGoogleMaps = __webpack_require__(389);
+var _reactGoogleMaps = __webpack_require__(390);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -794,12 +872,12 @@ var ViewJob = function (_super) {
             //update the state
             var newState = _this.updateStateForNewMarker(newMarkersList, newPositionForUser);
             //Update the list of position markers in the PositionService
-            _this._positionService.clearUserJobPositions(_this._authService.userEmail());
-            _this._positionService.storeUserJobPositions(_this._authService.user, newMarkersList);
+            _this._positionService.clearUserJobPositions();
+            _this._positionService.storeUserJobPositions(newMarkersList);
             //Update the position in the PositionService
             if (newPositionForUser != undefined && newPositionForUser != null) {
-                _this._positionService.clearUserPosition(_this._authService.userEmail());
-                _this._positionService.storeUserPosition(_this._authService.userEmail(), newPositionForUser);
+                _this._positionService.clearUserPosition();
+                _this._positionService.storeUserPosition(newPositionForUser);
             }
             //Should clear out the current stored job
             //Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
@@ -855,8 +933,9 @@ var ViewJob = function (_super) {
             var isDriver = _this._authService.isDriver();
             var matchedMarker = _.find(_this.state.markers, { 'email': currentUser.email });
             var newPosition = new _Position.Position(event.latLng.lat(), event.latLng.lng());
-            _this._positionService.clearUserPosition(_this._authService.userEmail());
-            _this._positionService.storeUserPosition(currentUser, newPosition);
+            var currentJob = _this._jobService.currentJob();
+            _this._positionService.clearUserPosition();
+            _this._positionService.storeUserPosition(newPosition);
             if (matchedMarker != undefined) {
                 var newMarkersList = _this.state.markers;
                 _.remove(newMarkersList, function (n) {
@@ -869,6 +948,7 @@ var ViewJob = function (_super) {
                     markers: newMarkersList
                 });
                 _this.setState(newState);
+                currentJob = matchedMarker.jobForMarker;
             } else {
                 if (isDriver) {
                     var newDriverMarker = _this.createDriverMarker(currentUser, event);
@@ -881,17 +961,17 @@ var ViewJob = function (_super) {
                     _this.setState(newState);
                 }
             }
-            _this._positionService.clearUserJobPositions(currentUser.email);
-            _this._positionService.storeUserJobPositions(currentUser, _this.state.markers);
-            _this.pushOutJob(newPosition);
+            _this._positionService.clearUserJobPositions();
+            _this._positionService.storeUserJobPositions(_this.state.markers);
+            _this.pushOutJob(newPosition, currentJob);
         };
-        _this.pushOutJob = function (newPosition) {
+        _this.pushOutJob = function (newPosition, jobForMarker) {
             var self = _this;
             var currentUser = _this._authService.user();
             var isDriver = _this._authService.isDriver();
             var hasIssuedJob = _this._jobService.hasIssuedJob();
-            var currentJob = _this._jobService.currentJob();
-            var currentPosition = _this._positionService.currentPosition(currentUser.email);
+            var currentJob = jobForMarker;
+            var currentPosition = _this._positionService.currentPosition();
             var localClientFullName = '';
             var localClientEmail = '';
             var localClientPosition = null;
@@ -1017,7 +1097,7 @@ var ViewJob = function (_super) {
             }
             _this.makePOSTRequest('rating/submit/new', ratingJSON, self, function (jdata, textStatus, jqXHR) {
                 this._jobService.clearUserIssuedJob();
-                this._positionService.clearUserJobPositions(this._authService.userEmail());
+                this._positionService.clearUserJobPositions();
                 this.setState({
                     okDialogHeaderText: 'Ratings',
                     okDialogBodyText: 'Rating successfully recorded',
@@ -1051,7 +1131,7 @@ var ViewJob = function (_super) {
         _this.jobCancelledCallBack = function () {
             console.log('CANCEL YES CLICKED');
             _this._jobService.clearUserIssuedJob();
-            _this._positionService.clearUserJobPositions(_this._authService.userEmail());
+            _this._positionService.clearUserJobPositions();
             _this.setState({
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job successfully cancelled',
@@ -1085,8 +1165,8 @@ var ViewJob = function (_super) {
             _reactRouter.hashHistory.push('/');
         }
         var savedMarkers = new Array();
-        if (_this._positionService.hasJobPositions(_this._authService.userEmail())) {
-            savedMarkers = _this._positionService.userJobPositions(_this._authService.userEmail());
+        if (_this._positionService.hasJobPositions()) {
+            savedMarkers = _this._positionService.userJobPositions();
         }
         _this.state = {
             markers: savedMarkers,
@@ -1095,7 +1175,7 @@ var ViewJob = function (_super) {
             okDialogOpen: false,
             okDialogKey: 0,
             dimensions: { width: -1, height: -1 },
-            currentPosition: _this._authService.isDriver() ? null : _this._positionService.currentPosition(_this._authService.userEmail()),
+            currentPosition: _this._authService.isDriver() ? null : _this._positionService.currentPosition(),
             isJobAccepted: false
         };
         return _this;
@@ -1120,7 +1200,7 @@ var ViewJob = function (_super) {
     };
     ViewJob.prototype.componentWillUnmount = function () {
         this._subscription.dispose();
-        this._positionService.storeUserJobPositions(this._authService.user, this.state.markers);
+        this._positionService.storeUserJobPositions(this.state.markers);
     };
     ViewJob.prototype.render = function () {
         var _this = this;
@@ -1165,7 +1245,7 @@ exports.ViewJob = ViewJob;
 
 /***/ }),
 
-/***/ 419:
+/***/ 420:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1180,7 +1260,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(336);
+var _lodash = __webpack_require__(337);
 
 var _ = _interopRequireWildcard(_lodash);
 
@@ -1287,7 +1367,7 @@ exports.ViewRating = ViewRating;
 
 /***/ }),
 
-/***/ 420:
+/***/ 421:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1302,9 +1382,9 @@ __webpack_require__(929);
 
 var _inversify = __webpack_require__(97);
 
-var _types = __webpack_require__(239);
+var _types = __webpack_require__(115);
 
-var _AuthService = __webpack_require__(427);
+var _AuthService = __webpack_require__(148);
 
 var _JobService = __webpack_require__(428);
 
@@ -1342,7 +1422,7 @@ exports.ContainerOperations = ContainerOperations;
 
 /***/ }),
 
-/***/ 421:
+/***/ 422:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1365,9 +1445,9 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactBootstrapValidation = __webpack_require__(202);
+var _reactBootstrapValidation = __webpack_require__(204);
 
-var _revalidator = __webpack_require__(238);
+var _revalidator = __webpack_require__(240);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -1526,7 +1606,7 @@ exports.DriverRegistration = DriverRegistration;
 
 /***/ }),
 
-/***/ 422:
+/***/ 423:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1549,9 +1629,9 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactBootstrapValidation = __webpack_require__(202);
+var _reactBootstrapValidation = __webpack_require__(204);
 
-var _revalidator = __webpack_require__(238);
+var _revalidator = __webpack_require__(240);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -1697,7 +1777,7 @@ exports.PassengerRegistration = PassengerRegistration;
 
 /***/ }),
 
-/***/ 423:
+/***/ 424:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1788,7 +1868,7 @@ exports.RatingDialog = RatingDialog;
 
 /***/ }),
 
-/***/ 424:
+/***/ 425:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1807,7 +1887,7 @@ exports.JobEventArgs = JobEventArgs;
 
 /***/ }),
 
-/***/ 425:
+/***/ 426:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1836,7 +1916,7 @@ exports.PositionMarker = PositionMarker;
 
 /***/ }),
 
-/***/ 426:
+/***/ 427:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1856,21 +1936,21 @@ var _reactBootstrap = __webpack_require__(24);
 
 var _reactRouter = __webpack_require__(57);
 
-var _Login = __webpack_require__(415);
+var _Login = __webpack_require__(416);
 
-var _Logout = __webpack_require__(416);
+var _Logout = __webpack_require__(417);
 
-var _Register = __webpack_require__(417);
+var _Register = __webpack_require__(418);
 
-var _CreateJob = __webpack_require__(414);
+var _CreateJob = __webpack_require__(415);
 
-var _ViewJob = __webpack_require__(418);
+var _ViewJob = __webpack_require__(419);
 
-var _ViewRating = __webpack_require__(419);
+var _ViewRating = __webpack_require__(420);
 
-var _ContainerOperations = __webpack_require__(420);
+var _ContainerOperations = __webpack_require__(421);
 
-var _types = __webpack_require__(239);
+var _types = __webpack_require__(115);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1941,84 +2021,6 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ }),
 
-/***/ 427:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.AuthService = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _inversify = __webpack_require__(97);
-
-var _rx = __webpack_require__(412);
-
-var _rx2 = _interopRequireDefault(_rx);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
-    var c = arguments.length,
-        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-        d;
-    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
-        if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    }return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = undefined && undefined.__metadata || function (k, v) {
-    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var AuthService = function () {
-    function AuthService() {
-        var _this = this;
-        this._authenticatedSubject = new _rx2.default.Subject();
-        this.clearUser = function () {
-            _this._isAuthenticated = false;
-            sessionStorage.removeItem('currentUserProfile');
-            _this._authenticatedSubject.onNext(false);
-        };
-        this.storeUser = function (currentProfile) {
-            if (currentProfile == null || currentProfile == undefined) return;
-            _this._isAuthenticated = true;
-            sessionStorage.setItem('currentUserProfile', JSON.stringify(currentProfile));
-            _this._authenticatedSubject.onNext(true);
-        };
-        this.userName = function () {
-            var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
-            return userProfile.user.fullName;
-        };
-        this.user = function () {
-            var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
-            return userProfile.user;
-        };
-        this.userEmail = function () {
-            var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
-            return userProfile.user.email;
-        };
-        this.isDriver = function () {
-            var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
-            return userProfile.isDriver;
-        };
-        this.isAuthenticated = function () {
-            return _this._isAuthenticated;
-        };
-        this.getAuthenticationStream = function () {
-            return _this._authenticatedSubject.asObservable();
-        };
-    }
-    return AuthService;
-}();
-exports.AuthService = AuthService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], AuthService);
-exports.AuthService = AuthService;
-
-/***/ }),
-
 /***/ 428:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2034,6 +2036,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _inversify = __webpack_require__(97);
 
+var _types = __webpack_require__(115);
+
+var _AuthService = __webpack_require__(148);
+
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
         r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -2045,31 +2051,40 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 var __metadata = undefined && undefined.__metadata || function (k, v) {
     if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = undefined && undefined.__param || function (paramIndex, decorator) {
+    return function (target, key) {
+        decorator(target, key, paramIndex);
+    };
+};
 
 var JobService = function () {
-    function JobService() {
+    function JobService(authService) {
         var _this = this;
         this.clearUserIssuedJob = function () {
             _this._hasIssuedJob = false;
-            sessionStorage.removeItem('currentUserIssuedJob');
+            var keyCurrentUserIssuedJob = 'currentUserIssuedJob_' + _this._authService.userEmail();
+            sessionStorage.removeItem(keyCurrentUserIssuedJob);
         };
         this.storeUserIssuedJob = function (job) {
             if (job == null || job == undefined) return;
             _this._hasIssuedJob = true;
-            sessionStorage.setItem('currentUserIssuedJob', JSON.stringify(job));
+            var keyCurrentUserIssuedJob = 'currentUserIssuedJob_' + _this._authService.userEmail();
+            sessionStorage.setItem(keyCurrentUserIssuedJob, JSON.stringify(job));
         };
         this.currentJob = function () {
-            var currentUsersJob = JSON.parse(sessionStorage.getItem('currentUserIssuedJob'));
+            var keyCurrentUserIssuedJob = 'currentUserIssuedJob_' + _this._authService.userEmail();
+            var currentUsersJob = JSON.parse(sessionStorage.getItem(keyCurrentUserIssuedJob));
             return currentUsersJob;
         };
         this.hasIssuedJob = function () {
             return _this._hasIssuedJob;
         };
         this._hasIssuedJob = false;
+        this._authService = authService;
     }
     return JobService;
 }();
-exports.JobService = JobService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], JobService);
+exports.JobService = JobService = __decorate([(0, _inversify.injectable)(), __param(0, (0, _inversify.inject)(_types.TYPES.AuthService)), __metadata("design:paramtypes", [_AuthService.AuthService])], JobService);
 exports.JobService = JobService;
 
 /***/ }),
@@ -2089,9 +2104,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _inversify = __webpack_require__(97);
 
-var _JobEventArgs = __webpack_require__(424);
+var _JobEventArgs = __webpack_require__(425);
 
-var _rx = __webpack_require__(412);
+var _rx = __webpack_require__(413);
 
 var _rx2 = _interopRequireDefault(_rx);
 
@@ -2145,6 +2160,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _inversify = __webpack_require__(97);
 
+var _types = __webpack_require__(115);
+
+var _AuthService = __webpack_require__(148);
+
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
     var c = arguments.length,
         r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -2156,62 +2175,66 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 var __metadata = undefined && undefined.__metadata || function (k, v) {
     if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = undefined && undefined.__param || function (paramIndex, decorator) {
+    return function (target, key) {
+        decorator(target, key, paramIndex);
+    };
+};
 
 var PositionService = function () {
-    //markers: Array<PositionMarker>;
-    function PositionService() {
-        this.clearUserJobPositions = function (email) {
-            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+    function PositionService(authService) {
+        var _this = this;
+        this.clearUserJobPositions = function () {
+            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + _this._authService.userEmail();
             sessionStorage.removeItem(keyCurrentUserJobPositions);
         };
-        this.storeUserJobPositions = function (currentUser, jobPositions) {
-            if (currentUser == null || currentUser == undefined) return;
+        this.storeUserJobPositions = function (jobPositions) {
             if (jobPositions == null || jobPositions == undefined) return;
             var currentUsersJobPositions = {
-                currentUser: currentUser,
+                currentUser: _this._authService.user(),
                 jobPositions: jobPositions
             };
-            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + currentUser.email;
+            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + _this._authService.userEmail();
             sessionStorage.setItem(keyCurrentUserJobPositions, JSON.stringify(currentUsersJobPositions));
         };
-        this.userJobPositions = function (email) {
-            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+        this.userJobPositions = function () {
+            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + _this._authService.userEmail();
             var currentUserJobPositions = JSON.parse(sessionStorage.getItem(keyCurrentUserJobPositions));
             return currentUserJobPositions.jobPositions;
         };
-        this.hasJobPositions = function (email) {
-            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+        this.hasJobPositions = function () {
+            var keyCurrentUserJobPositions = 'currentUserJobPositions_' + _this._authService.userEmail();
             var currentUserJobPositions = JSON.parse(sessionStorage.getItem(keyCurrentUserJobPositions));
             return currentUserJobPositions != null && currentUserJobPositions != undefined;
         };
-        this.clearUserPosition = function (email) {
-            var keyCurrentUserPosition = 'currentUserPosition_' + email;
+        this.clearUserPosition = function () {
+            var keyCurrentUserPosition = 'currentUserPosition_' + _this._authService.userEmail();
             sessionStorage.removeItem(keyCurrentUserPosition);
         };
-        this.storeUserPosition = function (currentUser, position) {
-            if (currentUser == null || currentUser == undefined) return;
+        this.storeUserPosition = function (position) {
             if (position == null || position == undefined) return;
             var currentUsersPosition = {
-                currentUser: currentUser,
+                currentUser: _this._authService.user(),
                 position: position
             };
-            var keyCurrentUserPosition = 'currentUserPosition_' + currentUser.email;
+            var keyCurrentUserPosition = 'currentUserPosition_' + _this._authService.userEmail();
             sessionStorage.setItem(keyCurrentUserPosition, JSON.stringify(currentUsersPosition));
         };
-        this.currentPosition = function (email) {
-            var keyCurrentUserPosition = 'currentUserPosition_' + email;
+        this.currentPosition = function () {
+            var keyCurrentUserPosition = 'currentUserPosition_' + _this._authService.userEmail();
             var currentUsersPosition = JSON.parse(sessionStorage.getItem(keyCurrentUserPosition));
             return currentUsersPosition.position;
         };
-        this.hasPosition = function (email) {
-            var keyCurrentUserPosition = 'currentUserPosition_' + email;
+        this.hasPosition = function () {
+            var keyCurrentUserPosition = 'currentUserPosition_' + _this._authService.userEmail();
             var currentUsersPosition = JSON.parse(sessionStorage.getItem(keyCurrentUserPosition));
             return currentUsersPosition != null && currentUsersPosition != undefined;
         };
+        this._authService = authService;
     }
     return PositionService;
 }();
-exports.PositionService = PositionService = __decorate([(0, _inversify.injectable)(), __metadata("design:paramtypes", [])], PositionService);
+exports.PositionService = PositionService = __decorate([(0, _inversify.injectable)(), __param(0, (0, _inversify.inject)(_types.TYPES.AuthService)), __metadata("design:paramtypes", [_AuthService.AuthService])], PositionService);
 exports.PositionService = PositionService;
 
 /***/ }),
@@ -2317,5 +2340,5 @@ exports.OkDialog = OkDialog;
 
 /***/ })
 
-},[426]);
-//# sourceMappingURL=index.bundle.3b004e9403508327ea8a.js.map
+},[427]);
+//# sourceMappingURL=index.bundle.dd39d3d4bec841ed53ab.js.map

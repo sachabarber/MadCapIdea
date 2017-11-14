@@ -120,8 +120,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
 
         let savedMarkers: Array<PositionMarker> = new Array<PositionMarker>();
-        if (this._positionService.hasJobPositions(this._authService.userEmail())) {
-            savedMarkers = this._positionService.userJobPositions(this._authService.userEmail());
+        if (this._positionService.hasJobPositions()) {
+            savedMarkers = this._positionService.userJobPositions();
         }
 
         this.state = {
@@ -132,7 +132,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             okDialogKey: 0,
             dimensions: { width: -1, height: -1 },
             currentPosition: this._authService.isDriver() ? null :
-                this._positionService.currentPosition(this._authService.userEmail()),
+                this._positionService.currentPosition(),
             isJobAccepted:false
         };
     }
@@ -167,7 +167,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     componentWillUnmount() {
         this._subscription.dispose();
-        this._positionService.storeUserJobPositions(this._authService.user, this.state.markers);
+        this._positionService.storeUserJobPositions(this.state.markers);
     }
 
     render() {
@@ -380,13 +380,13 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         var newState = this.updateStateForNewMarker(newMarkersList, newPositionForUser);
 
         //Update the list of position markers in the PositionService
-        this._positionService.clearUserJobPositions(this._authService.userEmail());
-        this._positionService.storeUserJobPositions(this._authService.user, newMarkersList);
+        this._positionService.clearUserJobPositions();
+        this._positionService.storeUserJobPositions(newMarkersList);
 
         //Update the position in the PositionService
         if (newPositionForUser != undefined && newPositionForUser != null) {
-            this._positionService.clearUserPosition(this._authService.userEmail());
-            this._positionService.storeUserPosition(this._authService.userEmail(), newPositionForUser);
+            this._positionService.clearUserPosition();
+            this._positionService.storeUserPosition(newPositionForUser);
         }
 
         //Should clear out the current stored job
@@ -463,9 +463,9 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         let isDriver = this._authService.isDriver();
         let matchedMarker = _.find(this.state.markers, { 'email': currentUser.email });
         let newPosition = new Position(event.latLng.lat(), event.latLng.lng());
-
-        this._positionService.clearUserPosition(this._authService.userEmail());
-        this._positionService.storeUserPosition(currentUser, newPosition);
+        let currentJob = this._jobService.currentJob();
+        this._positionService.clearUserPosition();
+        this._positionService.storeUserPosition(newPosition);
 
         if (matchedMarker != undefined) {
             let newMarkersList = this.state.markers;
@@ -479,6 +479,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 markers: newMarkersList
             })
             this.setState(newState);
+            currentJob = matchedMarker.jobForMarker;
         }
         else {
             if (isDriver) {
@@ -493,21 +494,18 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 this.setState(newState);
             }
         }
-        this._positionService.clearUserJobPositions(currentUser.email);
-        this._positionService.storeUserJobPositions(currentUser, this.state.markers);
-        this.pushOutJob(newPosition);
+        this._positionService.clearUserJobPositions();
+        this._positionService.storeUserJobPositions(this.state.markers);
+        this.pushOutJob(newPosition, currentJob);
     }
 
-
-    pushOutJob = (newPosition: Position): void => {
-
+    pushOutJob = (newPosition: Position, jobForMarker : any): void => {
         var self = this;
         let currentUser = this._authService.user();
         let isDriver = this._authService.isDriver();
         let hasIssuedJob = this._jobService.hasIssuedJob();
-        let currentJob = this._jobService.currentJob();
-        let currentPosition = this._positionService.currentPosition(currentUser.email);
-
+        let currentJob = jobForMarker;
+        let currentPosition = this._positionService.currentPosition();
         var localClientFullName = '';
         var localClientEmail = '';
         var localClientPosition = null;
@@ -675,7 +673,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         this.makePOSTRequest('rating/submit/new', ratingJSON, self,
             function (jdata, textStatus, jqXHR) {
                 this._jobService.clearUserIssuedJob();
-                this._positionService.clearUserJobPositions(this._authService.userEmail());
+                this._positionService.clearUserJobPositions();
                 this.setState(
                     {
                         okDialogHeaderText: 'Ratings',
@@ -715,7 +713,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
     jobCancelledCallBack = () => {
         console.log('CANCEL YES CLICKED');
         this._jobService.clearUserIssuedJob();
-        this._positionService.clearUserJobPositions(this._authService.userEmail());
+        this._positionService.clearUserJobPositions();
         this.setState(
             {
                 okDialogHeaderText: 'Job Cancellaton',

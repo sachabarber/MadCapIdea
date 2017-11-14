@@ -1,73 +1,75 @@
 ﻿import { injectable, inject } from "inversify";
 import { Position } from "../domain/Position";
 import { PositionMarker } from "../domain/PositionMarker";
+import { TYPES } from "../../src/types";
+import { AuthService } from "./AuthService";
 
 
 @injectable()
 export class PositionService {
 
-    clearUserJobPositions = (email: string): void => {
-        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+    private _authService: AuthService;
+
+    constructor( @inject(TYPES.AuthService) authService: AuthService) {
+        this._authService = authService;
+    }
+
+    clearUserJobPositions = (): void => {
+        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + this._authService.userEmail();
         sessionStorage.removeItem(keyCurrentUserJobPositions);
     }
 
-    storeUserJobPositions = (currentUser: any, jobPositions: Array<PositionMarker>): void => {
-
-        if (currentUser == null || currentUser == undefined)
-            return;
+    storeUserJobPositions = (jobPositions: Array<PositionMarker>): void => {
 
         if (jobPositions == null || jobPositions == undefined)
             return;
 
         let currentUsersJobPositions = {
-            currentUser: currentUser,
+            currentUser: this._authService.user(),
             jobPositions: jobPositions
         }
-        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + currentUser.email;
+        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + this._authService.userEmail();
         sessionStorage.setItem(keyCurrentUserJobPositions, JSON.stringify(currentUsersJobPositions));
     }
 
-    userJobPositions = (email: string): Array<PositionMarker> => {
-        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+    userJobPositions = (): Array<PositionMarker> => {
+        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + this._authService.userEmail();
         var currentUserJobPositions = JSON.parse(sessionStorage.getItem(keyCurrentUserJobPositions));
         return currentUserJobPositions.jobPositions;
     }
 
-    hasJobPositions = (email: string): boolean => {
-        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + email;
+    hasJobPositions = (): boolean => {
+        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + this._authService.userEmail();
         var currentUserJobPositions = JSON.parse(sessionStorage.getItem(keyCurrentUserJobPositions));
         return currentUserJobPositions != null && currentUserJobPositions != undefined;
     }
 
-    clearUserPosition = (email: string): void => {
-        let keyCurrentUserPosition = 'currentUserPosition_' + email;
+    clearUserPosition = (): void => {
+        let keyCurrentUserPosition = 'currentUserPosition_' + this._authService.userEmail();
         sessionStorage.removeItem(keyCurrentUserPosition);
     }
 
-    storeUserPosition = (currentUser: any, position: Position): void => {
-
-        if (currentUser == null || currentUser == undefined)
-            return;
+    storeUserPosition = (position: Position): void => {
 
         if (position == null || position == undefined)
             return;
 
         let currentUsersPosition = {
-            currentUser: currentUser,
+            currentUser: this._authService.user(),
             position: position
         }
-        let keyCurrentUserPosition = 'currentUserPosition_' + currentUser.email;
+        let keyCurrentUserPosition = 'currentUserPosition_' + this._authService.userEmail();
         sessionStorage.setItem(keyCurrentUserPosition, JSON.stringify(currentUsersPosition));
     }
 
-    currentPosition = (email: string): Position => {
-        let keyCurrentUserPosition = 'currentUserPosition_' + email;
+    currentPosition = (): Position => {
+        let keyCurrentUserPosition = 'currentUserPosition_' + this._authService.userEmail();
         var currentUsersPosition = JSON.parse(sessionStorage.getItem(keyCurrentUserPosition));
         return currentUsersPosition.position;
     }
 
-    hasPosition = (email: string): boolean => {
-        let keyCurrentUserPosition = 'currentUserPosition_' + email;
+    hasPosition = (): boolean => {
+        let keyCurrentUserPosition = 'currentUserPosition_' + this._authService.userEmail();
         var currentUsersPosition = JSON.parse(sessionStorage.getItem(keyCurrentUserPosition));
         return currentUsersPosition != null && currentUsersPosition != undefined;
     }
