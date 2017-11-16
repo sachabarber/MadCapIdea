@@ -111,9 +111,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -212,11 +212,11 @@ var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
 var _OkDialog = __webpack_require__(58);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
-var _UUIDService = __webpack_require__(431);
+var _UUIDService = __webpack_require__(432);
 
 var _Position = __webpack_require__(242);
 
@@ -412,9 +412,9 @@ var React = _interopRequireWildcard(_react);
 
 var _OkDialog = __webpack_require__(58);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 var _reactBootstrapValidation = __webpack_require__(204);
 
@@ -576,9 +576,9 @@ var _OkDialog = __webpack_require__(58);
 
 var _YesNoDialog = __webpack_require__(241);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -662,9 +662,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 var _PassengerRegistration = __webpack_require__(423);
 
@@ -736,19 +736,21 @@ var _reactMeasure = __webpack_require__(391);
 
 var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
-var _RatingDialog = __webpack_require__(424);
+var _RatingDialog = __webpack_require__(425);
 
 var _YesNoDialog = __webpack_require__(241);
 
 var _OkDialog = __webpack_require__(58);
 
-__webpack_require__(31);
+var _AcceptButton = __webpack_require__(424);
 
-var _reactBootstrap = __webpack_require__(24);
+__webpack_require__(25);
+
+var _reactBootstrap = __webpack_require__(21);
 
 var _Position = __webpack_require__(242);
 
-var _PositionMarker = __webpack_require__(426);
+var _PositionMarker = __webpack_require__(427);
 
 var _reactRouter = __webpack_require__(57);
 
@@ -785,43 +787,110 @@ var STYLES = {
 var GetPixelPositionOffset = function GetPixelPositionOffset(width, height) {
     return { x: -(width / 2), y: -(height / 2) };
 };
-var GetAcceptButtonCss = function GetAcceptButtonCss(isDriverIcon, currentUserIsDriver) {
-    if (!currentUserIsDriver && isDriverIcon) {
-        return "displayBlock";
-    } else {
-        return "displayNone";
-    }
-};
 var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
     return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, props.markers.map(function (marker, index) {
-        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_reactBootstrap.Button, { className: GetAcceptButtonCss(marker.isDriverIcon, marker.currentUserIsDriver), type: 'button', bsSize: 'xsmall', bsStyle: 'primary', onClick: function onClick() {
-                return props.onMarkerClick(marker);
-            }, value: 'Accept' }, "Accept")));
+        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_AcceptButton.AcceptButton, { clickCallback: function clickCallback(markerClicked) {
+                return props.onMarkerClick(markerClicked);
+            }, mouseEnterCallback: function mouseEnterCallback() {
+                return props.onMarkerMouseEnter();
+            }, mouseLeaveCallback: function mouseLeaveCallback() {
+                return props.onMarkerMouseLeave();
+            }, marker: marker })));
     }));
 });
 var ViewJob = function (_super) {
     __extends(ViewJob, _super);
     function ViewJob(props) {
         var _this = _super.call(this, props) || this;
+        _this.handleMapClick = function (event) {
+            if (_this.state.isMarkerHovered) {
+                console.log("handleMapClick saw that marker was hovered exiting");
+                return;
+            }
+            var currentUser = _this._authService.user();
+            var isDriver = _this._authService.isDriver();
+            var matchedMarker = _.find(_this.state.markers, { 'email': currentUser.email });
+            var newPosition = new _Position.Position(event.latLng.lat(), event.latLng.lng());
+            var currentJob = _this._jobService.currentJob();
+            _this._positionService.clearUserPosition();
+            _this._positionService.storeUserPosition(newPosition);
+            if (matchedMarker != undefined) {
+                var newMarkersList = _this.state.markers;
+                _.remove(newMarkersList, function (n) {
+                    return n.email === matchedMarker.email;
+                });
+                matchedMarker.position = newPosition;
+                newMarkersList.push(matchedMarker);
+                var newState = Object.assign({}, _this.state, {
+                    currentPosition: newPosition,
+                    markers: newMarkersList
+                });
+                _this.setState(newState);
+                currentJob = matchedMarker.jobForMarker;
+            } else {
+                if (isDriver) {
+                    var newDriverMarker = _this.createDriverMarker(currentUser, event);
+                    var newMarkersList = _this.state.markers;
+                    newMarkersList.push(newDriverMarker);
+                    var newState = Object.assign({}, _this.state, {
+                        currentPosition: newPosition,
+                        markers: newMarkersList
+                    });
+                    _this.setState(newState);
+                }
+            }
+            _this._positionService.clearUserJobPositions();
+            _this._positionService.storeUserJobPositions(_this.state.markers);
+            _this.pushOutJob(newPosition, currentJob);
+        };
+        _this.handleMarkerMouseEnter = function () {
+            console.log("Parent saw mouse enter");
+            var newState = Object.assign({}, _this.state, {
+                isMarkerHovered: true
+            });
+            _this.setState(newState);
+        };
+        _this.handleMarkerMouseLeave = function () {
+            console.log("Parent saw mouse leave");
+            var newState = Object.assign({}, _this.state, {
+                isMarkerHovered: false
+            });
+            _this.setState(newState);
+        };
         _this.handleMarkerClick = function (targetMarker) {
             console.log('button on overlay clicked:' + targetMarker.key);
             console.log(targetMarker);
             var currentJob = _this._jobService.currentJob();
             var jobForMarker = targetMarker.jobForMarker;
-            currentJob.driverFullName = jobForMarker.driverFullName;
-            currentJob.driverEmail = jobForMarker.driverEmail;
-            currentJob.driverPosition = jobForMarker.driverPosition;
-            currentJob.vehicleDescription = jobForMarker.vehicleDescription;
-            currentJob.vehicleRegistrationNumber = jobForMarker.vehicleRegistrationNumber;
-            currentJob.isAssigned = true;
-            _this.makePOSTRequest('job/submit', currentJob, _this, function (jdata, textStatus, jqXHR) {
-                var newState = Object.assign({}, this.state, {
-                    isJobAccepted: true
+            var clientMarker = _.find(_this.state.markers, { 'isDriverIcon': false });
+            if (clientMarker != undefined && clientMarker != null) {
+                var clientJob = clientMarker.jobForMarker;
+                clientJob.driverFullName = jobForMarker.driverFullName;
+                clientJob.driverEmail = jobForMarker.driverEmail;
+                clientJob.driverPosition = jobForMarker.driverPosition;
+                clientJob.vehicleDescription = jobForMarker.vehicleDescription;
+                clientJob.vehicleRegistrationNumber = jobForMarker.vehicleRegistrationNumber;
+                clientJob.isAssigned = true;
+                var self_1 = _this;
+                _this.makePOSTRequest('job/submit', clientJob, _this, function (jdata, textStatus, jqXHR) {
+                    console.log("After is accepted");
+                    var newState = Object.assign({}, self_1.state, {
+                        isJobAccepted: true
+                    });
+                    self_1.setState(newState);
                 });
-                this.setState(newState);
-            });
+            }
         };
         _this.addMarkerForJob = function (jobArgs) {
+            console.log("addMarkerForJob");
+            console.log(_this.state);
+            if (_this.state.isJobAccepted || jobArgs.isAssigned) {
+                _this.processAcceptedMarkers(jobArgs);
+            } else {
+                _this.processNotAcceptedMarkers(jobArgs);
+            }
+        };
+        _this.processAcceptedMarkers = function (jobArgs) {
             if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '') _this._currentJobUUID = jobArgs.jobUUID;
             var isDriver = _this._authService.isDriver();
             var jobClientEmail = jobArgs.clientEmail;
@@ -829,17 +898,48 @@ var ViewJob = function (_super) {
             var newMarkersList = _this.state.markers;
             var newPositionForUser = null;
             var newPositionForDriver = null;
-            //if job is assigned, we want to end up with only the matched client/driver shown
-            if (jobArgs.isAssigned) {
-                var pairedNames = [jobArgs.clientEmail, jobArgs.driverEmail];
-                var finalList = new Array();
-                for (var i = 0; i < _this.state.markers.length; i++) {
-                    if (pairedNames.indexOf(_this.state.markers[i].email) >= 0) {
-                        finalList.push(_this.state.markers[i]);
-                    }
-                }
-                newMarkersList = finalList;
+            console.log("JOB ACCEPTED WE NEED TO ONLY SHOW THE RELEVANT MARKERS + CURRENT USER");
+            //1. Should set all the jobs in markers to assigned now
+            //2. Should only show the pair that are in the job if current user is one of them 
+            //   otherwise just current user
+            var allowedNamed = [_this._authService.userEmail()];
+            if (_this._authService.userEmail() == jobArgs.clientEmail || _this._authService.userEmail() == jobArgs.driverEmail) {
+                allowedNamed = [jobArgs.clientEmail, jobArgs.driverEmail];
             }
+            var finalList = new Array();
+            for (var i = 0; i < _this.state.markers.length; i++) {
+                if (allowedNamed.indexOf(_this.state.markers[i].email) >= 0) {
+                    finalList.push(_this.state.markers[i]);
+                }
+            }
+            newMarkersList = finalList;
+            if (_this._authService.userEmail() == jobArgs.clientEmail || _this._authService.userEmail() == jobArgs.driverEmail) {
+                if (jobArgs.clientEmail == _this._authService.userEmail()) {
+                    newPositionForUser = jobArgs.clientPosition;
+                    var clientMarker = _.find(newMarkersList, { 'email': jobArgs.clientEmail });
+                    clientMarker.position = jobArgs.clientPosition;
+                }
+                if (jobArgs.driverEmail == _this._authService.userEmail()) {
+                    newPositionForUser = jobArgs.driverPosition;
+                    var driverMarker = _.find(newMarkersList, { 'email': jobArgs.driverEmail });
+                    driverMarker.position = jobArgs.driverPosition;
+                }
+            } else {
+                var matchedMarker = _.find(newMarkersList, { 'email': _this._authService.userEmail() });
+                newPositionForUser = matchedMarker.position;
+            }
+            //update the state
+            _this.updateStateForMarkers(newMarkersList, newPositionForUser, jobArgs);
+        };
+        _this.processNotAcceptedMarkers = function (jobArgs) {
+            if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '') _this._currentJobUUID = jobArgs.jobUUID;
+            var isDriver = _this._authService.isDriver();
+            var jobClientEmail = jobArgs.clientEmail;
+            var jobDriverEmail = jobArgs.driverEmail;
+            var newMarkersList = _this.state.markers;
+            var newPositionForUser = null;
+            var newPositionForDriver = null;
+            console.log("JOB NOT ACCEPTED WE NEED TO ONLY ALL");
             //see if the client is in the list (which it may not be). If its not add it, otherwise update it
             if (jobArgs.clientPosition != undefined && jobArgs.clientPosition != null) {
                 newPositionForUser = new _Position.Position(jobArgs.clientPosition.latitude, jobArgs.clientPosition.longitude);
@@ -870,6 +970,9 @@ var ViewJob = function (_super) {
                 newPositionForUser = newPositionForDriver;
             }
             //update the state
+            _this.updateStateForMarkers(newMarkersList, newPositionForUser, jobArgs);
+        };
+        _this.updateStateForMarkers = function (newMarkersList, newPositionForUser, jobArgs) {
             var newState = _this.updateStateForNewMarker(newMarkersList, newPositionForUser);
             //Update the list of position markers in the PositionService
             _this._positionService.clearUserJobPositions();
@@ -879,8 +982,6 @@ var ViewJob = function (_super) {
                 _this._positionService.clearUserPosition();
                 _this._positionService.storeUserPosition(newPositionForUser);
             }
-            //Should clear out the current stored job
-            //Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
             _this._jobService.clearUserIssuedJob();
             _this._jobService.storeUserIssuedJob(jobArgs);
             //update the state
@@ -927,43 +1028,6 @@ var ViewJob = function (_super) {
                 }
             }
             return false;
-        };
-        _this.handleMapClick = function (event) {
-            var currentUser = _this._authService.user();
-            var isDriver = _this._authService.isDriver();
-            var matchedMarker = _.find(_this.state.markers, { 'email': currentUser.email });
-            var newPosition = new _Position.Position(event.latLng.lat(), event.latLng.lng());
-            var currentJob = _this._jobService.currentJob();
-            _this._positionService.clearUserPosition();
-            _this._positionService.storeUserPosition(newPosition);
-            if (matchedMarker != undefined) {
-                var newMarkersList = _this.state.markers;
-                _.remove(newMarkersList, function (n) {
-                    return n.email === matchedMarker.email;
-                });
-                matchedMarker.position = newPosition;
-                newMarkersList.push(matchedMarker);
-                var newState = Object.assign({}, _this.state, {
-                    currentPosition: newPosition,
-                    markers: newMarkersList
-                });
-                _this.setState(newState);
-                currentJob = matchedMarker.jobForMarker;
-            } else {
-                if (isDriver) {
-                    var newDriverMarker = _this.createDriverMarker(currentUser, event);
-                    var newMarkersList = _this.state.markers;
-                    newMarkersList.push(newDriverMarker);
-                    var newState = Object.assign({}, _this.state, {
-                        currentPosition: newPosition,
-                        markers: newMarkersList
-                    });
-                    _this.setState(newState);
-                }
-            }
-            _this._positionService.clearUserJobPositions();
-            _this._positionService.storeUserJobPositions(_this.state.markers);
-            _this.pushOutJob(newPosition, currentJob);
         };
         _this.pushOutJob = function (newPosition, jobForMarker) {
             var self = _this;
@@ -1176,7 +1240,8 @@ var ViewJob = function (_super) {
             okDialogKey: 0,
             dimensions: { width: -1, height: -1 },
             currentPosition: _this._authService.isDriver() ? null : _this._positionService.currentPosition(),
-            isJobAccepted: false
+            isJobAccepted: false,
+            isMarkerHovered: false
         };
         return _this;
     }
@@ -1235,7 +1300,7 @@ var ViewJob = function (_super) {
                         marginLeft: 0,
                         marginRight: 0,
                         marginBottom: 20
-                    } }), markers: _this.state.markers, onMapClick: _this.handleMapClick, onMarkerClick: _this.handleMarkerClick }));
+                    } }), markers: _this.state.markers, onMapClick: _this.handleMapClick, onMarkerClick: _this.handleMarkerClick, onMarkerMouseEnter: _this.handleMarkerMouseEnter, onMarkerMouseLeave: _this.handleMarkerMouseLeave }));
         }))), this.state.isJobAccepted === true ? React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this.ratingsDialogOkCallBack }), !(this._authService.isDriver() === true) ? React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this.jobCancelledCallBack, noCallBack: this.jobNotCancelledCallBack, headerText: "Cancel the job" }) : null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))) : null));
     };
     return ViewJob;
@@ -1266,9 +1331,9 @@ var _ = _interopRequireWildcard(_lodash);
 
 var _OkDialog = __webpack_require__(58);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 var _reactRouter = __webpack_require__(57);
 
@@ -1378,7 +1443,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ContainerOperations = undefined;
 
-__webpack_require__(929);
+__webpack_require__(930);
 
 var _inversify = __webpack_require__(97);
 
@@ -1386,11 +1451,11 @@ var _types = __webpack_require__(115);
 
 var _AuthService = __webpack_require__(148);
 
-var _JobService = __webpack_require__(428);
+var _JobService = __webpack_require__(429);
 
-var _JobStreamService = __webpack_require__(429);
+var _JobStreamService = __webpack_require__(430);
 
-var _PositionService = __webpack_require__(430);
+var _PositionService = __webpack_require__(431);
 
 var ContainerOperations = function () {
     function ContainerOperations() {
@@ -1439,9 +1504,9 @@ var React = _interopRequireWildcard(_react);
 
 var _OkDialog = __webpack_require__(58);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 var _reactRouter = __webpack_require__(57);
 
@@ -1623,9 +1688,9 @@ var React = _interopRequireWildcard(_react);
 
 var _OkDialog = __webpack_require__(58);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 var _reactRouter = __webpack_require__(57);
 
@@ -1786,17 +1851,95 @@ exports.PassengerRegistration = PassengerRegistration;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.AcceptButton = undefined;
+
+var _react = __webpack_require__(1);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(25);
+
+var _reactBootstrap = __webpack_require__(21);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var GetAcceptButtonCss = function GetAcceptButtonCss(isDriverIcon, currentUserIsDriver) {
+    if (!currentUserIsDriver && isDriverIcon) {
+        return "displayBlock";
+    } else {
+        return "displayNone";
+    }
+};
+var AcceptButton = function (_super) {
+    __extends(AcceptButton, _super);
+    function AcceptButton(props) {
+        var _this = _super.call(this, props) || this;
+        _this.mouseEvent = function () {
+            console.log("mouseEvent");
+            _this.props.mouseEnterCallback();
+        };
+        _this.mouseLeave = function () {
+            console.log("mouseLeave");
+            _this.props.mouseLeaveCallback();
+        };
+        _this.click = function () {
+            console.log("click");
+            _this.props.clickCallback(_this.props.marker);
+        };
+        console.log(_this.props);
+        return _this;
+    }
+    AcceptButton.prototype.render = function () {
+        var _this = this;
+        return React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'xsmall', bsStyle: 'primary', className: GetAcceptButtonCss(this.props.marker.isDriverIcon, this.props.marker.currentUserIsDriver), onMouseEnter: function onMouseEnter() {
+                return _this.mouseEvent();
+            }, onMouseLeave: function onMouseLeave() {
+                return _this.mouseLeave();
+            }, value: 'Accept' }, "Accept");
+    };
+    return AcceptButton;
+}(React.Component);
+exports.AcceptButton = AcceptButton;
+
+/***/ }),
+
+/***/ 425:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.RatingDialog = undefined;
 
 var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
-var _reactStars = __webpack_require__(915);
+var _reactStars = __webpack_require__(916);
 
 var _reactStars2 = _interopRequireDefault(_reactStars);
 
@@ -1868,7 +2011,7 @@ exports.RatingDialog = RatingDialog;
 
 /***/ }),
 
-/***/ 425:
+/***/ 426:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1887,7 +2030,7 @@ exports.JobEventArgs = JobEventArgs;
 
 /***/ }),
 
-/***/ 426:
+/***/ 427:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1916,7 +2059,7 @@ exports.PositionMarker = PositionMarker;
 
 /***/ }),
 
-/***/ 427:
+/***/ 428:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1930,9 +2073,9 @@ var _reactDom = __webpack_require__(19);
 
 var ReactDOM = _interopRequireWildcard(_reactDom);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 var _reactRouter = __webpack_require__(57);
 
@@ -2021,7 +2164,7 @@ ReactDOM.render(React.createElement(_reactRouter.Router, { history: _reactRouter
 
 /***/ }),
 
-/***/ 428:
+/***/ 429:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2089,7 +2232,7 @@ exports.JobService = JobService;
 
 /***/ }),
 
-/***/ 429:
+/***/ 430:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2104,7 +2247,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _inversify = __webpack_require__(97);
 
-var _JobEventArgs = __webpack_require__(425);
+var _JobEventArgs = __webpack_require__(426);
 
 var _rx = __webpack_require__(413);
 
@@ -2145,7 +2288,7 @@ exports.JobStreamService = JobStreamService;
 
 /***/ }),
 
-/***/ 430:
+/***/ 431:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2239,7 +2382,7 @@ exports.PositionService = PositionService;
 
 /***/ }),
 
-/***/ 431:
+/***/ 432:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2282,9 +2425,9 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-__webpack_require__(31);
+__webpack_require__(25);
 
-var _reactBootstrap = __webpack_require__(24);
+var _reactBootstrap = __webpack_require__(21);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2340,5 +2483,5 @@ exports.OkDialog = OkDialog;
 
 /***/ })
 
-},[427]);
-//# sourceMappingURL=index.bundle.dd39d3d4bec841ed53ab.js.map
+},[428]);
+//# sourceMappingURL=index.bundle.15135a7ca4e9db4b76e7.js.map

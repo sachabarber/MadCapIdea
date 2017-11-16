@@ -5,6 +5,7 @@ import Measure from 'react-measure'
 import { RatingDialog } from "./components/RatingDialog";
 import { YesNoDialog } from "./components/YesNoDialog";
 import { OkDialog } from "./components/OkDialog";
+import { AcceptButton } from "./components/AcceptButton";
 import 'bootstrap/dist/css/bootstrap.css';
 import {
     Well,
@@ -41,15 +42,7 @@ const GetPixelPositionOffset = (width, height) => {
     return { x: -(width / 2), y: -(height / 2) };
 }
 
-const GetAcceptButtonCss = (isDriverIcon: boolean, currentUserIsDriver: boolean): string => {
 
-    if (!currentUserIsDriver && isDriverIcon) {
-        return "displayBlock";
-    }
-    else {
-        return "displayNone";
-    }
-}
 
 const ViewJobGoogleMap = withGoogleMap(props => (
 
@@ -68,13 +61,11 @@ const ViewJobGoogleMap = withGoogleMap(props => (
                     <img src={marker.icon} />
                     <strong>{marker.key}</strong>
                     <br />
-                    <Button
-                        className={GetAcceptButtonCss(marker.isDriverIcon, marker.currentUserIsDriver)}
-                        type='button'
-                        bsSize='xsmall'
-                        bsStyle='primary'
-                        onClick={() => props.onMarkerClick(marker)}
-                        value='Accept'>Accept</Button>
+                    <AcceptButton
+                        clickCallback={(markerClicked) => props.onMarkerClick(markerClicked)}
+                        mouseEnterCallback={() => props.onMarkerMouseEnter()}
+                        mouseLeaveCallback={() => props.onMarkerMouseLeave()}
+                        marker={marker}/>
                 </div>
             </OverlayView>
         ))}
@@ -93,7 +84,8 @@ export interface ViewJobState {
         height: number
     },
     currentPosition: Position;
-    isJobAccepted: boolean
+    isJobAccepted: boolean;
+    isMarkerHovered: boolean;
 }
 
 type DoneCallback = (jdata: any, textStatus: any, jqXHR: any) => void
@@ -133,7 +125,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             dimensions: { width: -1, height: -1 },
             currentPosition: this._authService.isDriver() ? null :
                 this._positionService.currentPosition(),
-            isJobAccepted:false
+            isJobAccepted: false,
+            isMarkerHovered: false
         };
     }
 
@@ -226,7 +219,10 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                                             }
                                             markers={this.state.markers}
                                             onMapClick={this.handleMapClick}
-                                            onMarkerClick={this.handleMarkerClick} />
+                                            onMarkerClick={this.handleMarkerClick}
+                                            onMarkerMouseEnter={this.handleMarkerMouseEnter}
+                                            onMarkerMouseLeave={this.handleMarkerMouseLeave}
+                                        />
                                     </div>
                                 }
                             </Measure>
@@ -268,6 +264,69 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         );
     }
 
+    handleMapClick = (event) => {
+
+        if (this.state.isMarkerHovered) {
+            console.log("handleMapClick saw that marker was hovered exiting");
+            return;
+        }
+
+        let currentUser = this._authService.user();
+        let isDriver = this._authService.isDriver();
+        let matchedMarker = _.find(this.state.markers, { 'email': currentUser.email });
+        let newPosition = new Position(event.latLng.lat(), event.latLng.lng());
+        let currentJob = this._jobService.currentJob();
+        this._positionService.clearUserPosition();
+        this._positionService.storeUserPosition(newPosition);
+
+        if (matchedMarker != undefined) {
+            let newMarkersList = this.state.markers;
+            _.remove(newMarkersList, function (n) {
+                return n.email === matchedMarker.email;
+            });
+            matchedMarker.position = newPosition;
+            newMarkersList.push(matchedMarker);
+            const newState = Object.assign({}, this.state, {
+                currentPosition: newPosition,
+                markers: newMarkersList
+            })
+            this.setState(newState);
+            currentJob = matchedMarker.jobForMarker;
+        }
+        else {
+            if (isDriver) {
+                let newDriverMarker =
+                    this.createDriverMarker(currentUser, event);
+                let newMarkersList = this.state.markers;
+                newMarkersList.push(newDriverMarker);
+                const newState = Object.assign({}, this.state, {
+                    currentPosition: newPosition,
+                    markers: newMarkersList
+                })
+                this.setState(newState);
+            }
+        }
+        this._positionService.clearUserJobPositions();
+        this._positionService.storeUserJobPositions(this.state.markers);
+        this.pushOutJob(newPosition, currentJob);
+    }
+
+    handleMarkerMouseEnter = () => {
+        console.log("Parent saw mouse enter");
+        const newState = Object.assign({}, this.state, {
+            isMarkerHovered: true
+        })
+        this.setState(newState);
+    }
+
+    handleMarkerMouseLeave = () => {
+        console.log("Parent saw mouse leave");
+        const newState = Object.assign({}, this.state, {
+            isMarkerHovered: false
+        })
+        this.setState(newState);
+    }
+
     handleMarkerClick = (targetMarker) => {
 
         console.log('button on overlay clicked:' + targetMarker.key);
@@ -275,23 +334,46 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
         let currentJob = this._jobService.currentJob();
         let jobForMarker = targetMarker.jobForMarker;
-        currentJob.driverFullName = jobForMarker.driverFullName;
-        currentJob.driverEmail = jobForMarker.driverEmail;
-        currentJob.driverPosition = jobForMarker.driverPosition;
-        currentJob.vehicleDescription = jobForMarker.vehicleDescription;
-        currentJob.vehicleRegistrationNumber = jobForMarker.vehicleRegistrationNumber;
-        currentJob.isAssigned = true;
 
-        this.makePOSTRequest('job/submit', currentJob, this,
-            function (jdata, textStatus, jqXHR) {
-                const newState = Object.assign({}, this.state, {
-                    isJobAccepted: true
-                })
-                this.setState(newState);
-            });
+        let clientMarker = _.find(this.state.markers, { 'isDriverIcon': false });
+        if (clientMarker != undefined && clientMarker != null) {
+
+            let clientJob = clientMarker.jobForMarker;
+            clientJob.driverFullName = jobForMarker.driverFullName;
+            clientJob.driverEmail = jobForMarker.driverEmail;
+            clientJob.driverPosition = jobForMarker.driverPosition;
+            clientJob.vehicleDescription = jobForMarker.vehicleDescription;
+            clientJob.vehicleRegistrationNumber = jobForMarker.vehicleRegistrationNumber;
+            clientJob.isAssigned = true;
+            
+            let self = this;
+
+            this.makePOSTRequest('job/submit', clientJob, this,
+                function (jdata, textStatus, jqXHR) {
+                    console.log("After is accepted");
+                    const newState = Object.assign({}, self.state, {
+                        isJobAccepted: true
+                    })
+                    self.setState(newState);
+                });
+        }
     }
 
     addMarkerForJob = (jobArgs: any): void => {
+
+        console.log("addMarkerForJob");
+        console.log(this.state);
+
+        if (this.state.isJobAccepted || jobArgs.isAssigned) {
+            this.processAcceptedMarkers(jobArgs);
+        }
+        else {
+            this.processNotAcceptedMarkers(jobArgs);
+        }
+        
+    }
+
+    processAcceptedMarkers = (jobArgs: any): void => {
 
         if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '')
             this._currentJobUUID = jobArgs.jobUUID;
@@ -303,17 +385,60 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         let newPositionForUser = null;
         let newPositionForDriver = null;
 
-        //if job is assigned, we want to end up with only the matched client/driver shown
-        if (jobArgs.isAssigned) {
-            let pairedNames = [jobArgs.clientEmail, jobArgs.driverEmail];
-            let finalList: Array<PositionMarker> = new Array<PositionMarker>();
-            for (var i = 0; i < this.state.markers.length; i++) {
-                if (pairedNames.indexOf(this.state.markers[i].email) >= 0) {
-                    finalList.push(this.state.markers[i]);
-                }
-            }
-            newMarkersList = finalList;
+        console.log("JOB ACCEPTED WE NEED TO ONLY SHOW THE RELEVANT MARKERS + CURRENT USER");
+        //1. Should set all the jobs in markers to assigned now
+        //2. Should only show the pair that are in the job if current user is one of them 
+        //   otherwise just current user
+        let allowedNamed = [this._authService.userEmail()];
+        if (this._authService.userEmail() == jobArgs.clientEmail ||
+            this._authService.userEmail() == jobArgs.driverEmail) {
+            allowedNamed = [jobArgs.clientEmail, jobArgs.driverEmail];
         }
+        let finalList: Array<PositionMarker> = new Array<PositionMarker>();
+        for (var i = 0; i < this.state.markers.length; i++) {
+            if (allowedNamed.indexOf(this.state.markers[i].email) >= 0) {
+                finalList.push(this.state.markers[i]);
+            }
+        }
+        newMarkersList = finalList;
+
+        if (this._authService.userEmail() == jobArgs.clientEmail ||
+            this._authService.userEmail() == jobArgs.driverEmail) {
+            if (jobArgs.clientEmail == this._authService.userEmail()) {
+                newPositionForUser = jobArgs.clientPosition;
+                let clientMarker = _.find(newMarkersList, { 'email': jobArgs.clientEmail });
+                clientMarker.position = jobArgs.clientPosition;
+            }
+            if (jobArgs.driverEmail == this._authService.userEmail()) {
+                newPositionForUser = jobArgs.driverPosition;
+                let driverMarker = _.find(newMarkersList, { 'email': jobArgs.driverEmail });
+                driverMarker.position = jobArgs.driverPosition;
+            }
+        }
+        else {
+            let matchedMarker = _.find(newMarkersList, { 'email': this._authService.userEmail() });
+            newPositionForUser = matchedMarker.position;
+        }
+
+        //update the state
+        this.updateStateForMarkers(newMarkersList, newPositionForUser, jobArgs);
+    }
+
+
+    processNotAcceptedMarkers = (jobArgs: any): void => {
+
+        if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '')
+            this._currentJobUUID = jobArgs.jobUUID;
+
+        let isDriver = this._authService.isDriver();
+        let jobClientEmail = jobArgs.clientEmail;
+        let jobDriverEmail = jobArgs.driverEmail;
+        let newMarkersList = this.state.markers;
+        let newPositionForUser = null;
+        let newPositionForDriver = null;
+
+        console.log("JOB NOT ACCEPTED WE NEED TO ONLY ALL");
+
 
         //see if the client is in the list (which it may not be). If its not add it, otherwise update it
         if (jobArgs.clientPosition != undefined && jobArgs.clientPosition != null) {
@@ -377,6 +502,11 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
 
         //update the state
+        this.updateStateForMarkers(newMarkersList, newPositionForUser, jobArgs);
+    }
+
+    updateStateForMarkers = (newMarkersList: PositionMarker[], newPositionForUser: Position, jobArgs:any): void => {
+
         var newState = this.updateStateForNewMarker(newMarkersList, newPositionForUser);
 
         //Update the list of position markers in the PositionService
@@ -389,8 +519,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             this._positionService.storeUserPosition(newPositionForUser);
         }
 
-        //Should clear out the current stored job
-        //Should store new job ( self._jobService.storeUserIssuedJob(newJob);)
         this._jobService.clearUserIssuedJob();
         this._jobService.storeUserIssuedJob(jobArgs);
 
@@ -456,48 +584,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         return false;
     }
 
-
-    handleMapClick = (event) => {
-
-        let currentUser = this._authService.user();
-        let isDriver = this._authService.isDriver();
-        let matchedMarker = _.find(this.state.markers, { 'email': currentUser.email });
-        let newPosition = new Position(event.latLng.lat(), event.latLng.lng());
-        let currentJob = this._jobService.currentJob();
-        this._positionService.clearUserPosition();
-        this._positionService.storeUserPosition(newPosition);
-
-        if (matchedMarker != undefined) {
-            let newMarkersList = this.state.markers;
-            _.remove(newMarkersList, function (n) {
-                return n.email === matchedMarker.email;
-            });
-            matchedMarker.position = newPosition;
-            newMarkersList.push(matchedMarker);
-            const newState = Object.assign({}, this.state, {
-                currentPosition: newPosition,
-                markers: newMarkersList
-            })
-            this.setState(newState);
-            currentJob = matchedMarker.jobForMarker;
-        }
-        else {
-            if (isDriver) {
-                let newDriverMarker =
-                    this.createDriverMarker(currentUser, event);
-                let newMarkersList = this.state.markers;
-                newMarkersList.push(newDriverMarker);
-                const newState = Object.assign({}, this.state, {
-                    currentPosition: newPosition,
-                    markers: newMarkersList
-                })
-                this.setState(newState);
-            }
-        }
-        this._positionService.clearUserJobPositions();
-        this._positionService.storeUserJobPositions(this.state.markers);
-        this.pushOutJob(newPosition, currentJob);
-    }
 
     pushOutJob = (newPosition: Position, jobForMarker : any): void => {
         var self = this;
