@@ -5,7 +5,7 @@ import Measure from 'react-measure'
 import { RatingDialog } from "./components/RatingDialog";
 import { YesNoDialog } from "./components/YesNoDialog";
 import { OkDialog } from "./components/OkDialog";
-import { AcceptButton } from "./components/AcceptButton";
+import { AcceptList } from "./components/AcceptList";
 import 'bootstrap/dist/css/bootstrap.css';
 import {
     Well,
@@ -60,12 +60,6 @@ const ViewJobGoogleMap = withGoogleMap(props => (
                 <div style={STYLES.overlayView}>
                     <img src={marker.icon} />
                     <strong>{marker.key}</strong>
-                    <br />
-                    <AcceptButton
-                        clickCallback={(markerClicked) => props.onMarkerClick(markerClicked)}
-                        mouseEnterCallback={() => props.onMarkerMouseEnter()}
-                        mouseLeaveCallback={() => props.onMarkerMouseLeave()}
-                        marker={marker}/>
                 </div>
             </OverlayView>
         ))}
@@ -85,7 +79,6 @@ export interface ViewJobState {
     },
     currentPosition: Position;
     isJobAccepted: boolean;
-    isMarkerHovered: boolean;
 }
 
 type DoneCallback = (jdata: any, textStatus: any, jqXHR: any) => void
@@ -126,7 +119,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             currentPosition: this._authService.isDriver() ? null :
                 this._positionService.currentPosition(),
             isJobAccepted: false,
-            isMarkerHovered: false
         };
     }
 
@@ -177,6 +169,15 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                     </Row>
                     <Row className="show-grid">
                         <Col xs={10} md={6}>
+                            <AcceptList
+                                markers={_.filter(this.state.markers, { isDriverIcon: true })}
+                                currentUserIsDriver={this._authService.isDriver()}
+                                clickCallback={this.handleMarkerClick}
+                            />
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={10} md={6}>
                             <Measure
                                 bounds
                                 onResize={(contentRect) => {
@@ -219,9 +220,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                                             }
                                             markers={this.state.markers}
                                             onMapClick={this.handleMapClick}
-                                            onMarkerClick={this.handleMarkerClick}
-                                            onMarkerMouseEnter={this.handleMarkerMouseEnter}
-                                            onMarkerMouseLeave={this.handleMarkerMouseLeave}
                                         />
                                     </div>
                                 }
@@ -266,11 +264,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
 
     handleMapClick = (event) => {
 
-        if (this.state.isMarkerHovered) {
-            console.log("handleMapClick saw that marker was hovered exiting");
-            return;
-        }
-
         let currentUser = this._authService.user();
         let isDriver = this._authService.isDriver();
         let matchedMarker = _.find(this.state.markers, { 'email': currentUser.email });
@@ -311,25 +304,9 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         this.pushOutJob(newPosition, currentJob);
     }
 
-    handleMarkerMouseEnter = () => {
-        console.log("Parent saw mouse enter");
-        const newState = Object.assign({}, this.state, {
-            isMarkerHovered: true
-        })
-        this.setState(newState);
-    }
-
-    handleMarkerMouseLeave = () => {
-        console.log("Parent saw mouse leave");
-        const newState = Object.assign({}, this.state, {
-            isMarkerHovered: false
-        })
-        this.setState(newState);
-    }
-
     handleMarkerClick = (targetMarker) => {
 
-        console.log('button on overlay clicked:' + targetMarker.key);
+        console.log('button on AcceptList clicked:' + targetMarker.key);
         console.log(targetMarker);
 
         let currentJob = this._jobService.currentJob();

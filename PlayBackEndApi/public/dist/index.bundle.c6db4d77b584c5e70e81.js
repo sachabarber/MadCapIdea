@@ -96,7 +96,7 @@ exports.AuthService = AuthService;
 
 /***/ }),
 
-/***/ 241:
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -168,7 +168,7 @@ exports.YesNoDialog = YesNoDialog;
 
 /***/ }),
 
-/***/ 242:
+/***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -218,7 +218,7 @@ var _reactBootstrap = __webpack_require__(21);
 
 var _UUIDService = __webpack_require__(432);
 
-var _Position = __webpack_require__(242);
+var _Position = __webpack_require__(243);
 
 var _reactRouter = __webpack_require__(57);
 
@@ -416,9 +416,9 @@ __webpack_require__(25);
 
 var _reactBootstrap = __webpack_require__(21);
 
-var _reactBootstrapValidation = __webpack_require__(204);
+var _reactBootstrapValidation = __webpack_require__(205);
 
-var _revalidator = __webpack_require__(240);
+var _revalidator = __webpack_require__(241);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -574,7 +574,7 @@ var _reactRouter = __webpack_require__(57);
 
 var _OkDialog = __webpack_require__(58);
 
-var _YesNoDialog = __webpack_require__(241);
+var _YesNoDialog = __webpack_require__(242);
 
 __webpack_require__(25);
 
@@ -728,7 +728,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(337);
+var _lodash = __webpack_require__(203);
 
 var _ = _interopRequireWildcard(_lodash);
 
@@ -738,17 +738,17 @@ var _reactMeasure2 = _interopRequireDefault(_reactMeasure);
 
 var _RatingDialog = __webpack_require__(425);
 
-var _YesNoDialog = __webpack_require__(241);
+var _YesNoDialog = __webpack_require__(242);
 
 var _OkDialog = __webpack_require__(58);
 
-var _AcceptButton = __webpack_require__(424);
+var _AcceptList = __webpack_require__(424);
 
 __webpack_require__(25);
 
 var _reactBootstrap = __webpack_require__(21);
 
-var _Position = __webpack_require__(242);
+var _Position = __webpack_require__(243);
 
 var _PositionMarker = __webpack_require__(427);
 
@@ -789,13 +789,7 @@ var GetPixelPositionOffset = function GetPixelPositionOffset(width, height) {
 };
 var ViewJobGoogleMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
     return React.createElement(_reactGoogleMaps.GoogleMap, { ref: props.onMapLoad, defaultZoom: 16, defaultCenter: { lat: 50.8202949, lng: -0.1406958 }, onClick: props.onMapClick }, props.markers.map(function (marker, index) {
-        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key), React.createElement("br", null), React.createElement(_AcceptButton.AcceptButton, { clickCallback: function clickCallback(markerClicked) {
-                return props.onMarkerClick(markerClicked);
-            }, mouseEnterCallback: function mouseEnterCallback() {
-                return props.onMarkerMouseEnter();
-            }, mouseLeaveCallback: function mouseLeaveCallback() {
-                return props.onMarkerMouseLeave();
-            }, marker: marker })));
+        return React.createElement(_reactGoogleMaps.OverlayView, { key: marker.key, mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET, position: marker.position, getPixelPositionOffset: GetPixelPositionOffset }, React.createElement("div", { style: STYLES.overlayView }, React.createElement("img", { src: marker.icon }), React.createElement("strong", null, marker.key)));
     }));
 });
 var ViewJob = function (_super) {
@@ -803,10 +797,6 @@ var ViewJob = function (_super) {
     function ViewJob(props) {
         var _this = _super.call(this, props) || this;
         _this.handleMapClick = function (event) {
-            if (_this.state.isMarkerHovered) {
-                console.log("handleMapClick saw that marker was hovered exiting");
-                return;
-            }
             var currentUser = _this._authService.user();
             var isDriver = _this._authService.isDriver();
             var matchedMarker = _.find(_this.state.markers, { 'email': currentUser.email });
@@ -843,22 +833,8 @@ var ViewJob = function (_super) {
             _this._positionService.storeUserJobPositions(_this.state.markers);
             _this.pushOutJob(newPosition, currentJob);
         };
-        _this.handleMarkerMouseEnter = function () {
-            console.log("Parent saw mouse enter");
-            var newState = Object.assign({}, _this.state, {
-                isMarkerHovered: true
-            });
-            _this.setState(newState);
-        };
-        _this.handleMarkerMouseLeave = function () {
-            console.log("Parent saw mouse leave");
-            var newState = Object.assign({}, _this.state, {
-                isMarkerHovered: false
-            });
-            _this.setState(newState);
-        };
         _this.handleMarkerClick = function (targetMarker) {
-            console.log('button on overlay clicked:' + targetMarker.key);
+            console.log('button on AcceptList clicked:' + targetMarker.key);
             console.log(targetMarker);
             var currentJob = _this._jobService.currentJob();
             var jobForMarker = targetMarker.jobForMarker;
@@ -1240,8 +1216,7 @@ var ViewJob = function (_super) {
             okDialogKey: 0,
             dimensions: { width: -1, height: -1 },
             currentPosition: _this._authService.isDriver() ? null : _this._positionService.currentPosition(),
-            isJobAccepted: false,
-            isMarkerHovered: false
+            isJobAccepted: false
         };
         return _this;
     }
@@ -1270,7 +1245,7 @@ var ViewJob = function (_super) {
     ViewJob.prototype.render = function () {
         var _this = this;
         var adjustedwidth = this.state.dimensions.width;
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "CURRENT JOB"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactMeasure2.default, { bounds: true, onResize: function onResize(contentRect) {
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, "CURRENT JOB"))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_AcceptList.AcceptList, { markers: _.filter(this.state.markers, { isDriverIcon: true }), currentUserIsDriver: this._authService.isDriver(), clickCallback: this.handleMarkerClick }))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement(_reactMeasure2.default, { bounds: true, onResize: function onResize(contentRect) {
                 _this.setState({ dimensions: contentRect.bounds });
             } }, function (_a) {
             var measureRef = _a.measureRef;
@@ -1300,7 +1275,7 @@ var ViewJob = function (_super) {
                         marginLeft: 0,
                         marginRight: 0,
                         marginBottom: 20
-                    } }), markers: _this.state.markers, onMapClick: _this.handleMapClick, onMarkerClick: _this.handleMarkerClick, onMarkerMouseEnter: _this.handleMarkerMouseEnter, onMarkerMouseLeave: _this.handleMarkerMouseLeave }));
+                    } }), markers: _this.state.markers, onMapClick: _this.handleMapClick }));
         }))), this.state.isJobAccepted === true ? React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this.ratingsDialogOkCallBack }), !(this._authService.isDriver() === true) ? React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this.jobCancelledCallBack, noCallBack: this.jobNotCancelledCallBack, headerText: "Cancel the job" }) : null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))) : null));
     };
     return ViewJob;
@@ -1325,7 +1300,7 @@ var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
 
-var _lodash = __webpack_require__(337);
+var _lodash = __webpack_require__(203);
 
 var _ = _interopRequireWildcard(_lodash);
 
@@ -1510,9 +1485,9 @@ var _reactBootstrap = __webpack_require__(21);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactBootstrapValidation = __webpack_require__(204);
+var _reactBootstrapValidation = __webpack_require__(205);
 
-var _revalidator = __webpack_require__(240);
+var _revalidator = __webpack_require__(241);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -1694,9 +1669,9 @@ var _reactBootstrap = __webpack_require__(21);
 
 var _reactRouter = __webpack_require__(57);
 
-var _reactBootstrapValidation = __webpack_require__(204);
+var _reactBootstrapValidation = __webpack_require__(205);
 
-var _revalidator = __webpack_require__(240);
+var _revalidator = __webpack_require__(241);
 
 var _revalidator2 = _interopRequireDefault(_revalidator);
 
@@ -1851,11 +1826,15 @@ exports.PassengerRegistration = PassengerRegistration;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.AcceptButton = undefined;
+exports.AcceptList = undefined;
 
 var _react = __webpack_require__(1);
 
 var React = _interopRequireWildcard(_react);
+
+var _lodash = __webpack_require__(203);
+
+var _ = _interopRequireWildcard(_lodash);
 
 __webpack_require__(25);
 
@@ -1880,43 +1859,48 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 
-var GetAcceptButtonCss = function GetAcceptButtonCss(isDriverIcon, currentUserIsDriver) {
-    if (!currentUserIsDriver && isDriverIcon) {
-        return "displayBlock";
-    } else {
-        return "displayNone";
-    }
-};
-var AcceptButton = function (_super) {
-    __extends(AcceptButton, _super);
-    function AcceptButton(props) {
+var AcceptList = function (_super) {
+    __extends(AcceptList, _super);
+    function AcceptList(props) {
         var _this = _super.call(this, props) || this;
-        _this.mouseEvent = function () {
-            console.log("mouseEvent");
-            _this.props.mouseEnterCallback();
+        _this.getAcceptButtonCss = function (currentUserIsDriver) {
+            if (_this.props.markers.length == 0 || _this.props.markers == undefined) {
+                return "displayNone";
+            }
+            if (!currentUserIsDriver) {
+                return "displayBlock";
+            } else {
+                return "displayNone";
+            }
         };
-        _this.mouseLeave = function () {
-            console.log("mouseLeave");
-            _this.props.mouseLeaveCallback();
+        _this.onButtonClick = function () {
+            var marker = _.find(_this.props.markers, { name: _this.state.value });
+            _this.props.clickCallback(marker);
         };
-        _this.click = function () {
-            console.log("click");
-            _this.props.clickCallback(_this.props.marker);
+        _this.onChange = function (event) {
+            _this.setState({ value: event.target.value });
+        };
+        _this.forceUpdateToSelectedItem = function () {
+            if (_this.props.markers.length > 0 && _this.state.value == '') {
+                _this.setState({ value: _this.props.markers[0].key });
+            }
         };
         console.log(_this.props);
+        //set initial state
+        _this.state = {
+            value: ''
+        };
         return _this;
     }
-    AcceptButton.prototype.render = function () {
-        var _this = this;
-        return React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'xsmall', bsStyle: 'primary', className: GetAcceptButtonCss(this.props.marker.isDriverIcon, this.props.marker.currentUserIsDriver), onMouseEnter: function onMouseEnter() {
-                return _this.mouseEvent();
-            }, onMouseLeave: function onMouseLeave() {
-                return _this.mouseLeave();
-            }, value: 'Accept' }, "Accept");
+    AcceptList.prototype.render = function () {
+        this.forceUpdateToSelectedItem();
+        return React.createElement("div", { className: this.getAcceptButtonCss(this.props.currentUserIsDriver) }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 6, md: 4 }, React.createElement("select", { name: 'acceptItems', value: this.state.value, onChange: this.onChange }, this.props.markers.map(function (fbb) {
+            return React.createElement("option", { key: fbb.key, value: fbb.name }, fbb.name);
+        }), ";")), React.createElement(_reactBootstrap.Col, { xs: 6, md: 8 }, React.createElement(_reactBootstrap.Button, { onClick: this.onButtonClick, type: 'button', bsSize: 'xsmall', bsStyle: 'primary' }, "Accept")))));
     };
-    return AcceptButton;
+    return AcceptList;
 }(React.Component);
-exports.AcceptButton = AcceptButton;
+exports.AcceptList = AcceptList;
 
 /***/ }),
 
@@ -2484,4 +2468,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[428]);
-//# sourceMappingURL=index.bundle.15135a7ca4e9db4b76e7.js.map
+//# sourceMappingURL=index.bundle.c6db4d77b584c5e70e81.js.map
