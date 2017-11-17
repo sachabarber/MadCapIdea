@@ -885,19 +885,21 @@ var ViewJob = function (_super) {
             var finalList = new Array();
             for (var i = 0; i < _this.state.markers.length; i++) {
                 if (allowedNamed.indexOf(_this.state.markers[i].email) >= 0) {
-                    finalList.push(_this.state.markers[i]);
+                    var theMarker = _this.state.markers[i];
+                    theMarker.jobForMarker.isAssigned = true;
+                    finalList.push(theMarker);
                 }
             }
             newMarkersList = finalList;
             if (_this._authService.userEmail() == jobArgs.clientEmail || _this._authService.userEmail() == jobArgs.driverEmail) {
-                if (jobArgs.clientEmail == _this._authService.userEmail()) {
+                var clientMarker = _.find(newMarkersList, { 'email': jobArgs.clientEmail });
+                if (clientMarker != undefined && clientMarker != null) {
                     newPositionForUser = jobArgs.clientPosition;
-                    var clientMarker = _.find(newMarkersList, { 'email': jobArgs.clientEmail });
                     clientMarker.position = jobArgs.clientPosition;
                 }
-                if (jobArgs.driverEmail == _this._authService.userEmail()) {
+                var driverMarker = _.find(newMarkersList, { 'email': jobArgs.driverEmail });
+                if (driverMarker != undefined && driverMarker != null) {
                     newPositionForUser = jobArgs.driverPosition;
-                    var driverMarker = _.find(newMarkersList, { 'email': jobArgs.driverEmail });
                     driverMarker.position = jobArgs.driverPosition;
                 }
             } else {
@@ -905,7 +907,8 @@ var ViewJob = function (_super) {
                 newPositionForUser = matchedMarker.position;
             }
             //update the state
-            _this.updateStateForMarkers(newMarkersList, newPositionForUser, jobArgs);
+            var newState = _this.updateStateForAcceptedMarker(newMarkersList, newPositionForUser);
+            _this.updateStateForMarkers(newState, newMarkersList, newPositionForUser, jobArgs);
         };
         _this.processNotAcceptedMarkers = function (jobArgs) {
             if (jobArgs.jobUUID != undefined && jobArgs.jobUUID != '') _this._currentJobUUID = jobArgs.jobUUID;
@@ -946,10 +949,10 @@ var ViewJob = function (_super) {
                 newPositionForUser = newPositionForDriver;
             }
             //update the state
-            _this.updateStateForMarkers(newMarkersList, newPositionForUser, jobArgs);
-        };
-        _this.updateStateForMarkers = function (newMarkersList, newPositionForUser, jobArgs) {
             var newState = _this.updateStateForNewMarker(newMarkersList, newPositionForUser);
+            _this.updateStateForMarkers(newState, newMarkersList, newPositionForUser, jobArgs);
+        };
+        _this.updateStateForMarkers = function (newState, newMarkersList, newPositionForUser, jobArgs) {
             //Update the list of position markers in the PositionService
             _this._positionService.clearUserJobPositions();
             _this._positionService.storeUserJobPositions(newMarkersList);
@@ -982,6 +985,20 @@ var ViewJob = function (_super) {
             } else {
                 return Object.assign({}, _this.state, {
                     markers: newMarkersList
+                });
+            }
+        };
+        _this.updateStateForAcceptedMarker = function (newMarkersList, position) {
+            if (position != null) {
+                return Object.assign({}, _this.state, {
+                    currentPosition: position,
+                    markers: newMarkersList,
+                    isJobAccepted: true
+                });
+            } else {
+                return Object.assign({}, _this.state, {
+                    markers: newMarkersList,
+                    isJobAccepted: true
                 });
             }
         };
@@ -2468,4 +2485,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[428]);
-//# sourceMappingURL=index.bundle.c6db4d77b584c5e70e81.js.map
+//# sourceMappingURL=index.bundle.23f6d6aaf0a2f760cb71.js.map

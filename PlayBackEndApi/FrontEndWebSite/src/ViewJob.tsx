@@ -374,21 +374,25 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         let finalList: Array<PositionMarker> = new Array<PositionMarker>();
         for (var i = 0; i < this.state.markers.length; i++) {
             if (allowedNamed.indexOf(this.state.markers[i].email) >= 0) {
-                finalList.push(this.state.markers[i]);
+                let theMarker = this.state.markers[i];
+                theMarker.jobForMarker.isAssigned = true;
+                finalList.push(theMarker);
             }
         }
         newMarkersList = finalList;
 
         if (this._authService.userEmail() == jobArgs.clientEmail ||
             this._authService.userEmail() == jobArgs.driverEmail) {
-            if (jobArgs.clientEmail == this._authService.userEmail()) {
+
+            let clientMarker = _.find(newMarkersList, { 'email': jobArgs.clientEmail });
+            if (clientMarker != undefined && clientMarker != null) {
                 newPositionForUser = jobArgs.clientPosition;
-                let clientMarker = _.find(newMarkersList, { 'email': jobArgs.clientEmail });
                 clientMarker.position = jobArgs.clientPosition;
             }
-            if (jobArgs.driverEmail == this._authService.userEmail()) {
+
+            let driverMarker = _.find(newMarkersList, { 'email': jobArgs.driverEmail });
+            if (driverMarker != undefined && driverMarker != null) {
                 newPositionForUser = jobArgs.driverPosition;
-                let driverMarker = _.find(newMarkersList, { 'email': jobArgs.driverEmail });
                 driverMarker.position = jobArgs.driverPosition;
             }
         }
@@ -398,7 +402,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
 
         //update the state
-        this.updateStateForMarkers(newMarkersList, newPositionForUser, jobArgs);
+        var newState = this.updateStateForAcceptedMarker(newMarkersList, newPositionForUser);
+        this.updateStateForMarkers(newState, newMarkersList, newPositionForUser, jobArgs);
     }
 
 
@@ -479,12 +484,11 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
 
         //update the state
-        this.updateStateForMarkers(newMarkersList, newPositionForUser, jobArgs);
+        var newState = this.updateStateForNewMarker(newMarkersList, newPositionForUser);
+        this.updateStateForMarkers(newState, newMarkersList, newPositionForUser, jobArgs);
     }
 
-    updateStateForMarkers = (newMarkersList: PositionMarker[], newPositionForUser: Position, jobArgs:any): void => {
-
-        var newState = this.updateStateForNewMarker(newMarkersList, newPositionForUser);
+    updateStateForMarkers = (newState: any, newMarkersList: PositionMarker[], newPositionForUser: Position, jobArgs:any): void => {
 
         //Update the list of position markers in the PositionService
         this._positionService.clearUserJobPositions();
@@ -529,6 +533,23 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         else {
            return Object.assign({}, this.state, {
                 markers: newMarkersList
+            })
+        }
+    }
+
+    updateStateForAcceptedMarker = (newMarkersList: PositionMarker[], position: Position): any => {
+
+        if (position != null) {
+            return Object.assign({}, this.state, {
+                currentPosition: position,
+                markers: newMarkersList,
+                isJobAccepted: true
+            })
+        }
+        else {
+            return Object.assign({}, this.state, {
+                markers: newMarkersList,
+                isJobAccepted: true
             })
         }
     }
