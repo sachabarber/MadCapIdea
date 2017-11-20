@@ -4,7 +4,7 @@
 		module="kafkastreams-build"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20170904065431"
+		publication="20171120122213"
 		e:sbtVersion="0.13" e:scalaVersion="2.10"
 	>
 		<description>
@@ -42,5 +42,6 @@
 			<artifact name="global-plugins" type="src" ext="jar" conf="sources" e:classifier="sources"/>
 			<artifact name="global-plugins" type="doc" ext="jar" conf="docs" e:classifier="javadoc"/>
 		</dependency>
+		<dependency org="com.eed3si9n" name="sbt-assembly" rev="0.14.6" conf="compile->default(compile)" e:sbtVersion="0.13" e:scalaVersion="2.10"/>
 	</dependencies>
 </ivy-module>

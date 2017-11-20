@@ -5,6 +5,8 @@ version := "1.0"
 scalaVersion := "2.12.0"
 
 
+assemblyJarName in assembly := "KafkaStreams.jar"
+
 val kafkaStreamsVersion = "0.11.0.0"
 val configVersion = "1.0.1"
 
