@@ -13,6 +13,7 @@ import ReactStars from 'react-stars';
 export interface RatingDialogProps {
     headerText: string;
     theId: string;
+    actionPerformed: boolean;
     okCallBack(rating: number): void;
 }
 
@@ -22,6 +23,16 @@ export interface RatingDialogState {
     ratingText: string;
 }
 
+
+const GetButtonCss = (actionPerformed: boolean): string => {
+
+    if (!actionPerformed) {
+        return "displayBlock";
+    }
+    else {
+        return "displayNone";
+    }
+}
 
 export class RatingDialog extends React.Component<RatingDialogProps, RatingDialogState> {
 
@@ -77,6 +88,7 @@ export class RatingDialog extends React.Component<RatingDialogProps, RatingDialo
                     type='button'
                     bsSize='small'
                     bsStyle='primary'
+                    className={GetButtonCss(this.props.actionPerformed)}
                     onClick={this.open}>
                 Complete
             </Button>

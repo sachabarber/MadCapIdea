@@ -12,6 +12,7 @@ import
 export interface YesNoDialogProps {
     headerText: string;
     theId: string;
+    actionPerformed: boolean;
     launchButtonText: string;
     yesCallBack(): void;
     noCallBack(): void;
@@ -21,6 +22,15 @@ export interface YesNoDialogState {
     showModal: boolean;
 }
 
+const GetButtonCss = (actionPerformed: boolean): string => {
+
+    if (!actionPerformed) {
+        return "displayBlock";
+    }
+    else {
+        return "displayNone";
+    }
+}
 
 export class YesNoDialog extends React.Component<YesNoDialogProps, YesNoDialogState> {
 
@@ -60,6 +70,7 @@ export class YesNoDialog extends React.Component<YesNoDialogProps, YesNoDialogSt
                     type='button'
                     bsSize='small'
                     bsStyle='primary'
+                    className={GetButtonCss(this.props.actionPerformed)}
                     onClick={this.open}>{this.props.launchButtonText}</Button>
 
                 <Modal show={this.state.showModal} onHide={this.close}>

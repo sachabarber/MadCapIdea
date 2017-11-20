@@ -134,6 +134,13 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 
+var GetButtonCss = function GetButtonCss(actionPerformed) {
+    if (!actionPerformed) {
+        return "displayBlock";
+    } else {
+        return "displayNone";
+    }
+};
 var YesNoDialog = function (_super) {
     __extends(YesNoDialog, _super);
     function YesNoDialog(props) {
@@ -160,7 +167,7 @@ var YesNoDialog = function (_super) {
         return _this;
     }
     YesNoDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this.open }, this.props.launchButtonText), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Are you sure?")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this.yesClicked }, "Yes"), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'danger', onClick: this.noClicked }, "Cancel"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', className: GetButtonCss(this.props.actionPerformed), onClick: this.open }, this.props.launchButtonText), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Are you sure?")), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this.yesClicked }, "Yes"), React.createElement(_reactBootstrap.Button, { type: 'button', bsSize: 'small', bsStyle: 'danger', onClick: this.noClicked }, "Cancel"))));
     };
     return YesNoDialog;
 }(React.Component);
@@ -639,7 +646,7 @@ var Logout = function (_super) {
         return _this;
     }
     Logout.prototype.render = function () {
-        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, React.createElement("span", null, "YOU ARE CURRENTLY LOGGED IN AS [", this._authService.userName(), "]")), React.createElement("span", null, React.createElement("h6", null, "Click the button to logout")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_YesNoDialog.YesNoDialog, { theId: "logoutBtn", launchButtonText: "Logout", yesCallBack: this.logoutYesCallBack, noCallBack: this.logoutNoCallBack, headerText: "Confirm logout" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
+        return React.createElement(_reactBootstrap.Well, { className: "outer-well" }, React.createElement(_reactBootstrap.Grid, null, React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement(_reactBootstrap.Col, { xs: 10, md: 6 }, React.createElement("h4", null, React.createElement("span", null, "YOU ARE CURRENTLY LOGGED IN AS [", this._authService.userName(), "]")), React.createElement("span", null, React.createElement("h6", null, "Click the button to logout")))), React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_YesNoDialog.YesNoDialog, { theId: "logoutBtn", launchButtonText: "Logout", yesCallBack: this.logoutYesCallBack, noCallBack: this.logoutNoCallBack, actionPerformed: false, headerText: "Confirm logout" }), React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey })))));
     };
     return Logout;
 }(React.Component);
@@ -848,6 +855,8 @@ var ViewJob = function (_super) {
                 clientJob.vehicleRegistrationNumber = jobForMarker.vehicleRegistrationNumber;
                 clientJob.isAssigned = true;
                 var self_1 = _this;
+                console.log("handleMarkerClick job");
+                console.log(clientJob);
                 _this.makePOSTRequest('job/submit', clientJob, _this, function (jdata, textStatus, jqXHR) {
                     console.log("After is accepted");
                     var newState = Object.assign({}, self_1.state, {
@@ -907,6 +916,7 @@ var ViewJob = function (_super) {
                 newPositionForUser = matchedMarker.position;
             }
             //update the state
+            _this.addClientDetailsToDrivers(newMarkersList);
             var newState = _this.updateStateForAcceptedMarker(newMarkersList, newPositionForUser);
             _this.updateStateForMarkers(newState, newMarkersList, newPositionForUser, jobArgs);
         };
@@ -949,8 +959,22 @@ var ViewJob = function (_super) {
                 newPositionForUser = newPositionForDriver;
             }
             //update the state
+            _this.addClientDetailsToDrivers(newMarkersList);
             var newState = _this.updateStateForNewMarker(newMarkersList, newPositionForUser);
             _this.updateStateForMarkers(newState, newMarkersList, newPositionForUser, jobArgs);
+        };
+        _this.addClientDetailsToDrivers = function (newMarkersList) {
+            var clientMarker = _.find(newMarkersList, { 'isDriverIcon': false });
+            if (clientMarker != undefined && clientMarker != null) {
+                var driverMarkers = _.filter(newMarkersList, { 'isDriverIcon': true });
+                for (var i = 0; i < driverMarkers.length; i++) {
+                    var driversJob = driverMarkers[i].jobForMarker;
+                    driversJob.jobUUID = clientMarker.jobForMarker.jobUUID;
+                    driversJob.clientFullName = clientMarker.jobForMarker.clientFullName;
+                    driversJob.clientEmail = clientMarker.jobForMarker.clientEmail;
+                    driversJob.clientPosition = clientMarker.jobForMarker.clientPosition;
+                }
+            }
         };
         _this.updateStateForMarkers = function (newState, newMarkersList, newPositionForUser, jobArgs) {
             //Update the list of position markers in the PositionService
@@ -1108,6 +1132,8 @@ var ViewJob = function (_super) {
                 isAssigned: localIsAssigned,
                 isCompleted: false
             };
+            console.log("handlpushOutJob job");
+            console.log(newJob);
             _this.makePOSTRequest('job/submit', newJob, self, function (jdata, textStatus, jqXHR) {
                 self._jobService.clearUserIssuedJob();
                 self._jobService.storeUserIssuedJob(newJob);
@@ -1162,7 +1188,8 @@ var ViewJob = function (_super) {
                     okDialogKey: Math.random(),
                     markers: new Array(),
                     currentPosition: null,
-                    isJobAccepted: false
+                    isJobAccepted: false,
+                    finalActionHasBeenClicked: true
                 });
             });
         };
@@ -1196,7 +1223,8 @@ var ViewJob = function (_super) {
                 okDialogKey: Math.random(),
                 markers: new Array(),
                 currentPosition: null,
-                isJobAccepted: false
+                isJobAccepted: false,
+                finalActionHasBeenClicked: true
             });
         };
         _this.jobNotCancelledCallBack = function () {
@@ -1205,7 +1233,8 @@ var ViewJob = function (_super) {
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job remains open',
                 okDialogOpen: true,
-                okDialogKey: Math.random()
+                okDialogKey: Math.random(),
+                finalActionHasBeenClicked: true
             });
         };
         _this.okDialogCallBack = function () {
@@ -1233,7 +1262,8 @@ var ViewJob = function (_super) {
             okDialogKey: 0,
             dimensions: { width: -1, height: -1 },
             currentPosition: _this._authService.isDriver() ? null : _this._positionService.currentPosition(),
-            isJobAccepted: false
+            isJobAccepted: false,
+            finalActionHasBeenClicked: false
         };
         return _this;
     }
@@ -1293,7 +1323,7 @@ var ViewJob = function (_super) {
                         marginRight: 0,
                         marginBottom: 20
                     } }), markers: _this.state.markers, onMapClick: _this.handleMapClick }));
-        }))), this.state.isJobAccepted === true ? React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this.ratingsDialogOkCallBack }), !(this._authService.isDriver() === true) ? React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", yesCallBack: this.jobCancelledCallBack, noCallBack: this.jobNotCancelledCallBack, headerText: "Cancel the job" }) : null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))) : null));
+        }))), this.state.isJobAccepted === true ? React.createElement(_reactBootstrap.Row, { className: "show-grid" }, React.createElement("span", null, React.createElement(_RatingDialog.RatingDialog, { theId: "viewJobCompleteBtn", headerText: "Rate your driver/passenger", okCallBack: this.ratingsDialogOkCallBack, actionPerformed: this.state.finalActionHasBeenClicked }), !(this._authService.isDriver() === true) ? React.createElement(_YesNoDialog.YesNoDialog, { theId: "viewJobCancelBtn", launchButtonText: "Cancel", actionPerformed: this.state.finalActionHasBeenClicked, yesCallBack: this.jobCancelledCallBack, noCallBack: this.jobNotCancelledCallBack, headerText: "Cancel the job" }) : null, React.createElement(_OkDialog.OkDialog, { open: this.state.okDialogOpen, okCallBack: this.okDialogCallBack, headerText: this.state.okDialogHeaderText, bodyText: this.state.okDialogBodyText, key: this.state.okDialogKey }))) : null));
     };
     return ViewJob;
 }(React.Component);
@@ -1965,6 +1995,13 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 
+var GetButtonCss = function GetButtonCss(actionPerformed) {
+    if (!actionPerformed) {
+        return "displayBlock";
+    } else {
+        return "displayNone";
+    }
+};
 var RatingDialog = function (_super) {
     __extends(RatingDialog, _super);
     function RatingDialog(props) {
@@ -2004,7 +2041,7 @@ var RatingDialog = function (_super) {
         return _this;
     }
     RatingDialog.prototype.render = function () {
-        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', onClick: this.open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement("h5", null, this.state.ratingText), React.createElement(_reactStars2.default, { count: 5, onChange: this.ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this.okClicked }, "Ok"))));
+        return React.createElement("div", { className: "leftFloat" }, React.createElement(_reactBootstrap.Button, { id: this.props.theId, type: 'button', bsSize: 'small', bsStyle: 'primary', className: GetButtonCss(this.props.actionPerformed), onClick: this.open }, "Complete"), React.createElement(_reactBootstrap.Modal, { show: this.state.showModal, onHide: this.close }, React.createElement(_reactBootstrap.Modal.Header, { closeButton: true }, React.createElement(_reactBootstrap.Modal.Title, null, this.props.headerText)), React.createElement(_reactBootstrap.Modal.Body, null, React.createElement("h4", null, "Give your rating between 1-5"), React.createElement("h5", null, this.state.ratingText), React.createElement(_reactStars2.default, { count: 5, onChange: this.ratingChanged, size: 24, color2: '#ffd700' })), React.createElement(_reactBootstrap.Modal.Footer, null, React.createElement(_reactBootstrap.Button, { type: 'submit', bsSize: 'small', bsStyle: 'primary', onClick: this.okClicked }, "Ok"))));
     };
     return RatingDialog;
 }(React.Component);
@@ -2485,4 +2522,4 @@ exports.OkDialog = OkDialog;
 /***/ })
 
 },[428]);
-//# sourceMappingURL=index.bundle.23f6d6aaf0a2f760cb71.js.map
+//# sourceMappingURL=index.bundle.5c5feaa8663412cf31c5.js.map

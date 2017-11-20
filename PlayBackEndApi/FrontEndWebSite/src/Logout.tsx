@@ -65,6 +65,7 @@ export class Logout extends React.Component<undefined, LogoutState> {
                                 launchButtonText="Logout"
                                 yesCallBack={this.logoutYesCallBack}
                                 noCallBack={this.logoutNoCallBack}
+                                actionPerformed={false}
                                 headerText="Confirm logout" />
 
                             <OkDialog

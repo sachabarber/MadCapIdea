@@ -79,6 +79,7 @@ export interface ViewJobState {
     },
     currentPosition: Position;
     isJobAccepted: boolean;
+    finalActionHasBeenClicked: boolean;
 }
 
 type DoneCallback = (jdata: any, textStatus: any, jqXHR: any) => void
@@ -119,6 +120,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             currentPosition: this._authService.isDriver() ? null :
                 this._positionService.currentPosition(),
             isJobAccepted: false,
+            finalActionHasBeenClicked: false
         };
     }
 
@@ -233,13 +235,15 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                                 <RatingDialog
                                     theId="viewJobCompleteBtn"
                                     headerText="Rate your driver/passenger"
-                                    okCallBack={this.ratingsDialogOkCallBack} />
+                                    okCallBack={this.ratingsDialogOkCallBack}
+                                    actionPerformed={this.state.finalActionHasBeenClicked} />
 
                                 {!(this._authService.isDriver() === true) ?
 
                                     <YesNoDialog
                                         theId="viewJobCancelBtn"
                                         launchButtonText="Cancel"
+                                        actionPerformed={this.state.finalActionHasBeenClicked} 
                                         yesCallBack={this.jobCancelledCallBack}
                                         noCallBack={this.jobNotCancelledCallBack}
                                         headerText="Cancel the job" />
@@ -324,6 +328,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             clientJob.isAssigned = true;
             
             let self = this;
+            console.log("handleMarkerClick job");
+            console.log(clientJob);
 
             this.makePOSTRequest('job/submit', clientJob, this,
                 function (jdata, textStatus, jqXHR) {
@@ -347,7 +353,6 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         else {
             this.processNotAcceptedMarkers(jobArgs);
         }
-        
     }
 
     processAcceptedMarkers = (jobArgs: any): void => {
@@ -402,6 +407,7 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
 
         //update the state
+        this.addClientDetailsToDrivers(newMarkersList);
         var newState = this.updateStateForAcceptedMarker(newMarkersList, newPositionForUser);
         this.updateStateForMarkers(newState, newMarkersList, newPositionForUser, jobArgs);
     }
@@ -484,9 +490,25 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
         }
 
         //update the state
+        this.addClientDetailsToDrivers(newMarkersList);
         var newState = this.updateStateForNewMarker(newMarkersList, newPositionForUser);
         this.updateStateForMarkers(newState, newMarkersList, newPositionForUser, jobArgs);
     }
+
+    addClientDetailsToDrivers = (newMarkersList: PositionMarker[]): void => {
+        let clientMarker = _.find(newMarkersList, { 'isDriverIcon': false });
+        if (clientMarker != undefined && clientMarker != null) {
+            let driverMarkers = _.filter(newMarkersList, { 'isDriverIcon': true });
+            for (var i = 0; i < driverMarkers.length; i++) {
+                let driversJob = driverMarkers[i].jobForMarker;
+                driversJob.jobUUID = clientMarker.jobForMarker.jobUUID;
+                driversJob.clientFullName = clientMarker.jobForMarker.clientFullName;
+                driversJob.clientEmail = clientMarker.jobForMarker.clientEmail;
+                driversJob.clientPosition = clientMarker.jobForMarker.clientPosition;
+            }
+        }
+    }
+
 
     updateStateForMarkers = (newState: any, newMarkersList: PositionMarker[], newPositionForUser: Position, jobArgs:any): void => {
 
@@ -686,6 +708,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
             isCompleted: false
         }
 
+        console.log("handlpushOutJob job");
+        console.log(newJob);
         this.makePOSTRequest('job/submit', newJob, self,
             function (jdata, textStatus, jqXHR) {
                 self._jobService.clearUserIssuedJob();
@@ -766,7 +790,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                         okDialogKey: Math.random(),
                         markers: new Array<PositionMarker>(),
                         currentPosition: null,
-                        isJobAccepted: false
+                        isJobAccepted: false,
+                        finalActionHasBeenClicked: true
                     });
             });
     }
@@ -806,7 +831,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 okDialogKey: Math.random(),
                 markers: new Array<PositionMarker>(),
                 currentPosition: null,
-                isJobAccepted : false
+                isJobAccepted: false,
+                finalActionHasBeenClicked: true
             });
     }
 
@@ -817,7 +843,8 @@ export class ViewJob extends React.Component<undefined, ViewJobState> {
                 okDialogHeaderText: 'Job Cancellaton',
                 okDialogBodyText: 'Job remains open',
                 okDialogOpen: true,
-                okDialogKey: Math.random()
+                okDialogKey: Math.random(),
+                finalActionHasBeenClicked: true
             });
     }
 
