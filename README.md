@@ -89,6 +89,8 @@ I will maintain a list of stories and their sub tasks using Trello here : https:
 
 #### Depdendencies
 
+This has all been developed on Windows, so these instructions are all about how to get stuff working on Windows
+
 - MongoDB : https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.6-signed.msi/download
 - Confluence Platform 3.3.0 Open Source : http://packages.confluent.io/archive/3.3/confluent-oss-3.3.0-2.11.zip
 - SBT
@@ -97,8 +99,12 @@ I will maintain a list of stories and their sub tasks using Trello here : https:
 - Node.Js
 - NPM
 - IntelliJ IDEA v17.0 community
+- Docker for windows
+- PowerShell
 
 #### Initial Instructions
+
+This has all been developed on Windows, so these instructions are all about how to get stuff working on Windows
 
 - Download the dependencies above
 - Replace the official confluent-3.3.0\bin\windows BAT files with the ones found here : https://github.com/renukaradhya/confluentplatform/tree/master/bin/windows
@@ -121,8 +127,6 @@ Make sure you have Node.Js installed, and make sure NPM is installed too, also e
 - now run *webpack* from same folder
 
 
-
-
 *2. Kafka/Zookeeper etc etc**
 You can run the following powershell script to get all the pre-requistites up and running (assuming you have downloaded them all)
 
@@ -130,17 +134,31 @@ You can run the following powershell script to get all the pre-requistites up an
 
 
 *3. Play application*
-- Open/create a new SBT/Scala project inside IntelliJ IDEA (you will need the SBT plugin, and Java8 installed on your machine). 
-  Open this folder *MadCapIdea\PlayBackEndApi*
+- Open the SBT/Scala project inside IntelliJ IDEA (you will need the SBT plugin, and Java8 installed on your machine). 
+  Open this folder *MadCapIdea\PlayBackEndApi* and run it.You may need to create a run time configuration
 
 
 *4. Kafka Streams application*
-TODO, hopefully docker which I will add at end of PowerShell script
-TODO, hopefully docker which I will add at end of PowerShell script
-TODO, hopefully docker which I will add at end of PowerShell script
-TODO, hopefully docker which I will add at end of PowerShell script
-TODO, hopefully docker which I will add at end of PowerShell script
-TODO, hopefully docker which I will add at end of PowerShell script
+- Open the SBT/Scala project inside IntelliJ IDEA (you will need the SBT plugin, and Java8 installed on your machine). 
+  Open this folder *MadCapIdea\KafkaStreams* and run it.You may need to create a run time configuration
+  
+*5. React*
+- Open a browser navigate to http://localhost:9000, and register some users both passenger/driver
+
+I normally follow this set of steps afterwards
+
+- open a tab, login as a passenger that I had created
+- go to the "create job" page, click the map, push the "create job" button
+- open a NEW tab, login as a new driver, go to the "view job" page
+- on the 1st tab (passenger) click the map to push passenger position to driver
+- on the 2nd tab (driver) click the map to push driver position to passenger
+- repeat last 4 steps for additonal driver
+- on client tab pick driver to accept, click accept button
+- complete the job from client tab, give driver rating
+- complete the job from paired driver tab, give passenger rating
+- go to "view rating" page, should see ratings
+
+  
 
   
 

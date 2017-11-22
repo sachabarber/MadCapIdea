@@ -9,9 +9,13 @@ import utils.Settings
 import stores.StateStores
 import org.apache.kafka.streams.state.HostInfo
 import scala.concurrent.ExecutionContext
+import scala.concurrent.duration._
 
 
 package processing.ratings {
+
+  import org.apache.kafka.streams.errors.BrokerNotFoundException
+  import utils.Retry
 
   class RatingByEmailInitializer extends Initializer[List[Rating]] {
     override def apply(): List[Rating] = List[Rating]()
@@ -31,6 +35,34 @@ package processing.ratings {
     run()
 
     private def run(): Unit = {
+
+      val restEndpoint: HostInfo = new HostInfo(Settings.restApiDefaultHostName, Settings.restApiDefaultPort)
+      System.out.println(s"Connecting to Kafka cluster via bootstrap servers ${Settings.bootStrapServers}")
+      System.out.println(s"REST endpoint at http://${restEndpoint.host}:${restEndpoint.port}")
+
+      val maybeStreams =
+        Retry.whileSeeingExpectedException[KafkaStreams,BrokerNotFoundException](10.seconds)(createStreams)
+
+      maybeStreams match {
+        case Some(streams) => {
+          val restService = new RatingRestService(streams, restEndpoint)
+          restService.start()
+
+          Runtime.getRuntime.addShutdownHook(new Thread(() => {
+            streams.close(10, TimeUnit.SECONDS)
+            restService.stop
+          }))
+        }
+        case None => {
+          println("Quiting due to no streams available/unknown expcetion")
+        }
+      }
+
+      //return unit
+      ()
+    }
+
+    def createStreams() : KafkaStreams = {
       val stringSerde = Serdes.String
       val ratingSerde = new JSONSerde[Rating]
       val listRatingSerde = new JSONSerde[List[Rating]]
@@ -50,9 +82,6 @@ package processing.ratings {
       ratingTable.toStream.print()
 
       val streams: KafkaStreams = new KafkaStreams(builder, Settings.createRatingStreamsProperties)
-      val restEndpoint: HostInfo = new HostInfo(Settings.restApiDefaultHostName, Settings.restApiDefaultPort)
-      System.out.println(s"Connecting to Kafka cluster via bootstrap servers ${Settings.bootStrapServers}")
-      System.out.println(s"REST endpoint at http://${restEndpoint.host}:${restEndpoint.port}")
 
       // Always (and unconditionally) clean local state prior to starting the processing topology.
       // We opt for this unconditional call here because this will make it easier for you to
@@ -69,16 +98,7 @@ package processing.ratings {
       // See `ApplicationResetExample.java` for a production-like example.
       streams.cleanUp();
       streams.start()
-      val restService = new RatingRestService(streams, restEndpoint)
-      restService.start()
-
-      Runtime.getRuntime.addShutdownHook(new Thread(() => {
-        streams.close(10, TimeUnit.SECONDS)
-        restService.stop
-      }))
-
-      //return unit
-      ()
+      streams
     }
   }
 

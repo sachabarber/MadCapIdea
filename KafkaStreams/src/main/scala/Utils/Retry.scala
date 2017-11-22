@@ -1,10 +1,39 @@
 package utils
 
+import java.lang.reflect.{ParameterizedType, Type}
+
+import org.apache.kafka.streams.errors.BrokerNotFoundException
+
 import scala.concurrent._
 import scala.concurrent.duration._
-
+import scala.reflect.ClassTag
+import scala.util.{Failure, Success, Try}
+import scala.reflect.runtime.universe._
 
 object Retry {
+
+  @annotation.tailrec
+  def whileSeeingExpectedException[A, T : TypeTag](backoff: Duration = 5 seconds)(f: => A): Option[A] = {
+
+    Try(f) match {
+      case Success(x) => Some(x)
+      case Failure(e) =>
+        val want = typeToClassTag[T]
+        val have = ClassTag(e.getClass)
+        if (want == have) {
+          Thread.sleep(backoff.toMillis)
+          println(s"Retrying due to Exception of type ${want.getClass.getName}")
+          Retry.whileSeeingExpectedException[A,T](backoff)(f)
+        } else {
+          println("Un expected Exception type seen, quiting")
+          None
+        }
+    }
+  }
+
+  def typeToClassTag[T: TypeTag]: ClassTag[T] = {
+    ClassTag[T]( typeTag[T].mirror.runtimeClass( typeTag[T].tpe ) )
+  }
 
   /**
     * exponential back off for retry

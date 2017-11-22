@@ -113,6 +113,8 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
 
     val ec = ExecutionContext.global
 
+    println(s"client fetchLocalRatingByEmail email=${email}")
+
     val host = metadataService.streamsMetadataForStoreAndKey[String](
       StateStores.RATINGS_BY_EMAIL_STORE,
       email,

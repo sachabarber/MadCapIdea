@@ -2,6 +2,8 @@ $global:mongdoDbDataFolder = "C:\data\"
 $global:mongoDbInstallationFolder = "C:\Program Files\MongoDB\Server\3.5\bin\"
 $global:kafkaWindowsBatFolder = "C:\Apache\confluent-3.3.0\bin\windows\"
 $global:kafkaAndZooLoggingFolder = "C:\temp\"
+$global:gitRepoRoot = "C:\Users\sacha\Desktop\MadCapIdea\"
+
 
 $global:kafkaTopics = 
 	"rating-submit-topic",
@@ -39,6 +41,12 @@ function RunPipeLine()
 	CreateKafkaTopics
     RunMongo
 
+	
+	Start-Sleep -s 20
+	WriteHeader "PREPARING KAFKA STREAMS DOCKER FOLDER"
+	PrepareKafkaStreamsDockerFolder
+
+	
 	WaitForKeyPress
 
 	WriteHeader "KILLING PROCESSES CREATED BY SCRIPT"
@@ -95,6 +103,27 @@ function RunMongo() {
 	Write-Host "> Mongo Command Line : $mongoexe `r`n" 
 	$global:ProcessesToKill += Start-Process -FilePath $mongoexe  -WindowStyle Normal -PassThru
 }
+
+
+function PrepareKafkaStreamsDockerFolder() {
+
+	$kafkaStreamsSrcDirectory = $global:gitRepoRoot + "KafkaStreams"
+	cd $kafkaStreamsSrcDirectory
+	sbt assembly exit
+	
+	Write-Host "------------------------------------------------------------------"
+	
+	$processorTargetFolder = $global:gitRepoRoot + "KafkaStreams\docker\processor"
+	$sourceFatJarFile = $global:gitRepoRoot + "KafkaStreams\target\scala-2.12\KafkaStreams.jar"
+	CopyFile $sourceFatJarFile $processorTargetFolder
+}
+
+
+function CopyFile($from, $to) {
+    Write-Host "> Kafka Streams CommandLine : copying file '$from' to '$to' `r`n" 
+	Copy-Item $from $to
+}
+
 
 function WaitForKeyPress
 {

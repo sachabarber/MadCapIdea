@@ -1,0 +1,7 @@
+version: '2'
+services:
+  processor:
+    container_name: kafkastreams_processor
+    build: docker/processor
+    ports:
+      - "8080:8080"

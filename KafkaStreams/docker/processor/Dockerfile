@@ -1,4 +1,4 @@
-FROM anapsix/alpine-java
+FROM hseeberger/scala-sbt
 
 ADD streamsApplication.conf /streamsApplication.conf
 ADD KafkaStreams.jar /KafkaStreams.jar
