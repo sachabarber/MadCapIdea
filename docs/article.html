@@ -1,0 +1,138 @@
+﻿<h1>Introduction</h1>
+<p>This article is the culmination of stuff I have been doing on the train on my 
+way to work over 6 months. I have written quite a lot of blog posts on this 
+already which you can read about on the projects home page on my blog :
+<a href="https://sachabarbs.wordpress.com/2017/05/01/madcap-idea/" target="_blank">
+https://sachabarbs.wordpress.com/2017/05/01/madcap-idea/</a> </p>
+<p>There are 13 blog posts there, but I thought it would be good to also have 
+this overall article which covers all of it, as the blog posts are more a 
+sequence of events that I went through which talk about the peices in great 
+detail as I went through them</p>
+<p>For example these were the blog posts</p>
+<ul>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/05/15/madcap-idea-part-1-start-of-the-client-side-portion-of-the-web-site/" target="_blank">
+	MADCAP IDEA PART 1 : START OF THE CLIENT SIDE PORTION OF THE WEB SITE</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/05/23/madcap-idea-part-2-adding-diioc-to-the-client-side-front-end-web-site/" target="_blank">
+	MADCAP IDEA PART 2 : ADDING DI/IOC TO THE CLIENT SIDE FRONT END WEB SITE</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/06/07/madcap-idea-part-3-bringing-play-back-end-into-the-fold-some-basic-streaming-2/" target="_blank">
+	MADCAP IDEA PART 3 : BRINGING PLAY BACK END INTO THE FOLD + SOME BASIC 
+	STREAMING</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/06/07/madcap-idea-part-4-prototyping-the-screens/" target="_blank">
+	MADCAP IDEA PART 4 : PROTOTYPING THE SCREENS</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/06/13/madcap-idea-part-5-adding-react-router/" target="_blank">
+	MADCAP IDEA PART 5 : ADDING REACT-ROUTER</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/06/27/madcap-idea-part-6-static-screen-design/" target="_blank">
+	MADCAP IDEA PART 6 : STATIC SCREEN DESIGN</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/08/01/madcap-idea-part-7-registrationlogin-backend/" target="_blank">
+	MADCAP IDEA PART 7 : REGISTRATION/LOGIN BACKEND</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/09/01/madcap-idea-part-8-intermediate-step-rest-api-for-interactive-kafka-stream-ktable-queries/" target="_blank">
+	MADCAP IDEA PART 8 : INTERMEDIATE STEP, REST API FOR INTERACTIVE KAFKA 
+	STREAM KTABLE QUERIES</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/09/11/madcap-idea-9-kafka-streams-interactive-queries/" target="_blank">
+	MADCAP IDEA 9 : KAFKA STREAMS INTERACTIVE QUERIES</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/09/21/madcap-idea-10-play-framework-reactive-kafka-producer/" target="_blank">
+	MADCAP IDEA 10 : PLAY FRAMEWORK REACTIVE KAFKA PRODUCER</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/09/28/madcap-idea-11-finishing-the-view-rating-page/" target="_blank">
+	MADCAP IDEA 11 : FINISHING THE ‘VIEW RATING’ PAGE</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/10/24/madcap-idea-12-getting-the-create-job-to-work-end-end/" target="_blank">
+		MADCAP IDEA 12 : GETTING THE ‘CREATE JOB’ TO WORK END–END</a></li>
+	<li>
+	<a href="https://sachabarbs.wordpress.com/2017/11/23/madcap-idea-13-getting-the-view-job-to-work-end-end/" target="_blank">
+	MADCAP IDEA 13 : GETTING THE ‘VIEW JOB’ TO WORK END-END</a></li>
+</ul>
+<p>&nbsp;</p>
+<h2>So just exactly what is it that I was/am talking about?</h2>
+<p>In essence I want to write a very (pardon the pun) but uber simple “uber” 
+type app. Where there are the following funtional requirements<br><br></p>
+<ul>
+	<li>There should be a web interface that a client can use. Clients may be a 
+	“driver” or a “pickup client” requireing a delivery</li>
+	<li>There should be a web interface that a “pickup client” can use, that 
+	shows a “pickup client” location on a map, which the “pickup client” choses.</li>
+	<li>The “pickup client” may request a pickup job, in which case “drivers” 
+	that are in the area bid for a job.</li>
+	<li>The “pickup client” location should be visible to a “driver” on a map</li>
+	<li>A “driver” may bid for a “pickup client” job, and the bidding 
+	“driver(s)” location should be visible to the “pickup client”.</li>
+	<li>The acceptance of the bidding “driver” is down to the “pickup client”</li>
+	<li>Once a “pickup client” accepts a “driver” ONLY the assigned “driver(s)” 
+	current map position will be shown to the “pickup client”</li>
+	<li>When a “pickup client” is happy that they have been picked up by a 
+	“driver”, the “pickup client” may rate the driver from 1-10, and the 
+	“driver” may also rate the “pickup client” from 1-10.</li>
+	<li>The rating should only be available once a “pickup client” has marked a 
+	job as “completed”</li>
+	<li>A “driver” or a “pickup client” should ALWAYS be able to view their 
+	previous ratings. </li>
+</ul>
+<p>Whilst this may sound child’s play to a lot of you (me included if I 
+stuck to using simply CRUD operations), I just want to point out that this 
+app is meant as a learning experience so I will not be using a simple 
+SignalR Hub, and a couple of database tables.</p>
+<p>I have written this proj using a completely different set of technologies from the norm. Some 
+of the technology choices could easily scale to hundreds of thousands of 
+requests per second (Kafka has your back here)<br><br><strong>TECNHOLOGIES 
+INVOLVED</strong></p>
+<ul>
+	<li>WebPack</li>
+	<li>React Router</li>
+	<li>TypeScript</li>
+	<li>Babel.js</li>
+	<li>Akka</li>
+	<li>Scala</li>
+	<li>Play (Scala Http Stack)</li>
+	<li>MySql</li>
+	<li>SBT</li>
+	<li>Kafka</li>
+	<li>Kafka Streams</li>
+</ul>
+<p>&nbsp;</p>
+<h1>Where is the code?</h1>
+<h1>Prerequisites</h1>
+<h1>How do I run all this stuff?</h1>
+<h1>Known issues</h1>
+<p>The following are known issues</p>
+<ul>
+	<li>One a driver an passenger become paired, the position updates from 
+	either are no longer reflected. I am sure this would boil down to a single 
+	JavaScript method that needs updating in the ViewJob.tsx file. However I 
+	just kind of got to the end of a very long road (I have been writing about 
+	this on an off for 6 months of train rides) and was just happy that I got 
+	99% of the stuff done, and just thought you know what, the app as it is now 
+	demonstrates everything I set out to do, so I&#39;m ok with one known issue</li>
+</ul>
+<h1>Some basics</h1>
+<p>Before we dive into the actual code for the app (and there is quite a bit of 
+it), I just thought it may be good to go over some of the individual building 
+blocks that make up the app as a whole first, the next few sections will do 
+that.</p>
+<h1>What is Kafka?</h1>
+<h1>What is Kafka Streams?</h1>
+<h1>What is Play</h1>
+<h1>What is WebPack</h1>
+<h1>What is React</h1>
+<h1>The app</h1>
+<h1>Registration workflow</h1>
+<h1>Login workflow</h1>
+<h1>CreateJob workflow</h1>
+<h1>ViewJob workflow</h1>
+<h1>ViewRating workflow</h1>
+<h1>Conclusion</h1>
+<p>This was certainly a challenging thing to write, and I am honestly pleased that I got it done, I have had a really good time writing this. And it has been a great project for self improvement, and 
+I would recommend this type of thing as a great use of time. Go on find yourself 
+a pet project</p>
+
+
+
