@@ -93,15 +93,123 @@ INVOLVED</strong></p>
 	<li>Akka</li>
 	<li>Scala</li>
 	<li>Play (Scala Http Stack)</li>
-	<li>MySql</li>
+	<li>MongoDB</li>
 	<li>SBT</li>
 	<li>Kafka</li>
 	<li>Kafka Streams</li>
 </ul>
+<p>They say a picture says a 1000nd words, so here is a nice picture to get 
+things started</p>
+<p><img alt="" height="565" src="overviewSmall.png" width="630"></p>
+<p>Now before we carry on, lety me just acknowledge that
+<a href="http://www.codeproject.com">www.codeproject.com</a> is mainly a 
+Microsoft set of articles, and this code is mainly scala/typescript I think 
+there is still plenty to learn along the way, so dont let the fact its not 
+.NET/C/C++ put you off</p>
 <p>&nbsp;</p>
 <h1>Where is the code?</h1>
+<p>The code for all of this lot is here :
+<a href="https://github.com/sachabarber/MadCapIdea" target="_blank">
+https://github.com/sachabarber/MadCapIdea</a></p>
 <h1>Prerequisites</h1>
+<p>As shown in the introduction section, there are many moving peices to this 
+demo, so there are quite naturally a few dependencies. I did try to get it to 
+work in Docker for you all, however I found that I still needed to create 
+external scripts to orchestrate it all anyway. In the end I just went with 
+downloading stuff as I will specify, and then giving a single PowerShell script 
+to run most stuff, apart from 2 Scala projects.</p>
+<p>This is the list of stuff you will need in order to run this code:</p>
+<p>This has all been developed on Windows, so these instructions are all about 
+how to get stuff working on Windows<br><br>- MongoDB :
+<a href="https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.6-signed.msi/download" target="_blank">
+https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.6-signed.msi/download</a><br>
+- Confluence Platform 3.3.0 Open Source :
+<a href="http://packages.confluent.io/archive/3.3/confluent-oss-3.3.0-2.11.zip" target="_blank">
+http://packages.confluent.io/archive/3.3/confluent-oss-3.3.0-2.11.zip</a><br>- 
+SBT<br>- Java 8 SDK<br>- Webpack<br>- Node.Js<br>- NPM<br>- IntelliJ IDEA v17.0 
+community<br>- PowerShell</p>
+<p>Once you have downloaded all of this you will need to do a few things in 
+order to run it nicely on Windows, so these instructions are all about how to 
+get stuff working on Windows<br><br>- Download the dependencies above <span style="background-color:yellow; border:1px black solid">(Keep a 
+note of where you downloaded them as you will need them here and later)</span><br>- 
+Replace the official <span style="background-color:yellow; border:1px black solid">YOUR extract location</span>\confluent-3.3.0\bin\windows BAT files with the ones found 
+here :
+<a href="https://github.com/renukaradhya/confluentplatform/tree/master/bin/windows" target="_blank">
+https://github.com/renukaradhya/confluentplatform/tree/master/bin/windows</a><br>
+- Modify the <span style="background-color:yellow; border:1px black solid">YOUR extract location</span>\confluent-3.3.0\etc\kafka\zookeeper.properties file to change the 
+<code>dataDir </code>to something like <code>dataDir=c:/temp/zookeeper</code><br>- Modify the 
+<span style="background-color:yellow; border:1px black solid">YOUR extract location</span>\confluent-3.3.0\etc\kafka\server.properties file to uncomment the line 
+<code>delete.topic.enable=true</code><br>- Modify the 
+<span style="background-color:yellow; border:1px black solid">YOUR extract location</span>\confluent-3.3.0\etc\kafka\server.properties file file to change the 
+<code>log.dirs</code> to <code>log.dirs=c:/temp/kafka-logs</code></p>
+<p>You will need to remember some of these paths for the next section too, so 
+just be mindful that you may have to edit the PowerShell script later with some 
+new paths</p>
 <h1>How do I run all this stuff?</h1>
+<p>There are quite a few moving peices to this app, and they all need to be 
+running in order for it to all work together.</p>
+
+
+<strong>1. Update node.js dependencies</strong>
+<p>Make sure you have Node.Js installed, and make sure NPM is installed too, also ensure that webpack is globally installed</p>
+<p>Open command line and change to the <code>MadCapIdea\PlayBackEndApi\FrontEndWebSite\</code> folder and run 
+<code>npm install</code></p>
+<ul>
+<li>now run <code>webpack </code>from same folder</li>
+</ul>
+
+<strong>2. Kafka/Zookeeper etc etc</strong>
+<p>You can run the following powershell script to get all the pre-requistites up and running (assuming you have downloaded them all)
+</p>
+<ul>
+<li>Open PowerShell command line and change to the <code>PowerShellProject\PowerShellProject\</code> folder and run 
+<code>.\RunPipeline.ps1</code></li>
+</ul>
+
+<strong>3. Play application</strong>
+<ul>
+<li>Open the SBT/Scala project inside IntelliJ IDEA (you will need the SBT plugin, and Java8 installed on your machine).</li>
+<li>Open this folder <code>MadCapIdea\PlayBackEndApi </code>and run it.You may need to create a run time configuration</li>
+</ul>
+
+
+<strong>4. Kafka Streams application</strong>
+<ul>
+<li>Open the SBT/Scala project inside IntelliJ IDEA (you will need the SBT plugin, and Java8 installed on your machine). </li>
+<li>Open this folder <code>MadCapIdea\KafkaStreams</code> and run it.You may need to create a run time configuration 
+where you point to this main class <code>RatingStreamProcessingApp</code></li>
+</ul>
+
+<strong>5. React</strong>
+<ul>
+<li>Open a browser navigate to <code>http://localhost:9000</code>, and register some users both passenger/driver</li>
+</ul>
+
+
+
+<p>I normally follow this set of steps afterwards</p>
+<ul>
+<li>open a tab, login as a passenger that I had created</li>
+<li>go to the "create job" page, click the map, push the "create job" button</li>
+<li>open a NEW tab, login as a new driver, go to the "view job" page</li>
+<li>on the 1st tab (passenger) click the map to push passenger position to driver</li>
+<li>on the 2nd tab (driver) click the map to push driver position to passenger</li>
+<li>repeat last 4 steps for additonal driver</li>
+<li>on client tab pick driver to accept, click accept button</li>
+<li>complete the job from client tab, give driver rating</li>
+<li>complete the job from paired driver tab, give passenger rating</li>
+<li>go to "view rating" page, should see ratings</li>
+
+</ul>
+
+
+
+
+
+
+
+
+<h1>&nbsp;</h1>
 <h1>Known issues</h1>
 <p>The following are known issues</p>
 <ul>
