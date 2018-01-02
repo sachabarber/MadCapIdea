@@ -226,11 +226,189 @@ where you point to this main class <code>RatingStreamProcessingApp</code></li>
 it), I just thought it may be good to go over some of the individual building 
 blocks that make up the app as a whole first, the next few sections will do 
 that.</p>
-<h1>What is Kafka?</h1>
-<h1>What is Kafka Streams?</h1>
-<h1>What is Play</h1>
-<h1>What is WebPack</h1>
-<h1>What is React</h1>
+<h2>What is Kafka?</h2>
+<p><strong>Overview</strong></p>
+<p><em>Apache Kafka is an open-source stream processing platform developed by 
+the Apache Software Foundation written in Scala and Java. The project aims to 
+provide a unified, high-throughput, low-latency platform for handling real-time 
+data feeds. Its storage layer is essentially a &quot;massively scalable pub/sub 
+message queue architected as a distributed transaction log,&quot; making it highly 
+valuable for enterprise infrastructures to process streaming data. Additionally, 
+Kafka connects to external systems (for data import/export) via Kafka Connect 
+and provides Kafka Streams, a Java stream processing library.<br><br>The design 
+is heavily influenced by transaction logs.</em></p>
+<p><strong>Apache Kafka Architecture</strong></p>
+<p><em>Kafka stores messages which come from arbitrarily many processes called 
+&quot;producers&quot;. The data can thereby be partitioned in different &quot;partitions&quot; 
+within different &quot;topics&quot;. Within a partition the messages are indexed and 
+stored together with a timestamp. Other processes called &quot;consumers&quot; can query 
+messages from partitions. Kafka runs on a cluster of one or more servers and the 
+partitions can be distributed across cluster nodes.</em></p>
+<p><em>Apache Kafka efficiently processes the real-time and streaming data when 
+used along with Apache Storm, Apache HBase and Apache Spark. Deployed as a 
+cluster on multiple servers, Kafka handles its entire publish and subscribe 
+messaging system with the help of four APIs, namely, producer API, consumer API, 
+streams API and connector API. Its ability to deliver massive streams of message 
+in a fault-tolerant fashion has made it replace some of the conventional 
+messaging systems like JMS, AMQP, etc.</em></p>
+<p><em>The major terms of Kafka&#39;s architecture are topics, records, and brokers. 
+Topics consist of stream of records holding different information. On the other 
+hand, Brokers are responsible for replicating the messages. There are four major 
+APIs in Kafka:The major terms of Kafka&#39;s architecture are topics, records, and 
+brokers. Topics consist of stream of records holding different information. On 
+the other hand, Brokers are responsible for replicating the messages. There are 
+four major APIs in Kafka:</em></p>
+<ul>
+	<li><em>Producer API - Permits the applications to publish streams of 
+	records. </em><strong>(covered in this article)</strong></li>
+	<li><em>Consumer API - Permits the application to subscribe to the topics 
+	and processes the stream of records. </em><strong>(covered in this article)</strong></li>
+	<li><em>Streams API – This API converts the input streams to output and 
+	produces the result. </em><strong>(covered in this article)</strong></li>
+	<li><em>Connector API – Executes the reusable producer and consumer APIs 
+	that can link the topics to the existing applications. </em><strong>(not 
+	covered in this article)</strong></li>
+</ul>
+<p><img alt="" height="298" src="kafka1.png" width="400"></p>
+<p><strong>Kafka Performance</strong></p>
+<p><em>Due to its widespread integration into enterprise-level infrastructures, 
+monitoring Kafka performance at scale has become an increasingly important 
+issue. Monitoring end-to-end performance requires tracking metrics from brokers, 
+consumer, and producers, in addition to monitoring ZooKeeper which is used by 
+Kafka for coordination among consumers</em></p>
+<p><a href="https://en.wikipedia.org/wiki/Apache_Kafka">
+https://en.wikipedia.org/wiki/Apache_Kafka</a> up on date 02/01/18</p>
+<p>&nbsp;</p>
+<h2>What is Kafka Streams?</h2>
+<p><em>The Streams API of Apache Kafka, available through a Java library, can be 
+used to build highly scalable, elastic, fault-tolerant, distributed applications 
+and microservices. First and foremost, the Kafka Streams API allows you to 
+create real-time applications that power your core business. It is the easiest 
+yet the most powerful technology to process data stored in Kafka. It builds upon 
+important concepts for stream processing such as efficient management of 
+application state, fast and efficient aggregations and joins, properly 
+distinguishing between event-time and processing-time, and seamless handling of 
+late-arriving and out-of-order data.</em></p>
+<p><em>A unique feature of the Kafka Streams API is that the applications you 
+build with it are normal Java applications. These applications can be packaged, 
+deployed, and monitored like any other Java application – there is no need to 
+install separate processing clusters or similar special-purpose and expensive 
+infrastructure!</em></p>
+<p><img alt="" height="433" src="kafkastream1.png" width="630"><em><br></em><br>
+<em>An application that uses the Kafka Streams API is a normal Java application. 
+Package, deploy, and monitor it like you would do for any other Java 
+application. Even so, your application will be highly scalable, elastic, and 
+fault-tolerant.</em></p>
+<p><a href="https://docs.confluent.io/current/streams/introduction.html">
+https://docs.confluent.io/current/streams/introduction.html</a> up on date 
+02/01/18</p>
+<h2>What is Play?</h2>
+<p>The Play Framework is a Scala based MVC (model view controller) type web 
+application framework. As such it has in built mechanisms for things typical of 
+a MVC web framework (certainly if you have done any ASP MVC . NET you would find 
+it very familiar).</p>
+<p>So we have the typical MVC concerns covered by the
+<a href="https://www.playframework.com/documentation/2.5.x/Home" target="_blank">
+Play Framework</a></p>
+<ul>
+	<li>Controllers</li>
+	<li>Actions</li>
+	<li>Routing</li>
+	<li>Model binding</li>
+	<li>JSON support</li>
+	<li>View engine</li>
+</ul>
+<p>Thing is I will not be doing any actual HTML in the <a href="https://www.playframework.com/documentation/2.5.x/Home" target="_blank">
+Play Framework</a> back end code, I want to do all of that using the previously covered webpack/typescript/react starter code I have shown so far. Rather I will be using the Play Framework as a API backend, where we will simply be using various controllers as endpoint to accept/serve JSON, and Event streamed data. All the actual front end work/routing will be done via webpack and React.
+</p>
+<p>There are still some very appealing parts in Play that I did want to make use of, such as:</p>
+<ul>
+<li>It is Scala, which means when I come to integrate Kafka / Kafka Streams it will be ready to do so</li>
+<li>It uses Akka which I wanted to use. I also want to use Akka streams, which Play also supports</li>
+<li>Play controllers lend themselves quite nicely to being able to create a fairly simple REST API</li>
+<li>It can be used fairly easily to serve static files (think of these as the final artifacts that come out of the webpack generation pipeline). So things like minimized CSS / JS etc etc</li>
+</ul>
+<p>So hopefully you can see that using Play Framework still made a lot of sense, even if we will only end up using 1/2 of what it has to offer. To be honest the idea of using controllers for a REST API is something that is done in ASP MVC .NET all time either by using of actual controllers or by using the WebApi.</p>
+<p>Ok so now that we know what we will be using Play Framework for, how about we dive into the code for this post.</p>
+<p><strong>Play Framework Basics</strong></p>
+<p>Lets start by looking at the bare bones structure of a Play Framework application, which looks like this (I am using IntelliJ IDEA as my IDE)</p>
+
+
+
+<p><img alt="" height="377" src="play1.png" width="400"></p>
+<p>Lets talk a bit about each of these folders</p>
+<p><strong>app</strong></p>
+<p>This folder would hold controllers/views (I have added the Entities folder there that is not part of a Play Framework application requirements). Inside the controllers folder you would find controllers, and inside the views folder you would find views. For the final app there will be no views folder, I simply kept that in this screenshot to talk about what a standard Play Framework application looks like</p>
+
+<p><strong>conf</strong></p>
+<p>This folder contains the configuration for the Play Framework application. This would include the special routes file, and any other application specific configuration would might have.</p>
+<p>Lets just spend a minute having a look at the Play Framework routes file, which you can read more about here : https://www.playframework.com/documentation/2.5.x/ScalaRouting</p>
+<p>The routes file has its own DSL, that is responsible for matching a give route with a controller + controller action. The controller action that matches the route is ultimately responsible for servicing the http request. I think the DSL shown in routes file below is pretty self explanatory with perhaps the exception of the assets based routes.</p>
+<p>All assets based http requests (ie ones that start with /assets for example http://localhost:9000/assets/images/favicon.png would actually be routed through to a special controller called Assets. You dont see any code for this one, its part of the Play Framework application codebase. This special Assets inbuilt play controller is responsible for serving up static data files which it expects to find in the public folder. So for example our initial request of http://localhost:9000/assets/images/favicon.png would get translated into this file (relative path from project root) /public/images/favicon.png. As I say this is handled for you by the special Assets built in controller.</p>
+<p>The only other funky part to the Assets based route is that it uses a *file in its route. Which essentially boils down to the play framework being able match a multi-part path. Which we actually just saw with the example above http://localhost:9000/assets/images/favicon.png , see how that contains not only the file name, but also a directory of images. The Assets controller + routing is able to deal with that path just fine.</p>
+<pre>
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+
+GET        /                                   controllers.HomeController.index()
+
+GET        /scala/comet/liveClock              controllers.ScalaCometController.streamClock()
+GET        /scala/comet/kick                   controllers.ScalaCometController.kickRandomTime()
+
+# Map static resources from the /public folder to the /assets URL path
+GET        /assets/*file                       controllers.Assets.at(path="/public", file)
+</pre>
+<p>Ok so moving on to the rest of the standard folders that come with a Play Framework application</p>
+<p><strong>public</strong></p>
+<p>This is where you will need to put any static content that you wish to be served. Obviously views (if you use that part of play) will be within in the app/views folder. Like I say I am not using the views aspect of Play so you will not be seeing any views in my views folder. I instead want to let webpack et all generate my routing, web page etc etc. I do however want to serve bundles so later on I will be showing you how my webpack generated bundles fit in with the Play Framework ecco system.</p>
+<p><strong>target</strong></p>
+<p>Since this is a scala based project we get the standard scala based folders, and target is one of them, that has the generated/compiled code in it.</p>
+<p><strong>SBT</strong></p>
+<p>It is worth pointing out that my Play Framework application is an SBT based project, as such there is an SBT aspect to it, which largely boils down to these files</p>
+<p><strong>Project [root-build] / plugs.sbt file</strong></p>
+<p>This file adds Play as a plugin for the SBT project</p>
+<pre>
+// The Lightbend repository
+resolvers += Resolver.typesafeRepo("releases")
+
+// Use the Play sbt plugin for Play projects
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.14")
+</pre>
+<p><strong>build.sbt</strong></p>
+<p>This is the main SBT build file for the project. This is where all our external dependencies are brought in etc etc (standard SBT stuff)</p>
+<pre>
+import play.sbt._
+import sbt.Keys._
+import sbt._
+
+name := "play-streaming-scala"
+
+version := "1.0-SNAPSHOT"
+
+scalaVersion := "2.11.11"
+
+lazy val root = (project in file(".")).enablePlugins(play.sbt.PlayScala)
+
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
+
+initialize := {
+  val _ = initialize.value
+  if (sys.props("java.specification.version") != "1.8")
+    sys.error("Java 8 is required for this project.")
+}
+</pre>
+<p>So I think that covers the basics of a standard Play Framework application, the remainder of this article will cover the actual code for the demo project, where we will dive into routes/controllers etc etc</p>
+
+
+
+
+<h2>What is WebPack?</h2>
+<h2>What is React?</h2>
+<h2>What is TypeScript?</h2>
+<h1>&nbsp;</h1>
 <h1>The app</h1>
 <h1>Registration workflow</h1>
 <h1>Login workflow</h1>
