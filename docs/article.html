@@ -270,6 +270,27 @@ four major APIs in Kafka:</em></p>
 	covered in this article)</strong></li>
 </ul>
 <p><img alt="" height="298" src="kafka1.png" width="400"></p>
+<p>&nbsp;</p>
+<p><strong>Anatomy of a Kafka Topic</strong></p>
+<p><strong>Offset</strong> : messages in the partitions are each assigned a 
+unique (per partition) and sequential Id, called the &quot;offset&quot;. The &quot;offset&quot; is 
+tracked by consumers, where each consumer tracks via (offset, partition, topic) 
+tuples</p>
+<p><img alt="" height="245" src="kafka2.png" width="462"></p>
+<p><strong>Consumer Groups</strong></p>
+<p>Consumers label themselves with a consumer group name, and each record 
+published to a topic is delivered to one consumer instance within each 
+subscribing consumer group. Consumer instances can be in separate processes or 
+on separate machines.<br><br>
+<img alt="" height="376" src="kafka3.png" width="630"></p>
+<p>If all the consumer instances have the same consumer group, then the records 
+will effectively be load balanced over the consumer instances.<br><br>If all the 
+consumer instances have different consumer groups, then each record will be 
+broadcast to all the consumer processes</p>
+<p><img alt="" height="252" src="kafka4.png" width="474"></p>
+<p>A two server Kafka cluster hosting four partitions (P0-P3) with two consumer 
+groups. Consumer group A has two consumer instances and group B has four.</p>
+<p>&nbsp;</p>
 <p><strong>Kafka Performance</strong></p>
 <p><em>Due to its widespread integration into enterprise-level infrastructures, 
 monitoring Kafka performance at scale has become an increasingly important 
@@ -302,6 +323,16 @@ fault-tolerant.</em></p>
 <p><a href="https://docs.confluent.io/current/streams/introduction.html">
 https://docs.confluent.io/current/streams/introduction.html</a> up on date 
 02/01/18</p>
+<p>So that is what the official docs say about it,. here is my take on it</p>
+<p>Kafka Streams is an additional API on top of Kafka that allows you to perform 
+many aggregate and filtering, time based windowing operations over the incoming 
+messages, that can either be stored to an internal database key-value 
+representation known as a KTable which uses a state store (based on
+<a href="http://rocksdb.org/" target="_blank">RocksDB</a>). Or you may choose to 
+push the transformed stream values out to a new output topic. </p>
+<p>You can perform complex stream processing, merge streams, and also store 
+accumulated stream state.</p>
+<p>It is a an AWESOME bit of kit</p>
 <h2>What is Play?</h2>
 <p>The Play Framework is a Scala based MVC (model view controller) type web 
 application framework. As such it has in built mechanisms for things typical of 
@@ -410,11 +441,12 @@ initialize := {
 <h2>What is TypeScript?</h2>
 <h1>&nbsp;</h1>
 <h1>The app</h1>
-<h1>Registration workflow</h1>
-<h1>Login workflow</h1>
-<h1>CreateJob workflow</h1>
-<h1>ViewJob workflow</h1>
-<h1>ViewRating workflow</h1>
+<h2>The &quot;Index&quot; page</h2>
+<h2>Registration workflow</h2>
+<h2>Login workflow</h2>
+<h2>CreateJob workflow</h2>
+<h2>ViewJob workflow</h2>
+<h2>ViewRating workflow</h2>
 <h1>Conclusion</h1>
 <p>This was certainly a challenging thing to write, and I am honestly pleased that I got it done, I have had a really good time writing this. And it has been a great project for self improvement, and 
 I would recommend this type of thing as a great use of time. Go on find yourself 
