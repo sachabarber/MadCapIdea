@@ -47,19 +47,19 @@ detail as I went through them</p>
 	STREAM KTABLE QUERIES</a></li>
 	<li>
 	<a href="https://sachabarbs.wordpress.com/2017/09/11/madcap-idea-9-kafka-streams-interactive-queries/" target="_blank">
-	MADCAP IDEA 9 : KAFKA STREAMS INTERACTIVE QUERIES</a></li>
+	MADCAP IDEA PART 9 : KAFKA STREAMS INTERACTIVE QUERIES</a></li>
 	<li>
 	<a href="https://sachabarbs.wordpress.com/2017/09/21/madcap-idea-10-play-framework-reactive-kafka-producer/" target="_blank">
-	MADCAP IDEA 10 : PLAY FRAMEWORK REACTIVE KAFKA PRODUCER</a></li>
+	MADCAP IDEA PART 10 : PLAY FRAMEWORK REACTIVE KAFKA PRODUCER</a></li>
 	<li>
 	<a href="https://sachabarbs.wordpress.com/2017/09/28/madcap-idea-11-finishing-the-view-rating-page/" target="_blank">
-	MADCAP IDEA 11 : FINISHING THE ‘VIEW RATING’ PAGE</a></li>
+	MADCAP IDEA PART 11 : FINISHING THE ‘VIEW RATING’ PAGE</a></li>
 	<li>
 	<a href="https://sachabarbs.wordpress.com/2017/10/24/madcap-idea-12-getting-the-create-job-to-work-end-end/" target="_blank">
-		MADCAP IDEA 12 : GETTING THE ‘CREATE JOB’ TO WORK END–END</a></li>
+	MADCAP IDEA PART 12 : GETTING THE ‘CREATE JOB’ TO WORK END–END</a></li>
 	<li>
 	<a href="https://sachabarbs.wordpress.com/2017/11/23/madcap-idea-13-getting-the-view-job-to-work-end-end/" target="_blank">
-	MADCAP IDEA 13 : GETTING THE ‘VIEW JOB’ TO WORK END-END</a></li>
+	MADCAP IDEA PART 13 : GETTING THE ‘VIEW JOB’ TO WORK END-END</a></li>
 </ul>
 <p>&nbsp;</p>
 <h2>So just exactly what is it that I was/am talking about?</h2>
@@ -224,19 +224,24 @@ where you point to this main class <code>RatingStreamProcessingApp</code></li>
 <h1>Known issues</h1>
 <p>The following are known issues</p>
 <ul>
-	<li>One a driver an passenger become paired, the position updates from 
+	<li>Once a driver and passenger become paired, the position updates from 
 	either are no longer reflected. I am sure this would boil down to a single 
-	JavaScript method that needs updating in the ViewJob.tsx file. However I 
+	JavaScript method that needs updating in the <code>ViewJob.tsx</code> file. However I 
 	just kind of got to the end of a very long road (I have been writing about 
 	this on an off for 6 months of train rides) and was just happy that I got 
 	99% of the stuff done, and just thought you know what, the app as it is now 
-	demonstrates everything I set out to do, so I&#39;m ok with one known issue</li>
+	demonstrates everything I set out to do, so I&#39;m ok with one known issue. 
+	Sue me</li>
 </ul>
 <h1>Some basics</h1>
 <p>Before we dive into the actual code for the app (and there is quite a bit of 
 it), I just thought it may be good to go over some of the individual building 
 blocks that make up the app as a whole first, the next few sections will do 
-that.</p>
+that.It is a long list of stuff, and the demo app makes use of all of this plus 
+a few more bits, that I deemed to be not important enough to warrant their own 
+sections. We will learn more about each of these when we walk through the actual 
+demo app code, this is more of an overiew of the various parts before we look at 
+the specific usage</p>
 <h2>What is Kafka?</h2>
 <p><strong>Overview</strong></p>
 <p><em>Apache Kafka is an open-source stream processing platform developed by 
@@ -343,7 +348,7 @@ representation known as a KTable which uses a state store (based on
 push the transformed stream values out to a new output topic. </p>
 <p>You can perform complex stream processing, merge streams, and also store 
 accumulated stream state.</p>
-<p>It is a an AWESOME bit of kit</p>
+<p>It is a an <strong>AWESOME</strong> bit of kit</p>
 <h2>What is Play?</h2>
 <p>The Play Framework is a Scala based MVC (model view controller) type web 
 application framework. As such it has in built mechanisms for things typical of 
@@ -447,10 +452,105 @@ initialize := {
 
 
 
+<h2>What is Akka</h2>
+<p><a href="https://akka.io/" target="_blank">Akka</a> is a great framework for 
+building distibuted fault tolerant apps. It is built around the concept of 
+actors, and has failure in mnid from the outset. It also comes with suport for 
+HTTP over actors, and comes with play suport out of the box. One thing that also 
+comes with Akka that I make use of is its reactive streams API. This is 
+something like Rx whre you build streams of data that are also fault tolerant, 
+and also feature back pressure to ensure a consumer is not over burdened by a 
+fast producer. I have written a lot about Akka before which you can read more 
+about here :
+<a href="https://sachabarbs.wordpress.com/akka-series/" target="_blank">
+https://sachabarbs.wordpress.com/akka-series/</a> where I cover quite a lot of 
+Akkas functionality</p>
 <h2>What is WebPack?</h2>
-<p class="auto-style1">NEED TO DO THIS</p>
+<p>We are headed towards an era where browsers will natively support modules, 
+and dependencies but we are not there yet. Over the years there have been many 
+attempts at JavaScript module management, and dependency tracking of related 
+files, such as</p>
+<ul>
+	<li>ASP MVC bundles (fairly simplistic only bundles no other features)</li>
+	<li><a href="http://requirejs.org/docs/commonjs.html" target="_blank">
+	CommonJs</a> (require syntax, which is fairly intrusive in how your JS files 
+	work)</li>
+	<li><a href="http://browserify.org/" target="_blank">Browserify</a> (again 
+	fairly intrusive in how your JS files are loaded and what they need to 
+	manage dependencies)</li>
+	<li><a href="https://www.npmjs.com/" target="_blank">NPM</a> (not really a 
+	module manager as such more like NuGet for installing packages)</li>
+	<li><a href="https://github.com/systemjs/systemjs" target="_blank">SystemJS</a> 
+	(has import/export syntax but a bit more syntax than Webpack)</li>
+	<li><a href="https://jspm.io/" target="_blank">JSPM</a> uses
+	<a href="https://github.com/systemjs/systemjs" target="_blank">SystemJS</a> 
+	(fairly nice but not in as much use as Webpack)</li>
+	<li>Various task runners can be used such as Grunt/Gulp to build bundles</li>
+</ul>
+<p>All of these have there pros/cons, however I think that it is fair to say 
+that WebPack has emerged as the defacto standard module manager for JavaScript 
+(for now anyway), that supports rich dependency graphs and bundles and also 
+supports things like</p>
+<ul>
+	<li>Transpilers (such as Babel/Typescript/SASS/SCSS/LESS etc etc)</li>
+	<li>Sourcemaps (to go from your transpiled JS back to what you wrote)</li>
+	<li>Minification</li>
+	<li>File hashing (to allow browsers to load latest bundles as it has a 
+	different hash)</li>
+</ul>
+<p>This is kind of what you get with webpack, where it is very clever about 
+preserving the dependency graph and the bundles created, and allows you to use 
+things like <code>export </code>and <code>import </code>to manage your inter 
+dependencies</p>
+<p><img alt="" height="286" src="webpack1.png" width="630"></p>
+<p>&nbsp;</p>
+<h2>What is Babel?</h2>
+<p><a href="https://babeljs.io/" target="_blank">Babel</a> is a very neat 
+JavaScript library that allows you to use next generation JavaScript syntax now, 
+even if your targetted browser doesn&#39;t suport the syntax you are trying to use. 
+Is is installed via the Node Packager Manager (NPM) and is one part of you 
+transpilation pipeline. For this article we push stuff through TypeScript 
+transpiler -&gt; Babel transpiler and the final result is JavaScript that can be 
+sent ot the browser.</p>
+<p>Using babel this is the sort of things you will be able to do, where native 
+browser support for these may be varied, or not supported at all</p>
+<p><img alt="" height="308" src="babel1.png" width="500"></p>
+<h2>What is SASS/SCSS/LESS</h2>
+<p>I guess if you have used HTML you will have certainluy used CSS. Now CSS is 
+great, but it lacks certain things such as</p>
+<ul>
+	<li>Variables</li>
+	<li>Heirachy selectors</li>
+	<li>Mixins</li>
+</ul>
+<p>This is something that SASS/SCSS fixes. In much the same way that things like 
+Typescript are transpiled to JavaScript, SASS/SCSS is transpiled to CSS.</p>
+<p>By using SCSS you are now able to do things like this, note the variables</p>
+<pre lang="css">
+$blue: #3bbfce;
+$margin: 16px;
+
+.content_navigation {
+  border-color: $blue;
+  color: darken($blue, 10%);
+}
+
+.border {
+  padding: $margin / 2;
+  margin: $margin / 2;
+  border-color: $blue;
+}</pre>
 <h2>What is React?</h2>
-<p class="auto-style1">NEED TO DO THIS</p>
+<p>Unless you have been living under a rock you will have heard/used/seen
+<a href="https://reactjs.org/" target="_blank">React</a>. React is maintained 
+and developed by Facebook, and it is a JavaScript library for building user 
+interfaces. It is not as much as a framework as say something like Angular is, 
+and it is really just the &quot;View&quot; part of the typical MVC puzzle that is so 
+prevelant in modern JS UI libraries/frameworks. It is declarative, and component 
+centric. It is accepted that a React app would be made up of many smaller 
+components. I can&#39;t give you a full walkthrough of React here, but we will 
+certainly see more React code/components as the article demo code is dissected 
+below</p>
 <h2>What is TypeScript?</h2>
 <p><a href="https://www.typescriptlang.org/" target="_blank">Typescript</a>&nbsp; 
 is a Microsoft offering that attempts to bring better typings and other useful 
@@ -477,15 +577,46 @@ Inversion Of Control</a> container for TypeScript called
 take a workflow approach to describing the app, and as such will walk/talk 
 through each of the workflows, which I think is the best way to do it</p>
 <h2>The &quot;Index&quot; page</h2>
-<h3>SPA</h3>
-<h3>Routing</h3>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h3>NPM requirements</h3>
+<p class="auto-style1">NEED TO DO THIS</p>
 <h3>How does Webpack/Play work with this?</h3>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h3>Babel config</h3>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h3>TypeScript config</h3>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h3>SPA</h3>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h3>Routing</h3>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h3>Sourcemap files</h3>
+<p><a href="https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/">
+https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/</a></p>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h2>&nbsp;</h2>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <h2>Some common React / Bootstrap UI components</h2>
+<p>
+https://sachabarbs.wordpress.com/2017/06/27/madcap-idea-part-6-static-screen-design/</p>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h2>&nbsp;</h2>
 <h2>Registration workflow</h2>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h2>&nbsp;</h2>
 <h2>Login workflow</h2>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h2>&nbsp;</h2>
 <h2>CreateJob workflow</h2>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h2>&nbsp;</h2>
 <h2>ViewJob workflow</h2>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h2>&nbsp;</h2>
 <h2>ViewRating workflow</h2>
+<p class="auto-style1">NEED TO DO THIS</p>
+<h2>&nbsp;</h2>
 <h1>Conclusion</h1>
 <p>This was certainly a challenging thing to write, and I am honestly pleased that I got it done, I have had a really good time writing this. And it has been a great project for self improvement, and 
 I would recommend this type of thing as a great use of time. Go on find yourself 
