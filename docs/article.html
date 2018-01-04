@@ -598,10 +598,306 @@ https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/</a></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>Some common React / Bootstrap UI components</h2>
-<p>
-https://sachabarbs.wordpress.com/2017/06/27/madcap-idea-part-6-static-screen-design/</p>
-<p class="auto-style1">NEED TO DO THIS</p>
-<h2>&nbsp;</h2>
+<p>As with any UI work, you will inevitably end up where you need some core 
+components that you re-use over and over again. For the demo app I had these 3 
+reusable React components that make use of React/<a href="https://react-bootstrap.github.io/" target="_blank">React-Bootstrap</a></p>
+<p><strong>YesNoDialog</strong></p>
+<p>This represents a generic re-usable yes/no dialog that can be triggered, here 
+is the code for this one. The important part is that the various prop values can 
+be controlled via the parent component state values</p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as _ from "lodash";
+ 
+import 'bootstrap/dist/css/bootstrap.css';
+import
+{
+    Button, 
+    Modal
+} from "react-bootstrap";
+ 
+ 
+//TODO : Fix this
+export interface YesNoDialogProps {
+    headerText: string;
+    theId: string;
+    launchButtonText: string;
+    yesCallBack: any;
+    noCallBack: any;
+}
+ 
+export interface YesNoDialogState {
+    showModal: boolean;
+}
+ 
+ 
+export class YesNoDialog extends React.Component&lt;YesNoDialogProps, YesNoDialogState&gt; {
+ 
+    constructor(props) {
+        super(props);
+        console.log(this.props);
+        //set initial state
+        this.state = {
+            showModal: false
+        };
+    }
+ 
+    _yesClicked = () =&gt; {
+        this.setState({ showModal: false });
+        this.props.yesCallBack();
+    }
+ 
+    _noClicked = () =&gt; {
+        this.setState({ showModal: false });
+        this.props.noCallBack();
+    }
+ 
+    _close = () =&gt; {
+        this.setState({ showModal: false });
+    }
+ 
+    _open = () =&gt; {
+        this.setState({ showModal: true });
+    }
+ 
+    render() {
+        return (
+            &lt;div className="leftFloat"&gt;
+ 
+                &lt;Button
+                    id={this.props.theId}
+                    type='button'
+                    bsSize='small'
+                    bsStyle='primary'
+                    onClick={this._open}&gt;{this.props.launchButtonText}&lt;/Button&gt;
+ 
+                &lt;Modal show={this.state.showModal} onHide={this._close}&gt;
+                    &lt;Modal.Header closeButton&gt;
+                        &lt;Modal.Title&gt;{ this.props.headerText }&lt;/Modal.Title&gt;
+                    &lt;/Modal.Header&gt;
+                    &lt;Modal.Body&gt;
+                        &lt;h4&gt;Are you sure?&lt;/h4&gt;
+                    &lt;/Modal.Body&gt;
+                    &lt;Modal.Footer&gt;
+                        &lt;Button
+                            type='button'
+                            bsSize='small'
+                            bsStyle='primary'
+                            onClick={this._yesClicked}&gt;Yes&lt;/Button&gt;
+                        &lt;Button
+                            type='button'
+                            bsSize='small'
+                            bsStyle='danger'
+                            onClick={this._noClicked}&gt;Cancel&lt;/Button&gt;
+                    &lt;/Modal.Footer&gt;
+                &lt;/Modal&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</pre>
+<p>This looks like this when rendered</p>
+<h2><img alt="" height="226" src="yesnodialog.png" width="600"></h2>
+
+<p><strong>OkDialog</strong></p>
+<p>This represents a generic re-usable ok dialog that can be triggered, here is the code for this one. The important part is that the various prop values can be controlled via the parent component state values</p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as _ from "lodash";
+ 
+import 'bootstrap/dist/css/bootstrap.css';
+import
+{
+    Button, 
+    Modal
+} from "react-bootstrap";
+ 
+ 
+//TODO : Fix this
+export interface OkDialogProps {
+    headerText: string;
+    bodyText: string;
+    open: boolean;
+    okCallBack: any;
+}
+ 
+export interface OkDialogState {
+    showModal: boolean;
+}
+ 
+ 
+export class OkDialog extends React.Component&lt;OkDialogProps, OkDialogState&gt; {
+ 
+    constructor(props) {
+        super(props);
+        console.log(this.props);
+        //set initial state
+        this.state = {
+            showModal: false
+        };
+    }
+ 
+    componentDidMount() {
+        if (this.props.open === true) {
+            this.setState({ showModal: true });
+        }
+    }
+ 
+    _okClicked = () =&gt; {
+        this.setState({ showModal: false });
+        this.props.okCallBack();
+    }
+ 
+    _close = () =&gt; {
+        this.setState({ showModal: false });
+        this.props.okCallBack();
+    }
+ 
+    _open = () =&gt; {
+        this.setState({ showModal: true });
+    }
+ 
+    render() {
+        return (
+            &lt;div className="leftFloat"&gt;
+ 
+                &lt;Modal show={this.state.showModal} onHide={this._close}&gt;
+                    &lt;Modal.Header closeButton&gt;
+                        &lt;Modal.Title&gt;{ this.props.headerText }&lt;/Modal.Title&gt;
+                    &lt;/Modal.Header&gt;
+                    &lt;Modal.Body&gt;
+                        &lt;h4&gt;{this.props.bodyText}&lt;/h4&gt;
+                    &lt;/Modal.Body&gt;
+                    &lt;Modal.Footer&gt;
+                        &lt;Button
+                            type='button'
+                            bsSize='small'
+                            bsStyle='primary'
+                            onClick={this._okClicked}&gt;Ok&lt;/Button&gt;
+                    &lt;/Modal.Footer&gt;
+                &lt;/Modal&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</pre>
+<p>This looks like this when rendered</p>
+
+<h2><img alt="" height="221" src="OkDialog.png" width="600"></h2>
+<p><strong>RatingDialog</strong></p>
+<p>This represents a generic re-usable rating control where rating can be from 1-5, here is the code for this one. The important part is that the various prop values can be controlled via the parent component state values</p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as _ from "lodash";
+ 
+import 'bootstrap/dist/css/bootstrap.css';
+import
+{
+    Button, 
+    Modal
+} from "react-bootstrap";
+ 
+ 
+import ReactStars from 'react-stars';
+ 
+ 
+export interface RatingDialogProps {
+    headerText: string;
+    theId: string;
+    okCallBack: any;
+}
+ 
+export interface RatingDialogState {
+    showModal: boolean;
+    rating: number;
+}
+ 
+ 
+export class RatingDialog extends React.Component&lt;RatingDialogProps, RatingDialogState&gt; {
+ 
+    constructor(props) {
+        super(props);
+        console.log(this.props); 
+        //set initial state
+        this.state = {
+            showModal: false,
+            rating:0
+        };
+    }
+ 
+    _close = () =&gt; {
+        this.setState(
+            {
+                showModal: false,
+                rating:0
+            }
+        );
+    }
+ 
+    _open = () =&gt; {
+        this.setState(
+            {
+                showModal: true,
+                rating: 0
+            }
+        );
+    }
+ 
+    _ratingChanged = (newRating) =&gt; {
+        console.log(newRating)
+        this.setState(
+            {
+                rating: newRating
+            }
+        );
+    }
+ 
+    _okClicked = () =&gt; {
+        this._close();
+        this.props.okCallBack();
+    }
+ 
+    render() {
+        return (
+            &lt;div className="leftFloat"&gt;
+ 
+                &lt;Button
+                    id={this.props.theId}
+                    type='button'
+                    bsSize='small'
+                    bsStyle='primary'
+                    onClick={this._open}&gt;Complete&lt;/Button&gt;
+ 
+                &lt;Modal show={this.state.showModal} onHide={this._close}&gt;
+                    &lt;Modal.Header closeButton&gt;
+                        &lt;Modal.Title&gt;{ this.props.headerText }&lt;/Modal.Title&gt;
+                    &lt;/Modal.Header&gt;
+                    &lt;Modal.Body&gt;
+                        &lt;h4&gt;Give your rating between 1-5&lt;/h4&gt;
+                        &lt;ReactStars count={5}
+                                    onChange={this._ratingChanged}
+                                    size={24}
+                                    color2={'#ffd700'} /&gt;
+                    &lt;/Modal.Body&gt;
+                    &lt;Modal.Footer&gt;
+                        &lt;Button
+                            type='submit'
+                            bsSize='small'
+                            bsStyle='primary'
+                            onClick={this._okClicked}&gt;Ok&lt;/Button&gt;
+                    &lt;/Modal.Footer&gt;
+                &lt;/Modal&gt;
+            &lt;/div&gt;
+        );
+</pre>
+<p>This looks like this when rendered</p>
+<p><img alt="" height="251" src="RatingDialog.png" width="600"></p>
+<p>For the rating component I make use of this React library : 
+<a href="https://www.npmjs.com/package/react-stars" target="_blank">https://www.npmjs.com/package/react-stars</a></p>
+
 <h2>Registration workflow</h2>
 <p class="auto-style1">NEED TO DO THIS</p>
 <h2>&nbsp;</h2>
