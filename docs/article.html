@@ -576,6 +576,15 @@ Inversion Of Control</a> container for TypeScript called
 <p>The next set of sections will walk through the demo app. I have decided to 
 take a workflow approach to describing the app, and as such will walk/talk 
 through each of the workflows, which I think is the best way to do it</p>
+<p>The app has MANY moving parts, but can largely be broken down into the 
+following areas</p>
+<ul>
+	<li>Play backend API (scala)</li>
+	<li>React front end (TypeScript)</li>
+	<li>Kafka Streams (scala)</li>
+</ul>
+<p>We will get to all of these parts, but before we start lets examine some of 
+the stuff that helps the front end work get of the ground</p>
 <h3>NPM requirements</h3>
 <p>The demo project uses quite a few components, such as</p>
 <ul>
