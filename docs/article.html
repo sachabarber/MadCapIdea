@@ -1696,8 +1696,437 @@ export class RatingDialog extends React.Component&lt;RatingDialogProps, RatingDi
 <a href="https://www.npmjs.com/package/react-stars" target="_blank">https://www.npmjs.com/package/react-stars</a></p>
 
 <h2>Registration workflow</h2>
-<p class="auto-style1">NEED TO DO THIS</p>
-<h2>&nbsp;</h2>
+<p><img alt="" height="217" src="loginRegisterFlow.png" width="630"></p>
+<p>The registration workflow is pretty much as described above, and uses the 
+pieces shown above.</p>
+<p>There are 2 types of registration, where we need to capture different data</p>
+<ul>
+	<li>Passenger registration</li>
+	<li>Driver registration</li>
+</ul>
+<p>We will examine the passenger registration in detail, with the driver 
+registration being fairly similiar in nature</p>
+<h3><strong>Passenger registration</strong></h3>
+<p><img alt="" height="583" src="passreg.png" width="630"></p>
+<h4>Registration React component</h4>
+<p>This is the main <code>
+PlayBackEndApi/FrontEndWebSite/src/PassengerRegistration.tsx</code> file for the React TSX representing the Passenger 
+registration component.</p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { OkDialog } from "./components/OkDialog";
+import 'bootstrap/dist/css/bootstrap.css';
+import {
+    Well,
+    Grid,
+    Row,
+    Col,
+    ButtonInput
+} from "react-bootstrap";
+import { AuthService } from "./services/AuthService";
+import { hashHistory } from 'react-router';
+import { Form, ValidatedInput } from 'react-bootstrap-validation';
+import revalidator from 'revalidator';
+
+
+let schema = {
+    properties: {
+        fullName: {
+            type: 'string',
+            minLength: 8,
+            maxLength: 60,
+            required: true,
+            allowEmpty: false
+        },
+        email: {
+            type: 'string',
+            maxLength: 255,
+            format: 'email',
+            required: true,
+            allowEmpty: false
+        },
+        password: {
+            type: 'string',
+            minLength: 8,
+            maxLength: 60,
+            required: true,
+            allowEmpty: false
+        }
+    }
+};
+
+
+export interface PassengerRegistrationProps {
+    authService: AuthService;
+}
+
+
+export interface PassengerRegistrationState {
+    okDialogOpen: boolean;
+    okDialogKey: number;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+    wasSuccessful: boolean;
+}
+
+export class PassengerRegistration extends React.Component&lt;PassengerRegistrationProps, PassengerRegistrationState&gt; {
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0,
+            wasSuccessful: false
+        };
+    }
+
+    render() {
+        return (
+            &lt;Form className="submittable-form-inner"
+                // Supply callbacks to both valid and invalid
+                // submit attempts
+                validateAll={this.validateForm}
+                onInvalidSubmit={this.handleInvalidSubmit}
+                onValidSubmit={this.handleValidSubmit}&gt;
+                &lt;Grid&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;h4&gt;Passenger details&lt;/h4&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;ValidatedInput type='text'
+                                label='FullName'
+                                name='fullName'
+                                errorHelp='FullName is invalid' /&gt;
+
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;ValidatedInput type='text'
+                                label='Email'
+                                name='email'
+                                errorHelp='Email address is invalid' /&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;ValidatedInput type='password'
+                                label='Password'
+                                name='password'
+                                errorHelp='Password is invalid' /&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;ButtonInput
+                                id="registerBtn"
+                                type='submit'
+                                bsSize='small'
+                                bsStyle='primary'
+                                value='Register'&gt;Register&lt;/ButtonInput&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;span&gt;
+                            &lt;OkDialog
+                                open={this.state.okDialogOpen}
+                                okCallBack={this.okDialogCallBack}
+                                headerText={this.state.okDialogHeaderText}
+                                bodyText={this.state.okDialogBodyText}
+                                key={this.state.okDialogKey} /&gt;
+                        &lt;/span&gt;
+                    &lt;/Row&gt;
+                &lt;/Grid&gt;
+            &lt;/Form&gt;
+        )
+    }
+
+    validateForm = (values) =&gt; {
+        let res = revalidator.validate(values, schema);
+
+        // If the values passed validation, we return true
+        if (res.valid) {
+            return true;
+        }
+
+        // Otherwise we should return an object containing errors
+        // e.g. { email: true, password: true }
+        return res.errors.reduce((errors, error) =&gt; {
+            // Set each property to either true or
+            // a string error description
+            errors[error.property] = true;
+
+            return errors;
+        }, {});
+    }
+
+    handleInvalidSubmit = (errors, values) =&gt; {
+        // Errors is an array containing input names
+        // that failed to validate
+        this.setState(
+            {
+                okDialogHeaderText: 'Validation Error',
+                okDialogBodyText: 'Form has errors and may not be submitted',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
+    }
+
+    handleValidSubmit = (values) =&gt; {
+        var passenger = values;
+        var self = this;
+
+        $.ajax({
+            type: 'POST',
+            url: 'registration/save/passenger',
+            data: JSON.stringify(passenger),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+            var redactedPassenger = passenger;
+            redactedPassenger.password = "";
+            console.log("redacted ${redactedPassenger}");
+            console.log(redactedPassenger);
+            console.log("Auth Service");
+            console.log(self.props.authService);
+            let userProfile = {
+                isDriver: false,
+                user: redactedPassenger
+            };
+            self.setState(
+                {
+                    wasSuccessful: true,
+                    okDialogHeaderText: 'Registration Successful',
+                    okDialogBodyText: 'You are now registered',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+            self.props.authService.storeUser(userProfile);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
+    }
+
+    okDialogCallBack = () =&gt; {
+        this.setState(
+            {
+                okDialogOpen: false
+            });
+
+        if (this.state.wasSuccessful) {
+            hashHistory.push('/');
+        }
+    }
+}
+</pre>
+<p>There are a couple of things of note there</p>
+<ul>
+<li>That we use a standard POST</li>
+<li>That will post the registration data as JSON to the Play API backend code</li>
+<li>That we also show a standard Boostrap OkDialog which we looked at last time, 
+which when the Ok button is clicked will use the React Router to navigate to the 
+route page</li>
+	<li>That we use the
+	<a href="https://www.npmjs.com/package/react-bootstrap-validation" target="_blank">
+	react-bootstrap-validation</a> package for field validation</li>
+</ul>
+<p>Let’s now turn our attention to the Play API backend code 
+that goes with the “Passenger Registration”</p>
+<h4>Json Support</h4>
+<p>We need to start with the JSON suport from JavaScript to Scala. This is done 
+using this file P<code>layBackEndApi/app/Entities/PassengerRegistrationEntities.scala</code>, 
+where we use Play framework JSON combinators</p>
+<ul>
+	<li><strong>Reads</strong> : Which allows reading a JSON string into a Scala 
+	object</li>
+	<li><strong>Writes</strong> : Which allows a Scala object to be turned into 
+	a JSON string</li>
+	<li><strong>Format</strong> : is just a mix of the Reads and Writes Traits 
+	and can be used for implicit conversion in place of its components.</li>
+</ul>
+<p>The recommendation for both of these is that they are exposed as implicit 
+vals you can read more about it here :
+<a href="https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators" target="_blank">
+https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators</a></p>
+<pre lang="scala">
+package entities
+
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+
+case class PassengerRegistration(
+  fullName: String,
+  email: String,
+  password: String)
+
+object PassengerRegistration {
+  implicit val formatter = Json.format[PassengerRegistration]
+}
+
+object PassengerRegistrationJsonFormatters {
+
+  implicit val passengerRegistrationWrites = new Writes[PassengerRegistration] {
+    def writes(passengerRegistration: PassengerRegistration) = Json.obj(
+      "fullName" -&gt; passengerRegistration.fullName,
+      "email" -&gt; passengerRegistration.email,
+      "password" -&gt; passengerRegistration.password
+    )
+  }
+
+  implicit val passengerRegistrationReads: Reads[PassengerRegistration] = (
+    (JsPath \ "fullName").read[String] and
+      (JsPath \ "email").read[String] and
+      (JsPath \ "password").read[String]
+    )(PassengerRegistration.apply _)
+}</pre>
+<h4>Registration route</h4>
+<p>Once we have that in place we need to turn our attention to the actual 
+endpoint to support the POST of a PassengerRegistration object. We first need to 
+set up the route in the conf/routes file as follows:</p>
+<pre>
+# Registration page
+POST  /registration/save/passenger             controllers.RegistrationController.savePassengerRegistration()
+</pre>
+<h4>Registration controller</h4>
+<p>So now that we have talked about the JSON Reads/Writes and we know that we 
+need Mongo downloaded and running (see how do I run this section at start), lets 
+see what the actual controller looks like shall we. Here is the FULL code for 
+the “Passenger Registration”</p>
+<pre lang="scala">
+ackage controllers
+
+import javax.inject.Inject
+import play.api.mvc.{Action, Controller, Result}
+import entities._
+import entities.DriverRegistrationJsonFormatters._
+import entities.PassengerRegistrationJsonFormatters._
+import scala.concurrent.{ExecutionContext, Future}
+import play.modules.reactivemongo._
+import play.api.Logger
+import utils.Errors
+import play.api.libs.json._
+import reactivemongo.api.ReadPreference
+import reactivemongo.play.json._
+import collection._
+
+class RegistrationController @Inject()
+  (val reactiveMongoApi: ReactiveMongoApi)
+  (implicit ec: ExecutionContext)
+  extends Controller with MongoController with ReactiveMongoComponents {
+
+  def passRegistrationFuture: Future[JSONCollection] = database.map(_.collection[JSONCollection]("passenger-registrations"))
+  def driverRegistrationFuture: Future[JSONCollection] = database.map(_.collection[JSONCollection]("driver-registrations"))
+
+
+  def savePassengerRegistration = Action.async(parse.json) { request =&gt;
+    Json.fromJson[PassengerRegistration](request.body) match {
+      case JsSuccess(newPassRegistration, _) =&gt;
+
+        //https://github.com/ReactiveMongo/ReactiveMongo-Extensions/blob/0.10.x/guide/dsl.md
+        val query = Json.obj("email" -&gt; Json.obj("$eq" -&gt; newPassRegistration.email))
+
+        dealWithRegistration[PassengerRegistration](
+          newPassRegistration,
+          passRegistrationFuture,
+          query,
+          PassengerRegistration.formatter)
+      case JsError(errors) =&gt;
+        Future.successful(BadRequest("Could not build a PassengerRegistration from the json provided. " +
+          Errors.show(errors)))
+    }
+  }
+
+  private def dealWithRegistration[T](
+          incomingRegistration: T,
+          jsonCollectionFuture: Future[JSONCollection],
+          query: JsObject,
+          formatter: OFormat[T])
+          (implicit ec: ExecutionContext): Future[Result] = {
+
+    def hasExistingRegistrationFuture = jsonCollectionFuture.flatMap {
+        //http://reactivemongo.org/releases/0.11/documentation/advanced-topics/collection-api.html
+        _.find(query)
+        .cursor[JsObject](ReadPreference.primary)
+        .collect[List]()
+      }.map(_.length match {
+          case 0 =&gt; false
+          case _ =&gt; true
+      }
+    )
+
+    hasExistingRegistrationFuture.flatMap {
+      case false =&gt; {
+        for {
+          registrations &lt;- jsonCollectionFuture
+          writeResult &lt;- registrations.insert(incomingRegistration)(formatter,ec)
+        } yield {
+          Logger.debug(s"Successfully inserted with LastError: $writeResult")
+          Ok(Json.obj())
+        }
+      }
+      case true =&gt; Future(BadRequest("Registration already exists"))
+    }
+  }
+}
+</pre>
+<p>Lets break this down into chunks</p>
+<ul>
+	<li>The controller constructor<ul>
+		<li>This takes a <code>ReactiveMongoApi </code>(this is mandatory to 
+		satisfy the base trait <code>MongoController </code>requirements)</li>
+		<li>Inherits from <code>MongoController </code>which provides a lot of 
+		use functionality</li>
+		<li>It also inherits from <code>ReactiveMongoComponents </code>in order 
+		to allow the cake pattern/self typing requirements of the base <code>
+		MongoController </code>which expects a <code>ReactiveMongoComponents</code></li>
+	</ul>
+	</li>
+	<li>The use of <code>JSONCollection</code><ul>
+		<li>There is a <code>Future[JSONCollection]</code> that represents the 
+		passenger collection in Mongo. This is a collection that stores JSON. 
+		When using reactive Mongo you have a choice about whether to use the 
+		standard BSON collections of JSON. I opted for JSON</li>
+	</ul>
+	</li>
+	<li>The Guts Of The Logic<ul>
+		<li>So now we have discussed the controller constructor and the Mongo 
+		collections. We just need to talk about the actual work that happens on 
+		registration. In a nutshell it works like this<ul>
+			<li>The incoming JSON string is turned into a <code>
+			PassengerRegistration </code>object via Play</li>
+			<li>We then create a new JSON query object to query the Mongo <code>
+			JSONCollection </code>to see if a registration already exists</li>
+			<li>If a registration already exists we exit with a <code>BadRequest
+			</code>output</li>
+			<li>If a registration does NOT already exist we insert the new 
+			registration details into the Mongo <code>JSONCollection </code>, 
+			and the we return an <code>Ok </code>output</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+<p>And that is how the “Passenger Registration” works.</p>
+<p>&nbsp;</p>
+<h3><strong>Driver registration</strong></h3>
+<p>The driver registration works in much the same way as described above, its 
+just slightly different JSON, but it does share the same core logic/controller 
+as the “Passenger Registration”</p>
+<p>&nbsp;</p>
 <h2>Login workflow</h2>
 <p class="auto-style1">NEED TO DO THIS</p>
 <h2>&nbsp;</h2>
