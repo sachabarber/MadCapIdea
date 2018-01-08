@@ -2165,10 +2165,6 @@ pieces shown above.</p>
 is VERY similiar to registration, so feel free to skip this section if you think 
 you understand how registation concepts work</p>
 </div>
-<h3>How does Webpack/Play work with this?</h3>
-<p>WebPack has this concept of loaders that are what gets used to load different 
-file types. So for example you can use a TypeScr</p>
-<p>&nbsp;</p>
 <h4>Login React component</h4>
 <p>This is the main <code>
 PlayBackEndApi/FrontEndWebSite/src/Login.tsx</code> file for the React TSX representing the 
@@ -2553,8 +2549,801 @@ class LoginController @Inject()
 <p>This is similiar enough in nature to the registration process, so I will not 
 go into this any further.</p>
 <h2>CreateJob workflow</h2>
-<p class="auto-style1">NEED TO DO THIS</p>
-<h2>&nbsp;</h2>
+<h2><img alt="" height="689" src="jobFlow.png" width="630"></h2>
+<p>The CreateJob uses the pieces shown above, and is intended to work like this</p>
+<p><img alt="" height="59" src="newjob.png" width="630"></p>
+<h4>CreatJob React component</h4>
+<p class="auto-style1">NEED PICTURE FOR THIS BIT</p>
+<p>This is the code for the React component</p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as _ from "lodash";
+import Measure from 'react-measure'
+import { OkDialog } from "./components/OkDialog";
+import 'bootstrap/dist/css/bootstrap.css';
+import {
+    Well,
+    Grid,
+    Row,
+    Col,
+    ButtonInput,
+    ButtonGroup,
+    Button
+} from "react-bootstrap";
+import { AuthService } from "./services/AuthService";
+import { JobService } from "./services/JobService";
+import { PositionService } from "./services/PositionService";
+import { UUIDService } from "./services/UUIDService";
+import { Position } from "./domain/Position";
+import { hashHistory } from 'react-router';
+import { withGoogleMap, GoogleMap, Marker, InfoBox, OverlayView } from "react-google-maps";
+
+const STYLES = {
+    overlayView: {
+        background: `white`,
+        border: `1px solid #ccc`,
+        padding: 15,
+    },
+    icon: {
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 20
+    }
+}
+
+
+const GetPixelPositionOffset = (width, height) =&gt; {
+    return { x: -(width / 2), y: -(height / 2) };
+}
+
+const CreateJobGoogleMap = withGoogleMap(props =&gt; (
+    &lt;GoogleMap
+        ref={props.onMapLoad}
+        defaultZoom={16}
+        defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}
+        onClick={props.onMapClick}&gt;
+
+        &lt;OverlayView
+            key='createJobKey'
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            position={props.currentPosition}
+            getPixelPositionOffset={GetPixelPositionOffset}&gt;
+            &lt;div style={STYLES.overlayView}&gt;
+                &lt;img style={STYLES.icon}
+                    src='/assets/images/passenger.png' /&gt;
+                &lt;br /&gt;
+                &lt;Button
+                    type='button'
+                    bsSize='xsmall'
+                    bsStyle='primary'
+                    onClick={() =&gt; props.onCreateJobClick()}
+                    disabled={props.hasIssuedJob}
+                    value='Create Job'&gt;Create Job&lt;/Button&gt;
+            &lt;/div&gt;
+        &lt;/OverlayView&gt;
+    &lt;/GoogleMap&gt;
+));
+
+
+export interface CreateJobState {
+    currentPosition: Position;
+    dimensions: {
+        width: number,
+        height: number
+    };
+    hasIssuedJob: boolean;
+    okDialogOpen: boolean;
+    okDialogKey: number;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+    wasSuccessful: boolean;
+}
+
+export class CreateJob extends React.Component&lt;undefined, CreateJobState&gt; {
+
+    private _authService: AuthService;
+    private _jobService: JobService;
+    private _positionService: PositionService;
+
+    constructor(props: any) {
+        super(props);
+        this._jobService = props.route.jobService;
+        this._authService = props.route.authService;
+        this._positionService = props.route.positionService;
+        console.log(this._authService.userName());
+        console.log(this._authService.userEmail());
+        console.log("CreateJob ctor");
+        console.log(this._jobService);
+
+        if (!this._authService.isAuthenticated()) {
+            hashHistory.push('/');
+        }
+
+        if (this._authService.isDriver()) {
+            hashHistory.push('/viewjob');
+        }
+
+        this.state = {
+            currentPosition: new Position(50.8202949, -0.1406958),
+            dimensions: { width: -1, height: -1 },
+            hasIssuedJob: this._jobService.hasIssuedJob(),
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0,
+            wasSuccessful: false
+        };
+    }
+
+    render() {
+
+        const adjustedwidth = this.state.dimensions.width;
+
+        return (
+            &lt;Well className="outer-well"&gt;
+                &lt;Grid&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;h4&gt;SET YOUR CURRENT LOCATION&lt;/h4&gt;
+                            &lt;h6&gt;Click the map to set your current location&lt;/h6&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+
+                            &lt;Measure
+                                bounds
+                                onResize={(contentRect) =&gt; {
+                                    this.setState({ dimensions: contentRect.bounds })
+                                }}
+                            &gt;
+                                {({ measureRef }) =&gt;
+                                    &lt;div ref={measureRef}&gt;
+                                        &lt;CreateJobGoogleMap
+                                            containerElement={
+                                                &lt;div style={{
+                                                    position: 'relative',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'center',
+                                                    width: { adjustedwidth },
+                                                    height: 600,
+                                                    marginTop: 20,
+                                                    marginLeft: 0,
+                                                    marginRight: 0,
+                                                    marginBottom: 20
+                                                }} /&gt;
+                                            }
+                                            mapElement={
+                                                &lt;div style={{
+                                                    position: 'relative',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    width: { adjustedwidth },
+                                                    height: 600,
+                                                    marginTop: 20,
+                                                    marginLeft: 0,
+                                                    marginRight: 0,
+                                                    marginBottom: 20
+                                                }} /&gt;
+                                            }
+                                            onMapLoad={this.handleMapLoad}
+                                            onMapClick={this.handleMapClick}
+                                            currentPosition={this.state.currentPosition}
+                                            onCreateJobClick={this.handleCreateJobClick}
+                                            hasIssuedJob={this.state.hasIssuedJob}
+                                        /&gt;
+                                    &lt;/div&gt;
+                                }
+                            &lt;/Measure&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;span&gt;
+                            &lt;OkDialog
+                                open={this.state.okDialogOpen}
+                                okCallBack={this.okDialogCallBack}
+                                headerText={this.state.okDialogHeaderText}
+                                bodyText={this.state.okDialogBodyText}
+                                key={this.state.okDialogKey} /&gt;
+                        &lt;/span&gt;
+                    &lt;/Row&gt;
+                &lt;/Grid&gt;
+            &lt;/Well&gt;
+        );
+    }
+
+    handleCreateJobClick = () =&gt; {
+
+        var self = this;
+        var currentUser = this._authService.user();
+
+        var newJob = {
+            jobUUID: UUIDService.createUUID(),
+            clientFullName: currentUser.fullName,
+            clientEmail: currentUser.email,
+            clientPosition: {
+                latitude: self.state.currentPosition.latitude,
+                longitude: self.state.currentPosition.longitude
+            },
+            driverFullName: '',
+            driverEmail: '',
+            vehicleDescription: '',
+            vehicleRegistrationNumber: '',
+            isAssigned: false,
+            isCompleted: false
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'job/submit',
+            data: JSON.stringify(newJob),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+            self._jobService.storeUserIssuedJob(newJob);
+            const newState = Object.assign({}, self.state, {
+                hasIssuedJob: self._jobService.hasIssuedJob()
+            });
+            self.setState(newState)
+            self._positionService.storeUserPosition(self.state.currentPosition);
+            hashHistory.push('/viewjob');
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            const newState = Object.assign({}, self.state, {
+                okDialogHeaderText: 'Error',
+                okDialogBodyText: jqXHR.responseText,
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            })
+            self.setState(newState)
+        });
+    }
+
+    okDialogCallBack = () =&gt; {
+        this.setState(
+            {
+                okDialogOpen: false
+            });
+    }
+
+    handleMapLoad = (map) =&gt; {
+        if (map) {
+            console.log(map.getZoom());
+        }
+    }
+
+    handleMapClick = (event) =&gt; {
+        const newState = Object.assign({}, this.state, {
+            currentPosition: new Position(event.latLng.lat(), event.latLng.lng())
+        })
+        this.setState(newState)
+    }
+}
+</pre>
+<p>As you can see this component makes use of a Google Maps component. I chose 
+this one to use :
+<a href="https://tomchentw.github.io/react-google-maps/" target="_blank">
+https://tomchentw.github.io/react-google-maps/</a></p>
+<p>Before we send the actual job JSON payload we need to allow the user to 
+specify their position such that the position can be retrieved later </p>
+<p>Once the client sets their OWN position, they are able to create a job, and 
+push out a new job. If they already have a job in flight the client is NOT able 
+to create a new job</p>
+<p>To deal with the users current position, I also created this simple service 
+class</p>
+<pre lang="js">
+export class Position {
+
+    //my JSON API prefers nice names
+    latitude: number;
+    longitude: number;
+
+    //map component wants these abbreviated names
+    lat: number;
+    lng: number;
+
+    constructor(latitude: number, longitude: number) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+
+        //keep map happy
+        this.lat = latitude;
+        this.lng = longitude;
+    }
+   
+}
+</pre>
+<pre lang="js">
+import { injectable, inject } from "inversify";
+import { Position } from "../domain/Position";
+import { PositionMarker } from "../domain/PositionMarker";
+import { TYPES } from "../../src/types";
+import { AuthService } from "./AuthService";
+
+
+@injectable()
+export class PositionService {
+
+    private _authService: AuthService;
+
+    constructor( @inject(TYPES.AuthService) authService: AuthService) {
+        this._authService = authService;
+    }
+
+    clearUserJobPositions = (): void =&gt; {
+        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + this._authService.userEmail();
+        sessionStorage.removeItem(keyCurrentUserJobPositions);
+    }
+
+    storeUserJobPositions = (jobPositions: Array&lt;PositionMarker&gt;): void =&gt; {
+
+        if (jobPositions == null || jobPositions == undefined)
+            return;
+
+        let currentUsersJobPositions = {
+            currentUser: this._authService.user(),
+            jobPositions: jobPositions
+        }
+        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + this._authService.userEmail();
+        sessionStorage.setItem(keyCurrentUserJobPositions, JSON.stringify(currentUsersJobPositions));
+    }
+
+    userJobPositions = (): Array&lt;PositionMarker&gt; =&gt; {
+        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + this._authService.userEmail();
+        var currentUserJobPositions = JSON.parse(sessionStorage.getItem(keyCurrentUserJobPositions));
+        return currentUserJobPositions.jobPositions;
+    }
+
+    hasJobPositions = (): boolean =&gt; {
+        let keyCurrentUserJobPositions = 'currentUserJobPositions_' + this._authService.userEmail();
+        var currentUserJobPositions = JSON.parse(sessionStorage.getItem(keyCurrentUserJobPositions));
+        return currentUserJobPositions != null &amp;&amp; currentUserJobPositions != undefined;
+    }
+
+    clearUserPosition = (): void =&gt; {
+        let keyCurrentUserPosition = 'currentUserPosition_' + this._authService.userEmail();
+        sessionStorage.removeItem(keyCurrentUserPosition);
+    }
+
+    storeUserPosition = (position: Position): void =&gt; {
+
+        if (position == null || position == undefined)
+            return;
+
+        let currentUsersPosition = {
+            currentUser: this._authService.user(),
+            position: position
+        }
+        let keyCurrentUserPosition = 'currentUserPosition_' + this._authService.userEmail();
+        sessionStorage.setItem(keyCurrentUserPosition, JSON.stringify(currentUsersPosition));
+    }
+
+    currentPosition = (): Position =&gt; {
+        let keyCurrentUserPosition = 'currentUserPosition_' + this._authService.userEmail();
+        var currentUsersPosition = JSON.parse(sessionStorage.getItem(keyCurrentUserPosition));
+        return currentUsersPosition.position;
+    }
+
+    hasPosition = (): boolean =&gt; {
+        let keyCurrentUserPosition = 'currentUserPosition_' + this._authService.userEmail();
+        var currentUsersPosition = JSON.parse(sessionStorage.getItem(keyCurrentUserPosition));
+        return currentUsersPosition != null &amp;&amp; currentUsersPosition != undefined;
+    }
+}
+</pre>
+<h4>JSON Payload</h4>
+<p>As before we send this across to the Play back end using this route</p>
+<pre>
+POST  /job/submit                              controllers.JobController.submitJob()
+</pre>
+<p><strong>JobController</strong></p>
+<p>Ok so we now know that we have a new endpoint that can accept a “job” JSON 
+object. What does it do with this Job JSON object. Well quite simply it does 
+this</p>
+<ul>
+	<li>Converts the JSON into a Scala object</li>
+	<li>Sends it out over Kafka using Reactive Kafka publisher</li>
+</ul>
+<p>You may be asking yourself why we want to burden ourselves with Kafka here at 
+all if all we are going to do is get a Job JSON payload in them send it out via 
+Kafka only to have it come back in via Kafka. This seems weird why bother. The 
+reason we want to involve Kafka here is for the audit an commit log facility 
+that it provided. We want a record of the events, that’s what kafka given us, a 
+nice append only log</p>
+<p>Anyway what does the new endpoint code look like that accepts the job. Here 
+it is</p>
+<pre lang="scala">
+package controllers
+
+import javax.inject.Inject
+
+import entities.Job
+import entities.JobJsonFormatters._
+import entities._
+import actors.job.{JobConsumerActor, JobProducerActor}
+import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
+import akka.pattern.{Backoff, BackoffSupervisor}
+import akka.stream.scaladsl.{BroadcastHub, Keep, MergeHub}
+import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
+import play.api.http.ContentTypes
+import play.api.libs.Comet
+import play.api.libs.json._
+import play.api.libs.json.Json
+import play.api.libs.json.Format
+import play.api.libs.json.JsSuccess
+import play.api.libs.json.Writes
+import play.api.mvc.{Action, Controller}
+import utils.Errors
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Random
+import scala.concurrent.duration._
+
+class JobController @Inject()
+(
+  implicit actorSystem: ActorSystem,
+  ec: ExecutionContext
+) extends Controller
+{
+  val rand = new Random()
+
+  //Error handling for streams
+  //http://doc.akka.io/docs/akka/2.5.2/scala/stream/stream-error.html
+  val decider: Supervision.Decider = {
+    case _ =&gt; Supervision.Restart
+  }
+
+  implicit val mat = ActorMaterializer(
+    ActorMaterializerSettings(actorSystem).withSupervisionStrategy(decider))
+
+  val (sink, source) =
+    MergeHub.source[JsValue](perProducerBufferSize = 16)
+      .toMat(BroadcastHub.sink(bufferSize = 256))(Keep.both)
+      .run()
+
+  //job producer
+  val childJobProducerActorProps = Props(classOf[JobProducerActor],mat,ec)
+  val jobProducerSupervisorProps = createBackoffSupervisor(childJobProducerActorProps,
+    s"JobProducerActor_${rand.nextInt()}")
+  val jobProducerSupervisorActorRef = actorSystem.actorOf(jobProducerSupervisorProps,
+    name = "jobProducerSupervisor")
+
+  //job consumer
+  val childJobConsumerActorProps = Props(new JobConsumerActor(sink)(mat,ec))
+  val jobConsumerSupervisorProps = createBackoffSupervisor(childJobConsumerActorProps,
+    s"JobConsumerActor_${rand.nextInt()}")
+  val jobConsumerSupervisorActorRef = actorSystem.actorOf(jobConsumerSupervisorProps,
+    name = "jobConsumerSupervisor")
+  jobConsumerSupervisorActorRef ! Init
+
+
+  def streamedJob() = Action {
+    Ok.chunked(source via Comet.json("parent.jobChanged")).as(ContentTypes.HTML)
+  }
+
+
+  def submitJob = Action.async(parse.json) { request =&gt;
+    Json.fromJson[Job](request.body) match {
+      case JsSuccess(job, _) =&gt; {
+        jobProducerSupervisorActorRef ! job
+        Future.successful(Ok(Json.toJson(job.copy(clientEmail = job.clientEmail.toUpperCase))))
+      }
+      case JsError(errors) =&gt;
+        Future.successful(BadRequest("Could not build a Job from the json provided. " +
+          Errors.show(errors)))
+    }
+  }
+
+
+  private def createBackoffSupervisor(childProps:Props, actorChildName: String) : Props = {
+    BackoffSupervisor.props(
+      Backoff.onStop(
+        childProps,
+        childName = actorChildName,
+        minBackoff = 3.seconds,
+        maxBackoff = 30.seconds,
+        randomFactor = 0.2
+      ).withSupervisorStrategy(
+        OneForOneStrategy() {
+          case _ =&gt; SupervisorStrategy.Restart
+        })
+    )
+  }
+
+}
+</pre>
+<p>There is a fair bit going on in that code. Lets dissect it a bit</p>
+<ul>
+	<li>We create a backoff supervisor for both the Kafka producer/consumer 
+	actors</li>
+	<li>We create a stream that is capable of writing to the Comet frame socket</li>
+	<li>We provide the sink side (MergeHub) of the stream to the consumer actor, 
+	such that when it reads a value from Kafka it will be pumped into the sink 
+	which will then travel through the Akka stream back to the web page via the 
+	BroadcastHub and Comet forever frame back to the HTML (and ultimately RxJs 
+	Subject)</li>
+</ul>
+<h4>Push the consumed Job out of the forever frame (Comet functionality in Play backend)</h4>
+<p>Ok so we just saw how the 2 actors are created under back off supervisors, and how the consumer (the one that reads from Kafka) gets the ability to essentially write back to the forever frame in the HTML.</p>
+<p>So how does the job go out into Kafka land?</p>
+<p>That part is quite simple, here it is</p>
+<pre lang="scala">
+ackage actors.job
+
+import kafka.topics.JobTopics
+import serialization.JSONSerde
+import akka.Done
+import akka.actor.{Actor, PoisonPill}
+import akka.kafka.ProducerSettings
+import akka.kafka.scaladsl.Producer
+import akka.stream.scaladsl.{Keep, MergeHub, Source}
+import akka.stream.{ActorMaterializer, KillSwitches}
+import entities.Job
+import org.apache.kafka.clients.producer.ProducerRecord
+import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
+import utils.Settings
+
+import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success}
+
+
+class JobProducerActor(
+  implicit materializer: ActorMaterializer,
+  ec: ExecutionContext
+) extends Actor {
+
+  val jSONSerde = new JSONSerde[Job]
+  val jobProducerSettings = ProducerSettings(
+    context.system,
+    new StringSerializer,
+    new ByteArraySerializer)
+    .withBootstrapServers(s"${Settings.bootStrapServers}")
+
+  val ((mergeHubSink, killswitch), kafkaSourceFuture) =
+    MergeHub.source[Job](perProducerBufferSize = 16)
+      .map(job =&gt; {
+        val jobBytes = jSONSerde.serializer().serialize("", job)
+        (job, jobBytes)
+      })
+      .map { jobWithBytes =&gt;
+        val (job, jobBytes) = jobWithBytes
+        new ProducerRecord[String, Array[Byte]](
+          JobTopics.JOB_SUBMIT_TOPIC, job.clientEmail, jobBytes)
+      }
+      .viaMat(KillSwitches.single)(Keep.both)
+      .toMat(Producer.plainSink(jobProducerSettings))(Keep.both)
+      .run()
+
+  kafkaSourceFuture.onComplete {
+    case Success(value) =&gt; println(s"Got the callback, value = $value")
+    case Failure(e) =&gt; {
+      self ! PoisonPill
+    }
+  }
+
+  override def postStop(): Unit = {
+    super.postStop()
+    println(s"JobProducerActor seen 'Done'")
+    killswitch.shutdown()
+  }
+
+  override def receive: Receive = {
+    case (job: Job) =&gt; {
+      println(s"JobProducerActor seen ${job}")
+      Source.single(job).runWith(mergeHubSink)
+    }
+    case Done =&gt; {
+      println(s"JobProducerActor seen 'Done'")
+      killswitch.shutdown()
+      self ! PoisonPill
+    }
+  }
+}
+</pre>
+<p>
+I’ll be honest there is a fair bit going on in that small chunk of code above so lets dissect it. What it happening exactly?</p>
+<ul>
+	<li>The most important point is that we simply use the actor as a vessel to host a reactive kafka akka stream 
+	<code>RunnableGraph </code>representing a Graph of <code>MergeHub </code>– &gt; Reactive Kafka producer sink. This is completely fine and a normal thing to do. Discussing akka streams is out of scope for this post but if you want to know more you can read more on a previous post I did here :
+	<a href="https://sachabarbs.wordpress.com/2016/12/13/akka-streams/" target="_blank">https://sachabarbs.wordpress.com/2016/12/13/akka-streams/</a></li>
+	<li>&nbsp;So we now know this actor hosts a stream, but the stream could fail, or the actor could fail. So what we want is if the actor fails the stream is stopped, and if the stream fails the actor is stopped. To do that we need to do a couple of thing
+	<ul>
+		<li><strong>STREAM FAILING :</strong> Since the <code>RunnableGraph 
+		</code>can return a <code>Future[T]</code> we can hook a callback Success/Failure on that, and send a
+		<code>PoisonPill </code>to the hosting actor. Then the supervisor actor we saw above would kick in and try and create a new instance of this actor. Another thing to note is that the stream hosted in this actor uses the 
+		<code>ActorMaterializer </code>that was supplied by the <code>JobController</code>, where we provided a restart supervision strategy for the stream.
+		</li>
+		<li><strong>ACTOR FAILING :</strong> If the actor itself fails the Akka framework will call the postStop() method, at which point we want to shutdown the stream within this actor. So how can we shutdown the hosted stream? Well see in the middle of the stream setup there is this line 
+		<code>.viaMat(KillSwitches.single)(Keep.both)</code> this allows us to get a killswitch from the materialized values for the stream. Once we have a KillSwitch we can simply call its shutDown() method.
+		</li>
+		<li><strong>BELTS AND BRACES :</strong> I have also provided a way for the outside world to shutdown this actor and its hosted stream. This is via sending this actor a 
+		<code>Done </code>message. I have not put this in yet, but the hook is there to demonstrate how you could do this.
+		</li>
+	</ul>
+	</li>
+	<li>We can see that there is a <code>MergeHub </code>source which allows external code to push stuff through the
+	<code>MergeHub </code>via the materialized Sink value from within the actor
+	</li>
+	<li>We can also see that the <code>Job </code>object that the actor sees is indeed pushed into the
+	<code>MergeHub </code>materialized Sink via this actor, and then some transformation is done on it, to grab its raw bytes
+	</li>
+	<li>We can see the final stage in the <code>RunnableGraph </code>is the  Reactive Kafka 
+	<code>Producer.plainSink</code>. Which would result in a message being pushed out to a Kafka topic from the hosted stream, pushed 
+	<code>Job </code>object from this actor into the stream
+And I think that is the main set of points about how this actor works </li>
+</ul>
+<h4>
+Consume the Job over a Kafka Topic (using Akka Streams / Reactive Kafka) </h4>
+<p>Lets see the <code>JobConsumerActor </code>which takes this Sink (<code>MergeHub
+</code>from <code>JobController</code>) and pushes the value out to it, when it 
+sees a new value from Kafka on the job topic “job-submit-topic”. This then 
+travels through the Akka stream where it goes via the <code>BroadcastHub </code>
+out to the forever from in the HTML.<br><br><br>Here is the code, it may look 
+scary but really its just reading a value of the Kafka topic and pushing it out 
+via the Sink (<code>MergeHub</code>) where the sink is hooked up to a forever 
+frame that Play framework supports. Where the forever frame is open and waiting 
+for data to be sent to it via a comet endpoint which you can read more about 
+here :
+<a href="https://www.playframework.com/documentation/2.6.x/ScalaComet" target="_blank">
+https://www.playframework.com/documentation/2.6.x/ScalaComet</a></p>
+<pre lang="scala">
+ackage actors.job
+
+import entities.{Job, Init}
+import kafka.topics.JobTopics
+import serialization.JSONSerde
+import akka.{Done, NotUsed}
+import akka.actor.{Actor, ActorSystem, PoisonPill}
+import akka.kafka.{ConsumerSettings, ProducerSettings, Subscriptions}
+import akka.kafka.scaladsl.{Consumer, Producer}
+import akka.stream.scaladsl.{Keep, MergeHub, Sink, Source}
+import akka.stream.{ActorMaterializer, KillSwitches}
+import org.apache.kafka.clients.consumer.ConsumerConfig
+import org.apache.kafka.clients.producer.ProducerRecord
+import org.apache.kafka.common.serialization.{ByteArrayDeserializer, ByteArraySerializer, StringDeserializer, StringSerializer}
+import play.api.libs.json.{JsValue, Json}
+import utils.Settings
+
+import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success}
+
+
+
+//TODO : This actor shouls take in a way of pushing back to Websocket
+class JobConsumerActor
+  (val sink:Sink[JsValue, NotUsed])
+  (implicit materializer: ActorMaterializer, ec: ExecutionContext
+) extends Actor {
+
+  val jSONSerde = new JSONSerde[Job]
+  val jobConsumerSettings = ConsumerSettings(
+    context.system,new StringDeserializer(),new ByteArrayDeserializer())
+    .withBootstrapServers(s"${Settings.bootStrapServers}")
+    .withGroupId("group1")
+    .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
+
+  val ((_, killswitch), kafkaConsumerFuture) =
+    Consumer.committableSource(jobConsumerSettings, Subscriptions.topics(JobTopics.JOB_SUBMIT_TOPIC))
+      .mapAsync(1) { msg =&gt; {
+        val jobBytes = msg.record.value
+        val job = jSONSerde.deserializer().deserialize(JobTopics.JOB_SUBMIT_TOPIC,jobBytes)
+        self ! job
+        msg.committableOffset.commitScaladsl()
+      }
+      }
+      .viaMat(KillSwitches.single)(Keep.both)
+      .toMat(Sink.last)(Keep.both)
+      .run()
+
+
+  kafkaConsumerFuture.onComplete {
+    case Success(value) =&gt; println(s"Got the callback, value = $value")
+    case Failure(e) =&gt; {
+      self ! PoisonPill
+    }
+  }
+
+  override def postStop(): Unit = {
+    super.postStop()
+    println(s"JobConsumerActor seen 'Done'")
+    killswitch.shutdown()
+  }
+
+  override def receive: Receive = {
+    case (job: Job) =&gt; {
+      println(s"JobConsumerActor seen ${job}")
+      val finalJsonValue = Json.toJson(job)
+      Source.single(finalJsonValue).runWith(sink)
+    }
+    case Done =&gt; {
+      println(s"JobConsumerActor seen 'Done'")
+      killswitch.shutdown()
+      self ! PoisonPill
+    }
+    case Init =&gt; {
+      println("JobConsumerActor saw init")
+    }
+  }
+}
+</pre>
+<h4>Have a new RxJs based Observable over the comet based forever frame, and ensure that is working</h4>
+<p>So at the end of the pipeline, we have a forever frame in the browser (always available 
+within <code>Index.html</code>) that we wish to get events from. Ideally we want to turn this rather bland event into a better RxJs Observable. So how do we do that. Its quite simple we use this little service that is able to create a new Observable from the incoming event for us</p>
+<pre lang="js">
+import { injectable, inject } from "inversify";
+import { JobEventArgs } from "../domain/JobEventArgs";
+import Rx from 'rx';
+
+@injectable()
+export class JobStreamService {
+
+    private _jobSourceObservable: Rx.Observable&lt;any&gt;;
+
+    constructor() {
+
+    }
+
+    init = (): void =&gt; {
+
+        window['jobChanged'] = function (incomingJsonPayload: any) {
+            let evt = new CustomEvent('onJobChanged', new JobEventArgs(incomingJsonPayload));
+            window.dispatchEvent(evt);
+        }
+
+        this._jobSourceObservable = Rx.Observable.fromEvent(window, 'onJobChanged');
+    }
+
+    getJobStream = (): Rx.Observable&lt;any&gt; =&gt; {
+        return this._jobSourceObservable;
+    }
+}
+</pre>
+<p>Where the <code>JobEventArgs </code>looks like this</p>
+<pre lang="js">
+export class JobEventArgs {
+
+    detail: any;
+
+    constructor(detail: any) {
+        this.detail = detail;
+    }
+
+}
+
+</pre>
+<p>We can this use this service in other code and subscribe to this RxJs Observable that the above service exposes. Here is an example of subscribing to it.</p>
+<pre lang="js">
+componentWillMount() {
+    this._subscription =
+        this._jobStreamService.getJobStream()
+        .subscribe(
+        jobArgs =&gt; {
+ 
+                //TODO : 1. This should not be hard coded
+                //TODO : 2. We should push out current job when we FIRST LOAD this page
+                //          if we are a client, and we should enrich it if we are a driver
+                //       3. The list of markers should be worked out again every time based
+                //          on RX stream messages
+                console.log('RX saw onJobChanged');
+                console.log('RX x = ', jobArgs.detail);
+            },
+            error =&gt; {
+                console.log('RX saw ERROR');
+                console.log('RX error = ', error);
+            },
+            () =&gt; {
+                console.log('RX saw COMPLETE');
+            }
+        );
+}</pre>
+<p>We will see much more of the RX stuff in the next part of this article</p>
 <h2>ViewJob workflow</h2>
 <p class="auto-style1">NEED TO DO THIS</p>
 <h2>&nbsp;</h2>
