@@ -1114,6 +1114,31 @@ Well it looks like this</p>
 HEAD/Script tags automatically, this is great I think, and they also have nice 
 hashes as part of the file name, to allow the browser caches to be easily 
 invalidated</p>
+<p><strong>Play &quot;Home&quot; route</strong></p>
+<p>So that&#39;s great but how does this page get served up. Well the trick to that 
+lies in this Play framework route entry</p>
+<pre>
+# Home page
+GET   /                                        controllers.HomeController.index()
+</pre>
+<p>Which has this server side code to serve the route</p>
+<pre lang="scala">
+package controllers
+
+import javax.inject.Inject
+import play.api.mvc.{Action, Controller}
+
+class HomeController @Inject() (environment: play.api.Environment)
+  extends Controller {
+
+  def index() = Action {
+    val fullpath = s"${environment.rootPath}\\public\\dist\\index.html"
+    val htmlContents = scala.io.Source.fromFile(fullpath).mkString
+    Ok(htmlContents).as("text/html")
+  }
+
+}</pre>
+<p>&nbsp;</p>
 <h2>Routing</h2>
 <p>As I stated above this demo is a Singlle Page App (SPA) type of app. So how 
 is that done. That is done in this file <code>
@@ -1951,7 +1976,7 @@ route page</li>
 that goes with the “Passenger Registration”</p>
 <h4>Json Support</h4>
 <p>We need to start with the JSON suport from JavaScript to Scala. This is done 
-using this file P<code>layBackEndApi/app/Entities/PassengerRegistrationEntities.scala</code>, 
+using this file <code>PlayBackEndApi/app/Entities/PassengerRegistrationEntities.scala</code>, 
 where we use Play framework JSON combinators</p>
 <ul>
 	<li><strong>Reads</strong> : Which allows reading a JSON string into a Scala 
@@ -2132,8 +2157,401 @@ just slightly different JSON, but it does share the same core logic/controller
 as the “Passenger Registration”</p>
 <p>&nbsp;</p>
 <h2>Login workflow</h2>
-<p class="auto-style1">NEED TO DO THIS</p>
-<h2>&nbsp;</h2>
+<p><img alt="" height="217" src="loginRegisterFlow.png" width="630"></p>
+<p>The login uses the 
+pieces shown above.</p>
+<div>
+<p style="background:yellow; margin:3px; border:1px black solid">This workflow 
+is VERY similiar to registration, so feel free to skip this section if you think 
+you understand how registation concepts work</p>
+</div>
+<h3>How does Webpack/Play work with this?</h3>
+<p>WebPack has this concept of loaders that are what gets used to load different 
+file types. So for example you can use a TypeScr</p>
+<p>&nbsp;</p>
+<h4>Login React component</h4>
+<p>This is the main <code>
+PlayBackEndApi/FrontEndWebSite/src/Login.tsx</code> file for the React TSX representing the 
+login component.</p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { OkDialog } from "./components/OkDialog";
+import 'bootstrap/dist/css/bootstrap.css';
+import {
+    Well,
+    Grid,
+    Row,
+    Col,
+    ButtonInput
+} from "react-bootstrap";
+import { Form, ValidatedInput } from 'react-bootstrap-validation';
+import revalidator from 'revalidator';
+import { AuthService } from "./services/AuthService";
+
+let schema = {
+    properties: {
+        email: {
+            type: 'string',
+            maxLength: 255,
+            format: 'email',
+            required: true,
+            allowEmpty: false
+        },
+        password: {
+            type: 'string',
+            minLength: 8,
+            maxLength: 60,
+            required: true,
+            allowEmpty: false
+        }
+    }
+};
+
+export interface LoginState {
+    okDialogOpen: boolean;
+    okDialogKey: number;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+}
+
+export class Login extends React.Component&lt;undefined, LoginState&gt; {
+
+    private _authService: AuthService;
+
+    constructor(props: any) {
+        super(props);
+        console.log(props);
+        this._authService = props.route.authService;
+        this.state = {
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0
+        };
+    }
+
+    render() {
+        return (
+            &lt;Well className="outer-well"&gt;
+                &lt;Form
+                    // Supply callbacks to both valid and invalid
+                    // submit attempts
+                    validateAll={this.validateForm}
+                    onInvalidSubmit={this.handleInvalidSubmit}
+                    onValidSubmit={this.handleValidSubmit}&gt;
+                    &lt;Grid&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;Col xs={10} md={6}&gt;
+                                &lt;h4&gt;ENTER YOUR LOGIN DETAILS&lt;/h4&gt;
+                                &lt;span&gt;&lt;h6&gt;Or click &lt;a href="#/register"&gt;here&lt;/a&gt; to register&lt;/h6&gt;&lt;/span&gt;
+                            &lt;/Col&gt;
+                        &lt;/Row&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;Col xs={10} md={6}&gt;
+                                &lt;ValidatedInput type='text'
+                                    label='Email'
+                                    name='email'
+                                    errorHelp='Email address is invalid' /&gt;
+
+                            &lt;/Col&gt;
+                        &lt;/Row&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;Col xs={10} md={6}&gt;
+                                &lt;ValidatedInput type='password'
+                                    name='password'
+                                    label='Password'
+                                    errorHelp='Password is invalid' /&gt;
+
+                            &lt;/Col&gt;
+                        &lt;/Row&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;Col xs={10} md={6}&gt;
+                                &lt;ValidatedInput
+                                    type='checkbox'
+                                    name='isDriver'
+                                    label='Are you a driver?'
+                                /&gt;
+                            &lt;/Col&gt;
+                        &lt;/Row&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;Col xs={10} md={6}&gt;
+                                &lt;ButtonInput
+                                    id="loginBtn"
+                                    type='submit'
+                                    bsSize='small'
+                                    bsStyle='primary'
+                                    value='Register'&gt;Login&lt;/ButtonInput&gt;
+                            &lt;/Col&gt;
+                        &lt;/Row&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;span&gt;
+                                &lt;OkDialog
+                                    open={this.state.okDialogOpen}
+                                    okCallBack={this.okDialogCallBack}
+                                    headerText={this.state.okDialogHeaderText}
+                                    bodyText={this.state.okDialogBodyText}
+                                    key={this.state.okDialogKey} /&gt;
+                            &lt;/span&gt;
+                        &lt;/Row&gt;
+                    &lt;/Grid&gt;
+                &lt;/Form&gt;
+            &lt;/Well&gt;
+        )
+    }
+
+    validateForm = (values) =&gt; {
+        let res = revalidator.validate(values, schema);
+
+        // If the values passed validation, we return true
+        if (res.valid) {
+            return true;
+        }
+
+        // Otherwise we should return an object containing errors
+        // e.g. { email: true, password: true }
+        return res.errors.reduce((errors, error) =&gt; {
+            // Set each property to either true or
+            // a string error description
+            errors[error.property] = true;
+
+            return errors;
+        }, {});
+    }
+
+    handleInvalidSubmit = (errors, values) =&gt; {
+
+        console.log(values);
+
+        // Errors is an array containing input names
+        // that failed to validate
+        this.setState(
+            {
+                okDialogHeaderText: 'Validation Error',
+                okDialogBodyText: 'Form has errors and may not be submitted',
+                okDialogOpen: true,
+                okDialogKey: Math.random()
+            });
+    }
+
+    handleValidSubmit = (values) =&gt; {
+        var logindetails = values;
+        var self = this;
+
+        $.ajax({
+            type: 'POST',
+            url: 'login/validate',
+            data: JSON.stringify(logindetails),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+
+            console.log("result of login");
+            console.log(jqXHR.responseText);
+            let currentUser = JSON.parse(jqXHR.responseText);
+            let userProfile = {
+                isDriver: logindetails.isDriver,
+                user: currentUser
+            };
+            self._authService.storeUser(userProfile);
+
+            self.setState(
+                {
+                    okDialogHeaderText: 'Login Successful',
+                    okDialogBodyText: 'You are now logged in',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: jqXHR.responseText,
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
+    }
+
+    okDialogCallBack = () =&gt; {
+        this.setState(
+            {
+                okDialogOpen: false
+            });
+    }
+}
+</pre>
+<p>There are a couple of things of note there</p>
+<ul>
+<li>That we use a standard POST</li>
+<li>That will post the login data as JSON to the Play API backend code</li>
+	<li>That we use the
+	<a href="https://www.npmjs.com/package/react-bootstrap-validation" target="_blank">
+	react-bootstrap-validation</a> package for field validation</li>
+	<li>That if the login process is ok we store the user data in the
+	<code>AuthorisationService.ts</code> that we saw earlier, where it in turn 
+	writes to the browser <code>sessionStorage</code></li>
+</ul>
+<p>Let’s now turn our attention to the Play API backend code 
+that goes with the “Login”</p>
+<h4>Json Support</h4>
+<p>We need to start with the JSON suport from JavaScript to Scala. This is done 
+using this file <code>PlayBackEndApi/app/Entities/LoginEntities.scala</code>, 
+where we use Play framework JSON combinators</p>
+<ul>
+	<li><strong>Reads</strong> : Which allows reading a JSON string into a Scala 
+	object</li>
+	<li><strong>Writes</strong> : Which allows a Scala object to be turned into 
+	a JSON string</li>
+	<li><strong>Format</strong> : is just a mix of the Reads and Writes Traits 
+	and can be used for implicit conversion in place of its components.</li>
+</ul>
+<p>The recommendation for both of these is that they are exposed as implicit 
+vals you can read more about it here :
+<a href="https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators" target="_blank">
+https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators</a></p>
+<pre lang="scala">
+package entities
+
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+
+case class Login(email: String, password: String, isDriver: Boolean)
+
+object Login {
+  implicit val formatter = Json.format[Login]
+}
+
+object LoginJsonFormatters {
+
+  implicit val loginWrites = new Writes[Login] {
+    def writes(login: Login) = Json.obj(
+      "email" -&gt; login.email,
+      "password" -&gt; login.password,
+      "isDriver" -&gt; login.isDriver
+    )
+  }
+
+  implicit val loginReads: Reads[Login] = (
+      (JsPath \ "email").read[String] and
+      (JsPath \ "password").read[String] and
+      ((JsPath \ "isDriver").read[Boolean])
+    )(Login.apply _)
+}
+</pre>
+<h4>Login route</h4>
+<p>Once we have that in place we need to turn our attention to the actual 
+endpoint to support the POST of a Login object. We first need to 
+set up the route in the conf/routes file as follows:</p>
+<pre>
+# Login page
+POST  /login/validate                          controllers.LoginController.validateLogin()
+</pre>
+<h4>Login controller</h4>
+<p>So now that we have talked about the JSON Reads/Writes and we know that we 
+need Mongo downloaded and running (see how do I run this section at start), lets 
+see what the actual controller looks like shall we. Here is the FULL code for 
+the <code>
+PlayBackEndApi/app/controllers/LoginController.scala</code></p>
+<pre lang="scala">
+package controllers
+
+import javax.inject.Inject
+import entities.DriverRegistrationJsonFormatters._
+import entities.PassengerRegistrationJsonFormatters._
+import entities._
+import play.api.Logger
+import play.api.libs.json._
+import play.api.mvc.{Action, Controller, Result}
+import play.modules.reactivemongo._
+import reactivemongo.api.ReadPreference
+import reactivemongo.play.json._
+import reactivemongo.play.json.collection._
+import utils.Errors
+
+
+import scala.concurrent.{ExecutionContext, Future}
+
+class LoginController @Inject()
+  (val reactiveMongoApi: ReactiveMongoApi)
+  (implicit ec: ExecutionContext)
+  extends Controller with MongoController with ReactiveMongoComponents {
+
+  def passRegistrationFuture: Future[JSONCollection] = database.map(_.collection[JSONCollection]("passenger-registrations"))
+  def driverRegistrationFuture: Future[JSONCollection] = database.map(_.collection[JSONCollection]("driver-registrations"))
+
+
+  def validateLogin = Action.async(parse.json) { request =&gt;
+    Json.fromJson[Login](request.body) match {
+      case JsSuccess(newLoginDetails, _) =&gt;
+        newLoginDetails.isDriver match {
+          case false =&gt; {
+            val maybePassengerReg = extractExistingRegistration(
+              passRegistrationFuture.flatMap {
+                _.find(Json.obj("email" -&gt; Json.obj("$eq" -&gt; newLoginDetails.email))).
+                  cursor[JsObject](ReadPreference.primary).
+                  collect[List]()
+              })
+            returnRedactedRegistration[PassengerRegistration](
+              maybePassengerReg,
+              (reg: PassengerRegistration) =&gt; Ok(Json.toJson(reg.copy(password = "")))
+            )
+
+          }
+          case true =&gt; {
+            val maybeDriverReg = extractExistingRegistration(
+              driverRegistrationFuture.flatMap {
+                _.find(Json.obj("email" -&gt; Json.obj("$eq" -&gt; newLoginDetails.email))).
+                  cursor[JsObject](ReadPreference.primary).
+                  collect[List]()
+              })
+            returnRedactedRegistration[DriverRegistration](
+              maybeDriverReg,
+              (reg: DriverRegistration) =&gt; Ok(Json.toJson(reg.copy(password = "")))
+            )
+          }
+        }
+      case JsError(errors) =&gt;
+        Future.successful(BadRequest("Could not build a Login from the json provided. " +
+          Errors.show(errors)))
+    }
+  }
+
+  private def returnRedactedRegistration[T]
+  (
+    maybeDriverRegFuture: Future[Option[JsObject]],
+    redactor : T =&gt; Result
+  )(implicit reads: Reads[T]): Future[Result] = {
+    maybeDriverRegFuture.map {
+      case Some(json) =&gt; {
+        val reg = Json.fromJson[T](json)
+        reg match {
+          case JsSuccess(reg, _) =&gt; {
+            redactor(reg)
+          }
+          case _ =&gt; BadRequest("Login already exists")
+        }
+      }
+      case None =&gt; BadRequest("Could not find login")
+    }
+  }
+
+  private def extractExistingRegistration[T]
+  (incomingRegistrations: Future[List[T]])
+  (implicit writes: Writes[T], ec: ExecutionContext): Future[Option[T]] = {
+    incomingRegistrations.map(matchedRegistrations =&gt;
+      matchedRegistrations.length match {
+        case 0 =&gt; None
+        case _ =&gt; Some(matchedRegistrations(0))
+      }
+    )
+  }
+}
+</pre>
+<p>This is similiar enough in nature to the registration process, so I will not 
+go into this any further.</p>
 <h2>CreateJob workflow</h2>
 <p class="auto-style1">NEED TO DO THIS</p>
 <h2>&nbsp;</h2>
