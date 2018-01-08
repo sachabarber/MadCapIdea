@@ -583,8 +583,8 @@ following areas</p>
 	<li>React front end (TypeScript)</li>
 	<li>Kafka Streams (scala)</li>
 </ul>
-<p>We will get to all of these parts, but before we start lets examine some of 
-the stuff that helps the front end work get of the ground</p>
+<p>We will get to all of these parts, but before that let&#39;s examine some of the 
+stuff that helps the front end work get of the ground</p>
 <h3>NPM requirements</h3>
 <p>The demo project uses quite a few components, such as</p>
 <ul>
@@ -597,7 +597,8 @@ the stuff that helps the front end work get of the ground</p>
 </ul>
 <p>As such we need a way to pull all these packages into use, so for that and 
 the front end side of things we use NPM which you will need to have installed. 
-The following shows the NPM dependencies for the demo app package.json file</p>
+The following shows the NPM dependencies for the demo app <code>
+PlayBackEndApi/FrontEndWebSite/package.json</code> file</p>
 <pre lang="js">
 {
   "name": "task1webpackconfig",
@@ -669,13 +670,13 @@ The following shows the NPM dependencies for the demo app package.json file</p>
 <h3>Babel config</h3>
 <p>As stated above the demo project makes use of 
 <a href="https://babeljs.io/" target="_blank">Babeljs.io</a> to use future state 
-JavaScript now. As such we also need to supply a small Babel config file (<code>.babelrc</code>), 
+JavaScript now. As such we also need to supply a small Babel config file (<code>PlayBackEndApi/FrontEndWebSite/.babelrc</code>), 
 this is shown below, where we opt to use the ES2015/React presets</p>
 <pre lang="js">{ "presets": ["es2015","react"] }</pre>
 <h3>TypeScript config</h3>
 <p>The demo also makes use of&nbsp;
 <a href="https://www.typescriptlang.org" target="_blank">TypeScript</a> which also need some specific 
-configuration. As such we also need to supply a small TypeScript config file (<code>tsconfig.json</code>), 
+configuration. As such we also need to supply a small TypeScript config file (<code>PlayBackEndApi/FrontEndWebSite/tsconfig.json</code>), 
 this is shown below, the full set of
 <a href="https://www.typescriptlang.org" target="_blank">TypeScript</a> options 
 can also be found here :
@@ -724,13 +725,674 @@ https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/</a></p>
 as in production would want to minify your JavaScript too.</p>
 </div>
 <h3>How does Webpack/Play work with this?</h3>
-<p class="auto-style1">NEED TO DO THIS</p>
-<h3>&nbsp;</h3>
+<p>WebPack has this concept of loaders that are what gets used to load different 
+file types. So for example you can use a TypeScript loader that gets piped 
+through a babel loader, where the final result will be vanilla JavaScript.</p>
+<ul>
+	<li>You can also control how you final bundle will work, what name it has, 
+	where is will be generated etc 
+etc</li>
+	<li>How minification will work</li>
+	<li>Configure loaders</li>
+	<li>Turn on SourceMap</li>
+	<li>Configure things like <a href="https://jquery.com/" target="_blank">jquery</a> and
+	<a href="https://lodash.com/" target="_blank">lodash</a> to appear in the usual 
+places as <code>$</code> and <code>_</code> respectively</li>
+</ul>
+<p>Perhaps its best to see the demo codes WebPack file which looks like this</p>
+<p><strong>PlayBackEndApi/FrontEndWebSite/webpack.config.js</strong></p>
+<pre lang="js">
+let _ = require('lodash');
+let webpack = require('webpack');
+let path = require('path');
+let fs = require("fs");
+let WebpackOnBuildPlugin = require('on-build-webpack');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
+
+let babelOptions = {
+    "presets": ["es2015", "react"]
+};
+
+function isVendor(module) {
+    return module.context &amp;&amp; module.context.indexOf('node_modules') !== -1;
+}
+
+let entries = {
+    index: './src/index.tsx',
+    indexCss: './scss/index.scss'
+
+};
+
+//build it to the Play Framework public folder, which is services by the assets controller
+let buildDir = path.resolve(__dirname, '../public/dist');
+
+module.exports = {
+
+    context: __dirname,
+
+    entry: entries,
+
+    output: {
+        filename: '[name].bundle.[hash].js',
+        path: buildDir,
+		//this is to make it play nice with the Play Framework Assets controllers
+		//that deals with static data
+		publicPath: '/assets/dist'
+    },
+
+    // these break for node 5.3+ when building WS stuff
+    node: {
+        fs: 'empty'
+    },
+
+    watch: true,
+
+    devServer: {
+        open: true, // to open the local server in browser
+        contentBase: __dirname,
+    },
+
+    // Enable sourcemaps for debugging webpack's output.
+    devtool: "source-map",
+
+    resolve: {
+        extensions: [".tsx", ".ts", ".js", ".jsx"],
+        modules: [path.resolve(__dirname, "src"), "node_modules"]
+    },
+
+    plugins: [
+
+        //The ProvidePlugin makes a module available as a variable in every other
+        //module required by webpack
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        }),
+
+        // creates a common vendor js file for libraries in node_modules
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ['vendor'],
+            minChunks: function (module, count) {
+                return isVendor(module);
+            }
+        }),
+
+        // creates a common vendor js file for libraries in node_modules
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "commons",
+            chunks: _.keys(entries),
+            minChunks: function (module, count) {
+                return !isVendor(module) &amp;&amp; count &gt; 1;
+            }
+        }),
+
+
+        //will unlink unused files on a build
+        //http://stackoverflow.com/questions/40370749/how-to-remove-old-files-from-the-build-dir-when-webpack-watch
+        new WebpackOnBuildPlugin(function (stats) {
+            const newlyCreatedAssets = stats.compilation.assets;
+
+            const unlinked = [];
+            fs.readdir(path.resolve(buildDir), (err, files) =&gt; {
+                files.forEach(file =&gt; {
+                    if (file != "fonts") {
+                        if (!newlyCreatedAssets[file]) {
+                            fs.unlink(path.resolve(buildDir + '\\' + file));
+                            unlinked.push(file);
+                        }
+                    }
+                });
+                if (unlinked.length &gt; 0) {
+                    console.log('Removed old assets: ', unlinked);
+                }
+            })
+        }),
+
+        //scss/sass files extracted to common css bundle
+        new ExtractTextPlugin({
+            filename: '[name].bundle.[hash].css',
+            allChunks: true,
+        }),
+
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: 'template.html',
+        })
+    ],
+
+    module: {
+        rules: [
+            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader' 1st 
+            // then 'babel-loader'
+            // NOTE : loaders run right to left (think of them as a cmd line pipe)
+            {
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [
+                  {
+                      loader: 'babel-loader',
+                      options: babelOptions
+                  },
+                  {
+                      loader: 'awesome-typescript-loader'
+                  }
+                ]
+            },
+
+
+            // All files with a .css extenson will be handled by 'css-loader'
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract(['css-loader?importLoaders=1']),
+            },
+
+            // All files with a .scss|.sass extenson will be handled by 'sass-loader'
+            {
+                test: /\.(sass|scss)$/,
+                loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+            },
+
+
+            // All files with a '.js' extension will be handled by 'babel-loader'.
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: [
+                  {
+                      loader: 'babel-loader',
+                      options: babelOptions
+                  }
+                ]
+            },
+
+            { 
+                test: /\.png$/, 
+                loader: "url-loader?limit=100000" 
+            },
+      
+            { 
+                test: /\.jpg$/, 
+                loader: "file-loader" 
+            },
+
+            {
+                test: /\.woff(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&amp;name=fonts/[name].[ext]&amp;limit=10000&amp;mimetype=application/font-woff'
+            },
+
+            {
+                test: /\.woff2(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&amp;name=fonts/[name].[ext]&amp;limit=10000&amp;mimetype=application/font-woff2'
+            },
+
+            {
+                test: /\.ttf(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&amp;name=fonts/[name].[ext]&amp;limit=10000&amp;mimetype=application/octet-stream'
+            },
+
+            {
+                test: /\.eot(\?.*)?$/, loader: 'file-loader?prefix=fonts/&amp;name=fonts/[name].[ext]'
+            },
+
+            {
+                test: /\.svg(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&amp;name=fonts/[name].[ext]&amp;limit=10000&amp;mimetype=image/svg+xml'
+            },
+
+            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+            {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
+            }
+        ]
+    }
+};</pre>
+<p>Of particular note is this part</p>
+<pre lang="js">
+output: {
+        filename: '[name].bundle.[hash].js',
+        path: buildDir,
+		//this is to make it play nice with the Play Framework Assets controllers
+		//that deals with static data
+		publicPath: '/assets/dist'
+    }
+</pre>
+<p>What that is doing is using a hash for the file name, such that the browser 
+would immediately see a change in the file, so would reload it, and not cache 
+old JavaScript. The other part of this is where the file gets generated. As this 
+&quot;front end&quot; part still needs to be hosted in back end (<a href="https://www.playframework.com/documentation/2.5.x/Home" target="_blank">Play 
+framework</a> for this article) we need to ensure that the final JavaScript ends 
+up in a location that the
+<a href="https://www.playframework.com/documentation/2.5.x/Home" target="_blank">
+Play framework</a> is able to render. For this article this means the static
+<a href="https://www.playframework.com/documentation/2.5.x/Home" target="_blank">
+Play framework</a> route which is configured as follows in the <code>PlayBackEndApi/routes </code>file in the <code>PlayBackEndApi </code>project</p>
+<pre>
+GET   /assets/*file                            controllers.Assets.at(path="/public", file)
+</pre>
+<p><strong>PlayBackEndApi/FrontEndWebSite/webpack.develop.js</strong></p>
+<p>Where we might have a specialized develop phase variant (see how we use the 
+base file <code>webpack.config.js</code> as a base) file that 
+looks like this </p>
+<pre lang="js">
+let commonConfig = require('./webpack.config.js');
+let webpack = require('webpack');
+let Merge = require('webpack-merge');
+
+module.exports = function (env) {
+    return Merge(commonConfig, {})
+}
+</pre>
+<p><strong>PlayBackEndApi/FrontEndWebSite/webpack.production.js</strong></p>
+<p>Where we might have a specialized production phase variant (see how we use 
+the base file <code>webpack.config.js</code> as a base) file that 
+looks like this, where we do things like this to make the emitted JavaScript 
+production like</p>
+<ul>
+	<li>Minify it</li>
+	<li>Strip comments</li>
+	<li>Strip console.log (some browsers don&#39;t have it)</li>
+	<li>Don&#39;t enable SourceMaps</li>
+</ul>
+<pre lang="js">
+let commonConfig = require('./webpack.config.js');
+let webpack = require('webpack');
+let Merge = require('webpack-merge');
+
+module.exports = function (env) {
+    return Merge(commonConfig, {
+        plugins: [
+          new webpack.LoaderOptionsPlugin({
+              minimize: true,
+              debug: false
+          }),
+          new webpack.optimize.UglifyJsPlugin({
+              // Eliminate comments
+              comments: false,
+              beautify: false,
+              mangle: {
+                  screw_ie8: true,
+                  keep_fnames: true
+              },
+              compress: {
+                  screw_ie8: true,
+
+                  // remove warnings
+                  warnings: false,
+
+                  // Drop console statements
+                  drop_console: true
+              },
+              comments: false,
+              sourceMap: false
+          })
+        ]
+    })
+}</pre>
 <h3>The SPA</h3>
-<p class="auto-style1">NEED TO DO THIS</p>
-<h3>Routing</h3>
-<p class="auto-style1">NEED TO DO THIS</p>
-<p>&nbsp;</p>
+<p>So the React front end is really a Single Page Application, as such you can 
+expect to find a single page. So just where is that single page?</p>
+<p>We we need to go back to some of the stuff in the <code>webpack.config.js</code> 
+file, specifically these bits</p>
+<pre lang="js">
+
+
+//build it to the Play Framework public folder, which is services by the assets controller
+let buildDir = path.resolve(__dirname, '../public/dist');
+
+output: {
+        filename: '[name].bundle.[hash].js',
+        path: buildDir,
+		//this is to make it play nice with the Play Framework Assets controllers
+		//that deals with static data
+		publicPath: '/assets/dist'
+    },
+....    
+....    
+....    
+....    
+new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: 'template.html',
+        })
+        </pre>
+<p>What this is doing is saying that Webpack will try and generate a file called 
+i<code>ndex.html</code> by using a template called<code> template.html</code> 
+and the final file will be put in a relative path called <code>/assets/dist</code>, 
+which if you go back a bit was mapped using the&nbsp; following in the <code>PlayBackEndApi/routes </code>file in the <code>PlayBackEndApi </code>project</p>
+<pre>
+GET   /assets/*file                            controllers.Assets.at(path="/public", file)
+</pre>
+<p><strong>PlayBackEndApi/FrontEndWebSite/template.html</strong></p>
+<p>So what does the <code>template.html</code> file look like, well here it is, where it also includes a CDN references to Google maps API as we use that in this article</p>
+<pre lang="js">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;title&gt;Hello React!&lt;/title&gt;
+    &lt;script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVtreRNA537_WsNSn2_kOiz3Xhm8w6pEo"
+            type="text/javascript"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;iframe id="comet" src="/job/streamedJob"&gt;&lt;/iframe&gt;
+    &lt;/div&gt;
+    &lt;div id="root"&gt;&lt;/div&gt;
+    &lt;!-- Main --&gt;
+&lt;/body&gt;
+&lt;/html&gt;	
+</pre>
+<p><strong>PlayBackEndApi/public/dist/index.html </strong></p>
+<p>So after WebPack has worked its magic, what does the final file look like. 
+Well it looks like this</p>
+<pre lang="html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;title&gt;Hello React!&lt;/title&gt;
+    &lt;script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVtreRNA537_WsNSn2_kOiz3Xhm8w6pEo"
+            type="text/javascript"&gt;&lt;/script&gt;
+&lt;link href="/assets/dist/vendor.bundle.5c5feaa8663412cf31c5.css" rel="stylesheet"&gt;
+&lt;link href="/assets/dist/indexCss.bundle.5c5feaa8663412cf31c5.css" rel="stylesheet"&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;iframe id="comet" src="/job/streamedJob"&gt;&lt;/iframe&gt;
+    &lt;/div&gt;
+    &lt;div id="root"&gt;&lt;/div&gt;
+    &lt;!-- Main --&gt;
+&lt;script type="text/javascript" src="/assets/dist/vendor.bundle.5c5feaa8663412cf31c5.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="/assets/dist/index.bundle.5c5feaa8663412cf31c5.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;		
+</pre>
+<p>See how the correct Css and JavaScript files have been placed into the 
+HEAD/Script tags automatically, this is great I think, and they also have nice 
+hashes as part of the file name, to allow the browser caches to be easily 
+invalidated</p>
+<h2>Routing</h2>
+<p>As I stated above this demo is a Singlle Page App (SPA) type of app. So how 
+is that done. That is done in this file <code>
+PlayBackEndApi/FrontEndWebSite/src/index.tsx</code>, which is also set as an 
+entry point in the WebPack <code>webpack.config.js</code> file.</p>
+<pre lang="js">
+let entries = {
+    index: './src/index.tsx',
+    .....
+    .....
+    .....
+    .....
+};
+
+//build it to the Play Framework public folder, which is services by the assets controller
+let buildDir = path.resolve(__dirname, '../public/dist');
+
+module.exports = {
+
+    context: __dirname,
+
+    entry: entries,
+	
+	
+	.....
+	.....
+	.....
+	.....
+	.....
+
+}
+</pre>
+<p><strong>PlayBackEndApi/FrontEndWebSite/src/index.tsx</strong></p>
+<p>Where the actual routing work is done like this, where the main top level 
+components will be</p>
+<ul>
+	<li>Login</li>
+	<li>Register</li>
+	<li>Logout</li>
+	<li>CreateJob</li>
+	<li>ViewJob</li>
+	<li>ViewRating</li>
+</ul>
+<p>Some of which are conditional routes depending on whether you are logged in 
+or not. &nbsp;</p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css';
+import {
+    Nav,
+    Navbar,
+    NavItem,
+    NavDropdown,
+    MenuItem,
+    Button
+} from "react-bootstrap";
+import { Router, Route, hashHistory } from 'react-router'
+import { Login } from "./Login";
+import { Logout } from "./Logout";
+import { Register } from "./Register";
+import { CreateJob } from "./CreateJob";
+import { ViewJob } from "./ViewJob";
+import { ViewRating } from "./ViewRating";
+import { ContainerOperations } from "./ioc/ContainerOperations";
+import { AuthService } from "./services/AuthService";
+import { JobService } from "./services/JobService";
+import { JobStreamService } from "./services/JobStreamService";
+import { PositionService } from "./services/PositionService";
+import { TYPES } from "./types";
+import Rx from 'rx';
+
+let authService = ContainerOperations.getInstance().container.get&lt;AuthService&gt;(TYPES.AuthService);
+let jobService = ContainerOperations.getInstance().container.get&lt;JobService&gt;(TYPES.JobService);
+let jobStreamService = ContainerOperations.getInstance().container.get&lt;JobStreamService&gt;(TYPES.JobStreamService);
+let positionService = ContainerOperations.getInstance().container.get&lt;PositionService&gt;(TYPES.PositionService);
+jobStreamService.init();
+
+
+export interface MainNavProps {
+    authService: AuthService;
+    jobService: JobService;
+    jobStreamService: JobStreamService;
+    positionService: PositionService;
+
+}
+
+export interface MainNavState {
+    isLoggedIn: boolean;
+}
+
+class MainNav extends React.Component&lt;MainNavProps, MainNavState&gt; {
+
+    private _subscription: any;
+
+    constructor(props: any) {
+        super(props);
+        console.log(props);
+        this.state = {
+            isLoggedIn: false
+        };
+    }
+
+    componentWillMount() {
+        this._subscription = this.props.authService.getAuthenticationStream()
+            .subscribe(isAuthenticated =&gt; {
+                this.state = {
+                    isLoggedIn: isAuthenticated
+                };
+                if (this.state.isLoggedIn) {
+                    hashHistory.push('/createjob');
+                }
+                else {
+                    hashHistory.push('/');
+                }
+            });
+    }
+
+    componentWillUnmount() {
+        this._subscription.dispose();
+    }
+
+    render() {
+        return (
+            this.state.isLoggedIn ?
+                &lt;Navbar collapseOnSelect&gt;
+                    &lt;Navbar.Header&gt;
+                        &lt;Navbar.Brand&gt;
+                            &lt;span&gt;Simple Kafka-Uber&lt;/span&gt;
+                        &lt;/Navbar.Brand&gt;
+                        &lt;Navbar.Toggle /&gt;
+                    &lt;/Navbar.Header&gt;
+                    &lt;Navbar.Collapse&gt;
+                        &lt;Nav pullRight&gt;
+                            &lt;NavItem eventKey={2} href='#/logout'&gt;Logout&lt;/NavItem&gt;
+                            &lt;NavItem eventKey={2} href='#/createjob'&gt;Create Job&lt;/NavItem&gt;
+                            &lt;NavItem eventKey={2} href='#/viewjob'&gt;View Job&lt;/NavItem&gt;
+                            &lt;NavItem eventKey={2} href='#/viewrating'&gt;View Rating&lt;/NavItem&gt;
+                        &lt;/Nav&gt;
+                    &lt;/Navbar.Collapse&gt;
+                &lt;/Navbar&gt; :
+                &lt;Navbar pullRight collapseOnSelect&gt;
+                    &lt;Navbar.Header&gt;
+                        &lt;Navbar.Brand&gt;
+                            &lt;span&gt;Simple Kafka-Uber&lt;/span&gt;
+                        &lt;/Navbar.Brand&gt;
+                        &lt;Navbar.Toggle /&gt;
+                    &lt;/Navbar.Header&gt;
+                    &lt;Navbar.Collapse&gt;
+                    &lt;/Navbar.Collapse&gt;
+                &lt;/Navbar&gt;
+        )
+    }
+}
+
+class App extends React.Component&lt;undefined, undefined&gt; {
+    render() {
+        return (
+            &lt;div&gt;
+                &lt;div&gt;
+                    &lt;MainNav
+                        authService={authService}
+                        jobService={jobService}
+                        jobStreamService={jobStreamService}
+                        positionService={positionService}
+                    /&gt;
+                    {this.props.children}
+                &lt;/div&gt;
+            &lt;/div&gt;
+        )
+    }
+}
+
+
+ReactDOM.render((
+    &lt;Router history={hashHistory}&gt;
+        &lt;Route component={App}&gt;
+            &lt;Route
+                path="/"
+                component={Login}
+                authService={authService} /&gt;
+            &lt;Route
+                path="/register"
+                component={Register}
+                authService={authService} /&gt;
+            &lt;Route
+                path="/logout"
+                component={Logout}
+                authService={authService}
+                jobService={jobService}
+                positionService={positionService} /&gt;
+            &lt;Route
+                path="/createjob"
+                component={CreateJob}
+                authService={authService}
+                jobService={jobService}
+                positionService={positionService} /&gt;
+            &lt;Route
+                path="/viewjob"
+                component={ViewJob}
+                authService={authService}
+                jobService={jobService}
+                jobStreamService={jobStreamService}
+                positionService={positionService} /&gt;
+            &lt;Route
+                path="/viewrating"
+                component={ViewRating}
+                authService={authService} /&gt;
+        &lt;/Route&gt;
+    &lt;/Router&gt;
+), document.getElementById('root'));
+</pre>
+<p>This makes use of &nbsp;<code>ReactRouter </code>version 3.0.5 to do the 
+routing within the SPA, and also make use of <a href="https://react-bootstrap.github.io/" target="_blank">React-Bootstrap</a> 
+for rendering the
+<a href="https://react-bootstrap.github.io/components/navbar/" target="_blank">
+NavBar</a></p>
+<p>This TypeScipt also hooks up a RxJS subcription to determine whether you are 
+logged in/out, this is done using the following injectable service <code>
+PlayBackEndApi/FrontEndWebSite/src/services/AuthService.ts</code></p>
+<pre lang="js">
+import { injectable, inject } from "inversify";
+import { TYPES } from "../types";
+import Rx from 'rx';
+
+@injectable()
+export class AuthService {
+
+    private _isAuthenticated: boolean;
+    private _authenticatedSubject = new Rx.Subject&lt;boolean&gt;();
+
+    constructor() {
+
+    }
+
+    clearUser = (): void =&gt; {
+        this._isAuthenticated = false;
+        sessionStorage.removeItem('currentUserProfile');
+        this._authenticatedSubject.onNext(false);
+    }
+
+    storeUser = (currentProfile: any): void =&gt; {
+
+        if (currentProfile == null || currentProfile == undefined)
+            return;
+
+        this._isAuthenticated = true;
+        sessionStorage.setItem('currentUserProfile', JSON.stringify(currentProfile));
+        this._authenticatedSubject.onNext(true);
+    }
+
+    userName = (): string =&gt; {
+        var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return userProfile.user.fullName;
+    }
+
+    user = (): any =&gt; {
+        var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return userProfile.user;
+    }
+
+    userEmail = (): string =&gt; {
+        var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return userProfile.user.email;
+    }
+
+    isDriver = (): boolean =&gt; {
+        var userProfile = JSON.parse(sessionStorage.getItem('currentUserProfile'));
+        return userProfile.isDriver;
+    }
+
+    isAuthenticated = (): boolean =&gt; {
+        return this._isAuthenticated;
+    }
+
+    getAuthenticationStream = (): Rx.Observable&lt;boolean&gt; =&gt; {
+        return this._authenticatedSubject.asObservable();
+    }
+}</pre>
 <p>&nbsp;</p>
 <h2>Some common React / Bootstrap UI components</h2>
 <p>As with any UI work, you will inevitably end up where you need some core 
