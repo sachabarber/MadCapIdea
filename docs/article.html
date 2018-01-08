@@ -2005,9 +2005,10 @@ POST  /registration/save/passenger             controllers.RegistrationControlle
 <p>So now that we have talked about the JSON Reads/Writes and we know that we 
 need Mongo downloaded and running (see how do I run this section at start), lets 
 see what the actual controller looks like shall we. Here is the FULL code for 
-the “Passenger Registration”</p>
+the “Passenger Registration” portion of the <code>
+PlayBackEndApi/app/controllers/RegistrationController.scala</code></p>
 <pre lang="scala">
-ackage controllers
+package controllers
 
 import javax.inject.Inject
 import play.api.mvc.{Action, Controller, Result}
