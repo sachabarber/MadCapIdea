@@ -8224,7 +8224,7 @@
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#template-resolver;0.1!template-resolver.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-lang#jline;2.10.6!jline.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar[0m
-[0m[[0mdebug[0m] [0m:: resolution report :: resolve 2152ms :: artifacts dl 90ms[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 8678ms :: artifacts dl 194ms[0m
 [0m[[0mdebug[0m] [0m	report for default#kafkastreams-build;0.1-SNAPSHOT compile produced in C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-kafkastreams-build-compile.xml[0m
 [0m[[0mdebug[0m] [0m	report for default#kafkastreams-build;0.1-SNAPSHOT runtime produced in C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-kafkastreams-build-runtime.xml[0m
 [0m[[0mdebug[0m] [0m	report for default#kafkastreams-build;0.1-SNAPSHOT test produced in C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-kafkastreams-build-test.xml[0m
@@ -8238,5 +8238,5 @@
 [0m[[0mdebug[0m] [0m	report for default#kafkastreams-build;0.1-SNAPSHOT docs produced in C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-kafkastreams-build-docs.xml[0m
 [0m[[0mdebug[0m] [0m	report for default#kafkastreams-build;0.1-SNAPSHOT pom produced in C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-kafkastreams-build-pom.xml[0m
 [0m[[0mdebug[0m] [0m	report for default#kafkastreams-build;0.1-SNAPSHOT scala-tool produced in C:\Users\sacha\Desktop\MadCapIdea\KafkaStreams\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-kafkastreams-build-scala-tool.xml[0m
-[0m[[0mdebug[0m] [0m	resolve done (2152ms resolve - 90ms download)[0m
+[0m[[0mdebug[0m] [0m	resolve done (8678ms resolve - 194ms download)[0m
 [0m[[0minfo[0m] [0mDone updating.[0m

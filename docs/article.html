@@ -721,8 +721,9 @@ that the browser is using.</p>
 <a href="https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/">
 https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/</a></p>
 <div>
-<p style="background:yellow; margin:3px; border:1px black solid">It should be noted that sourcemaps should only be used in development phases, 
-as in production would want to minify your JavaScript too.</p>
+<p style="background:yellow; margin:3px; border:1px black solid">It should be noted that 
+SourceMaps should only be used in development phases, 
+as in production you&nbsp; should/would want to minify your JavaScript too.</p>
 </div>
 <h3>How does Webpack/Play work with this?</h3>
 <p>WebPack has this concept of loaders that are what gets used to load different 
@@ -2553,8 +2554,8 @@ go into this any further.</p>
 <p>The CreateJob uses the pieces shown above, and is intended to work like this</p>
 <p><img alt="" height="59" src="newjob.png" width="630"></p>
 <h4>CreatJob React component</h4>
-<p class="auto-style1">NEED PICTURE FOR THIS BIT</p>
-<p>This is the code for the React component</p>
+<p><img alt="" height="639" src="createJob.png" width="630"></p>
+<p>This is the code for the <code>CreateJob </code>React component</p>
 <pre lang="js">
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -2831,13 +2832,22 @@ export class CreateJob extends React.Component&lt;undefined, CreateJobState&gt; 
 <p>As you can see this component makes use of a Google Maps component. I chose 
 this one to use :
 <a href="https://tomchentw.github.io/react-google-maps/" target="_blank">
-https://tomchentw.github.io/react-google-maps/</a></p>
-<p>Before we send the actual job JSON payload we need to allow the user to 
+https://tomchentw.github.io/react-google-maps/</a>. </p>
+<p>One thing to note is that as I wanted the map to be reponsive but the Google 
+Map component I chose needed to have a fixed size, I had to use another React 
+library to allow me to measure the screen at runtime, and adjust the React 
+Google Maps component on the fly. This Measure package is this one :
+<a href="https://github.com/souporserious/react-measure" target="_blank">
+https://github.com/souporserious/react-measure</a> which allows you to 
+decorate/wrap your component in a measure type component.</p>
+<p>&nbsp;</p>
+<p>As before we send the actual job JSON payload, but before doing that we need to allow the user to 
 specify their position such that the position can be retrieved later </p>
-<p>Once the client sets their OWN position, they are able to create a job, and 
-push out a new job. If they already have a job in flight the client is NOT able 
+<p>Once the client sets their <strong>OWN</strong> position, they are able to create a job, and 
+push out a new job. If they already have a job in flight the client is <strong>NOT</strong> able 
 to create a new job</p>
-<p>To deal with the users current position, I also created this simple service 
+<p>To deal with the users current position, I also created this simple domain 
+object and service 
 class</p>
 <pre lang="js">
 export class Position {
@@ -3071,9 +3081,36 @@ class JobController @Inject()
 	Subject)</li>
 </ul>
 <h4>Push the consumed Job out of the forever frame (Comet functionality in Play backend)</h4>
-<p>Ok so we just saw how the 2 actors are created under back off supervisors, and how the consumer (the one that reads from Kafka) gets the ability to essentially write back to the forever frame in the HTML.</p>
+<p>Ok so we just saw how the 2 actors are created under back off supervisors, 
+and how the consumer (the one that reads from Kafka) gets the ability to 
+essentially write back to the forever frame in the HTML which is like this</p>
+<pre lang="html">
+&lt;iframe id="comet" src="/job/streamedJob"&gt;&lt;/iframe&gt;
+</pre>
+<p>Where the actual route for Play framework is configured as this</p>
 <p>So how does the job go out into Kafka land?</p>
 <p>That part is quite simple, here it is</p>
+<pre>
+GET   /job/streamedJob                         controllers.JobController.streamedJob()
+</pre>
+<p>And this is the relevant part of the <code>JobController</code> that deals with exposing the comet stream to the browser</p>
+<pre lang="scala">
+val (sink, source) =
+    MergeHub.source[JsValue](perProducerBufferSize = 16)
+      .toMat(BroadcastHub.sink(bufferSize = 256))(Keep.both)
+      .run()
+	  
+....
+....
+....
+....
+	  
+	  
+def streamedJob() = Action {
+    Ok.chunked(source via Comet.json("parent.jobChanged")).as(ContentTypes.HTML)
+  }	  
+</pre>
+<p>So diving back into what happens when a new Job comes in, we can see that this goes through the <code>JobProducerActor</code> below</p>
 <pre lang="scala">
 ackage actors.job
 
@@ -3151,7 +3188,8 @@ class JobProducerActor(
 I’ll be honest there is a fair bit going on in that small chunk of code above so lets dissect it. What it happening exactly?</p>
 <ul>
 	<li>The most important point is that we simply use the actor as a vessel to host a reactive kafka akka stream 
-	<code>RunnableGraph </code>representing a Graph of <code>MergeHub </code>– &gt; Reactive Kafka producer sink. This is completely fine and a normal thing to do. Discussing akka streams is out of scope for this post but if you want to know more you can read more on a previous post I did here :
+	<code>RunnableGraph </code>representing a Graph of <code>MergeHub </code>– &gt; Reactive Kafka producer sink. This is completely fine and a normal thing to do. Discussing akka streams is out of scope for this 
+	article but if you want to know more you can read more on a previous post I did here :
 	<a href="https://sachabarbs.wordpress.com/2016/12/13/akka-streams/" target="_blank">https://sachabarbs.wordpress.com/2016/12/13/akka-streams/</a></li>
 	<li>&nbsp;So we now know this actor hosts a stream, but the stream could fail, or the actor could fail. So what we want is if the actor fails the stream is stopped, and if the stream fails the actor is stopped. To do that we need to do a couple of thing
 	<ul>
@@ -3181,7 +3219,7 @@ And I think that is the main set of points about how this actor works </li>
 </ul>
 <h4>
 Consume the Job over a Kafka Topic (using Akka Streams / Reactive Kafka) </h4>
-<p>Lets see the <code>JobConsumerActor </code>which takes this Sink (<code>MergeHub
+<p>Lets see the <code>JobConsumerActor </code>which takes a Akka Stream Sink (<code>MergeHub
 </code>from <code>JobController</code>) and pushes the value out to it, when it 
 sees a new value from Kafka on the job topic “job-submit-topic”. This then 
 travels through the Akka stream where it goes via the <code>BroadcastHub </code>
@@ -3194,7 +3232,7 @@ here :
 <a href="https://www.playframework.com/documentation/2.6.x/ScalaComet" target="_blank">
 https://www.playframework.com/documentation/2.6.x/ScalaComet</a></p>
 <pre lang="scala">
-ackage actors.job
+package actors.job
 
 import entities.{Job, Init}
 import kafka.topics.JobTopics
@@ -3344,6 +3382,15 @@ componentWillMount() {
         );
 }</pre>
 <p>We will see much more of the RX stuff in the next part of this article</p>
+<p>&nbsp;</p>
+<h4>Final diagram to help you solidify this section</h4>
+<p>There is a lot going on above so I thought a final diagram may help</p>
+<p><img alt="" height="422" src="createJobTotal.png" width="630"></p>
+<p>&nbsp;</p>
+<p>Ok so now would be a good time to get a cup of coffee, as although the next 2 
+sections build apon what we have just seen, there is still quite a lot of moving 
+peices to cover, especially the Kafka Streams / Interactive Queries stuff which 
+we have yet to look at. So go on treat yourself to a nice strong coffee.</p>
 <h2>ViewJob workflow</h2>
 <p class="auto-style1">NEED TO DO THIS</p>
 <h2>&nbsp;</h2>
