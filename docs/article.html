@@ -3325,7 +3325,15 @@ class JobConsumerActor
 </pre>
 <h4>Have a new RxJs based Observable over the comet based forever frame, and ensure that is working</h4>
 <p>So at the end of the pipeline, we have a forever frame in the browser (always available 
-within <code>Index.html</code>) that we wish to get events from. Ideally we want to turn this rather bland event into a better RxJs Observable. So how do we do that. Its quite simple we use this little service that is able to create a new Observable from the incoming event for us</p>
+within <code>Index.html</code>) that we wish to get events from. Ideally we want to turn this rather bland event into a better RxJs Observable. So how do we do that? </p>
+<p>Its quite simple we use this little service that is able to create a new 
+<code>Observable </code>from the incoming event for us, which if you recall the 
+Play server side stuff was like this</p>
+<pre lang="scala">
+Ok.chunked(source via Comet.json("parent.jobChanged")).as(ContentTypes.HTML)
+</pre>
+<p>So this is how we turn that into a nice RxJS 
+<code>Observable </code></p>
 <pre lang="js">
 import { injectable, inject } from "inversify";
 import { JobEventArgs } from "../domain/JobEventArgs";
@@ -3375,12 +3383,6 @@ componentWillMount() {
         this._jobStreamService.getJobStream()
         .subscribe(
         jobArgs =&gt; {
- 
-                //TODO : 1. This should not be hard coded
-                //TODO : 2. We should push out current job when we FIRST LOAD this page
-                //          if we are a client, and we should enrich it if we are a driver
-                //       3. The list of markers should be worked out again every time based
-                //          on RX stream messages
                 console.log('RX saw onJobChanged');
                 console.log('RX x = ', jobArgs.detail);
             },
@@ -3393,7 +3395,9 @@ componentWillMount() {
             }
         );
 }</pre>
-<p>We will see much more of the RX stuff in the next part of this article</p>
+<p>We will see much more of the RX stuff in the next part of this article, but 
+for now just all you need to know is that there is an injectable service that 
+you may use to listen to the <code>Job <code></code>Observable</code></p>
 <p>&nbsp;</p>
 <h4>Final diagram to help you solidify this section</h4>
 <p>There is a lot going on above so I thought a final diagram may help</p>
@@ -3404,11 +3408,1357 @@ sections build apon what we have just seen, there is still quite a lot of moving
 peices to cover, especially the Kafka Streams / Interactive Queries stuff which 
 we have yet to look at. So go on treat yourself to a nice strong coffee.</p>
 <h2>ViewJob workflow</h2>
-<p class="auto-style1">NEED TO DO THIS</p>
-<h2>&nbsp;</h2>
+<p><img alt="" height="664" src="ViewJobWorkFlow.png" width="630"></p>
+<p>The <code>ViewJob </code>uses the pieces shown above, and is intended to work like this</p>
+<h4>ViewJob react component</h4>
+<p><img alt="" height="289" src="ViewJob.png" width="630"></p>
+<p>As can be seen above this is after a passenger has opened a browser session, 
+and 2 other users (acting as drivers) have pushed through their positions, 
+obviously this is just one view (the passenger view), to fully understand what 
+the other users would see in their browser session we will walk through a 
+scenario below.</p>
+<h4>So what should the “View Job” page do?</h4>
+<p>This page should do the following things</p>
+<ul>
+	<li>If a passenger sends out a job it should be seen by ANY driver that is 
+	logged in (providing the job is not already assigned to a driver)</li>
+	<li>Positions updates from a passenger to drivers (that know about the 
+	passenger) should show the new passenger position</li>
+	<li>When a driver pushes out (single laptop requires that users click on map 
+	to make their own position known to others) their new position that the 
+	client sees that and updates the driver marker accordingly</li>
+	<li>That a passenger can accept a driver for a job</li>
+	<li>That a driver can not accept a job from a passenger</li>
+	<li>That once a job is paired between passenger/driver only those 2 markers 
+	will be shown if you are either of these users</li>
+	<li>That once a job is paired between passenger/driver AND YOU ARE NOT ONE 
+	OF THESE USERS that you ONLY see your own markers</li>
+	<li>That a job may be completed by passenger OR driver independently and 
+	that they are able to “Rate” each other</li>
+</ul>
+<p>This page is fairly complex, and contains many helper methods that carry out 
+the functions above, probably too many to show. So I will just show the skeleto 
+of the code in this case, and then we will walk through some screen shots, and a 
+scenario that excercises this code.</p>
+<p>&nbsp;<span style="background-color:yellow; border:1px black solid">It should 
+be noted that this area is the one that has the 2 bugs/issues that I have within 
+this code. As I said at the start, I kind of did what I wanted to do in this 
+article, and it demonstrated everything I wanted to show. So meh</span></p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as _ from "lodash";
+import Measure from 'react-measure'
+import { RatingDialog } from "./components/RatingDialog";
+import { YesNoDialog } from "./components/YesNoDialog";
+import { OkDialog } from "./components/OkDialog";
+import { AcceptList } from "./components/AcceptList";
+import 'bootstrap/dist/css/bootstrap.css';
+import {
+    Well,
+    Grid,
+    Row,
+    Col,
+    ButtonInput,
+    ButtonGroup,
+    Button,
+    Modal,
+    Popover,
+    Tooltip,
+    OverlayTrigger
+} from "react-bootstrap";
+import { AuthService } from "./services/AuthService";
+import { JobService } from "./services/JobService";
+import { JobStreamService } from "./services/JobStreamService";
+import { PositionService } from "./services/PositionService";
+import { Position } from "./domain/Position";
+import { PositionMarker } from "./domain/PositionMarker";
+import { hashHistory } from 'react-router';
+import { withGoogleMap, GoogleMap, Marker, OverlayView } from "react-google-maps";
+
+const STYLES = {
+    overlayView: {
+        background: `white`,
+        border: `1px solid #ccc`,
+        padding: 15,
+    }
+}
+
+
+const GetPixelPositionOffset = (width, height) =&gt; {
+    return { x: -(width / 2), y: -(height / 2) };
+}
+
+
+
+const ViewJobGoogleMap = withGoogleMap(props =&gt; (
+
+    &lt;GoogleMap
+        ref={props.onMapLoad}
+        defaultZoom={16}
+        defaultCenter={{ lat: 50.8202949, lng: -0.1406958 }}
+        onClick={props.onMapClick}&gt;
+        {props.markers.map((marker, index) =&gt; (
+            &lt;OverlayView
+                key={marker.key}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                position={marker.position}
+                getPixelPositionOffset={GetPixelPositionOffset}&gt;
+                &lt;div style={STYLES.overlayView}&gt;
+                    &lt;img src={marker.icon} /&gt;
+                    &lt;strong&gt;{marker.key}&lt;/strong&gt;
+                &lt;/div&gt;
+            &lt;/OverlayView&gt;
+        ))}
+    &lt;/GoogleMap&gt;
+));
+
+
+export interface ViewJobState {
+    markers: Array&lt;PositionMarker&gt;;
+    okDialogOpen: boolean;
+    okDialogKey: number;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+    dimensions: {
+        width: number,
+        height: number
+    },
+    currentPosition: Position;
+    isJobAccepted: boolean;
+    finalActionHasBeenClicked: boolean;
+}
+
+type DoneCallback = (jdata: any, textStatus: any, jqXHR: any) =&gt; void
+
+
+export class ViewJob extends React.Component&lt;undefined, ViewJobState&gt; {
+
+    private _authService: AuthService;
+    private _jobService: JobService;
+    private _jobStreamService: JobStreamService;
+    private _positionService: PositionService;
+    private _subscription: any; 
+    private _currentJobUUID: any;
+
+    constructor(props: any) {
+        super(props);
+        this._authService = props.route.authService;
+        this._jobStreamService = props.route.jobStreamService;
+        this._jobService = props.route.jobService;
+        this._positionService = props.route.positionService;
+        
+        if (!this._authService.isAuthenticated()) {
+            hashHistory.push('/');
+        }
+
+        let savedMarkers: Array&lt;PositionMarker&gt; = new Array&lt;PositionMarker&gt;();
+        if (this._positionService.hasJobPositions()) {
+            savedMarkers = this._positionService.userJobPositions();
+        }
+
+        this.state = {
+            markers: savedMarkers,
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0,
+            dimensions: { width: -1, height: -1 },
+            currentPosition: this._authService.isDriver() ? null :
+                this._positionService.currentPosition(),
+            isJobAccepted: false,
+            finalActionHasBeenClicked: false
+        };
+    }
+
+    componentWillMount() {
+        var self = this;
+        this._subscription =
+            this._jobStreamService.getJobStream()
+            .retry()
+            .where(function (x, idx, obs) {
+                return self.shouldShowMarkerForJob(x.detail);
+            })
+            .subscribe(
+                jobArgs =&gt; {
+
+                    console.log('RX saw onJobChanged');
+                    console.log('RX x = ', jobArgs.detail);
+
+                    this._jobService.clearUserIssuedJob();
+                    this._jobService.storeUserIssuedJob(jobArgs.detail);
+                    this.addMarkerForJob(jobArgs.detail);
+                },
+                error =&gt; {
+                    console.log('RX saw ERROR');
+                    console.log('RX error = ', error);
+                },
+                () =&gt; {
+                    console.log('RX saw COMPLETE');
+                }
+            );
+    }
+
+    componentWillUnmount() {
+        this._subscription.dispose();
+        this._positionService.storeUserJobPositions(this.state.markers);
+    }
+
+    render() {
+
+        const adjustedwidth = this.state.dimensions.width;
+
+        return (
+            &lt;Well className="outer-well"&gt;
+                &lt;Grid&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;h4&gt;CURRENT JOB&lt;/h4&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;AcceptList
+                                markers={_.filter(this.state.markers, { isDriverIcon: true })}
+                                currentUserIsDriver={this._authService.isDriver()}
+                                clickCallback={this.handleMarkerClick}
+                            /&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;Row className="show-grid"&gt;
+                        &lt;Col xs={10} md={6}&gt;
+                            &lt;Measure
+                                bounds
+                                onResize={(contentRect) =&gt; {
+                                    this.setState({ dimensions: contentRect.bounds })
+                                }}&gt;
+                                {({ measureRef }) =&gt;
+                                    &lt;div ref={measureRef}&gt;
+                                        &lt;ViewJobGoogleMap
+                                            containerElement={
+                                                &lt;div style={{
+                                                    position: 'relative',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    width: { adjustedwidth },
+                                                    height: 600,
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'center',
+                                                    marginTop: 20,
+                                                    marginLeft: 0,
+                                                    marginRight: 0,
+                                                    marginBottom: 20
+                                                }} /&gt;
+                                            }
+                                            mapElement={
+                                                &lt;div style={{
+                                                    position: 'relative',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    width: { adjustedwidth },
+                                                    height: 600,
+                                                    marginTop: 20,
+                                                    marginLeft: 0,
+                                                    marginRight: 0,
+                                                    marginBottom: 20
+                                                }} /&gt;
+                                            }
+                                            markers={this.state.markers}
+                                            onMapClick={this.handleMapClick}
+                                        /&gt;
+                                    &lt;/div&gt;
+                                }
+                            &lt;/Measure&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+
+                    {this.state.isJobAccepted === true ?
+                        &lt;Row className="show-grid"&gt;
+                            &lt;span&gt;
+                                &lt;RatingDialog
+                                    theId="viewJobCompleteBtn"
+                                    headerText="Rate your driver/passenger"
+                                    okCallBack={this.ratingsDialogOkCallBack}
+                                    actionPerformed={this.state.finalActionHasBeenClicked} /&gt;
+
+                                {!(this._authService.isDriver() === true) ?
+
+                                    &lt;YesNoDialog
+                                        theId="viewJobCancelBtn"
+                                        launchButtonText="Cancel"
+                                        actionPerformed={this.state.finalActionHasBeenClicked} 
+                                        yesCallBack={this.jobCancelledCallBack}
+                                        noCallBack={this.jobNotCancelledCallBack}
+                                        headerText="Cancel the job" /&gt;
+                                    : 
+                                    null
+                                }
+
+                                &lt;OkDialog
+                                    open={this.state.okDialogOpen}
+                                    okCallBack={this.okDialogCallBack}
+                                    headerText={this.state.okDialogHeaderText}
+                                    bodyText={this.state.okDialogBodyText}
+                                    key={this.state.okDialogKey} /&gt;
+                            &lt;/span&gt;
+                        &lt;/Row&gt; :
+                        null
+                    }
+                &lt;/Grid&gt;
+            &lt;/Well&gt;
+        );
+    }
+
+    handleMapClick = (event) =&gt; {
+        ....
+        ....
+        this._positionService.clearUserJobPositions();
+        this._positionService.storeUserJobPositions(this.state.markers);
+        this.pushOutJob(newPosition, currentJob);
+    }
+
+    handleMarkerClick = (targetMarker) =&gt; {
+
+        console.log('button on AcceptList clicked:' + targetMarker.key);
+        console.log(targetMarker);
+
+        let currentJob = this._jobService.currentJob();
+        let jobForMarker = targetMarker.jobForMarker;
+
+        let clientMarker = _.find(this.state.markers, { 'isDriverIcon': false });
+        if (clientMarker != undefined && clientMarker != null) {
+
+            let clientJob = clientMarker.jobForMarker;
+            clientJob.driverFullName = jobForMarker.driverFullName;
+            clientJob.driverEmail = jobForMarker.driverEmail;
+            clientJob.driverPosition = jobForMarker.driverPosition;
+            clientJob.vehicleDescription = jobForMarker.vehicleDescription;
+            clientJob.vehicleRegistrationNumber = jobForMarker.vehicleRegistrationNumber;
+            clientJob.isAssigned = true;
+            
+            let self = this;
+            console.log("handleMarkerClick job");
+            console.log(clientJob);
+
+            this.makePOSTRequest('job/submit', clientJob, this,
+                function (jdata, textStatus, jqXHR) {
+                    console.log("After is accepted");
+                    const newState = Object.assign({}, self.state, {
+                        isJobAccepted: true
+                    })
+                    self.setState(newState);
+                });
+        }
+    }
+
+    addMarkerForJob = (jobArgs: any): void =&gt; {
+
+        console.log("addMarkerForJob");
+        console.log(this.state);
+
+        if (this.state.isJobAccepted || jobArgs.isAssigned) {
+            this.processAcceptedMarkers(jobArgs);
+        }
+        else {
+            this.processNotAcceptedMarkers(jobArgs);
+        }
+    }
+
+    processAcceptedMarkers = (jobArgs: any): void =&gt; {
+        ....
+        ....
+    }
+
+
+    processNotAcceptedMarkers = (jobArgs: any): void =&gt; {
+        ....
+        ....
+    }
+
+    addClientDetailsToDrivers = (newMarkersList: PositionMarker[]): void =&gt; {
+        ....
+    }
+
+
+    updateStateForMarkers = (newState: any, newMarkersList: PositionMarker[], newPositionForUser: Position, jobArgs:any): void =&gt; {
+
+        //Update the list of position markers in the PositionService
+        this._positionService.clearUserJobPositions();
+        this._positionService.storeUserJobPositions(newMarkersList);
+
+        //Update the position in the PositionService
+        if (newPositionForUser != undefined && newPositionForUser != null) {
+            this._positionService.clearUserPosition();
+            this._positionService.storeUserPosition(newPositionForUser);
+        }
+
+        this._jobService.clearUserIssuedJob();
+        this._jobService.storeUserIssuedJob(jobArgs);
+
+        //update the state
+        this.setState(newState);
+    }
+
+    updateMatchedUserMarker = (jobEmailToCheck: string, newMarkersList: PositionMarker[],
+        jobPosition: Position, jobForMarker:any): void =&gt; {
+
+        if (jobEmailToCheck != undefined && jobEmailToCheck != null) {
+
+            let matchedMarker = _.find(this.state.markers, { 'email': jobEmailToCheck });
+            if (matchedMarker != null) {
+                //update its position
+                matchedMarker.position = jobPosition;
+                matchedMarker.jobForMarker = jobForMarker;
+            }
+        }
+    }
+
+
+    updateStateForNewMarker = (newMarkersList:PositionMarker[], position: Position): any =&gt; {
+
+        if (position != null) {
+            return Object.assign({}, this.state, {
+                currentPosition: position,
+                markers: newMarkersList
+            })
+        }
+        else {
+           return Object.assign({}, this.state, {
+                markers: newMarkersList
+            })
+        }
+    }
+
+    updateStateForAcceptedMarker = (newMarkersList: PositionMarker[], position: Position): any =&gt; {
+
+        if (position != null) {
+            return Object.assign({}, this.state, {
+                currentPosition: position,
+                markers: newMarkersList,
+                isJobAccepted: true
+            })
+        }
+        else {
+            return Object.assign({}, this.state, {
+                markers: newMarkersList,
+                isJobAccepted: true
+            })
+        }
+    }
+
+
+    shouldShowMarkerForJob = (jobArgs: any): boolean =&gt; {
+
+        let isDriver = this._authService.isDriver();
+        let currentJob = this._jobService.currentJob();
+        let hasJob = currentJob != undefined && currentJob != null;
+
+        //case 1 - No job exists, to allow driver to add their mark initially
+        if (!hasJob && isDriver)
+            return true;
+        
+        //case 2 - Job exists and is unassigned and if there is no other active 
+        //         job for this client/ driver
+        if (hasJob && !currentJob.isAssigned)
+            return true;
+
+        //case 3 - If the job isAssigned and its for the current logged in client/driver
+        if (hasJob && currentJob.isAssigned) {
+            if (currentJob.clientEmail == jobArgs.clientEmail) {
+                return true;
+            }
+            if (currentJob.driverEmail == jobArgs.driverEmail) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    pushOutJob = (newPosition: Position, jobForMarker : any): void =&gt; {
+        ....
+        ....
+        ....
+        var newJob = {
+            jobUUID: this._currentJobUUID != undefined && this._currentJobUUID != '' ?
+                this._currentJobUUID : '',
+            clientFullName: localClientFullName,
+            clientEmail: localClientEmail,
+            clientPosition: localClientPosition,
+            driverFullName: localDriverFullName,
+            driverEmail: localDriverEmail,
+            driverPosition: localDriverPosition,
+            vehicleDescription: isDriver ?
+                this._authService.user().vehicleDescription : '',
+            vehicleRegistrationNumber: isDriver ?
+                this._authService.user().vehicleRegistrationNumber : '',
+            isAssigned: localIsAssigned,
+            isCompleted: false
+        }
+
+        console.log("handlpushOutJob job");
+        console.log(newJob);
+        this.makePOSTRequest('job/submit', newJob, self,
+            function (jdata, textStatus, jqXHR) {
+                self._jobService.clearUserIssuedJob();
+                self._jobService.storeUserIssuedJob(newJob);
+            });
+    }
+
+    createDriverMarker = (
+        driver: any,
+        event: any): PositionMarker =&gt; {
+
+        ....
+    }
+
+
+    
+    ratingsDialogOkCallBack = (theRatingScore: number) =&gt; {
+        console.log('RATINGS OK CLICKED');
+
+       //POST rating data
+    }
+
+   
+    makePOSTRequest = (route: string, jsonData: any, context: ViewJob, doneCallback: DoneCallback) =&gt; {
+        //Post job data
+    }
+
+    ....
+    ....
+}</pre>
+<p><strong>Some highlights</strong></p>
+<ul>
+	<li>We use RX.Js to listen to new events straight over the Comet based 
+	forever frame, that the server side Play scala code pushes a message out on</li>
+	<li>There was a funny thing with driver acceptance which I originally wanted 
+	to be a button on a drivers marker within the map. However this caused an 
+	issue with the Map where it would get a Map event when clicking on an 
+	overlay (higher Z-Order so should not happen). This is a feature of the 
+	React Google Map component. I could not find a fix I liked (I did mess 
+	around with form event mouseEnter/mouseLeave but it was just not that great, 
+	so I opted to chose to put the acceptance of driver outside of the map, thus 
+	avoiding the issue altogether)</li>
+</ul>
+<h4>What does it look like when run?</h4>
+<p>Some scenarios of what it looks like running are shown below.</p>
+<p>In order to run it to this point,I normally follow this set of steps 
+afterwards</p>
+<ul>
+	<li>open a tab, login as a passenger that I had created</li>
+	<li>go to the “create job” page, click the map, push the “create job” button</li>
+	<li>open a NEW tab, login as a new driver, go to the “view job” page</li>
+	<li>on the 1st tab (passenger) click the map to push passenger position to 
+	driver</li>
+	<li>on the 2nd tab (driver) click the map to push driver position to 
+	passenger</li>
+	<li>repeat last 4 steps for additional driver</li>
+	<li>on client tab pick driver to accept, click accept button</li>
+	<li>complete the job from client tab, give driver rating</li>
+	<li>complete the job from paired driver tab, give passenger rating</li>
+	<li>go to “view rating” page, should see ratings</li>
+</ul>
+<p>One of the challenges with an app like this, is that it is a streaming app. 
+So this means that when a client pushes out a new job, there may be no-one 
+listening for that job. Drivers may not even be logged in at all, or may login 
+later, so they effectively subscribe late. So for this app dealing with that was 
+kind of out of scope. So to remedy this, you need to ensure that position 
+updates (clicking on the map for the given user browser session (ie tab)) gets 
+pushed to other user browser sessions where the marker is not currently shown.</p>
+<p>In a real world app, we might choose to do one of the following to fix this 
+permanently</p>
+<ul>
+	<li>Store some, and when a new user joins grab all unassigned 
+	passengers/driver within some geographical area</li>
+	<li>Store last N-Many passenger/driver positions and push these on new login 
+	(there is no guarantee that these are in the same geographical area as us 
+	though, could be completely unrelated/of no practical concern for the 
+	current user)</li>
+</ul>
+<p>Anyway as I say this out of scope for this demo project, but I hope that it 
+does give you some insight as to why you need to push position updates manually</p>
+<p><strong>This gives you an example of what it all looks like when its running 
+(not accepted yet)</strong></p>
+<p>This is what it looks like for the following setup</p>
+<ul>
+	<li>1 x passenger (sacha barber)</li>
+	<li>2 x driver (driver 1 / driver 2)</li>
+</ul>
+<p><img alt="" height="871" src="v1.png" width="630"></p>
+<p><img alt="" height="410" src="v2.png" width="630"></p>
+<p>So now lets see what happens when we accept one of the drivers. I have chosen 
+“driver 1” for this example<br><br>This gives you an example of what it all 
+looks like when its running (after job accepted between passenger/driver1)<br>
+<br>Here is what things look like after job has been accepted</p>
+<p><img alt="" height="872" src="v3.png" width="614"></p>
+<p><img alt="" height="411" src="v4.png" width="590"></p>
 <h2>ViewRating workflow</h2>
-<p class="auto-style1">NEED TO DO THIS</p>
-<h2>&nbsp;</h2>
+<p><img alt="" height="666" src="ratingFlow.png" width="630"></p>
+<p>The Rating flow is one of the more complex aspects of this entire article. 
+The idea is as follows:</p>
+<ul>
+	<li>At the end of a job the passenger may rate the driver for the Job</li>
+	<li>At the end of a job the driver may rate the passenger for the Job</li>
+	<li>These Ratings should be stored/aggregated and exposes via a REST API for 
+	the client/driver such that they can view their accumulated Rating over time</li>
+</ul>
+<p>Simple enough idea right, but this part will use
+<a href="https://kafka.apache.org/documentation/streams/" target="_blank">Kafka 
+Streams</a></p>
+<h4><strong>Walking through a Kafka Streams processing node, and the duality of 
+streams</strong></h4>
+<p>Before we get started I just wanted to include a severak excerpts taken from 
+the official Kafka docs :
+<a href="http://docs.confluent.io/current/streams/concepts.html#duality-of-streams-and-tables" target="_blank">
+http://docs.confluent.io/current/streams/concepts.html#duality-of-streams-and-tables</a> 
+which talks about KStream and KTable objects (which are the stream and table 
+objects inside Kafka streams)</p>
+<p><em>When implementing stream processing use cases in practice, you typically 
+need both streams and also databases. An example use case that is very common in 
+practice is an e-commerce application that enriches an incoming stream of 
+customer transactions with the latest customer information from a database 
+table. In other words, streams are everywhere, but databases are everywhere, 
+too.</em></p>
+<p><em>Any stream processing technology must therefore provide first-class 
+support for streams and tables. Kafka’s Streams API provides such functionality 
+through its core abstractions for streams and tables, which we will talk about 
+in a minute. Now, an interesting observation is that there is actually a close 
+relationship between streams and tables, the so-called stream-table duality. And 
+Kafka exploits this duality in many ways: for example, to make your applications 
+elastic, to support fault-tolerant stateful processing, or to run interactive 
+queries against your application’s latest processing results. And, beyond its 
+internal usage, the Kafka Streams API also allows developers to exploit this 
+duality in their own applications.</em></p>
+<p><em>A simple form of a table is a collection of key-value pairs, also called 
+a map or associative array. Such a table may look as follows:</em></p>
+<p><img alt="" height="257" src="s1.png" width="400"></p>
+<p><em>The </em><strong><em>stream-table duality</em></strong><em> describes the 
+close relationship between streams and tables.</em></p>
+<ul>
+	<li><strong><em>Stream as Table: </em></strong><em>A stream can be 
+	considered a changelog of a table, where each data record in the stream 
+	captures a state change of the table. A stream is thus a table in disguise, 
+	and it can be easily turned into a “real” table by replaying the changelog 
+	from beginning to end to reconstruct the table. Similarly, aggregating data 
+	records in a stream will return a table. For example, we could compute the 
+	total number of pageviews by user from an input stream of pageview events, 
+	and the result would be a table, with the table key being the user and the 
+	value being the corresponding pageview count.</em></li>
+	<li><strong><em>Table as Stream: </em></strong><em>A table can be considered 
+	a snapshot, at a point in time, of the latest value for each key in a stream 
+	(a stream’s data records are key-value pairs). A table is thus a stream in 
+	disguise, and it can be easily turned into a “real” stream by iterating over 
+	each key-value entry in the table.</em></li>
+</ul>
+<p><em>Let’s illustrate this with an example. Imagine a table that tracks the 
+total number of pageviews by user (first column of diagram below). Over time, 
+whenever a new pageview event is processed, the state of the table is updated 
+accordingly. Here, the state changes between different points in time – and 
+different revisions of the table – can be represented as a changelog stream 
+(second column).</em></p>
+<p><em><img alt="" height="388" src="s2.png" width="400"></em></p>
+<p><em>Because of the stream-table duality, the same stream can be used to 
+reconstruct the original table (third column):</em></p>
+<p><img alt="" height="546" src="s3.png" width="630"></p>
+<p><em>The same mechanism is used, for example, to replicate databases via 
+change data capture (CDC) and, within Kafka Streams, to replicate its so-called 
+state stores across machines for fault tolerance. The stream-table duality is 
+such an important concept for stream processing applications in practice that 
+Kafka Streams models it explicitly via the KStream and KTable abstractions, 
+which we describe in the next sections.</em></p>
+<p>I would <strong>STRONLY</strong> urge you all to read the section of the 
+official docs above, as it will really help you should you want to get into 
+Kafka Streams.</p>
+<p>Anyway with all that in mind how does that relate to the use case we are 
+trying to solve. Lets assume we have a Kafka publisher that pushes out <code>
+Rating </code>objects, and as stated ideally we would like to query these across 
+all processor nodes. As such we should now know that this will involve a <code>
+KStream </code>and some sort of aggregation to an eventual <code>KTable </code>
+(where a state store will be used).</p>
+<p>Probably the easiest thing to do is to start with the code, which looks like 
+this for the main stream processing code for the <code>Rating </code>section of 
+then final app.</p>
+<p><code>
+MadCapIdea/blob/develop/KafkaStreams/src/main/scala/Processing/Ratings/RatingStreamProcessingApp.scala</code></p>
+<pre lang="scala">
+import java.util.concurrent.TimeUnit
+import org.apache.kafka.common.serialization._
+import org.apache.kafka.streams._
+import org.apache.kafka.streams.kstream._
+import entities.Rating
+import serialization.JSONSerde
+import topics.RatingsTopics
+import utils.Settings
+import stores.StateStores
+import org.apache.kafka.streams.state.HostInfo
+import scala.concurrent.ExecutionContext
+import scala.concurrent.duration._
+
+
+package processing.ratings {
+
+  import org.apache.kafka.streams.errors.BrokerNotFoundException
+  import utils.Retry
+
+  class RatingByEmailInitializer extends Initializer[List[Rating]] {
+    override def apply(): List[Rating] = List[Rating]()
+  }
+
+  class RatingByEmailAggregator extends Aggregator[String, Rating, List[Rating]] {
+    override def apply(aggKey: String, value: Rating, aggregate: List[Rating]) = {
+      value :: aggregate
+    }
+  }
+
+
+  object RatingStreamProcessingApp extends App {
+
+    implicit val ec = ExecutionContext.global
+
+    run()
+
+    private def run(): Unit = {
+
+      val restEndpoint: HostInfo = new HostInfo(Settings.restApiDefaultHostName, Settings.restApiDefaultPort)
+      System.out.println(s"Connecting to Kafka cluster via bootstrap servers ${Settings.bootStrapServers}")
+      System.out.println(s"REST endpoint at http://${restEndpoint.host}:${restEndpoint.port}")
+
+      val maybeStreams =
+        Retry.whileSeeingExpectedException[KafkaStreams,BrokerNotFoundException](10.seconds)(createStreams)
+
+      maybeStreams match {
+        case Some(streams) =&gt; {
+          val restService = new RatingRestService(streams, restEndpoint)
+          restService.start()
+
+          Runtime.getRuntime.addShutdownHook(new Thread(() =&gt; {
+            streams.close(10, TimeUnit.SECONDS)
+            restService.stop
+          }))
+        }
+        case None =&gt; {
+          println("Quiting due to no streams available/unknown expcetion")
+        }
+      }
+
+      //return unit
+      ()
+    }
+
+    def createStreams() : KafkaStreams = {
+      val stringSerde = Serdes.String
+      val ratingSerde = new JSONSerde[Rating]
+      val listRatingSerde = new JSONSerde[List[Rating]]
+      val builder: KStreamBuilder = new KStreamBuilder
+      val ratings = builder.stream(stringSerde, ratingSerde, RatingsTopics.RATING_SUBMIT_TOPIC)
+
+      //aggrgate by (user email -&gt; their ratings)
+      val ratingTable = ratings.groupByKey(stringSerde, ratingSerde)
+        .aggregate(
+          new RatingByEmailInitializer(),
+          new RatingByEmailAggregator(),
+          listRatingSerde,
+          StateStores.RATINGS_BY_EMAIL_STORE
+        )
+
+      //useful debugging aid, print KTable contents
+      ratingTable.toStream.print()
+
+      val streams: KafkaStreams = new KafkaStreams(builder, Settings.createRatingStreamsProperties)
+
+      // Always (and unconditionally) clean local state prior to starting the processing topology.
+      // We opt for this unconditional call here because this will make it easier for you to
+      // play around with the example when resetting the application for doing a re-run
+      // (via the Application Reset Tool,
+      // http://docs.confluent.io/current/streams/developer-guide.html#application-reset-tool).
+      //
+      // The drawback of cleaning up local state prior is that your app must rebuilt its local
+      // state from scratch, which will take time and will require reading all the state-relevant
+      // data from the Kafka cluster over the network.
+      // Thus in a production scenario you typically do not want to clean up always as we do
+      // here but rather only when it is truly needed, i.e., only under certain conditions
+      // (e.g., the presence of a command line flag for your app).
+      // See `ApplicationResetExample.java` for a production-like example.
+      streams.cleanUp();
+      streams.start()
+      streams
+    }
+  }
+
+}
+</pre>
+<p>Remember the idea is to get a <code>Rating </code>for a user (based on their 
+email address), and store all the <code>Rating </code>associated with them in 
+some sequence/list such that they can be retrieved in one go based on a a key, 
+where the key would be the users email, and the value would be this list of
+<code>Rating </code>objects.I think with the formal discussion from the official 
+Kafka docs and my actual <code>Rating </code>requirement, the above should 
+hopefully be pretty clear.</p>
+<h4>Walking through Kafka Streams interactive queries</h4>
+<p>So now that we have gone through how data is produced, and transformed (well 
+actually I did not do too much transformation other than a simple map, but trust 
+me you can), and how we aggregate results from a KStream to a KTable (and its 
+state store), we will move on to see how we can use Kafka interactive queries to 
+query the state stores.</p>
+<p>One important concept is that if you used multiple partitions for your 
+original topic, the state may be spread across n-many processing node. For this 
+project I have only chosen to use 1 partition, but have written the code to 
+support n-many.</p>
+<p>So lets assume that each node could read a different segment of data, or that 
+each node must read from n-many partitions (there is not actually a mapping to 
+nodes and partitions these are 2 mut read chapters 
+elastic-scaling-of-your-application and parallelism-model) we would need each 
+node to expose a REST API to allow its OWN state store to be read. By reading 
+ALL the state stores we are able to get a total view of ALL the persisted data 
+across ALL the partitions. I urge all of you to read this section of the 
+official docs :
+<a href="http://docs.confluent.io/current/streams/developer-guide.html#querying-remote-state-stores-for-the-entire-application">
+http://docs.confluent.io/current/streams/developer-guide.html#querying-remote-state-stores-for-the-entire-application</a></p>
+<p>This diagram has also be shamelessly stolen from the official docs:</p>
+<p><img alt="" height="362" src="s5.png" width="600"></p>
+<p>I think this diagram does an excellent job of showing you 3 separate 
+processor nodes, and each of them may have a bit of state. ONLY be assembling 
+ALL the data from these nodes are we able to see the ENTIRE dataset.</p>
+<p>Kafka allows this via metadata about the streams, where we can use the 
+exposed metadata to help us gather the state store data. To do this we first 
+need a MetadataService, which for me is as follows:</p>
+<pre lang="scala">
+package processing.ratings
+
+import org.apache.kafka.streams.KafkaStreams
+import org.apache.kafka.streams.state.StreamsMetadata
+import java.util.stream.Collectors
+import entities.HostStoreInfo
+import org.apache.kafka.common.serialization.Serializer
+import org.apache.kafka.connect.errors.NotFoundException
+import scala.collection.JavaConverters._
+
+
+/**
+  * Looks up StreamsMetadata from KafkaStreams
+  */
+class MetadataService(val streams: KafkaStreams) {
+
+
+   /**
+    * Get the metadata for all of the instances of this Kafka Streams application
+    *
+    * @return List of { @link HostStoreInfo}
+    */
+  def streamsMetadata() : List[HostStoreInfo] = {
+
+    // Get metadata for all of the instances of this Kafka Streams application
+    val metadata = streams.allMetadata
+    return mapInstancesToHostStoreInfo(metadata)
+  }
+
+
+  /**
+    * Get the metadata for all instances of this Kafka Streams application that currently
+    * has the provided store.
+    *
+    * @param store The store to locate
+    * @return List of { @link HostStoreInfo}
+    */
+  def streamsMetadataForStore(store: String) : List[HostStoreInfo] = {
+
+    // Get metadata for all of the instances of this Kafka Streams application hosting the store
+    val metadata = streams.allMetadataForStore(store)
+    return mapInstancesToHostStoreInfo(metadata)
+  }
+
+
+  /**
+    * Find the metadata for the instance of this Kafka Streams Application that has the given
+    * store and would have the given key if it exists.
+    *
+    * @param store Store to find
+    * @param key   The key to find
+    * @return { @link HostStoreInfo}
+    */
+  def streamsMetadataForStoreAndKey[T](store: String, key: T, serializer: Serializer[T]) : HostStoreInfo = {
+    // Get metadata for the instances of this Kafka Streams application hosting the store and
+    // potentially the value for key
+    val metadata = streams.metadataForKey(store, key, serializer)
+    if (metadata == null)
+      throw new NotFoundException(
+        s"No metadata could be found for store : ${store}, and key type : ${key.getClass.getName}")
+
+    HostStoreInfo(metadata.host, metadata.port, metadata.stateStoreNames.asScala.toList)
+  }
+
+
+  def mapInstancesToHostStoreInfo(metadatas : java.util.Collection[StreamsMetadata]) : List[HostStoreInfo] = {
+
+    metadatas.stream.map[HostStoreInfo](metadata =&gt;
+      HostStoreInfo(
+        metadata.host(),
+        metadata.port,
+        metadata.stateStoreNames.asScala.toList))
+      .collect(Collectors.toList())
+      .asScala.toList
+  }
+
+}
+</pre>
+<p>
+This metadata service is used to obtain the state store information, which we can then use to extract the state data we want (it’s a key value store really).
+
+ 
+
+</p>
+<p>
+The next thing we need to do is expose a REST API to allow us to get the state. lets see that now</p>
+<pre lang="scala">
+package processing.ratings
+
+import org.apache.kafka.streams.KafkaStreams
+import org.apache.kafka.streams.state.HostInfo
+import akka.actor.ActorSystem
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model._
+import akka.http.scaladsl.server.Directives._
+import akka.stream.ActorMaterializer
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import spray.json.DefaultJsonProtocol._
+import entities.AkkaHttpEntitiesJsonFormats._
+import entities._
+import stores.StateStores
+import akka.http.scaladsl.marshalling.ToResponseMarshallable
+import org.apache.kafka.common.serialization.Serdes
+import scala.concurrent.{Await, ExecutionContext, Future}
+import akka.http.scaladsl.unmarshalling.Unmarshal
+import spray.json._
+import scala.util.{Failure, Success}
+import org.apache.kafka.streams.state.QueryableStoreTypes
+import scala.concurrent.duration._
+
+
+
+object RestService {
+  val DEFAULT_REST_ENDPOINT_HOSTNAME  = "localhost"
+}
+
+
+class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
+
+  val metadataService = new MetadataService(streams)
+  var bindingFuture: Future[Http.ServerBinding] = null
+
+  implicit val system = ActorSystem("rating-system")
+  implicit val materializer = ActorMaterializer()
+  implicit val executionContext = system.dispatcher
+
+
+  def start() : Unit = {
+    val emailRegexPattern =  """\w+""".r
+    val storeNameRegexPattern =  """\w+""".r
+
+    val route =
+      path("ratingByEmail") {
+        get {
+          parameters('email.as[String]) { (email) =&gt;
+            try {
+
+              val host = metadataService.streamsMetadataForStoreAndKey[String](
+                StateStores.RATINGS_BY_EMAIL_STORE,
+                email,
+                Serdes.String().serializer()
+              )
+
+              var future:Future[List[Rating]] = null
+
+              //store is hosted on another process, REST Call
+              if(!thisHost(host))
+                future = fetchRemoteRatingByEmail(host, email)
+              else
+                future = fetchLocalRatingByEmail(email)
+
+              val ratings = Await.result(future, 20 seconds)
+              complete(ratings)
+            }
+            catch {
+              case (ex: Exception) =&gt; {
+                val finalList:List[Rating] = scala.collection.immutable.List[Rating]()
+                complete(finalList)
+              }
+            }
+          }
+        }
+      } ~
+      path("instances") {
+        get {
+          complete(ToResponseMarshallable.apply(metadataService.streamsMetadata))
+        }
+      }~
+      path("instances" / storeNameRegexPattern) { storeName =&gt;
+        get {
+          complete(ToResponseMarshallable.apply(metadataService.streamsMetadataForStore(storeName)))
+        }
+      }
+
+    bindingFuture = Http().bindAndHandle(route, hostInfo.host, hostInfo.port)
+    println(s"Server online at http://${hostInfo.host}:${hostInfo.port}/\n")
+
+    Runtime.getRuntime.addShutdownHook(new Thread(() =&gt; {
+      bindingFuture
+        .flatMap(_.unbind()) // trigger unbinding from the port
+        .onComplete(_ =&gt; system.terminate()) // and shutdown when done
+    }))
+  }
+
+
+  def fetchRemoteRatingByEmail(host:HostStoreInfo, email: String) : Future[List[Rating]] = {
+
+    val requestPath = s"http://${hostInfo.host}:${hostInfo.port}/ratingByEmail?email=${email}"
+    println(s"Client attempting to fetch from online at ${requestPath}")
+
+    val responseFuture: Future[List[Rating]] = {
+      Http().singleRequest(HttpRequest(uri = requestPath))
+        .flatMap(response =&gt; Unmarshal(response.entity).to[List[Rating]])
+    }
+
+    responseFuture
+  }
+
+  def fetchLocalRatingByEmail(email: String) : Future[List[Rating]] = {
+
+    val ec = ExecutionContext.global
+
+    println(s"client fetchLocalRatingByEmail email=${email}")
+
+    val host = metadataService.streamsMetadataForStoreAndKey[String](
+      StateStores.RATINGS_BY_EMAIL_STORE,
+      email,
+      Serdes.String().serializer()
+    )
+
+    val f = StateStores.waitUntilStoreIsQueryable(
+      StateStores.RATINGS_BY_EMAIL_STORE,
+      QueryableStoreTypes.keyValueStore[String,List[Rating]](),
+      streams
+    ).map(_.get(email))(ec)
+
+    val mapped = f.map(rating =&gt; {
+      if (rating == null)
+        List[Rating]()
+      else
+        rating
+    })
+
+    mapped
+  }
+
+  def stop() : Unit = {
+    bindingFuture
+      .flatMap(_.unbind()) // trigger unbinding from the port
+      .onComplete(_ =&gt; system.terminate()) // and shutdown when done
+  }
+
+  def thisHost(hostStoreInfo: HostStoreInfo) : Boolean = {
+    hostStoreInfo.host.equals(hostInfo.host()) &amp;&amp;
+      hostStoreInfo.port == hostInfo.port
+  }
+}
+</pre>
+<p>With that final class we are able to run the application and query it using the url 
+<code>http://localhost:8080/ratingByEmail?email=sacha@here.com</code> (the key to the Kafka store here is “<strong>sacha@here.com</strong>” and the value could either be an empty list or a 
+<code>List[Ranking]</code> objects as JSON, the results of which are shown below after we have run the producer and used Chrome (or any other REST tool of your picking) to get the results</p>
+<p><img alt="" height="413" src="s6.png" width="600"></p>
+<h4>REST Endpoint Facade</h4>
+<p>So we just created an Akka Http REST endpoint to serve up the combined <code>
+Rating</code>(s) that have been pushed through the Kafka stream processing 
+rating topic. However we have this Play framework API which we use for all other 
+REST endpoints. So I have chose to create a façade endpoint in the Play backend 
+that will simply call out to the existing Akka Http endpoint. Keeping all the 
+traffic in one place is a nice thing if you ask me. So lets look at this play 
+code to do this</p>
+<p>We obviously need a new route, which is as follows:We obviously need a new 
+route, which is as follows:</p>
+<pre>
+GET  /rating/byemail                          controllers.RatingController.ratingByEmail()
+</pre>
+<h4>Controller Action</h4>
+<p>To serve this new route we need a new Action in the <code>RatingController</code>. This is shown below:</p>
+<pre lang="scala">
+package controllers
+
+import javax.inject.Inject
+import entities.RatingJsonFormatters._
+import entities._
+import actors.rating.RatingProducerActor
+import akka.actor.{ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
+import akka.pattern.{Backoff, BackoffSupervisor}
+import akka.stream.{ActorMaterializer, ActorMaterializerSettings, Supervision}
+import play.api.libs.json._
+import play.api.libs.json.Json
+import play.api.libs.json.Format
+import play.api.libs.json.JsSuccess
+import play.api.libs.json.Writes
+import play.api.libs.ws._
+import play.api.mvc.{Action, Controller}
+import utils.{Errors, Settings}
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Random
+import scala.concurrent.duration._
+
+class RatingController @Inject()
+(
+  implicit actorSystem: ActorSystem,
+  ec: ExecutionContext,
+  ws: WSClient
+) extends Controller
+{
+
+  //Error handling for streams
+  //http://doc.akka.io/docs/akka/2.5.2/scala/stream/stream-error.html
+  val decider: Supervision.Decider = {
+    case _ =&gt; Supervision.Restart
+  }
+
+  implicit val mat = ActorMaterializer(
+    ActorMaterializerSettings(actorSystem).withSupervisionStrategy(decider))
+  val childRatingActorProps = Props(classOf[RatingProducerActor],mat,ec)
+  val rand = new Random()
+  val ratingSupervisorProps = BackoffSupervisor.props(
+    Backoff.onStop(
+      childRatingActorProps,
+      childName = s"RatingProducerActor_${rand.nextInt()}",
+      minBackoff = 3.seconds,
+      maxBackoff = 30.seconds,
+      randomFactor = 0.2
+    ).withSupervisorStrategy(
+      OneForOneStrategy() {
+        case _ =&gt; SupervisorStrategy.Restart
+      })
+  )
+
+  val ratingSupervisorActorRef = actorSystem.actorOf(ratingSupervisorProps, name = "ratingSupervisor")
+
+  def submitNewRating = Action.async(parse.json) { request =&gt;
+    Json.fromJson[Rating](request.body) match {
+      case JsSuccess(newRating, _) =&gt; {
+        ratingSupervisorActorRef ! newRating
+        Future.successful(Ok(Json.toJson(newRating.copy(toEmail = newRating.toEmail.toUpperCase))))
+      }
+      case JsError(errors) =&gt;
+        Future.successful(BadRequest("Could not build a Rating from the json provided. " +
+          Errors.show(errors)))
+    }
+  }
+
+
+  def ratingByEmail = Action.async { request =&gt;
+    val email = request.getQueryString("email")
+    email match {
+      case Some(emailAddress) =&gt; {
+        val url = s"http://${Settings.ratingRestApiHostName}:${Settings.ratingRestApiPort}/ratingByEmail?email=${emailAddress}"
+        ws.url(url).get().map {
+          response =&gt; (response.json).validate[List[Rating]]
+        }.map(x =&gt; Ok(Json.toJson(x.get)))
+      }
+      case None =&gt; {
+        Future.successful(BadRequest(
+          "ratingByEmail endpoint MUST be supplied with a non empty 'email' query string value"))
+      }
+    }
+  }
+}
+</pre>
+<p>The main thing to note here is:
+
+</p>
+<ul>
+	<li>We use the play ws (web services) library to issues a GET request against the existing Akka Http endpoint. Thus creating our façade.
+	</li>
+	<li>We are still using Future to make it nice an async</li>
+</ul>
+<h4>React front end for ratings</h4>
+<p>This is the final results for the “View Rating” react page. I think its all 
+fairly self explanatory. I guess the only bit that really of any note is that we 
+use lodash <code>_.sumBy(..)</code> to do the summing up of the <code>Ratings
+</code>for this user to create an overall rating.The rest is standard 
+jQuery/react stuff.</p>
+<pre lang="js">
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as _ from "lodash";
+import { OkDialog } from "./components/OkDialog";
+import 'bootstrap/dist/css/bootstrap.css';
+import
+{
+    Well,
+    Grid,
+    Row,
+    Col,
+    Label,
+    ButtonInput
+} from "react-bootstrap";
+ 
+import { AuthService } from "./services/AuthService";
+ 
+import { hashHistory  } from 'react-router';
+ 
+ 
+ 
+class Rating {
+    fromEmail: string
+    toEmail: string
+    score: number
+ 
+    constructor(fromEmail, toEmail, score) {
+        this.fromEmail = fromEmail;
+        this.toEmail = toEmail;
+        this.score = score;
+    }
+}
+ 
+ 
+export interface ViewRatingState {
+    ratings: Array&lt;Rating&gt;;
+    overallRating: number;
+    okDialogOpen: boolean;
+    okDialogKey: number;
+    okDialogHeaderText: string;
+    okDialogBodyText: string;
+    wasSuccessful: boolean;
+}
+ 
+ 
+export class ViewRating extends React.Component&lt;undefined, ViewRatingState&gt; {
+ 
+    private _authService: AuthService;
+ 
+    constructor(props: any) {
+        super(props);
+        this._authService = props.route.authService;
+        if (!this._authService.isAuthenticated()) {
+            hashHistory.push('/');
+        }
+        this.state = {
+            overallRating: 0,
+            ratings: Array(),
+            okDialogHeaderText: '',
+            okDialogBodyText: '',
+            okDialogOpen: false,
+            okDialogKey: 0,
+            wasSuccessful: false
+        };
+    }   
+ 
+ 
+    loadRatingsFromServer = () =&gt; {
+ 
+        var self = this;
+        var currentUserEmail = this._authService.userEmail();
+ 
+        $.ajax({
+            type: 'GET',
+            url: 'rating/byemail?email=' + currentUserEmail,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json'
+        })
+        .done(function (jdata, textStatus, jqXHR) {
+ 
+            console.log("result of GET rating/byemail");
+            console.log(jqXHR.responseText);
+            let ratingsObtained = JSON.parse(jqXHR.responseText);
+            self.setState(
+                {
+                    overallRating: _.sumBy(ratingsObtained, 'score'),
+                    ratings: ratingsObtained
+                });
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            self.setState(
+                {
+                    okDialogHeaderText: 'Error',
+                    okDialogBodyText: 'Could not load Ratings',
+                    okDialogOpen: true,
+                    okDialogKey: Math.random()
+                });
+        });
+         
+    }
+ 
+    componentDidMount() {
+        this.loadRatingsFromServer();
+    }
+ 
+    render() {
+ 
+        var rowComponents = this.generateRows();
+ 
+        return (
+            &lt;Well className="outer-well"&gt;
+                    &lt;Grid&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;Col xs={6} md={6}&gt;
+                                &lt;div&gt;
+                                &lt;h4&gt;YOUR OVERALL RATING &lt;Label&gt;{this.state.overallRating}&lt;/Label&gt;&lt;/h4&gt;
+                                &lt;/div&gt;
+                            &lt;/Col&gt;
+                        &lt;/Row&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;Col xs={10} md={6}&gt;
+                                &lt;h6&gt;The finer details of your ratings are shown below&lt;/h6&gt;
+                            &lt;/Col&gt;
+                        &lt;/Row&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;Col xs={10} md={6}&gt;
+                                &lt;div className="table-responsive"&gt;
+                                    &lt;table className="table table-striped table-bordered table-condensed factTable"&gt;
+                                        &lt;thead&gt;
+                                            &lt;tr&gt;
+                                                &lt;th&gt;Rated By&lt;/th&gt;
+                                                &lt;th&gt;Rating Given&lt;/th&gt;
+                                            &lt;/tr&gt;
+                                        &lt;/thead&gt;
+                                        &lt;tbody&gt;
+                                            {rowComponents} 
+                                        &lt;/tbody&gt;
+                                    &lt;/table&gt;
+                                &lt;/div&gt;
+                            &lt;/Col&gt;
+                        &lt;/Row&gt;
+                        &lt;Row className="show-grid"&gt;
+                            &lt;span&gt;
+                                &lt;OkDialog
+                                    open= {this.state.okDialogOpen}
+                                    okCallBack= {this._okDialogCallBack}
+                                    headerText={this.state.okDialogHeaderText}
+                                    bodyText={this.state.okDialogBodyText}
+                                    key={this.state.okDialogKey}/&gt;
+                            &lt;/span&gt;
+                        &lt;/Row&gt;
+                    &lt;/Grid&gt;
+            &lt;/Well&gt;
+        )
+    }
+ 
+    _okDialogCallBack = () =&gt; {
+        this.setState(
+            {
+                okDialogOpen: false
+            });
+    }
+ 
+    generateRows = () =&gt; {
+        return this.state.ratings.map(function (item) {
+            return  &lt;tr key={item.fromEmail}&gt;
+                        &lt;td&gt;{item.fromEmail}&lt;/td&gt;
+                        &lt;td&gt;{item.score}&lt;/td&gt;
+                    &lt;/tr&gt;;
+ 
+        });
+    } 
+}</pre>
+<p>&nbsp;</p>
 <h1>Conclusion</h1>
 <p>This was certainly a challenging thing to write, and I am honestly pleased that I got it done, I have had a really good time writing this. And it has been a great project for self improvement, and 
 I would recommend this type of thing as a great use of time. Go on find yourself 
