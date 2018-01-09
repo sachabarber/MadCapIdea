@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Task1WebPackConfig", ".\", "{1C0D976A-EF47-44D5-BD31-43F79B1597F6}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Task1WebPackConfig", ".", "{1C0D976A-EF47-44D5-BD31-43F79B1597F6}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_63689"
@@ -33,5 +33,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E77651EC-2BA0-4C84-9582-32BD24A880B3}
 	EndGlobalSection
 EndGlobal

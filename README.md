@@ -152,7 +152,7 @@ I normally follow this set of steps afterwards
 - open a NEW tab, login as a new driver, go to the "view job" page
 - on the 1st tab (passenger) click the map to push passenger position to driver
 - on the 2nd tab (driver) click the map to push driver position to passenger
-- repeat last 4 steps for additonal driver
+- repeat last 4 steps for additional driver
 - on client tab pick driver to accept, click accept button
 - complete the job from client tab, give driver rating
 - complete the job from paired driver tab, give passenger rating
