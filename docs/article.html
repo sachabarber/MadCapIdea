@@ -229,13 +229,22 @@ where you point to this main class <code>RatingStreamProcessingApp</code></li>
 <ul>
 	<li>Once a driver and passenger become paired, the position updates from 
 	either are no longer reflected. I am sure this would boil down to a single 
-	JavaScript method that needs updating in the <code>ViewJob.tsx</code> file. However I 
-	just kind of got to the end of a very long road (I have been writing about 
-	this on an off for 6 months of train rides) and was just happy that I got 
-	99% of the stuff done, and just thought you know what, the app as it is now 
-	demonstrates everything I set out to do, so I&#39;m ok with one known issue. 
-	Sue me</li>
+	JavaScript method that needs updating in the <code>ViewJob.tsx</code> file. </li>
+	<li>On the ViewJob page I originally wanted for the passenger to be able to 
+	accept a driver by clicking a button in the drivers Overlay GoogleMap 
+	component. However no matter what I tried this causes a MapClick event to 
+	still happen, which changed the passengers position. So I had to resort to 
+	using a weird drop down select way for a passenger to accept a driver. This 
+	sucked, but meh</li>
 </ul>
+<p>So those are the issues, I 
+	just kind of got to the end of a very long road (I have been writing about 
+	this on an off for 6 months of train rides, as well as not caring at all, 
+and just staring into space) and was just happy that I got 
+	99% of the stuff done that I set out to do. I just thought you know what, the app as it is now, 
+	demonstrates everything I set out to do, so I&#39;m ok with 1-2 known issues. 
+	</p>
+<p>Sue me</p>
 <h1>Some basics</h1>
 <p>Before we dive into the actual code for the app (and there is quite a bit of 
 it), I just thought it may be good to go over some of the individual building 
