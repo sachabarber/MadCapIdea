@@ -64,19 +64,19 @@ detail as I went through them</p>
 <p>&nbsp;</p>
 <h2>So just exactly what is it that I was/am talking about?</h2>
 <p>In essence I want to write a very (pardon the pun) but uber simple “uber” 
-type app. Where there are the following funtional requirements<br><br></p>
+type app. Where there are the following functional requirements<br><br></p>
 <ul>
 	<li>There should be a web interface that a client can use. Clients may be a 
-	“driver” or a “pickup client” requireing a delivery</li>
-	<li>There should be a web interface that a “pickup client” can use, that 
-	shows a “pickup client” location on a map, which the “pickup client” choses.</li>
+	“driver” or a “pickup client” requiring a delivery</li>
+	<li>There should be a web interface that a “pickup client” can use that 
+	shows a “pickup client” location on a map, which the “pickup client” chooses.</li>
 	<li>The “pickup client” may request a pickup job, in which case “drivers” 
 	that are in the area bid for a job.</li>
 	<li>The “pickup client” location should be visible to a “driver” on a map</li>
 	<li>A “driver” may bid for a “pickup client” job, and the bidding 
 	“driver(s)” location should be visible to the “pickup client”.</li>
 	<li>The acceptance of the bidding “driver” is down to the “pickup client”</li>
-	<li>Once a “pickup client” accepts a “driver” ONLY the assigned “driver(s)” 
+	<li>Once a “pickup client” accepts a “driver”, ONLY the assigned “driver(s)” 
 	current map position will be shown to the “pickup client”</li>
 	<li>When a “pickup client” is happy that they have been picked up by a 
 	“driver”, the “pickup client” may rate the driver from 1-10, and the 
@@ -86,13 +86,13 @@ type app. Where there are the following funtional requirements<br><br></p>
 	<li>A “driver” or a “pickup client” should ALWAYS be able to view their 
 	previous ratings. </li>
 </ul>
-<p>Whilst this may sound child’s play to a lot of you (me included if I 
+<p>Whilst this may sound childs play to a lot of you (me included if I 
 stuck to using simply CRUD operations), I just want to point out that this 
 app is meant as a learning experience so I will not be using a simple 
 SignalR Hub, and a couple of database tables.</p>
-<p>I have written this proj using a completely different set of technologies from the norm. Some 
+<p>I have written this project using a completely different set of technologies from the norm. Some 
 of the technology choices could easily scale to hundreds of thousands of 
-requests per second (Kafka has your back here)<br><br><strong>TECNHOLOGIES 
+requests per second (Kafka has your back here)<br><br><strong>TECHNOLOGIES 
 INVOLVED</strong></p>
 <ul>
 	<li>WebPack</li>
@@ -109,13 +109,13 @@ INVOLVED</strong></p>
 	<li>Kafka</li>
 	<li>Kafka Streams</li>
 </ul>
-<p>They say a picture says a 1000nd words, so here is a nice picture to get 
+<p>They say a picture says a 1000 words, so here is a nice picture to get 
 things started</p>
 <p><img alt="" height="565" src="overviewSmall.png" width="630"></p>
 <p>Now before we carry on, let me just acknowledge that
 <a href="http://www.codeproject.com">www.codeproject.com</a> is mainly biased 
-towards Microsoft tech, and this code is mainly scala/TypeScript. However I think 
-there is still plenty to learn along the way, so don&#39;t let the fact its not 
+towards Microsoft tech and this code is mainly Scala/TypeScript. However I think 
+there is still plenty to learn along the way, so don&#39;t let the fact it's not 
 .NET/C/C++ put you off</p>
 <p>&nbsp;</p>
 <h1>Where is the code?</h1>
@@ -126,8 +126,8 @@ https://github.com/sachabarber/MadCapIdea</a></p>
 <p class="auto-style1">NEED TO DO THIS</p>
 <h1>Prerequisites</h1>
 <p>As shown in the introduction section, there are many moving peices to this 
-demo, so there are quite naturally a few dependencies. I did try to get it to 
-work in Docker for you all, however I found that I still needed to create 
+demo so, naturally, there are quite a few dependencies. I did try to get it to 
+work in Docker for you, however I found that I still needed to create 
 external scripts to orchestrate it all anyway. In the end I just went with 
 downloading stuff as I will specify, and then giving a single PowerShell script 
 to run most stuff, apart from 2 Scala projects.</p>
@@ -142,8 +142,7 @@ http://packages.confluent.io/archive/3.3/confluent-oss-3.3.0-2.11.zip</a><br>-
 SBT<br>- Java 8 SDK<br>- Webpack<br>- Node.Js<br>- NPM<br>- IntelliJ IDEA v17.0 
 community<br>- PowerShell</p>
 <p>Once you have downloaded all of this you will need to do a few things in 
-order to run it nicely on Windows, so these instructions are all about how to 
-get stuff working on Windows<br><br>- Download the dependencies above <span style="background-color:yellow; border:1px black solid">(Keep a 
+order to run it nicely on Windows.<br><br>- Download the dependencies above <span style="background-color:yellow; border:1px black solid">(Keep a 
 note of where you downloaded them as you will need them here and later)</span><br>- 
 Replace the official <span style="background-color:yellow; border:1px black solid">YOUR extract location</span>\confluent-3.3.0\bin\windows BAT files with the ones found 
 here :
@@ -217,12 +216,6 @@ where you point to this main class <code>RatingStreamProcessingApp</code></li>
 </ul>
 
 
-
-
-
-
-
-
 <h1>&nbsp;</h1>
 <h1>Known issues</h1>
 <p>The following are known issues</p>
@@ -230,7 +223,7 @@ where you point to this main class <code>RatingStreamProcessingApp</code></li>
 	<li>Once a driver and passenger become paired, the position updates from 
 	either are no longer reflected. I am sure this would boil down to a single 
 	JavaScript method that needs updating in the <code>ViewJob.tsx</code> file. </li>
-	<li>On the ViewJob page I originally wanted for the passenger to be able to 
+	<li>On the ViewJob page I originally wanted the passenger to be able to 
 	accept a driver by clicking a button in the drivers Overlay GoogleMap 
 	component. However no matter what I tried this causes a MapClick event to 
 	still happen, which changed the passengers position. So I had to resort to 
@@ -244,7 +237,6 @@ and just staring into space) and was just happy that I got
 	99% of the stuff done that I set out to do. I just thought you know what, the app as it is now, 
 	demonstrates everything I set out to do, so I&#39;m ok with 1-2 known issues. 
 	</p>
-<p>Sue me</p>
 <h1>Some basics</h1>
 <p>Before we dive into the actual code for the app (and there is quite a bit of 
 it), I just thought it may be good to go over some of the individual building 
