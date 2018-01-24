@@ -1,13 +1,115 @@
-﻿
+
 <head>
-<style type="text/css">
-.auto-style1 {
-	background-color: #FF0000;
-}
-</style>
 </head>
 
-<h1>Introduction</h1>
+
+<ul>
+<li><a href="#Introduction">Introduction</a>
+<ul>
+<li><a href="#So-just-exactly-what-is-it-that-I-was/am-talking-about?">So just exactly what is it that I was/am talking about?</a></li>
+
+</ul>
+
+<li><a href="#Where-is-the-code?">Where is the code?</a></li>
+
+<li><a href="#Demo-Video">Demo Video</a></li>
+
+<li><a href="#Prerequisites">Prerequisites</a></li>
+
+<li><a href="#How-do-I-run-all-this-stuff?">How do I run all this stuff?</a></li>
+
+	<li><a href="#Known-issues">Known issues</a></li>
+
+<li><a href="#Some-basics">Some basics</a>
+<ul>
+<li><a href="#What-is-Kafka?">What is Kafka?</a></li>
+
+<li><a href="#What-is-Kafka-Streams?">What is Kafka Streams?</a></li>
+
+<li><a href="#What-is-Play?">What is Play?</a></li>
+
+<li><a href="#What-is-Akka">What is Akka</a></li>
+
+<li><a href="#What-is-WebPack?">What is WebPack?</a></li>
+
+<li><a href="#What-is-Babel?">What is Babel?</a></li>
+
+<li><a href="#What-is-SASS/SCSS/LESS">What is SASS/SCSS/LESS</a></li>
+
+<li><a href="#What-is-React?">What is React?</a></li>
+
+<li><a href="#What-is-TypeScript?">What is TypeScript?</a>
+<ul>
+<li><a href="#NPM-requirements">NPM requirements</a></li>
+
+<li><a href="#Babel-config">Babel config</a></li>
+
+<li><a href="#TypeScript-config">TypeScript config</a></li>
+
+<li><a href="#Sourcemap-files">Sourcemap files</a></li>
+
+<li><a href="#How-does-Webpack/Play-work-with-this?">How does Webpack/Play work with this?</a></li>
+
+<li><a href="#The-SPA">The SPA</a></li>
+
+</ul>
+
+</ul>
+
+<li><a href="#The-app">The app</a>
+<ul>
+<li><a href="#Routing">Routing</a></li>
+
+<li><a href="#Some-common-React-/-Bootstrap-UI-components">Some common React / Bootstrap UI components</a></li>
+
+<li><a href="#Registration-workflow">Registration workflow</a>
+<ul>
+	<li><a href="#<strong>Passenger-registration</strong>">Passenger registration</a>
+	<ul>
+		<li><a href="#Registration-React-component">Registration React component</a></li>
+		<li><a href="#Json-Support">Json Support</a></li>
+		<li><a href="#Registration-route">Registration route</a></li>
+		<li><a href="#Registration-controller">Registration controller</a></li>
+	</ul>
+	<li><a href="#<strong>Driver-registration</strong>">Driver registration</a>
+	<ul>
+		<li><a href="#Login-React-component">Login React component</a></li>
+		<li><a href="#Json-Support">Json Support</a></li>
+		<li><a href="#Login-route">Login route</a></li>
+		<li><a href="#Login-controller">Login controller</a></li>
+		<li><a href="#CreatJob-React-component">CreatJob React component</a></li>
+		<li><a href="#JSON-Payload">JSON Payload</a></li>
+		<li>
+		<a href="#Push-the-consumed-Job-out-of-the-forever-frame-(Comet-functionality-in-Play-backend)">Push the consumed Job out of the forever frame (Comet functionality in Play backend)</a></li>
+		<li>
+		<a href="#Have-a-new-RxJs-based-Observable-over-the-comet-based-forever-frame,-and-ensure-that-is-working">Have a new RxJs based Observable over the comet based forever frame, and ensure that is working</a></li>
+		<li><a href="#Final-diagram-to-help-you-solidify-this-section">Final diagram to help you solidify this section</a></li>
+		<li><a href="#ViewJob-react-component">ViewJob react component</a></li>
+		<li><a href="#So-what-should-the-“View-Job”-page-do?">So what should the “View Job” page do?</a></li>
+		<li><a href="#What-does-it-look-like-when-run?">What does it look like when run?</a></li>
+		<li><a href="#Walking-through-Kafka-Streams-interactive-queries">Walking through Kafka Streams interactive queries</a></li>
+		<li><a href="#REST-Endpoint-Facade">REST Endpoint Facade</a></li>
+		<li><a href="#Controller-Action">Controller Action</a></li>
+		<li><a href="#React-front-end-for-ratings">React front end for ratings</a></li>
+	</ul>
+</ul>
+
+<li><a href="#Login-workflow">Login workflow</a></li>
+
+<li><a href="#CreateJob-workflow">CreateJob workflow</a></li>
+
+<li><a href="#ViewJob-workflow">ViewJob workflow</a></li>
+
+<li><a href="#ViewRating-workflow">ViewRating workflow</a></li>
+
+</ul>
+
+<li><a href="#Conclusion">Conclusion</a></li>
+
+</ul>
+
+
+<h1><a name="Introduction" id="Introduction">Introduction</a></h1>
 <p>This article is the culmination of stuff I have been doing on the train on my 
 way to work over 6 months. I have written quite a lot of blog posts on this 
 already which you can read about on the projects home page on my blog :
@@ -62,7 +164,7 @@ detail as I went through them</p>
 	MADCAP IDEA PART 13 : GETTING THE ‘VIEW JOB’ TO WORK END-END</a></li>
 </ul>
 <p>&nbsp;</p>
-<h2>So just exactly what is it that I was/am talking about?</h2>
+<h2><a name="So-just-exactly-what-is-it-that-I-was/am-talking-about?" id="So-just-exactly-what-is-it-that-I-was/am-talking-about?">So just exactly what is it that I was/am talking about?</a></h2>
 <p>In essence I want to write a very (pardon the pun) but uber simple “uber” 
 type app. Where there are the following functional requirements<br><br></p>
 <ul>
@@ -118,16 +220,16 @@ towards Microsoft tech and this code is mainly Scala/TypeScript. However I think
 there is still plenty to learn along the way, so don&#39;t let the fact it's not 
 .NET/C/C++ put you off</p>
 <p>&nbsp;</p>
-<h1>Where is the code?</h1>
+<h1><a name="Where-is-the-code?" id="Where-is-the-code?">Where is the code?</a></h1>
 <p>The code for all of this lot is here :
 <a href="https://github.com/sachabarber/MadCapIdea" target="_blank">
 https://github.com/sachabarber/MadCapIdea</a></p>
 <p>&nbsp;</p>
-<h1>Demo Video</h1>
+<h1><a name="Demo-Video" id="Demo-Video">Demo Video</a></h1>
 <p><a href="https://www.youtube.com/watch?v=lq36ko1lMRk&feature=youtu.be&hd=1" target="_blank"><img alt="" height="403" src="videolink.png" width="630"></a></p>
 <p><em>CLICK THE IMAGE TO LAUNCH THE VIDEO</em></p>
 <p>&nbsp;</p>
-<h1>Prerequisites</h1>
+<h1><a name="Prerequisites" id="Prerequisites">Prerequisites</a></h1>
 <p>As shown in the introduction section, there are many moving peices to this 
 demo so, naturally, there are quite a few dependencies. I did try to get it to 
 work in Docker for you, however I found that I still needed to create 
@@ -160,7 +262,7 @@ https://github.com/renukaradhya/confluentplatform/tree/master/bin/windows</a><br
 <p>You will need to remember some of these paths for the next section too, so 
 just be mindful that you may have to edit the PowerShell script later with some 
 new paths</p>
-<h1>How do I run all this stuff?</h1>
+<h1><a name="How-do-I-run-all-this-stuff?" id="How-do-I-run-all-this-stuff?">How do I run all this stuff?</a></h1>
 <p>There are quite a few moving peices to this app, and they all need to be 
 running in order for it to all work together.</p>
 
@@ -219,8 +321,8 @@ where you point to this main class <code>RatingStreamProcessingApp</code></li>
 </ul>
 
 
-<h1>&nbsp;</h1>
-<h1>Known issues</h1>
+<h1><a name="&nbsp;" id="&nbsp;">&nbsp;</a></h1>
+<h1><a name="Known-issues" id="Known-issues">Known issues</a></h1>
 <p>The following are known issues</p>
 <ul>
 	<li>Once a driver and passenger become paired, the position updates from 
@@ -240,7 +342,7 @@ and just staring into space) and was just happy that I got
 	99% of the stuff done that I set out to do. I just thought you know what, the app as it is now, 
 	demonstrates everything I set out to do, so I&#39;m ok with 1-2 known issues. 
 	</p>
-<h1>Some basics</h1>
+<h1><a name="Some-basics" id="Some-basics">Some basics</a></h1>
 <p>Before we dive into the actual code for the app (and there is quite a bit of 
 it), I just thought it may be good to go over some of the individual building 
 blocks that make up the app as a whole first, the next few sections will do 
@@ -249,7 +351,7 @@ a few more bits, that I deemed to be not important enough to warrant their own
 sections. We will learn more about each of these when we walk through the actual 
 demo app code, this is more of an overiew of the various parts before we look at 
 the specific usage</p>
-<h2>What is Kafka?</h2>
+<h2><a name="What-is-Kafka?" id="What-is-Kafka?">What is Kafka?</a></h2>
 <p><strong>Overview</strong></p>
 <p><em>Apache Kafka is an open-source stream processing platform developed by 
 the Apache Software Foundation written in Scala and Java. The project aims to 
@@ -323,7 +425,7 @@ Kafka for coordination among consumers</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Apache_Kafka">
 https://en.wikipedia.org/wiki/Apache_Kafka</a> up on date 02/01/18</p>
 <p>&nbsp;</p>
-<h2>What is Kafka Streams?</h2>
+<h2><a name="What-is-Kafka-Streams?" id="What-is-Kafka-Streams?">What is Kafka Streams?</a></h2>
 <p><em>The Streams API of Apache Kafka, available through a Java library, can be 
 used to build highly scalable, elastic, fault-tolerant, distributed applications 
 and microservices. First and foremost, the Kafka Streams API allows you to 
@@ -356,7 +458,7 @@ push the transformed stream values out to a new output topic. </p>
 <p>You can perform complex stream processing, merge streams, and also store 
 accumulated stream state.</p>
 <p>It is a an <strong>AWESOME</strong> bit of kit</p>
-<h2>What is Play?</h2>
+<h2><a name="What-is-Play?" id="What-is-Play?">What is Play?</a></h2>
 <p>The Play Framework is a Scala based MVC (model view controller) type web 
 application framework. As such it has in built mechanisms for things typical of 
 a MVC web framework (certainly if you have done any ASP MVC . NET you would find 
@@ -459,7 +561,7 @@ initialize := {
 
 
 
-<h2>What is Akka</h2>
+<h2><a name="What-is-Akka" id="What-is-Akka">What is Akka</a></h2>
 <p><a href="https://akka.io/" target="_blank">Akka</a> is a great framework for 
 building distibuted fault tolerant apps. It is built around the concept of 
 actors, and has failure in mnid from the outset. It also comes with suport for 
@@ -472,7 +574,7 @@ about here :
 <a href="https://sachabarbs.wordpress.com/akka-series/" target="_blank">
 https://sachabarbs.wordpress.com/akka-series/</a> where I cover quite a lot of 
 Akkas functionality</p>
-<h2>What is WebPack?</h2>
+<h2><a name="What-is-WebPack?" id="What-is-WebPack?">What is WebPack?</a></h2>
 <p>We are headed towards an era where browsers will natively support modules, 
 and dependencies but we are not there yet. Over the years there have been many 
 attempts at JavaScript module management, and dependency tracking of related 
@@ -511,7 +613,7 @@ things like <code>export </code>and <code>import </code>to manage your inter
 dependencies</p>
 <p><img alt="" height="286" src="webpack1.png" width="630"></p>
 <p>&nbsp;</p>
-<h2>What is Babel?</h2>
+<h2><a name="What-is-Babel?" id="What-is-Babel?">What is Babel?</a></h2>
 <p><a href="https://babeljs.io/" target="_blank">Babel</a> is a very neat 
 JavaScript library that allows you to use next generation JavaScript syntax now, 
 even if your targetted browser doesn&#39;t suport the syntax you are trying to use. 
@@ -522,7 +624,7 @@ sent ot the browser.</p>
 <p>Using babel this is the sort of things you will be able to do, where native 
 browser support for these may be varied, or not supported at all</p>
 <p><img alt="" height="308" src="babel1.png" width="500"></p>
-<h2>What is SASS/SCSS/LESS</h2>
+<h2><a name="What-is-SASS/SCSS/LESS" id="What-is-SASS/SCSS/LESS">What is SASS/SCSS/LESS</a></h2>
 <p>I guess if you have used HTML you will have certainluy used CSS. Now CSS is 
 great, but it lacks certain things such as</p>
 <ul>
@@ -547,7 +649,7 @@ $margin: 16px;
   margin: $margin / 2;
   border-color: $blue;
 }</pre>
-<h2>What is React?</h2>
+<h2><a name="What-is-React?" id="What-is-React?">What is React?</a></h2>
 <p>Unless you have been living under a rock you will have heard/used/seen
 <a href="https://reactjs.org/" target="_blank">React</a>. React is maintained 
 and developed by Facebook, and it is a JavaScript library for building user 
@@ -558,7 +660,7 @@ centric. It is accepted that a React app would be made up of many smaller
 components. I can&#39;t give you a full walkthrough of React here, but we will 
 certainly see more React code/components as the article demo code is dissected 
 below</p>
-<h2>What is TypeScript?</h2>
+<h2><a name="What-is-TypeScript?" id="What-is-TypeScript?">What is TypeScript?</a></h2>
 <p><a href="https://www.typescriptlang.org/" target="_blank">Typescript</a>&nbsp; 
 is a Microsoft offering that attempts to bring better typings and other useful 
 constructs/language features to JavaScript. As TypeScript is a superset of 
@@ -579,7 +681,7 @@ also make use of a nice
 <a href="https://en.wikipedia.org/wiki/Inversion_of_control" target="_blank">
 Inversion Of Control</a> container for TypeScript called
 <a href="https://github.com/inversify/InversifyJS" target="_blank">Inversify</a>.</p>
-<h1>The app</h1>
+<h1><a name="The-app" id="The-app">The app</a></h1>
 <p>The next set of sections will walk through the demo app. I have decided to 
 take a workflow approach to describing the app, and as such will walk/talk 
 through each of the workflows, which I think is the best way to do it</p>
@@ -592,7 +694,7 @@ following areas</p>
 </ul>
 <p>We will get to all of these parts, but before that let&#39;s examine some of the 
 stuff that helps the front end work get of the ground</p>
-<h3>NPM requirements</h3>
+<h3><a name="NPM-requirements" id="NPM-requirements">NPM requirements</a></h3>
 <p>The demo project uses quite a few components, such as</p>
 <ul>
 	<li>TypeScript</li>
@@ -674,13 +776,13 @@ PlayBackEndApi/FrontEndWebSite/package.json</code> file</p>
   }
 }
 </pre>
-<h3>Babel config</h3>
+<h3><a name="Babel-config" id="Babel-config">Babel config</a></h3>
 <p>As stated above the demo project makes use of 
 <a href="https://babeljs.io/" target="_blank">Babeljs.io</a> to use future state 
 JavaScript now. As such we also need to supply a small Babel config file (<code>PlayBackEndApi/FrontEndWebSite/.babelrc</code>), 
 this is shown below, where we opt to use the ES2015/React presets</p>
 <pre lang="js">{ "presets": ["es2015","react"] }</pre>
-<h3>TypeScript config</h3>
+<h3><a name="TypeScript-config" id="TypeScript-config">TypeScript config</a></h3>
 <p>The demo also makes use of&nbsp;
 <a href="https://www.typescriptlang.org" target="_blank">TypeScript</a> which also need some specific 
 configuration. As such we also need to supply a small TypeScript config file (<code>PlayBackEndApi/FrontEndWebSite/tsconfig.json</code>), 
@@ -710,7 +812,7 @@ https://www.typescriptlang.org/docs/handbook/tsconfig-json.html</a></p>
     ]
 }
 </pre>
-<h3>Sourcemap files</h3>
+<h3><a name="Sourcemap-files" id="Sourcemap-files">Sourcemap files</a></h3>
 <p>Sourcemaps are a magical thing that allow you to write your JavaScript in 
 TypeScript say which is then possibly run through other transpilers (such as 
 Babel) and then webpack where it is bundled according to your rules, where you 
@@ -732,7 +834,7 @@ https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/</a></p>
 SourceMaps should only be used in development phases, 
 as in production you&nbsp; should/would want to minify your JavaScript too.</p>
 </div>
-<h3>How does Webpack/Play work with this?</h3>
+<h3><a name="How-does-Webpack/Play-work-with-this?" id="How-does-Webpack/Play-work-with-this?">How does Webpack/Play work with this?</a></h3>
 <p>WebPack has this concept of loaders that are what gets used to load different 
 file types. So for example you can use a TypeScript loader that gets piped 
 through a babel loader, where the final result will be vanilla JavaScript.</p>
@@ -1040,7 +1142,7 @@ module.exports = function (env) {
         ]
     })
 }</pre>
-<h3>The SPA</h3>
+<h3><a name="The-SPA" id="The-SPA">The SPA</a></h3>
 <p>So the React front end is really a Single Page Application, as such you can 
 expect to find a single page. So just where is that single page?</p>
 <p>We we need to go back to some of the stuff in the <code>webpack.config.js</code> 
@@ -1147,7 +1249,7 @@ class HomeController @Inject() (environment: play.api.Environment)
 
 }</pre>
 <p>&nbsp;</p>
-<h2>Routing</h2>
+<h2><a name="Routing" id="Routing">Routing</a></h2>
 <p>As I stated above this demo is a Singlle Page App (SPA) type of app. So how 
 is that done. That is done in this file <code>
 PlayBackEndApi/FrontEndWebSite/src/index.tsx</code>, which is also set as an 
@@ -1427,7 +1529,7 @@ export class AuthService {
     }
 }</pre>
 <p>&nbsp;</p>
-<h2>Some common React / Bootstrap UI components</h2>
+<h2><a name="Some-common-React-/-Bootstrap-UI-components" id="Some-common-React-/-Bootstrap-UI-components">Some common React / Bootstrap UI components</a></h2>
 <p>As with any UI work, you will inevitably end up where you need some core 
 components that you re-use over and over again. For the demo app I had these 3 
 reusable React components that make use of React/<a href="https://react-bootstrap.github.io/" target="_blank">React-Bootstrap</a></p>
@@ -1528,7 +1630,7 @@ export class YesNoDialog extends React.Component&lt;YesNoDialogProps, YesNoDialo
 }
 </pre>
 <p>This looks like this when rendered</p>
-<h2><img alt="" height="226" src="yesnodialog.png" width="600"></h2>
+<h2><a name="<img-alt=""-height="226"-src="yesnodialog.png"-width="600">" id="<img-alt=""-height="226"-src="yesnodialog.png"-width="600">"><img alt="" height="226" src="yesnodialog.png" width="600"></a></h2>
 
 <p><strong>OkDialog</strong></p>
 <p>This represents a generic re-usable ok dialog that can be triggered, here is the code for this one. The important part is that the various prop values can be controlled via the parent component state values</p>
@@ -1615,7 +1717,7 @@ export class OkDialog extends React.Component&lt;OkDialogProps, OkDialogState&gt
 </pre>
 <p>This looks like this when rendered</p>
 
-<h2><img alt="" height="221" src="OkDialog.png" width="600"></h2>
+<h2><a name="<img-alt=""-height="221"-src="OkDialog.png"-width="600">" id="<img-alt=""-height="221"-src="OkDialog.png"-width="600">"><img alt="" height="221" src="OkDialog.png" width="600"></a></h2>
 <p><strong>RatingDialog</strong></p>
 <p>This represents a generic re-usable rating control where rating can be from 1-5, here is the code for this one. The important part is that the various prop values can be controlled via the parent component state values</p>
 <pre lang="js">
@@ -1728,7 +1830,7 @@ export class RatingDialog extends React.Component&lt;RatingDialogProps, RatingDi
 <p>For the rating component I make use of this React library : 
 <a href="https://www.npmjs.com/package/react-stars" target="_blank">https://www.npmjs.com/package/react-stars</a></p>
 
-<h2>Registration workflow</h2>
+<h2><a name="Registration-workflow" id="Registration-workflow">Registration workflow</a></h2>
 <p><img alt="" height="217" src="loginRegisterFlow.png" width="630"></p>
 <p>The registration workflow is pretty much as described above, and uses the 
 pieces shown above.</p>
@@ -1739,9 +1841,9 @@ pieces shown above.</p>
 </ul>
 <p>We will examine the passenger registration in detail, with the driver 
 registration being fairly similiar in nature</p>
-<h3><strong>Passenger registration</strong></h3>
+<h3><a name="<strong>Passenger-registration</strong>" id="<strong>Passenger-registration</strong>"><strong>Passenger registration</strong></a></h3>
 <p><img alt="" height="583" src="passreg.png" width="630"></p>
-<h4>Registration React component</h4>
+<h4><a name="Registration-React-component" id="Registration-React-component">Registration React component</a></h4>
 <p>This is the main <code>
 PlayBackEndApi/FrontEndWebSite/src/PassengerRegistration.tsx</code> file for the React TSX representing the Passenger 
 registration component.</p>
@@ -1982,7 +2084,7 @@ route page</li>
 </ul>
 <p>Let’s now turn our attention to the Play API backend code 
 that goes with the “Passenger Registration”</p>
-<h4>Json Support</h4>
+<h4><a name="Json-Support" id="Json-Support">Json Support</a></h4>
 <p>We need to start with the JSON suport from JavaScript to Scala. This is done 
 using this file <code>PlayBackEndApi/app/Entities/PassengerRegistrationEntities.scala</code>, 
 where we use Play framework JSON combinators</p>
@@ -2029,7 +2131,7 @@ object PassengerRegistrationJsonFormatters {
       (JsPath \ "password").read[String]
     )(PassengerRegistration.apply _)
 }</pre>
-<h4>Registration route</h4>
+<h4><a name="Registration-route" id="Registration-route">Registration route</a></h4>
 <p>Once we have that in place we need to turn our attention to the actual 
 endpoint to support the POST of a PassengerRegistration object. We first need to 
 set up the route in the conf/routes file as follows:</p>
@@ -2037,7 +2139,7 @@ set up the route in the conf/routes file as follows:</p>
 # Registration page
 POST  /registration/save/passenger             controllers.RegistrationController.savePassengerRegistration()
 </pre>
-<h4>Registration controller</h4>
+<h4><a name="Registration-controller" id="Registration-controller">Registration controller</a></h4>
 <p>So now that we have talked about the JSON Reads/Writes and we know that we 
 need Mongo downloaded and running (see how do I run this section at start), lets 
 see what the actual controller looks like shall we. Here is the FULL code for 
@@ -2159,12 +2261,12 @@ class RegistrationController @Inject()
 </ul>
 <p>And that is how the “Passenger Registration” works.</p>
 <p>&nbsp;</p>
-<h3><strong>Driver registration</strong></h3>
+<h3><a name="<strong>Driver-registration</strong>" id="<strong>Driver-registration</strong>"><strong>Driver registration</strong></a></h3>
 <p>The driver registration works in much the same way as described above, its 
 just slightly different JSON, but it does share the same core logic/controller 
 as the “Passenger Registration”</p>
 <p>&nbsp;</p>
-<h2>Login workflow</h2>
+<h2><a name="Login-workflow" id="Login-workflow">Login workflow</a></h2>
 <p><img alt="" height="217" src="loginRegisterFlow.png" width="630"></p>
 <p>The login uses the 
 pieces shown above.</p>
@@ -2173,7 +2275,7 @@ pieces shown above.</p>
 is VERY similiar to registration, so feel free to skip this section if you think 
 you understand how registation concepts work</p>
 </div>
-<h4>Login React component</h4>
+<h4><a name="Login-React-component" id="Login-React-component">Login React component</a></h4>
 <p>This is the main <code>
 PlayBackEndApi/FrontEndWebSite/src/Login.tsx</code> file for the React TSX representing the 
 login component.</p>
@@ -2400,7 +2502,7 @@ export class Login extends React.Component&lt;undefined, LoginState&gt; {
 </ul>
 <p>Let’s now turn our attention to the Play API backend code 
 that goes with the “Login”</p>
-<h4>Json Support</h4>
+<h4><a name="Json-Support" id="Json-Support">Json Support</a></h4>
 <p>We need to start with the JSON suport from JavaScript to Scala. This is done 
 using this file <code>PlayBackEndApi/app/Entities/LoginEntities.scala</code>, 
 where we use Play framework JSON combinators</p>
@@ -2445,7 +2547,7 @@ object LoginJsonFormatters {
     )(Login.apply _)
 }
 </pre>
-<h4>Login route</h4>
+<h4><a name="Login-route" id="Login-route">Login route</a></h4>
 <p>Once we have that in place we need to turn our attention to the actual 
 endpoint to support the POST of a Login object. We first need to 
 set up the route in the conf/routes file as follows:</p>
@@ -2453,7 +2555,7 @@ set up the route in the conf/routes file as follows:</p>
 # Login page
 POST  /login/validate                          controllers.LoginController.validateLogin()
 </pre>
-<h4>Login controller</h4>
+<h4><a name="Login-controller" id="Login-controller">Login controller</a></h4>
 <p>So now that we have talked about the JSON Reads/Writes and we know that we 
 need Mongo downloaded and running (see how do I run this section at start), lets 
 see what the actual controller looks like shall we. Here is the FULL code for 
@@ -2556,11 +2658,11 @@ class LoginController @Inject()
 </pre>
 <p>This is similiar enough in nature to the registration process, so I will not 
 go into this any further.</p>
-<h2>CreateJob workflow</h2>
-<h2><img alt="" height="689" src="jobFlow.png" width="630"></h2>
+<h2><a name="CreateJob-workflow" id="CreateJob-workflow">CreateJob workflow</a></h2>
+<h2><a name="<img-alt=""-height="689"-src="jobFlow.png"-width="630">" id="<img-alt=""-height="689"-src="jobFlow.png"-width="630">"><img alt="" height="689" src="jobFlow.png" width="630"></a></h2>
 <p>The CreateJob uses the pieces shown above, and is intended to work like this</p>
 <p><img alt="" height="59" src="newjob.png" width="630"></p>
-<h4>CreatJob React component</h4>
+<h4><a name="CreatJob-React-component" id="CreatJob-React-component">CreatJob React component</a></h4>
 <p><img alt="" height="639" src="createJob.png" width="630"></p>
 <p>This is the code for the <code>CreateJob </code>React component</p>
 <pre lang="js">
@@ -2956,7 +3058,7 @@ export class PositionService {
     }
 }
 </pre>
-<h4>JSON Payload</h4>
+<h4><a name="JSON-Payload" id="JSON-Payload">JSON Payload</a></h4>
 <p>As before we send this across to the Play back end using this route</p>
 <pre>
 POST  /job/submit                              controllers.JobController.submitJob()
@@ -3087,7 +3189,7 @@ class JobController @Inject()
 	BroadcastHub and Comet forever frame back to the HTML (and ultimately RxJs 
 	Subject)</li>
 </ul>
-<h4>Push the consumed Job out of the forever frame (Comet functionality in Play backend)</h4>
+<h4><a name="Push-the-consumed-Job-out-of-the-forever-frame-(Comet-functionality-in-Play-backend)" id="Push-the-consumed-Job-out-of-the-forever-frame-(Comet-functionality-in-Play-backend)">Push the consumed Job out of the forever frame (Comet functionality in Play backend)</a></h4>
 <p>Ok so we just saw how the 2 actors are created under back off supervisors, 
 and how the consumer (the one that reads from Kafka) gets the ability to 
 essentially write back to the forever frame in the HTML which is like this</p>
@@ -3318,7 +3420,7 @@ class JobConsumerActor
   }
 }
 </pre>
-<h4>Have a new RxJs based Observable over the comet based forever frame, and ensure that is working</h4>
+<h4><a name="Have-a-new-RxJs-based-Observable-over-the-comet-based-forever-frame,-and-ensure-that-is-working" id="Have-a-new-RxJs-based-Observable-over-the-comet-based-forever-frame,-and-ensure-that-is-working">Have a new RxJs based Observable over the comet based forever frame, and ensure that is working</a></h4>
 <p>So at the end of the pipeline, we have a forever frame in the browser (always available 
 within <code>Index.html</code>) that we wish to get events from. Ideally we want to turn this rather bland event into a better RxJs Observable. So how do we do that? </p>
 <p>Its quite simple we use this little service that is able to create a new 
@@ -3394,7 +3496,7 @@ componentWillMount() {
 for now just all you need to know is that there is an injectable service that 
 you may use to listen to the <code>Job <code></code>Observable</code></p>
 <p>&nbsp;</p>
-<h4>Final diagram to help you solidify this section</h4>
+<h4><a name="Final-diagram-to-help-you-solidify-this-section" id="Final-diagram-to-help-you-solidify-this-section">Final diagram to help you solidify this section</a></h4>
 <p>There is a lot going on above so I thought a final diagram may help</p>
 <p><img alt="" height="422" src="createJobTotal.png" width="630"></p>
 <p>&nbsp;</p>
@@ -3402,17 +3504,17 @@ you may use to listen to the <code>Job <code></code>Observable</code></p>
 sections build apon what we have just seen, there is still quite a lot of moving 
 peices to cover, especially the Kafka Streams / Interactive Queries stuff which 
 we have yet to look at. So go on treat yourself to a nice strong coffee.</p>
-<h2>ViewJob workflow</h2>
+<h2><a name="ViewJob-workflow" id="ViewJob-workflow">ViewJob workflow</a></h2>
 <p><img alt="" height="664" src="ViewJobWorkFlow.png" width="630"></p>
 <p>The <code>ViewJob </code>uses the pieces shown above, and is intended to work like this</p>
-<h4>ViewJob react component</h4>
+<h4><a name="ViewJob-react-component" id="ViewJob-react-component">ViewJob react component</a></h4>
 <p><img alt="" height="289" src="ViewJob.png" width="630"></p>
 <p>As can be seen above this is after a passenger has opened a browser session, 
 and 2 other users (acting as drivers) have pushed through their positions, 
 obviously this is just one view (the passenger view), to fully understand what 
 the other users would see in their browser session we will walk through a 
 scenario below.</p>
-<h4>So what should the “View Job” page do?</h4>
+<h4><a name="So-what-should-the-“View-Job”-page-do?" id="So-what-should-the-“View-Job”-page-do?">So what should the “View Job” page do?</a></h4>
 <p>This page should do the following things</p>
 <ul>
 	<li>If a passenger sends out a job it should be seen by ANY driver that is 
@@ -3940,7 +4042,7 @@ export class ViewJob extends React.Component&lt;undefined, ViewJobState&gt; {
 	so I opted to chose to put the acceptance of driver outside of the map, thus 
 	avoiding the issue altogether)</li>
 </ul>
-<h4>What does it look like when run?</h4>
+<h4><a name="What-does-it-look-like-when-run?" id="What-does-it-look-like-when-run?">What does it look like when run?</a></h4>
 <p>Some scenarios of what it looks like running are shown below.</p>
 <p>In order to run it to this point,I normally follow this set of steps 
 afterwards</p>
@@ -3992,7 +4094,7 @@ looks like when its running (after job accepted between passenger/driver1)<br>
 <br>Here is what things look like after job has been accepted</p>
 <p><img alt="" height="872" src="v3.png" width="614"></p>
 <p><img alt="" height="411" src="v4.png" width="590"></p>
-<h2>ViewRating workflow</h2>
+<h2><a name="ViewRating-workflow" id="ViewRating-workflow">ViewRating workflow</a></h2>
 <p><img alt="" height="666" src="ratingFlow.png" width="630"></p>
 <p>The Rating flow is one of the more complex aspects of this entire article. 
 The idea is as follows:</p>
@@ -4194,7 +4296,7 @@ where the key would be the users email, and the value would be this list of
 <code>Rating </code>objects.I think with the formal discussion from the official 
 Kafka docs and my actual <code>Rating </code>requirement, the above should 
 hopefully be pretty clear.</p>
-<h4>Walking through Kafka Streams interactive queries</h4>
+<h4><a name="Walking-through-Kafka-Streams-interactive-queries" id="Walking-through-Kafka-Streams-interactive-queries">Walking through Kafka Streams interactive queries</a></h4>
 <p>So now that we have gone through how data is produced, and transformed (well 
 actually I did not do too much transformation other than a simple map, but trust 
 me you can), and how we aggregate results from a KStream to a KTable (and its 
@@ -4465,7 +4567,7 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
 <code>http://localhost:8080/ratingByEmail?email=sacha@here.com</code> (the key to the Kafka store here is “<strong>sacha@here.com</strong>” and the value could either be an empty list or a 
 <code>List[Ranking]</code> objects as JSON, the results of which are shown below after we have run the producer and used Chrome (or any other REST tool of your picking) to get the results</p>
 <p><img alt="" height="413" src="s6.png" width="600"></p>
-<h4>REST Endpoint Facade</h4>
+<h4><a name="REST-Endpoint-Facade" id="REST-Endpoint-Facade">REST Endpoint Facade</a></h4>
 <p>So we just created an Akka Http REST endpoint to serve up the combined <code>
 Rating</code>(s) that have been pushed through the Kafka stream processing 
 rating topic. However we have this Play framework API which we use for all other 
@@ -4478,7 +4580,7 @@ route, which is as follows:</p>
 <pre>
 GET  /rating/byemail                          controllers.RatingController.ratingByEmail()
 </pre>
-<h4>Controller Action</h4>
+<h4><a name="Controller-Action" id="Controller-Action">Controller Action</a></h4>
 <p>To serve this new route we need a new Action in the <code>RatingController</code>. This is shown below:</p>
 <pre lang="scala">
 package controllers
@@ -4573,7 +4675,7 @@ class RatingController @Inject()
 	</li>
 	<li>We are still using Future to make it nice an async</li>
 </ul>
-<h4>React front end for ratings</h4>
+<h4><a name="React-front-end-for-ratings" id="React-front-end-for-ratings">React front end for ratings</a></h4>
 <p>This is the final results for the “View Rating” react page. I think its all 
 fairly self explanatory. I guess the only bit that really of any note is that we 
 use lodash <code>_.sumBy(..)</code> to do the summing up of the <code>Ratings
@@ -4754,7 +4856,7 @@ export class ViewRating extends React.Component&lt;undefined, ViewRatingState&gt
     } 
 }</pre>
 <p>&nbsp;</p>
-<h1>Conclusion</h1>
+<h1><a name="Conclusion" id="Conclusion">Conclusion</a></h1>
 <p>This was certainly a challenging thing to write, and I am honestly pleased that I got it done, I have had a really good time writing this. And it has been a great project for self improvement, and 
 I would recommend this type of thing as a great use of time. Go on find yourself 
 a pet project</p>
