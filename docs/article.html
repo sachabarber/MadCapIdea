@@ -1,5 +1,4 @@
-﻿
-<head>
+﻿<head>
 <style type="text/css">
 .auto-style1 {
 	background-color: #FF0000;
@@ -122,7 +121,6 @@ there is still plenty to learn along the way, so don&#39;t let the fact it's not
 <p>The code for all of this lot is here :
 <a href="https://github.com/sachabarber/MadCapIdea" target="_blank">
 https://github.com/sachabarber/MadCapIdea</a></p>
-<p>&nbsp;</p>
 <h1>Demo Video</h1>
 <p><a href="https://www.youtube.com/watch?v=lq36ko1lMRk&feature=youtu.be&hd=1" target="_blank"><img alt="" height="403" src="videolink.png" width="630"></a></p>
 <p><em>CLICK THE IMAGE TO LAUNCH THE VIDEO</em></p>
@@ -244,7 +242,7 @@ and just staring into space) and was just happy that I got
 <p>Before we dive into the actual code for the app (and there is quite a bit of 
 it), I just thought it may be good to go over some of the individual building 
 blocks that make up the app as a whole first, the next few sections will do 
-that.It is a long list of stuff, and the demo app makes use of all of this plus 
+that. It is a long list of stuff, and the demo app makes use of all of this plus 
 a few more bits, that I deemed to be not important enough to warrant their own 
 sections. We will learn more about each of these when we walk through the actual 
 demo app code, this is more of an overiew of the various parts before we look at 
@@ -276,11 +274,7 @@ in a fault-tolerant fashion has made it replace some of the conventional
 messaging systems like JMS, AMQP, etc.</em></p>
 <p><em>The major terms of Kafka&#39;s architecture are topics, records, and brokers. 
 Topics consist of stream of records holding different information. On the other 
-hand, Brokers are responsible for replicating the messages. There are four major 
-APIs in Kafka:The major terms of Kafka&#39;s architecture are topics, records, and 
-brokers. Topics consist of stream of records holding different information. On 
-the other hand, Brokers are responsible for replicating the messages. There are 
-four major APIs in Kafka:</em></p>
+hand, Brokers are responsible for replicating the messages.</em></p>
 <ul>
 	<li><em>Producer API - Permits the applications to publish streams of 
 	records. </em><strong>(covered in this article)</strong></li>
@@ -346,12 +340,12 @@ fault-tolerant.</em></p>
 <p><a href="https://docs.confluent.io/current/streams/introduction.html">
 https://docs.confluent.io/current/streams/introduction.html</a> up on date 
 02/01/18</p>
-<p>So that is what the official docs say about it,. here is my take on it</p>
+<p>So that is what the official docs say about it. Here is my take on it</p>
 <p>Kafka Streams is an additional API on top of Kafka that allows you to perform 
 many aggregate and filtering, time based windowing operations over the incoming 
-messages, that can either be stored to an internal database key-value 
+messages that can either be stored to an internal database key-value 
 representation known as a KTable which uses a state store (based on
-<a href="http://rocksdb.org/" target="_blank">RocksDB</a>). Or you may choose to 
+<a href="http://rocksdb.org/" target="_blank">RocksDB</a>), or you may choose to 
 push the transformed stream values out to a new output topic. </p>
 <p>You can perform complex stream processing, merge streams, and also store 
 accumulated stream state.</p>
@@ -359,7 +353,7 @@ accumulated stream state.</p>
 <h2>What is Play?</h2>
 <p>The Play Framework is a Scala based MVC (model view controller) type web 
 application framework. As such it has in built mechanisms for things typical of 
-a MVC web framework (certainly if you have done any ASP MVC . NET you would find 
+a MVC web framework (certainly if you have done any ASP MVC .NET you would find 
 it very familiar).</p>
 <p>So we have the typical MVC concerns covered by the
 <a href="https://www.playframework.com/documentation/2.5.x/Home" target="_blank">
@@ -372,7 +366,7 @@ Play Framework</a></p>
 	<li>JSON support</li>
 	<li>View engine</li>
 </ul>
-<p>Thing is I will not be doing any actual HTML in the <a href="https://www.playframework.com/documentation/2.5.x/Home" target="_blank">
+<p>Thing is, I will not be doing any actual HTML in the <a href="https://www.playframework.com/documentation/2.5.x/Home" target="_blank">
 Play Framework</a> back end code, I want to do all of that using the previously covered webpack/typescript/react starter code I have shown so far. Rather I will be using the Play Framework as a API backend, where we will simply be using various controllers as endpoint to accept/serve JSON, and Event streamed data. All the actual front end work/routing will be done via webpack and React.
 </p>
 <p>There are still some very appealing parts in Play that I did want to make use of, such as:</p>
@@ -386,8 +380,6 @@ Play Framework</a> back end code, I want to do all of that using the previously 
 <p>Ok so now that we know what we will be using Play Framework for, how about we dive into the code for this post.</p>
 <p><strong>Play Framework Basics</strong></p>
 <p>Lets start by looking at the bare bones structure of a Play Framework application, which looks like this (I am using IntelliJ IDEA as my IDE)</p>
-
-
 
 <p><img alt="" height="377" src="play1.png" width="400"></p>
 <p>Lets talk a bit about each of these folders</p>
@@ -4758,6 +4750,3 @@ export class ViewRating extends React.Component&lt;undefined, ViewRatingState&gt
 <p>This was certainly a challenging thing to write, and I am honestly pleased that I got it done, I have had a really good time writing this. And it has been a great project for self improvement, and 
 I would recommend this type of thing as a great use of time. Go on find yourself 
 a pet project</p>
-
-
-
