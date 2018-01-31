@@ -1,4 +1,4 @@
-﻿<head>
+<head>
 <style type="text/css">
 .auto-style1 {
 	background-color: #FF0000;
@@ -14,7 +14,7 @@ already which you can read about on the projects home page on my blog :
 https://sachabarbs.wordpress.com/2017/05/01/madcap-idea/</a> </p>
 <p>There are 13 blog posts there, but I thought it would be good to also have 
 this overall article which covers all of it, as the blog posts are more a 
-sequence of events that I went through which talk about the peices in great 
+sequence of events that I went through which talk about the pieces in great 
 detail as I went through them</p>
 <p>For example these were the blog posts</p>
 <ul>
@@ -118,7 +118,7 @@ there is still plenty to learn along the way, so don&#39;t let the fact it's not
 .NET/C/C++ put you off</p>
 <p>&nbsp;</p>
 <h1>Where is the code?</h1>
-<p>The code for all of this lot is here :
+<p>The code for this lot is here :
 <a href="https://github.com/sachabarber/MadCapIdea" target="_blank">
 https://github.com/sachabarber/MadCapIdea</a></p>
 <h1>Demo Video</h1>
@@ -1609,7 +1609,7 @@ export class OkDialog extends React.Component&lt;OkDialogProps, OkDialogState&gt
 
 <h2><img alt="" height="221" src="OkDialog.png" width="600"></h2>
 <p><strong>RatingDialog</strong></p>
-<p>This represents a generic re-usable rating control where rating can be from 1-5, here is the code for this one. The important part is that the various prop values can be controlled via the parent component state values</p>
+<p>This represents a generic re-usable rating control where rating can be from 1-5; here is the code for this one. The important part is that the various prop values can be controlled via the parent component state values</p>
 <pre lang="js">
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -1730,12 +1730,12 @@ pieces shown above.</p>
 	<li>Driver registration</li>
 </ul>
 <p>We will examine the passenger registration in detail, with the driver 
-registration being fairly similiar in nature</p>
+registration being fairly similar in nature</p>
 <h3><strong>Passenger registration</strong></h3>
 <p><img alt="" height="583" src="passreg.png" width="630"></p>
 <h4>Registration React component</h4>
-<p>This is the main <code>
-PlayBackEndApi/FrontEndWebSite/src/PassengerRegistration.tsx</code> file for the React TSX representing the Passenger 
+<p><code>
+PlayBackEndApi/FrontEndWebSite/src/PassengerRegistration.tsx</code> is the main file for the React TSX representing the Passenger 
 registration component.</p>
 <pre lang="js">
 import * as React from "react";
@@ -1962,7 +1962,7 @@ export class PassengerRegistration extends React.Component&lt;PassengerRegistrat
 <ul>
 <li>That we use a standard POST</li>
 <li>That will post the registration data as JSON to the Play API backend code</li>
-<li>That we also show a standard Boostrap OkDialog which we looked at last time, 
+<li>That we also show a standard Bootstrap OkDialog which we looked at last time, 
 which when the Ok button is clicked will use the React Router to navigate to the 
 route page</li>
 	<li>That we use the
@@ -1987,7 +1987,7 @@ where we use Play framework JSON combinators</p>
 	and can be used for implicit conversion in place of its components.</li>
 </ul>
 <p>The recommendation for both of these is that they are exposed as implicit 
-vals you can read more about it here :
+<code>vals</code> you can read more about it here :
 <a href="https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators" target="_blank">
 https://www.playframework.com/documentation/2.6.x/ScalaJsonCombinators</a></p>
 <pre lang="scala">
@@ -2143,7 +2143,7 @@ class RegistrationController @Inject()
 			</code>output</li>
 			<li>If a registration does NOT already exist we insert the new 
 			registration details into the Mongo <code>JSONCollection </code>, 
-			and the we return an <code>Ok </code>output</li>
+			and the we return an <code>Ok</code> output</li>
 		</ul>
 		</li>
 	</ul>
@@ -2162,8 +2162,8 @@ as the “Passenger Registration”</p>
 pieces shown above.</p>
 <div>
 <p style="background:yellow; margin:3px; border:1px black solid">This workflow 
-is VERY similiar to registration, so feel free to skip this section if you think 
-you understand how registation concepts work</p>
+is VERY similar to registration, so feel free to skip this section if you think 
+you understand how registration concepts work</p>
 </div>
 <h4>Login React component</h4>
 <p>This is the main <code>
@@ -2386,14 +2386,14 @@ export class Login extends React.Component&lt;undefined, LoginState&gt; {
 	<li>That we use the
 	<a href="https://www.npmjs.com/package/react-bootstrap-validation" target="_blank">
 	react-bootstrap-validation</a> package for field validation</li>
-	<li>That if the login process is ok we store the user data in the
+	<li>That if the login process is okay we store the user data in the
 	<code>AuthorisationService.ts</code> that we saw earlier, where it in turn 
 	writes to the browser <code>sessionStorage</code></li>
 </ul>
 <p>Let’s now turn our attention to the Play API backend code 
 that goes with the “Login”</p>
 <h4>Json Support</h4>
-<p>We need to start with the JSON suport from JavaScript to Scala. This is done 
+<p>We need to start with the JSON support from JavaScript to Scala. This is done 
 using this file <code>PlayBackEndApi/app/Entities/LoginEntities.scala</code>, 
 where we use Play framework JSON combinators</p>
 <ul>
@@ -2546,7 +2546,7 @@ class LoginController @Inject()
   }
 }
 </pre>
-<p>This is similiar enough in nature to the registration process, so I will not 
+<p>This is similar enough in nature to the registration process, so I will not 
 go into this any further.</p>
 <h2>CreateJob workflow</h2>
 <h2><img alt="" height="689" src="jobFlow.png" width="630"></h2>
@@ -2832,7 +2832,7 @@ export class CreateJob extends React.Component&lt;undefined, CreateJobState&gt; 
 this one to use :
 <a href="https://tomchentw.github.io/react-google-maps/" target="_blank">
 https://tomchentw.github.io/react-google-maps/</a>. </p>
-<p>One thing to note is that as I wanted the map to be reponsive but the Google 
+<p>One thing to note is that as I wanted the map to be responsive but the Google 
 Map component I chose needed to have a fixed size, I had to use another React 
 library to allow me to measure the screen at runtime, and adjust the React 
 Google Maps component on the fly. This Measure package is this one :
@@ -2963,9 +2963,9 @@ this</p>
 </ul>
 <p>You may be asking yourself why we want to burden ourselves with Kafka here at 
 all if all we are going to do is get a Job JSON payload in them send it out via 
-Kafka only to have it come back in via Kafka. This seems weird why bother. The 
-reason we want to involve Kafka here is for the audit an commit log facility 
-that it provided. We want a record of the events, that’s what kafka given us, a 
+Kafka only to have it come back in via Kafka. This seems weird, so why bother? The 
+reason we want to involve Kafka here, is for the audit an commit log facility 
+that it provided. We want a record of the events and that’s what Kafka gives us, a 
 nice append only log</p>
 <p>Anyway what does the new endpoint code look like that accepts the job. Here 
 it is</p>
@@ -3080,7 +3080,7 @@ class JobController @Inject()
 	Subject)</li>
 </ul>
 <h4>Push the consumed Job out of the forever frame (Comet functionality in Play backend)</h4>
-<p>Ok so we just saw how the 2 actors are created under back off supervisors, 
+<p>Okay, so we just saw how the 2 actors are created under back off supervisors, 
 and how the consumer (the one that reads from Kafka) gets the ability to 
 essentially write back to the forever frame in the HTML which is like this</p>
 <pre lang="html">
@@ -3184,10 +3184,10 @@ class JobProducerActor(
 }
 </pre>
 <p>
-I’ll be honest there is a fair bit going on in that small chunk of code above so lets dissect it. What it happening exactly?</p>
+I’ll be honest there is a fair bit going on in that small chunk of code above. What is happening exactly?</p>
 <ul>
-	<li>The most important point is that we simply use the actor as a vessel to host a reactive kafka akka stream 
-	<code>RunnableGraph </code>representing a Graph of <code>MergeHub </code>– &gt; Reactive Kafka producer sink. This is completely fine and a normal thing to do. Discussing akka streams is out of scope for this 
+	<li>The most important point is that we simply use the actor as a vessel to host a reactive Kafka Akka stream 
+	<code>RunnableGraph </code>representing a Graph of <code>MergeHub </code>– &gt; Reactive Kafka producer sink. This is completely fine and a normal thing to do. Discussing Akka streams is out of scope for this 
 	article but if you want to know more you can read more on a previous post I did here :
 	<a href="https://sachabarbs.wordpress.com/2016/12/13/akka-streams/" target="_blank">https://sachabarbs.wordpress.com/2016/12/13/akka-streams/</a></li>
 	<li>&nbsp;So we now know this actor hosts a stream, but the stream could fail, or the actor could fail. So what we want is if the actor fails the stream is stopped, and if the stream fails the actor is stopped. To do that we need to do a couple of thing
@@ -3312,7 +3312,7 @@ class JobConsumerActor
 </pre>
 <h4>Have a new RxJs based Observable over the comet based forever frame, and ensure that is working</h4>
 <p>So at the end of the pipeline, we have a forever frame in the browser (always available 
-within <code>Index.html</code>) that we wish to get events from. Ideally we want to turn this rather bland event into a better RxJs Observable. So how do we do that? </p>
+within <code>Index.html</code>) that we wish to get events from. Ideally we want to turn this rather bland event into a better RxJs Observable, so how do we do that? </p>
 <p>Its quite simple we use this little service that is able to create a new 
 <code>Observable </code>from the incoming event for us, which if you recall the 
 Play server side stuff was like this</p>
@@ -3390,9 +3390,9 @@ you may use to listen to the <code>Job <code></code>Observable</code></p>
 <p>There is a lot going on above so I thought a final diagram may help</p>
 <p><img alt="" height="422" src="createJobTotal.png" width="630"></p>
 <p>&nbsp;</p>
-<p>Ok so now would be a good time to get a cup of coffee, as although the next 2 
-sections build apon what we have just seen, there is still quite a lot of moving 
-peices to cover, especially the Kafka Streams / Interactive Queries stuff which 
+<p>Okay, now would be a good time to get a cup of coffee, as although the next 2 
+sections build upon what we have just seen, there are still quite a lot of moving 
+pieces to cover, especially the Kafka Streams / Interactive Queries stuff which 
 we have yet to look at. So go on treat yourself to a nice strong coffee.</p>
 <h2>ViewJob workflow</h2>
 <p><img alt="" height="664" src="ViewJobWorkFlow.png" width="630"></p>
@@ -3426,8 +3426,8 @@ scenario below.</p>
 <p>This page is fairly complex, and contains many helper methods that carry out 
 the functions above, probably too many to show. So I will just show the skeleto 
 of the code in this case, and then we will walk through some screen shots, and a 
-scenario that excercises this code.</p>
-<p>&nbsp;<span style="background-color:yellow; border:1px black solid">It should 
+scenario that exercises this code.</p>
+<p><span style="background-color:yellow; border:1px black solid">It should 
 be noted that this area is the one that has the 2 bugs/issues that I have within 
 this code. As I said at the start, I kind of did what I wanted to do in this 
 article, and it demonstrated everything I wanted to show. So meh</span></p>
@@ -3934,7 +3934,7 @@ export class ViewJob extends React.Component&lt;undefined, ViewJobState&gt; {
 </ul>
 <h4>What does it look like when run?</h4>
 <p>Some scenarios of what it looks like running are shown below.</p>
-<p>In order to run it to this point,I normally follow this set of steps 
+<p>In order to run it to this point, I normally follow this set of steps 
 afterwards</p>
 <ul>
 	<li>open a tab, login as a passenger that I had created</li>
@@ -3953,8 +3953,8 @@ afterwards</p>
 <p>One of the challenges with an app like this, is that it is a streaming app. 
 So this means that when a client pushes out a new job, there may be no-one 
 listening for that job. Drivers may not even be logged in at all, or may login 
-later, so they effectively subscribe late. So for this app dealing with that was 
-kind of out of scope. So to remedy this, you need to ensure that position 
+later, so they effectively subscribe late. For this app dealing with that was 
+kind of out of scope. To remedy this, you need to ensure that position 
 updates (clicking on the map for the given user browser session (ie tab)) gets 
 pushed to other user browser sessions where the marker is not currently shown.</p>
 <p>In a real world app, we might choose to do one of the following to fix this 
@@ -3999,7 +3999,7 @@ The idea is as follows:</p>
 Streams</a></p>
 <h4><strong>Walking through a Kafka Streams processing node, and the duality of 
 streams</strong></h4>
-<p>Before we get started I just wanted to include a severak excerpts taken from 
+<p>Before we get started I just wanted to include a several excerpts taken from 
 the official Kafka docs :
 <a href="http://docs.confluent.io/current/streams/concepts.html#duality-of-streams-and-tables" target="_blank">
 http://docs.confluent.io/current/streams/concepts.html#duality-of-streams-and-tables</a> 
@@ -4294,11 +4294,7 @@ class MetadataService(val streams: KafkaStreams) {
 }
 </pre>
 <p>
-This metadata service is used to obtain the state store information, which we can then use to extract the state data we want (it’s a key value store really).
-
- 
-
-</p>
+This metadata service is used to obtain the state store information, which we can then use to extract the state data we want (it’s a key value store really).</p>
 <p>
 The next thing we need to do is expose a REST API to allow us to get the state. lets see that now</p>
 <pre lang="scala">
@@ -4745,8 +4741,7 @@ export class ViewRating extends React.Component&lt;undefined, ViewRatingState&gt
         });
     } 
 }</pre>
-<p>&nbsp;</p>
 <h1>Conclusion</h1>
-<p>This was certainly a challenging thing to write, and I am honestly pleased that I got it done, I have had a really good time writing this. And it has been a great project for self improvement, and 
+<p>This was certainly a challenging thing to write, and I am honestly pleased that I got it done, I have had a really good time writing this and it has been a great project for self improvement.  
 I would recommend this type of thing as a great use of time. Go on find yourself 
 a pet project</p>
